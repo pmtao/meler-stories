@@ -1,0 +1,652 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>海的女儿 · 有声绘本</title>
+<style>
+:root {
+  --paper: #f8f3e8;
+  --paper-2: #f1e9d8;
+  --ink: #2c2a33;
+  --ink-soft: #6b6672;
+  --sea: #1d6c88;
+  --sea-deep: #123f55;
+  --line: #e2d7c1;
+  --mark: #ffe39a;
+  --mark-ink: #2c2a33;
+  --done: #8d8792;
+  --bar: rgba(255, 252, 245, .94);
+  --shadow: 0 8px 30px rgba(30, 50, 70, .14);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0f1a23; --paper-2: #15232f; --ink: #e9e4d8; --ink-soft: #a29fa8;
+    --sea: #6cc3dd; --sea-deep: #9fdcef; --line: #263744; --mark: rgba(255, 210, 110, .26);
+    --mark-ink: #fff6dc; --done: #8b8a90; --bar: rgba(17, 29, 39, .94);
+    --shadow: 0 8px 30px rgba(0, 0, 0, .45); color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0f1a23; --paper-2: #15232f; --ink: #e9e4d8; --ink-soft: #a29fa8;
+  --sea: #6cc3dd; --sea-deep: #9fdcef; --line: #263744; --mark: rgba(255, 210, 110, .26);
+  --mark-ink: #fff6dc; --done: #8b8a90; --bar: rgba(17, 29, 39, .94);
+  --shadow: 0 8px 30px rgba(0, 0, 0, .45); color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-padding-top: 30vh; }
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font-family: -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+button { font: inherit; color: inherit; }
+
+/* 封面 */
+.cover { position: relative; min-height: 92vh; display: flex; align-items: flex-end; overflow: hidden; color: #fff; }
+.cover img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.cover::after { content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(8, 25, 40, 0) 30%, rgba(8, 25, 40, .55) 62%, rgba(8, 25, 40, .9)); }
+.cover-in { position: relative; z-index: 1; width: 100%; max-width: 760px; margin: 0 auto; padding: 0 20px 56px; }
+.kicker { letter-spacing: .3em; font-size: 13px; opacity: .85; }
+.home { position: absolute; top: 18px; left: 20px; z-index: 2; color: #fff; text-decoration: none; font-size: 14px;
+  padding: 7px 14px; border-radius: 999px; background: rgba(8, 25, 40, .35); backdrop-filter: blur(6px); }
+.home:hover { background: rgba(8, 25, 40, .55); }
+.cover h1 { font-family: "Kaiti SC", "STKaiti", "KaiTi", serif; font-size: clamp(48px, 11vw, 84px);
+  margin: 10px 0 6px; letter-spacing: .12em; font-weight: 700; text-shadow: 0 4px 24px rgba(0, 0, 0, .35); }
+.cover p { margin: 0 0 22px; max-width: 30em; line-height: 1.8; opacity: .92; font-size: 15px; }
+.cover .meta { font-size: 13px; opacity: .78; margin-bottom: 24px; }
+.cta { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn { border: 0; border-radius: 999px; padding: 13px 26px; font-size: 16px; cursor: pointer; font-weight: 600;
+  display: inline-flex; align-items: center; gap: 8px; }
+.btn-main { background: #fff; color: #123f55; }
+.btn-ghost { background: rgba(255, 255, 255, .16); color: #fff; backdrop-filter: blur(6px);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .4); }
+.btn:hover { filter: brightness(1.05); }
+.btn[hidden] { display: none; }
+.btn svg { width: 18px; height: 18px; }
+
+/* 目录 */
+.toc { max-width: 760px; margin: 0 auto; padding: 40px 20px 8px; }
+.toc-home { float: right; letter-spacing: .05em; font-weight: 500; color: var(--sea); text-decoration: none; }
+.toc h2 { font-size: 15px; letter-spacing: .2em; color: var(--ink-soft); font-weight: 600; margin: 0 0 14px; }
+.toc ol { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 8px; }
+.toc li button { width: 100%; text-align: left; background: var(--paper-2); border: 0; border-radius: 12px;
+  padding: 11px 14px; cursor: pointer; display: flex; justify-content: space-between; gap: 10px; font-size: 15px; }
+.toc li button:hover { box-shadow: inset 0 0 0 1px var(--sea); }
+.toc li button.now { box-shadow: inset 0 0 0 2px var(--sea); }
+.toc .dur { color: var(--ink-soft); font-size: 13px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* 正文 */
+main { max-width: 760px; margin: 0 auto; padding: 8px 20px 160px; }
+.chapter { padding-top: 48px; }
+.chapter h2 { font-family: "Kaiti SC", "STKaiti", "KaiTi", serif; font-size: 30px; color: var(--sea-deep);
+  margin: 0 0 22px; padding: 4px 10px; margin-left: -10px; border-radius: 10px; cursor: pointer;
+  transition: background .3s; letter-spacing: .06em; }
+.chapter h2 small { display: block; font-family: -apple-system, "PingFang SC", sans-serif; font-size: 13px;
+  color: var(--ink-soft); letter-spacing: .2em; font-weight: 500; margin-bottom: 4px; }
+.story p { font-family: "Kaiti SC", "STKaiti", "KaiTi", "Songti SC", serif; font-size: 21px; line-height: 2.05;
+  margin: 0 0 1.1em; text-align: justify; text-indent: 2em; }
+.s { cursor: pointer; border-radius: 6px; padding: 2px 0; transition: background .35s, color .35s, box-shadow .35s;
+  -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.s:hover { background: color-mix(in srgb, var(--mark) 45%, transparent); }
+.s.on, h2.on { background: var(--mark); color: var(--mark-ink); box-shadow: 0 0 0 3px var(--mark); }
+.reading .s.past { color: var(--done); }
+figure { margin: 30px -20px 34px; }
+figure .pic { position: relative; }
+figure img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 0;
+  background: var(--paper-2); cursor: zoom-in; box-shadow: var(--shadow); }
+/* 动图是叠在静态图上的循环短片，开始播放才显出来 */
+figure video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 0;
+  cursor: zoom-in; opacity: 0; transition: opacity .4s; }
+figure video.on { opacity: 1; }
+figcaption { text-align: center; color: var(--ink-soft); font-size: 14px; margin-top: 12px; letter-spacing: .05em; padding: 0 20px; }
+figcaption b { color: var(--sea); font-weight: 600; margin-right: 6px; font-variant-numeric: tabular-nums; }
+@media (min-width: 800px) { figure { margin: 36px -40px 40px; } figure img, figure video { border-radius: 18px; } }
+.note { font-size: 15px; line-height: 1.9; color: var(--ink-soft); background: var(--paper-2); border-radius: 14px;
+  padding: 16px 20px; margin-top: 28px; }
+.song { margin: 6px 0 30px; padding: 20px 16px 22px; text-align: center; border-radius: 18px;
+  background: linear-gradient(var(--paper-2), transparent); }
+.song h3 { margin: 0 0 12px; font-family: "Kaiti SC", "STKaiti", "KaiTi", serif; font-size: 22px; font-weight: normal;
+  color: var(--sea-deep); letter-spacing: .1em; display: inline-block; padding: 2px 12px; border-radius: 8px; cursor: pointer;
+  transition: background .35s, box-shadow .35s; }
+.song h3::before { content: '♪ '; color: var(--sea); }
+.song h3.on { background: var(--mark); color: var(--mark-ink); box-shadow: 0 0 0 3px var(--mark); }
+.song .s { display: table; margin: 2px auto; padding: 1px 10px; font-family: "Kaiti SC", "STKaiti", "KaiTi", serif;
+  font-size: 19px; line-height: 1.9; font-style: italic; color: var(--ink-soft); }
+.song .s.on { color: var(--mark-ink); }
+.end-mark { text-align: center; color: var(--ink-soft); margin: 40px 0 0; font-size: 14px; letter-spacing: .3em; }
+
+/* 播放条 */
+.player { position: fixed; left: 0; right: 0; bottom: 0; z-index: 10; background: var(--bar);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-top: 1px solid var(--line);
+  padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); transform: translateY(0); transition: transform .3s; }
+.player-in { max-width: 760px; margin: 0 auto; }
+.now-line { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-size: 13px; color: var(--ink-soft); }
+.now-line .title { color: var(--ink); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: none; max-width: 60%; }
+.now-left { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
+/* 插图名称：纯图 / 左图右文模式下显示在章节标题右边 */
+.now-cap { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.now-cap:empty, body[data-mode="read"] .now-cap { display: none; }
+.time { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.seek { width: 100%; margin: 8px 0 6px; accent-color: var(--sea); height: 18px; cursor: pointer; }
+.ctrls { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+.ctrls .mid { display: flex; align-items: center; gap: 4px; }
+.ib { width: 42px; height: 42px; border-radius: 50%; border: 0; background: transparent; cursor: pointer;
+  display: grid; place-items: center; color: var(--ink); }
+.ib:hover { background: var(--paper-2); }
+.ib svg { width: 22px; height: 22px; }
+.play { width: 54px; height: 54px; background: var(--sea); color: #fff; }
+.play:hover { background: var(--sea); filter: brightness(1.08); }
+.play svg { width: 26px; height: 26px; }
+.pill { border: 0; background: var(--paper-2); border-radius: 999px; padding: 7px 12px; font-size: 13px;
+  cursor: pointer; min-width: 58px; font-variant-numeric: tabular-nums; }
+.pill[aria-pressed="false"] { opacity: .55; }
+.side { display: flex; gap: 6px; align-items: center; }
+
+/* 看大图 */
+.lightbox { position: fixed; inset: 0; z-index: 20; background: rgba(5, 12, 18, .92); display: none;
+  align-items: center; justify-content: center; padding: 16px; cursor: zoom-out; flex-direction: column; gap: 14px; }
+.lightbox.open { display: flex; }
+.lightbox img { max-width: 100%; max-height: 86vh; border-radius: 10px; }
+.lightbox p { color: #e8e4da; margin: 0; font-size: 15px; text-align: center; }
+
+.toast { position: fixed; left: 50%; bottom: 150px; transform: translateX(-50%); background: var(--sea-deep);
+  color: var(--paper); padding: 8px 16px; border-radius: 999px; font-size: 14px; opacity: 0; pointer-events: none;
+  transition: opacity .3s; z-index: 15; }
+.toast.show { opacity: .95; }
+
+/* 插图舞台：纯图模式铺满屏幕，左图右文模式占左半边 */
+.stage { display: none; position: fixed; left: 0; right: 0; top: 0; bottom: var(--ph, 120px); z-index: 5;
+  background: #07121b; overflow: hidden; cursor: pointer; }
+.stage-bg { position: absolute; inset: -40px; background-size: cover; background-position: center;
+  filter: blur(28px) brightness(.55) saturate(1.2); transition: background-image .8s; }
+.stage img, .stage video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0;
+  transition: opacity .9s ease; }
+.stage img.show, .stage video.show { opacity: 1; }
+.stage video { transition-duration: .4s; }
+.stage-top { position: absolute; left: 0; right: 0; top: 0; padding: 14px 18px 30px; color: #fff; display: flex;
+  justify-content: space-between; align-items: baseline; gap: 6px 16px; flex-wrap: wrap;
+  font-size: 14px; letter-spacing: .1em; background: linear-gradient(rgba(5, 15, 25, .6), transparent); pointer-events: none; }
+/* 纯图模式的字幕：当前朗读的句子 */
+.stage-sub { position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%); width: max-content;
+  max-width: min(92%, 960px); padding: 10px 20px; border-radius: 14px; background: rgba(4, 12, 20, .3);
+  color: #fff; text-align: center; pointer-events: none;
+  text-shadow: 0 0 2px rgba(0, 0, 0, .9), 0 1px 3px rgba(0, 0, 0, .8), 0 0 12px rgba(0, 0, 0, .55);
+  font-family: "Kaiti SC", "STKaiti", "KaiTi", serif; font-size: clamp(19px, 2.4vw, 30px); line-height: 1.55;
+  letter-spacing: .03em; transition: opacity .25s; }
+.stage-sub:empty, .stage-sub.fade { opacity: 0; }
+body:not([data-mode="picture"]) .stage-sub { display: none; }
+body[data-mode="picture"] .toast { bottom: auto; top: 64px; }
+@media (max-width: 520px) {
+  .stage-top { flex-direction: column; }
+  .stage-sub { bottom: 16px; padding: 8px 14px; }
+}
+.stage-play { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 84px; height: 84px;
+  border-radius: 50%; border: 0; background: rgba(255, 255, 255, .9); color: #123f55; display: grid; place-items: center;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, .35); cursor: pointer; transition: opacity .3s; }
+.stage-play svg { width: 38px; height: 38px; margin-left: 4px; }
+body.playing .stage-play { opacity: 0; pointer-events: none; }
+
+body[data-mode="picture"] .cover, body[data-mode="picture"] .toc, body[data-mode="picture"] main { display: none; }
+body[data-mode="picture"] .stage { display: block; }
+body[data-mode="picture"] #followBtn { display: none; }
+
+@media (min-width: 900px) {
+  body[data-mode="split"] .stage { display: block; right: 50%; }
+  body[data-mode="split"] .stage img, body[data-mode="split"] .stage video { object-fit: cover; }
+  body[data-mode="split"] .stage-bg, body[data-mode="split"] .stage-play { display: none; }
+  body[data-mode="split"] .cover { display: none; }
+  body[data-mode="split"] .toc, body[data-mode="split"] main { margin-left: 50%; max-width: none; padding-left: 48px; padding-right: 48px; }
+  body[data-mode="split"] main figure { display: none; }
+  body[data-mode="split"] .chapter:first-child { padding-top: 24px; }
+}
+
+/* 横屏手机：播放条收紧，把高度留给插图 */
+@media (max-height: 500px) {
+  .player { padding-top: 4px; padding-bottom: calc(4px + env(safe-area-inset-bottom)); }
+  .now-line { display: none; }
+  .seek { margin: 2px 0; }
+  .play { width: 44px; height: 44px; }
+  .ib { width: 36px; height: 36px; }
+}
+
+@media (max-width: 520px) {
+  .story p { font-size: 19px; line-height: 1.95; }
+  .chapter h2 { font-size: 26px; }
+  .side .pill.opt { display: none; }
+  .pill { padding: 6px 9px; min-width: 0; font-size: 12px; }
+  #prevCh, #nextCh { display: none; }
+  .side { gap: 4px; }
+  .ib { width: 38px; height: 38px; }
+}
+</style>
+</head>
+<body>
+
+<header class="cover" id="top">
+  <img id="coverImg" alt="">
+  <a class="home" href="../index.html">‹ 故事目录</a>
+  <div class="cover-in">
+    <div class="kicker" id="kicker"></div>
+    <h1 id="bookTitle"></h1>
+    <p id="intro"></p>
+    <div class="meta" id="meta"></div>
+    <div class="cta">
+      <button class="btn btn-main" id="startBtn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>从头开始听</button>
+      <button class="btn btn-ghost" id="resumeBtn" hidden></button>
+    </div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="目录">
+  <h2>目　录<a class="toc-home" href="../index.html">更多故事 ›</a></h2>
+  <ol id="toc"></ol>
+</nav>
+
+<main class="story" id="story"></main>
+
+<div class="stage" id="stage" aria-label="插图">
+  <div class="stage-bg" id="stageBg"></div>
+  <img alt=""><img alt=""><video id="stageVid" muted loop playsinline></video>
+  <div class="stage-top"><span id="stageTop"></span></div>
+  <div class="stage-sub" id="stageSub" aria-live="polite"></div>
+  <button class="stage-play" id="stagePlay" aria-label="播放"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg></button>
+</div>
+
+<div class="player" id="player">
+  <div class="player-in">
+    <div class="now-line"><span class="now-left"><span class="title" id="nowTitle"></span><span class="now-cap" id="stageCap"></span></span><span class="time" id="nowTime">00:00 / 00:00</span></div>
+    <input class="seek" id="seek" type="range" min="0" max="100" step="0.1" value="0" aria-label="本章进度">
+    <div class="ctrls">
+      <div class="side">
+        <button class="pill" id="modeBtn" title="切换显示模式：阅读 / 左图右文 / 纯图">阅读</button>
+        <button class="pill" id="speedBtn" title="朗读速度">1.0×</button>
+        <button class="pill opt" id="followBtn" aria-pressed="true" title="朗读时自动翻到正在读的地方">跟读</button>
+      </div>
+      <div class="mid">
+        <button class="ib" id="prevCh" title="上一章"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg></button>
+        <button class="ib" id="prevS" title="上一句（←）"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+        <button class="ib play" id="playBtn" title="播放 / 暂停（空格）"></button>
+        <button class="ib" id="nextS" title="下一句（→）"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+        <button class="ib" id="nextCh" title="下一章"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 6h2v12h-2zM6 18l8.5-6L6 6z"/></svg></button>
+      </div>
+      <div class="side">
+        <button class="pill" id="animBtn" title="插图用动图还是静态图">动图</button>
+        <button class="pill opt" id="themeBtn" title="切换深浅色">主题</button>
+        <button class="pill" id="tocBtn" title="回到目录">目录</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="lightbox" id="lightbox"><img alt=""><p></p></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const BOOK = {"id": "rapunzel", "title": "莴苣姑娘", "intro": "根据格林童话《莴苣姑娘》改写，适合 5 到 10 岁的小朋友和爸爸妈妈一起读、一起听。", "kicker": "格林童话", "cover": "images/12.webp", "voice": "考拉（本地 Qwen3-TTS 复刻音色）", "chapters": [{"title": "第一章　窗外的花园", "head": "c01-h", "audio": "audio/ch01.m4a", "duration": 84.34, "times": {"c01-h": [0.0, 3.818], "c01-001": [4.818, 13.036], "c01-002": [13.386, 17.942], "c01-003": [18.792, 25.535], "c01-004": [25.885, 31.826], "c01-005": [32.676, 37.304], "c01-006": [37.654, 44.484], "c01-007": [45.334, 49.525], "c01-008": [49.875, 56.537], "c01-009": [57.387, 60.814], "c01-010": [61.164, 66.127], "c01-011": [66.477, 71.216], "c01-012": [72.066, 76.194], "c01-013": [77.044, 82.84]}, "blocks": [{"t": "img", "src": "images/01.webp", "vid": "images/01.mp4", "cap": "小屋的窗外，是女巫的大花园", "n": 1}, {"t": "p", "s": [["c01-001", "从前，有一对善良的夫妻，他们一直盼望着能有一个孩子，可是盼了很多年，也没有盼到。"], ["c01-002", "终于有一天，妻子觉得，上天就要送给他们一个孩子了。"]]}, {"t": "p", "s": [["c01-003", "他们的小屋后面有一扇小窗，从窗口望出去，可以看见一座美丽的大花园。"], ["c01-004", "花园里开满了鲜花，长满了各种各样的蔬菜，绿油油的，好看极了。"]]}, {"t": "p", "s": [["c01-005", "可是，花园的四周围着高高的围墙，谁也不敢进去。"], ["c01-006", "因为那座花园，属于一个本领很大的女巫，她的名字叫戈特尔，大家都很怕她。"]]}, {"t": "img", "src": "images/02.webp", "vid": "images/02.mp4", "cap": "菜地里又嫩又绿的莴苣", "n": 2}, {"t": "p", "s": [["c01-007", "有一天，妻子站在窗前，望着下面的花园。"], ["c01-008", "她看见一块菜地里，种着一片又嫩又绿的莴苣，叶子上还挂着亮晶晶的露水。"]]}, {"t": "img", "src": "images/03.webp", "vid": "images/03.mp4", "cap": "她想吃莴苣，一天比一天瘦了", "n": 3}, {"t": "p", "s": [["c01-009", "她看着看着，就特别特别想吃那些莴苣。"], ["c01-010", "她一天比一天更想吃，可是她知道，自己永远也吃不到。"], ["c01-011", "于是她变得没精打采，脸色苍白，一天比一天瘦了。"]]}, {"t": "p", "s": [["c01-012", "丈夫吓坏了，问她：“亲爱的，你到底怎么了？”"]]}, {"t": "p", "s": [["c01-013", "“唉，”妻子说，“要是吃不到我们屋后花园里的莴苣，我觉得我的病就好不了。”"]]}]}, {"title": "第二章　翻过围墙", "head": "c02-h", "audio": "audio/ch02.m4a", "duration": 93.367, "times": {"c02-h": [0.0, 2.344], "c02-001": [3.344, 5.125], "c02-002": [5.475, 9.183], "c02-003": [10.033, 16.707], "c02-004": [17.057, 21.805], "c02-005": [22.655, 26.437], "c02-006": [26.787, 33.9], "c02-007": [34.75, 39.656], "c02-008": [40.506, 45.37], "c02-009": [45.72, 49.371], "c02-010": [50.221, 51.308], "c02-011": [51.658, 56.362], "c02-012": [56.712, 58.136], "c02-013": [58.986, 60.829], "c02-014": [61.179, 63.753], "c02-015": [64.103, 70.236], "c02-016": [71.086, 73.539], "c02-017": [73.889, 79.551], "c02-018": [79.901, 84.837], "c02-019": [85.187, 87.959], "c02-020": [88.809, 91.867]}, "blocks": [{"t": "img", "src": "images/04.webp", "vid": "images/04.mp4", "cap": "丈夫悄悄翻过高高的围墙", "n": 4}, {"t": "p", "s": [["c02-001", "丈夫很爱他的妻子。"], ["c02-002", "他想：“不管怎么样，我都要给她摘一些莴苣来。”"]]}, {"t": "p", "s": [["c02-003", "傍晚，天快黑的时候，他悄悄地翻过高高的围墙，跳进了女巫的花园。"], ["c02-004", "他飞快地拔了一把莴苣，又翻墙跑了回来，交给了妻子。"]]}, {"t": "img", "src": "images/05.webp", "vid": "images/05.mp4", "cap": "妻子吃着香香的莴苣沙拉", "n": 5}, {"t": "p", "s": [["c02-005", "妻子马上做了一盘莴苣沙拉，吃得香极了。"], ["c02-006", "可是，莴苣太好吃了，到了第二天，她想吃莴苣的心，比以前还要强烈三倍。"]]}, {"t": "p", "s": [["c02-007", "丈夫没有办法，只好在第二天傍晚，又一次翻进了花园。"]]}, {"t": "img", "src": "images/06.webp", "vid": "images/06.mp4", "cap": "女巫戈特尔正站在他面前", "n": 6}, {"t": "p", "s": [["c02-008", "可是，他刚刚从围墙上跳下来，就吓得一动也不敢动了。"], ["c02-009", "女巫戈特尔正站在他的面前，生气地瞪着他。"]]}, {"t": "p", "s": [["c02-010", "“好大的胆子！”"], ["c02-011", "女巫说，“你竟敢像小偷一样爬进我的花园，偷我的莴苣！"], ["c02-012", "你会为这件事后悔的！”"]]}, {"t": "p", "s": [["c02-013", "“求求您，饶了我吧！”"], ["c02-014", "丈夫说，“我是没有办法才这样做的。"], ["c02-015", "我的妻子从窗口看见了您的莴苣，她太想吃了，要是吃不到，她就会病得更厉害。”"]]}, {"t": "img", "src": "images/07.webp", "vid": "images/07.mp4", "cap": "女巫说：孩子要交给我", "n": 7}, {"t": "p", "s": [["c02-016", "女巫的脸色变得缓和了一些。"], ["c02-017", "她说：“如果真是这样，你可以随便摘，想摘多少就摘多少。"], ["c02-018", "可是有一个条件：等你的妻子生下孩子，你们要把孩子交给我。"], ["c02-019", "我会好好照顾她，像妈妈一样爱护她。”"]]}, {"t": "p", "s": [["c02-020", "丈夫心里害怕极了，只好答应了。"]]}]}, {"title": "第三章　长头发的女孩", "head": "c03-h", "audio": "audio/ch03.m4a", "duration": 80.876, "times": {"c03-h": [0.0, 2.625], "c03-001": [3.625, 6.559], "c03-002": [6.909, 9.398], "c03-003": [9.748, 14.496], "c03-004": [15.346, 17.569], "c03-005": [17.919, 24.251], "c03-006": [24.601, 30.085], "c03-007": [30.935, 35.511], "c03-008": [35.861, 39.121], "c03-009": [39.971, 46.862], "c03-010": [47.212, 50.449], "c03-011": [51.299, 56.917], "c03-012": [57.767, 61.336], "c03-013": [62.186, 67.056], "c03-014": [67.406, 75.587], "c03-015": [75.937, 79.376]}, "blocks": [{"t": "img", "src": "images/08.webp", "vid": "images/08.mp4", "cap": "女巫给小女孩取名叫莴苣", "n": 8}, {"t": "p", "s": [["c03-001", "没过多久，妻子生下了一个女孩。"], ["c03-002", "孩子刚一出生，女巫就来了。"], ["c03-003", "她给小女孩取了一个名字，叫“莴苣”，然后就把她抱走了。"]]}, {"t": "img", "src": "images/09.webp", "vid": "images/09.mp4", "cap": "莴苣姑娘一天天长大了", "n": 9}, {"t": "p", "s": [["c03-004", "莴苣姑娘一天天长大了。"], ["c03-005", "她是太阳底下最美丽的孩子，有一双明亮的眼睛，还有一头金色的长头发。"], ["c03-006", "她的头发长得飞快，又长又亮，就像金子纺成的丝线一样。"]]}, {"t": "img", "src": "images/10.webp", "vid": "images/10.mp4", "cap": "森林深处，有一座高高的石头塔", "n": 10}, {"t": "p", "s": [["c03-007", "莴苣姑娘十二岁那年，女巫把她带进了一片大森林。"], ["c03-008", "森林的深处，有一座高高的石头塔。"]]}, {"t": "p", "s": [["c03-009", "这座塔很奇怪，它没有门，也没有楼梯，只在最高的地方，有一扇小小的窗户。"], ["c03-010", "女巫把莴苣姑娘关在了塔顶的小房间里。"]]}, {"t": "img", "src": "images/11.webp", "vid": "images/11.mp4", "cap": "莴苣，莴苣，把你的头发垂下来", "n": 11}, {"t": "p", "s": [["c03-011", "每当女巫想进塔里去的时候，就站在塔下面，抬起头大声喊："]]}, {"t": "p", "s": [["c03-012", "“莴苣，莴苣，把你的头发垂下来！”"]]}, {"t": "p", "s": [["c03-013", "莴苣姑娘的头发又长又结实，像金子一样闪闪发光。"], ["c03-014", "一听到女巫的声音，她就把盘起来的辫子解开，绕在窗户的钩子上，然后让长长的头发一直垂到塔底下。"], ["c03-015", "女巫就抓住她的头发，一点一点地爬上去。"]]}]}, {"title": "第四章　塔顶的歌声", "head": "c04-h", "audio": "audio/ch04.m4a", "duration": 134.93, "times": {"c04-h": [0.0, 2.064], "c04-001": [3.064, 5.677], "c04-002": [6.027, 12.51], "c04-003": [13.36, 16.737], "c04-004": [17.087, 21.604], "c04-005": [21.954, 25.634], "song-tower-song": [26.834, 32.834], "song-tower-song-01": [32.834, 37.194], "song-tower-song-02": [39.494, 44.274], "song-tower-song-03": [46.134, 50.734], "song-tower-song-04": [52.014, 57.574], "song-tower-song-05": [58.654, 63.894], "song-tower-song-06": [65.254, 69.614], "song-tower-song-07": [70.494, 77.754], "song-tower-song-08": [77.754, 85.994], "c04-006": [92.194, 98.717], "c04-007": [103.806, 107.201], "c04-008": [107.551, 112.856], "c04-009": [113.706, 115.845], "c04-010": [116.195, 121.176], "c04-011": [122.026, 124.161], "c04-012": [124.511, 128.011], "c04-013": [128.361, 133.43]}, "blocks": [{"t": "img", "src": "images/12.webp", "vid": "images/12.mp4", "cap": "她在塔顶对着窗外唱歌", "n": 12}, {"t": "p", "s": [["c04-001", "莴苣姑娘一个人住在高高的塔里。"], ["c04-002", "她每天望着窗外的森林，看着小鸟飞来飞去，看着太阳升起又落下。"]]}, {"t": "p", "s": [["c04-003", "她觉得很孤单，就常常对着窗外唱歌。"], ["c04-004", "她的歌声又甜美又温柔，在森林里轻轻地飘荡。"], ["c04-005", "小鸟们都飞到窗台上，静静地听她唱歌。"]]}, {"t": "song", "title": "塔顶的歌", "head": "song-tower-song", "lines": [["song-tower-song-01", "高高的塔上一扇小窗"], ["song-tower-song-02", "风儿带来远方的花香"], ["song-tower-song-03", "小鸟飞来停在窗台上"], ["song-tower-song-04", "陪我看太阳慢慢落下山岗"], ["song-tower-song-05", "啦啦啦，我轻轻地唱"], ["song-tower-song-06", "歌声飘过森林和山冈"], ["song-tower-song-07", "总有一天我会去远方"], ["song-tower-song-08", "看看外面的世界有多么宽广"]]}, {"t": "img", "src": "images/13.webp", "vid": "images/13.mp4", "cap": "王子停下马，静静地听着", "n": 13}, {"t": "p", "s": [["c04-006", "过了几年，有一天，一位年轻的王子骑着马，从这片森林里经过。"], ["c04-007", "他走到塔的附近，忽然听见了一阵歌声。"], ["c04-008", "那歌声真好听，王子不由得停下马，站在那里静静地听着。"]]}, {"t": "img", "src": "images/14.webp", "vid": "images/14.mp4", "cap": "他绕着塔找门，怎么也找不到", "n": 14}, {"t": "p", "s": [["c04-009", "王子很想见见唱歌的人。"], ["c04-010", "他绕着塔走了一圈又一圈，想找到一扇门，可是怎么也找不到。"]]}, {"t": "p", "s": [["c04-011", "王子只好骑马回家了。"], ["c04-012", "可是那美妙的歌声，一直在他的心里回响。"], ["c04-013", "从那以后，他每天都骑马到森林里来，听莴苣姑娘唱歌。"]]}]}, {"title": "第五章　王子的秘密", "head": "c05-h", "audio": "audio/ch05.m4a", "duration": 51.24, "times": {"c05-h": [0.0, 2.188], "c05-001": [3.188, 9.403], "c05-002": [9.753, 13.71], "c05-003": [14.56, 17.506], "c05-004": [18.356, 24.198], "c05-005": [25.048, 28.814], "c05-006": [29.164, 30.569], "c05-007": [31.419, 35.733], "c05-008": [36.083, 38.913], "c05-009": [39.763, 42.832], "c05-010": [43.682, 49.74]}, "blocks": [{"t": "img", "src": "images/15.webp", "vid": "images/15.mp4", "cap": "王子躲在大树后面", "n": 15}, {"t": "p", "s": [["c05-001", "有一天，王子又站在一棵大树后面听歌的时候，看见女巫戈特尔走了过来。"], ["c05-002", "他赶紧躲好，看见女巫站在塔下，抬头喊道："]]}, {"t": "p", "s": [["c05-003", "“莴苣，莴苣，把你的头发垂下来！”"]]}, {"t": "p", "s": [["c05-004", "只见长长的金色头发从窗口垂了下来，女巫抓着头发，爬了上去。"]]}, {"t": "p", "s": [["c05-005", "王子心想：“原来，这就是上塔的梯子呀！"], ["c05-006", "那我也来试一试运气吧。”"]]}, {"t": "img", "src": "images/16.webp", "vid": "images/16.mp4", "cap": "王子顺着金色的头发爬上了塔", "n": 16}, {"t": "p", "s": [["c05-007", "第二天傍晚，天快黑的时候，王子来到了塔下。"], ["c05-008", "他学着女巫的样子，大声喊道："]]}, {"t": "p", "s": [["c05-009", "“莴苣，莴苣，把你的头发垂下来！”"]]}, {"t": "p", "s": [["c05-010", "金色的头发马上垂了下来，王子顺着头发，爬上了高高的塔顶。"]]}]}, {"title": "第六章　塔顶的朋友", "head": "c06-h", "audio": "audio/ch06.m4a", "duration": 78.047, "times": {"c06-h": [0.0, 2.099], "c06-001": [3.099, 5.458], "c06-002": [5.808, 9.58], "c06-003": [10.43, 13.235], "c06-004": [13.585, 18.344], "c06-005": [18.694, 19.72], "c06-006": [20.57, 23.045], "c06-007": [23.395, 30.431], "c06-008": [30.781, 35.7], "c06-009": [36.55, 41.993], "c06-010": [42.843, 49.463], "c06-011": [49.813, 52.83], "c06-012": [53.68, 58.938], "c06-013": [59.288, 62.476], "c06-014": [62.826, 64.818], "c06-015": [65.168, 69.831], "c06-016": [70.681, 76.547]}, "blocks": [{"t": "img", "src": "images/17.webp", "vid": "images/17.mp4", "cap": "她从来没有见过陌生人", "n": 17}, {"t": "p", "s": [["c06-001", "莴苣姑娘从来没有见过男人。"], ["c06-002", "看见一个陌生人从窗口爬进来，她吓了一大跳。"]]}, {"t": "p", "s": [["c06-003", "王子温和地对她说：“请不要害怕。"], ["c06-004", "我每天都来听你唱歌，你的歌声太美了，我的心再也平静不下来。"], ["c06-005", "我一定要见见你。”"]]}, {"t": "img", "src": "images/18.webp", "vid": "images/18.mp4", "cap": "王子讲着森林外面的世界", "n": 18}, {"t": "p", "s": [["c06-006", "莴苣姑娘慢慢地不害怕了。"], ["c06-007", "王子给她讲森林外面的事：热闹的城市，宽宽的河流，还有坐满了人的集市。"], ["c06-008", "莴苣姑娘听得入了迷，她从来不知道，外面的世界这么大。"]]}, {"t": "img", "src": "images/19.webp", "vid": "images/19.mp4", "cap": "她把手放在了王子的手里", "n": 19}, {"t": "p", "s": [["c06-009", "后来，王子问她，愿不愿意和他一起离开这座塔，做他的妻子。"]]}, {"t": "p", "s": [["c06-010", "莴苣姑娘看看王子，心想：“他又年轻又善良，一定会比戈特尔婆婆更爱我。”"], ["c06-011", "她答应了，把手放在了王子的手里。"]]}, {"t": "p", "s": [["c06-012", "“我很愿意跟你走，”莴苣姑娘说，“可是我不知道怎么从塔上下去。"], ["c06-013", "以后你每次来的时候，都给我带一束丝线吧。"], ["c06-014", "我要用丝线编一架梯子。"], ["c06-015", "等梯子编好了，我就顺着梯子爬下去，你再用马把我带走。”"]]}, {"t": "p", "s": [["c06-016", "他们约好了，王子每天傍晚都来看她，因为女巫总是在白天来。"]]}]}, {"title": "第七章　说漏了嘴", "head": "c07-h", "audio": "audio/ch07.m4a", "duration": 67.417, "times": {"c07-h": [0.0, 2.214], "c07-001": [3.214, 6.114], "c07-002": [6.464, 12.334], "c07-003": [12.684, 14.498], "c07-004": [15.348, 19.154], "c07-005": [19.504, 20.544], "c07-006": [21.394, 23.715], "c07-007": [24.065, 30.297], "c07-008": [31.147, 32.774], "c07-009": [33.124, 35.438], "c07-010": [35.788, 39.695], "c07-011": [40.545, 41.795], "c07-012": [42.145, 52.299], "c07-013": [55.174, 57.359], "c07-014": [58.209, 65.917]}, "blocks": [{"t": "img", "src": "images/20.webp", "vid": "images/20.mp4", "cap": "她悄悄地用丝线编梯子", "n": 20}, {"t": "p", "s": [["c07-001", "王子每天傍晚都带着一束丝线来。"], ["c07-002", "莴苣姑娘每天都悄悄地编着梯子，丝线梯子一天比一天长了。"], ["c07-003", "女巫一点儿也没有发现。"]]}, {"t": "img", "src": "images/21.webp", "vid": "images/21.mp4", "cap": "她不小心说漏了嘴", "n": 21}, {"t": "p", "s": [["c07-004", "可是有一天，莴苣姑娘一不小心，说漏了嘴。"], ["c07-005", "她对女巫说："]]}, {"t": "p", "s": [["c07-006", "“戈特尔婆婆，这是怎么回事呀？"], ["c07-007", "我把您拉上来的时候，觉得您比那位年轻的王子重多了，他一下子就爬上来了。”"]]}, {"t": "p", "s": [["c07-008", "“啊，你这个坏孩子！”"], ["c07-009", "女巫大叫起来，“你在说什么？"], ["c07-010", "我以为我把你和整个世界都隔开了，可你还是骗了我！”"]]}, {"t": "img", "src": "images/22.webp", "vid": "images/22.mp4", "cap": "女巫剪掉了她的长辫子", "n": 22}, {"t": "p", "s": [["c07-011", "女巫气坏了。"], ["c07-012", "她一把抓住莴苣姑娘美丽的长头发，在左手上绕了几圈，右手拿起一把剪刀，“咔嚓，咔嚓”，把长长的辫子剪了下来。"], ["c07-013", "金色的头发落在了地上。"]]}, {"t": "img", "src": "images/23.webp", "vid": "images/23.mp4", "cap": "她被带到了荒凉的沙漠", "n": 23}, {"t": "p", "s": [["c07-014", "接着，狠心的女巫把莴苣姑娘带到了一片荒凉的沙漠里，让她一个人在那里孤孤单单地生活。"]]}]}, {"title": "第八章　荆棘丛", "head": "c08-h", "audio": "audio/ch08.m4a", "duration": 68.276, "times": {"c08-h": [0.0, 2.09], "c08-001": [3.09, 12.451], "c08-002": [13.301, 15.182], "c08-003": [15.532, 16.944], "c08-004": [17.794, 21.059], "c08-005": [21.909, 24.362], "c08-006": [24.712, 28.178], "c08-007": [28.528, 35.81], "c08-008": [36.66, 37.447], "c08-009": [37.797, 40.917], "c08-010": [41.267, 45.847], "c08-011": [46.197, 49.495], "c08-012": [50.345, 51.818], "c08-013": [52.168, 53.864], "c08-014": [57.341, 61.338], "c08-015": [61.688, 66.776]}, "blocks": [{"t": "img", "src": "images/24.webp", "vid": "images/24.mp4", "cap": "女巫把辫子绑在窗钩上等着", "n": 24}, {"t": "p", "s": [["c08-001", "就在把莴苣姑娘赶走的那天傍晚，女巫把剪下来的辫子，牢牢地绑在窗户的钩子上，然后坐在塔顶，静静地等着。"]]}, {"t": "p", "s": [["c08-002", "傍晚，王子又来了。"], ["c08-003", "他站在塔下喊："]]}, {"t": "p", "s": [["c08-004", "“莴苣，莴苣，把你的头发垂下来！”"]]}, {"t": "img", "src": "images/25.webp", "vid": "images/25.mp4", "cap": "窗口等着他的，是女巫的眼睛", "n": 25}, {"t": "p", "s": [["c08-005", "女巫把金色的辫子放了下去。"], ["c08-006", "王子抓着头发，高高兴兴地爬了上去。"], ["c08-007", "可是，他在窗口看见的，不是心爱的莴苣姑娘，而是女巫那双又凶又冷的眼睛。"]]}, {"t": "p", "s": [["c08-008", "“哈哈！”"], ["c08-009", "女巫冷笑着说，“你是来接你的心上人的吧？"], ["c08-010", "可是那只美丽的小鸟，已经不在窝里了，她再也不会唱歌了。"], ["c08-011", "莴苣姑娘已经离开了，你永远也见不到她了！”"]]}, {"t": "img", "src": "images/26.webp", "vid": "images/26.mp4", "cap": "他落进了荆棘丛里", "n": 26}, {"t": "p", "s": [["c08-012", "王子伤心极了。"], ["c08-013", "他从塔上跌了下去。"], ["c08-014", "幸好，他落在了一大片荆棘丛里，没有摔伤。"], ["c08-015", "可是，荆棘尖尖的刺扎伤了他的眼睛，他什么也看不见了。"]]}]}, {"title": "第九章　漫长的寻找", "head": "c09-h", "audio": "audio/ch09.m4a", "duration": 53.598, "times": {"c09-h": [0.0, 2.245], "c09-001": [3.245, 9.274], "c09-002": [10.124, 18.643], "c09-003": [18.993, 22.916], "c09-004": [23.766, 29.252], "c09-005": [29.602, 32.501], "c09-006": [32.851, 36.482], "c09-007": [37.332, 41.872], "c09-008": [42.222, 46.813], "c09-009": [47.163, 52.098]}, "blocks": [{"t": "img", "src": "images/27.webp", "vid": "images/27.mp4", "cap": "他看不见了，还是一直往前走", "n": 27}, {"t": "p", "s": [["c09-001", "王子看不见了，可是他心里只想着一件事：一定要找到莴苣姑娘。"]]}, {"t": "p", "s": [["c09-002", "他在森林里摸索着往前走，饿了，就吃一点儿树根和野果；累了，就靠在大树下休息一会儿。"], ["c09-003", "他一边走，一边伤心地想念着心爱的莴苣姑娘。"]]}, {"t": "p", "s": [["c09-004", "就这样，他走过了一片又一片森林，翻过了一座又一座小山。"], ["c09-005", "春天过去了，秋天又来了。"], ["c09-006", "他走了很久很久，整整走了好几年。"]]}, {"t": "img", "src": "images/28.webp", "vid": "images/28.mp4", "cap": "她在沙漠里，傍晚望着远方唱歌", "n": 28}, {"t": "p", "s": [["c09-007", "在遥远的沙漠里，莴苣姑娘也一直过着孤单的日子。"], ["c09-008", "她住在一间小小的草屋里，每天照料着几株小小的植物。"], ["c09-009", "到了傍晚，她就望着远方，唱起从前在塔里唱过的歌。"]]}]}, {"title": "第十章　熟悉的歌声", "head": "c10-h", "audio": "audio/ch10.m4a", "duration": 64.576, "times": {"c10-h": [0.0, 2.149], "c10-001": [3.149, 6.534], "c10-002": [6.884, 11.983], "c10-003": [12.833, 13.351], "c10-004": [13.701, 15.035], "c10-005": [15.885, 19.212], "c10-006": [19.562, 26.252], "c10-007": [26.602, 29.171], "c10-008": [30.021, 30.796], "c10-009": [31.146, 36.236], "c10-010": [37.086, 40.38], "c10-011": [40.73, 49.32], "c10-012": [53.756, 58.525], "c10-013": [58.875, 63.076]}, "blocks": [{"t": "img", "src": "images/29.webp", "vid": "images/29.mp4", "cap": "他听见了熟悉的歌声", "n": 29}, {"t": "p", "s": [["c10-001", "有一天，王子终于走到了那片沙漠的边上。"], ["c10-002", "忽然，他听见了一个声音，那是一首他再熟悉不过的歌。"]]}, {"t": "p", "s": [["c10-003", "“是她！"], ["c10-004", "是莴苣姑娘的歌声！”"]]}, {"t": "p", "s": [["c10-005", "王子顺着歌声，一步一步地走过去。"], ["c10-006", "莴苣姑娘抬起头，看见了一个衣服破破烂烂、眼睛看不见的人，正朝她走过来。"], ["c10-007", "她仔细一看，马上认出了他。"]]}, {"t": "img", "src": "images/30.webp", "vid": "images/30.mp4", "cap": "她的两滴眼泪落进了王子的眼睛", "n": 30}, {"t": "p", "s": [["c10-008", "“是你！”"], ["c10-009", "莴苣姑娘跑过去，紧紧地抱住了王子，伤心地哭了起来。"]]}, {"t": "p", "s": [["c10-010", "她的两滴眼泪，落进了王子的眼睛里。"], ["c10-011", "就在这时，奇迹发生了：王子的眼睛又变得明亮起来，他又能看见东西了，和从前一模一样！"]]}, {"t": "p", "s": [["c10-012", "王子看见了莴苣姑娘，她还是那么美丽，那么温柔。"], ["c10-013", "两个人高兴得又哭又笑，紧紧地握着彼此的手。"]]}]}, {"title": "第十一章　回到王国", "head": "c11-h", "audio": "audio/ch11.m4a", "duration": 54.635, "times": {"c11-h": [0.0, 2.394], "c11-001": [3.394, 6.672], "c11-002": [7.022, 13.767], "c11-003": [19.855, 23.383], "c11-004": [23.733, 28.629], "c11-005": [29.479, 33.468], "c11-006": [33.818, 37.23], "c11-007": [37.58, 39.489], "c11-008": [40.339, 44.617], "c11-009": [44.967, 51.182], "c11-010": [52.032, 53.135]}, "blocks": [{"t": "img", "src": "images/31.webp", "vid": "images/31.mp4", "cap": "全国的人都出来欢迎他们", "n": 31}, {"t": "p", "s": [["c11-001", "王子带着莴苣姑娘，回到了自己的王国。"], ["c11-002", "全国的人都出来欢迎他们，城里的钟声响个不停，到处都是鲜花和欢呼声。"]]}, {"t": "img", "src": "images/32.webp", "vid": "images/32.mp4", "cap": "盛大的婚礼", "n": 32}, {"t": "p", "s": [["c11-003", "不久，王子和莴苣姑娘举行了盛大的婚礼。"], ["c11-004", "莴苣姑娘的头发又慢慢长长了，在阳光下闪着金光。"]]}, {"t": "img", "src": "images/33.webp", "vid": "images/33.mp4", "cap": "一家人终于团聚了", "n": 33}, {"t": "p", "s": [["c11-005", "后来，莴苣姑娘还找到了自己的亲生爸爸和妈妈。"], ["c11-006", "原来，这么多年来，他们一直在想念她。"], ["c11-007", "一家人终于团聚了。"]]}, {"t": "img", "src": "images/34.webp", "vid": "images/34.mp4", "cap": "她的歌声飘得很远很远", "n": 34}, {"t": "p", "s": [["c11-008", "从那以后，他们一起幸福快乐地生活了很久很久。"], ["c11-009", "莴苣姑娘还常常唱歌，她的歌声飘在王宫的花园里，飘得很远很远。"]]}, {"t": "p", "s": [["c11-010", "（完）"]]}, {"t": "note", "text": "读完以后，可以和孩子聊一聊：王子看不见了，为什么还一直走下去？莴苣姑娘一个人在塔里和沙漠里，是怎样让自己不那么孤单的？"}]}], "music": 3, "images": [{"from": "c01-h", "src": "images/01.webp", "vid": "images/01.mp4", "cap": "小屋的窗外，是女巫的大花园", "n": 1}, {"from": "c01-007", "src": "images/02.webp", "vid": "images/02.mp4", "cap": "菜地里又嫩又绿的莴苣", "n": 2}, {"from": "c01-009", "src": "images/03.webp", "vid": "images/03.mp4", "cap": "她想吃莴苣，一天比一天瘦了", "n": 3}, {"from": "c02-h", "src": "images/04.webp", "vid": "images/04.mp4", "cap": "丈夫悄悄翻过高高的围墙", "n": 4}, {"from": "c02-005", "src": "images/05.webp", "vid": "images/05.mp4", "cap": "妻子吃着香香的莴苣沙拉", "n": 5}, {"from": "c02-008", "src": "images/06.webp", "vid": "images/06.mp4", "cap": "女巫戈特尔正站在他面前", "n": 6}, {"from": "c02-016", "src": "images/07.webp", "vid": "images/07.mp4", "cap": "女巫说：孩子要交给我", "n": 7}, {"from": "c03-h", "src": "images/08.webp", "vid": "images/08.mp4", "cap": "女巫给小女孩取名叫莴苣", "n": 8}, {"from": "c03-004", "src": "images/09.webp", "vid": "images/09.mp4", "cap": "莴苣姑娘一天天长大了", "n": 9}, {"from": "c03-007", "src": "images/10.webp", "vid": "images/10.mp4", "cap": "森林深处，有一座高高的石头塔", "n": 10}, {"from": "c03-011", "src": "images/11.webp", "vid": "images/11.mp4", "cap": "莴苣，莴苣，把你的头发垂下来", "n": 11}, {"from": "c04-h", "src": "images/12.webp", "vid": "images/12.mp4", "cap": "她在塔顶对着窗外唱歌", "n": 12}, {"from": "c04-006", "src": "images/13.webp", "vid": "images/13.mp4", "cap": "王子停下马，静静地听着", "n": 13}, {"from": "c04-009", "src": "images/14.webp", "vid": "images/14.mp4", "cap": "他绕着塔找门，怎么也找不到", "n": 14}, {"from": "c05-h", "src": "images/15.webp", "vid": "images/15.mp4", "cap": "王子躲在大树后面", "n": 15}, {"from": "c05-007", "src": "images/16.webp", "vid": "images/16.mp4", "cap": "王子顺着金色的头发爬上了塔", "n": 16}, {"from": "c06-h", "src": "images/17.webp", "vid": "images/17.mp4", "cap": "她从来没有见过陌生人", "n": 17}, {"from": "c06-007", "src": "images/18.webp", "vid": "images/18.mp4", "cap": "王子讲着森林外面的世界", "n": 18}, {"from": "c06-009", "src": "images/19.webp", "vid": "images/19.mp4", "cap": "她把手放在了王子的手里", "n": 19}, {"from": "c07-h", "src": "images/20.webp", "vid": "images/20.mp4", "cap": "她悄悄地用丝线编梯子", "n": 20}, {"from": "c07-004", "src": "images/21.webp", "vid": "images/21.mp4", "cap": "她不小心说漏了嘴", "n": 21}, {"from": "c07-011", "src": "images/22.webp", "vid": "images/22.mp4", "cap": "女巫剪掉了她的长辫子", "n": 22}, {"from": "c07-014", "src": "images/23.webp", "vid": "images/23.mp4", "cap": "她被带到了荒凉的沙漠", "n": 23}, {"from": "c08-h", "src": "images/24.webp", "vid": "images/24.mp4", "cap": "女巫把辫子绑在窗钩上等着", "n": 24}, {"from": "c08-007", "src": "images/25.webp", "vid": "images/25.mp4", "cap": "窗口等着他的，是女巫的眼睛", "n": 25}, {"from": "c08-013", "src": "images/26.webp", "vid": "images/26.mp4", "cap": "他落进了荆棘丛里", "n": 26}, {"from": "c09-h", "src": "images/27.webp", "vid": "images/27.mp4", "cap": "他看不见了，还是一直往前走", "n": 27}, {"from": "c09-007", "src": "images/28.webp", "vid": "images/28.mp4", "cap": "她在沙漠里，傍晚望着远方唱歌", "n": 28}, {"from": "c10-h", "src": "images/29.webp", "vid": "images/29.mp4", "cap": "他听见了熟悉的歌声", "n": 29}, {"from": "c10-008", "src": "images/30.webp", "vid": "images/30.mp4", "cap": "她的两滴眼泪落进了王子的眼睛", "n": 30}, {"from": "c11-h", "src": "images/31.webp", "vid": "images/31.mp4", "cap": "全国的人都出来欢迎他们", "n": 31}, {"from": "c11-003", "src": "images/32.webp", "vid": "images/32.mp4", "cap": "盛大的婚礼", "n": 32}, {"from": "c11-005", "src": "images/33.webp", "vid": "images/33.mp4", "cap": "一家人终于团聚了", "n": 33}, {"from": "c11-008", "src": "images/34.webp", "vid": "images/34.mp4", "cap": "她的歌声飘得很远很远", "n": 34}]};
+const POS_KEY = BOOK.id + '-audiobook-pos';   // 听到哪里：每本书分开记
+// 网上运行时音频、插图都从 Cloudflare 加载（网页仓库里只放 HTML）；本机、局域网、file:// 用相对路径。
+// ?assets=remote / pages / local 强制（pages = 默认的 pages.dev 域名，自定义域名没配好时用）
+const ASSET_HOSTS = { remote: 'https://meler-stories-assets.melerpaine.com/', pages: 'https://meler-stories-assets.pages.dev/' };
+const ASSET_BASE = (() => {
+  const q = new URLSearchParams(location.search).get('assets');
+  const local = location.protocol === 'file:' || /^(localhost|127\.|10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.|\[::1\]$)|\.local$/.test(location.hostname);
+  const host = ASSET_HOSTS[q] || (q !== 'local' && !local ? ASSET_HOSTS.remote : '');
+  return host ? host + BOOK.id + '/' : '';
+})();
+const A = p => p && ASSET_BASE + p;
+BOOK.cover = A(BOOK.cover);
+BOOK.images.forEach(im => { im.src = A(im.src); im.vid = A(im.vid); });
+BOOK.chapters.forEach(ch => { ch.audio = A(ch.audio); ch.blocks.forEach(b => { if (b.t === 'img') { b.src = A(b.src); b.vid = A(b.vid); } }); });
+const PREF = 'story-audiobook-';               // 主题、动图、显示模式：所有书共用
+const NUM = ['零','一','二','三','四','五','六','七','八','九','十','十一','十二','十三','十四','十五'];
+const ICON_PLAY = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>';
+const ICON_PAUSE = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 5h3.5v14H7zm6.5 0H17v14h-3.5z"/></svg>';
+const $ = s => document.querySelector(s);
+const fmt = t => { t = Math.max(0, t | 0); return String(t / 60 | 0).padStart(2, '0') + ':' + String(t % 60).padStart(2, '0'); };
+
+// ---------- 渲染 ----------
+const story = $('#story');
+let anim = true;   // 插图用动图还是静态图
+try { anim = localStorage.getItem(PREF + 'anim') !== 'off'; } catch (e) {}
+const lines = [];          // 全书按顺序：{id, ch, start, end, el, img}
+const imgs = BOOK.images;  // 全书插图（故事顺序）：{from, src, vid, cap, n}，from = 从哪一句开始显示；vid 是动图短片
+// 正文里的动图：进入视野附近才加载、播放，离开就暂停（几十段短片同时播手机吃不消）
+const vio = new IntersectionObserver(es => es.forEach(e => {
+  const v = e.target;
+  if (e.isIntersecting && anim) { if (!v.src) v.src = v.dataset.src; v.play().catch(() => {}); }
+  else v.pause();
+}), { rootMargin: '300px 0px' });
+const byId = {};
+document.title = BOOK.title + ' · 有声绘本';
+$('#bookTitle').textContent = BOOK.title;
+$('#kicker').textContent = BOOK.kicker + ' · 有声绘本';
+$('#intro').textContent = BOOK.intro;
+$('#coverImg').src = BOOK.cover;
+const total = BOOK.chapters.reduce((a, c) => a + c.duration, 0);
+const nImg = BOOK.chapters.reduce((a, c) => a + c.blocks.filter(b => b.t === 'img').length, 0);
+const nSong = BOOK.chapters.reduce((a, c) => a + c.blocks.filter(b => b.t === 'song').length, 0);
+$('#meta').textContent = `${BOOK.chapters.length} 章 · ${nImg} 幅插画${nSong ? ` · ${nSong} 首插曲` : ''}${BOOK.music ? ` · ${BOOK.music} 首配乐` : ''} · 全长约 ${Math.round(total / 60)} 分钟 · 朗读：${BOOK.voice}`;
+
+BOOK.chapters.forEach((ch, ci) => {
+  const sec = document.createElement('section');
+  sec.className = 'chapter'; sec.id = 'ch' + (ci + 1);
+  const [no, ...rest] = ch.title.split('　');
+  const h = document.createElement('h2');
+  h.innerHTML = `<small>${no}</small>${rest.join(' ')}`;
+  h.dataset.id = ch.head;
+  sec.appendChild(h);
+  const add = (id, el) => { const [s, e] = ch.times[id]; const L = { id, ch: ci, start: s, end: e, el }; lines.push(L); byId[id] = L; };
+  add(ch.head, h);
+  for (const b of ch.blocks) {
+    if (b.t === 'p') {
+      const p = document.createElement('p');
+      for (const [id, text] of b.s) {
+        const sp = document.createElement('span');
+        sp.className = 's'; sp.dataset.id = id; sp.textContent = text;
+        p.appendChild(sp); add(id, sp);
+      }
+      sec.appendChild(p);
+    } else if (b.t === 'song') {
+      // 插曲：歌名（前奏时高亮）+ 一行一句歌词，跟着演唱逐行高亮
+      const d = document.createElement('div'); d.className = 'song';
+      const h3 = document.createElement('h3'); h3.dataset.id = b.head; h3.textContent = b.title;
+      d.appendChild(h3); add(b.head, h3);
+      for (const [id, text] of b.lines) {
+        const sp = document.createElement('span');
+        sp.className = 's'; sp.dataset.id = id; sp.textContent = text;
+        d.appendChild(sp); add(id, sp);
+      }
+      sec.appendChild(d);
+    } else if (b.t === 'img') {
+      const f = document.createElement('figure');
+      f.innerHTML = `<div class="pic"><img loading="lazy" src="${b.src}" alt="${b.cap}"></div><figcaption><b>插图 ${b.n}</b>${b.cap}</figcaption>`;
+      if (b.vid) {
+        const v = document.createElement('video');
+        v.muted = v.loop = v.playsInline = true; v.preload = 'none'; v.dataset.src = b.vid;
+        v.setAttribute('muted', ''); v.setAttribute('playsinline', '');   // iOS 自动播放认属性
+        v.onplaying = () => v.classList.toggle('on', anim);
+        f.firstChild.appendChild(v); vio.observe(v);
+      }
+      sec.appendChild(f);
+    } else {
+      const d = document.createElement('div'); d.className = 'note'; d.textContent = b.text; sec.appendChild(d);
+    }
+  }
+  story.appendChild(sec);
+  const li = document.createElement('li');
+  li.innerHTML = `<button data-ch="${ci}"><span>${ch.title.replace('　', ' ')}</span><span class="dur">${fmt(ch.duration)}</span></button>`;
+  $('#toc').appendChild(li);
+});
+// 每幅插图从它的 from 那句开始显示，一直到下一幅开始
+imgs.forEach(im => { im.ch = byId[im.from].ch; im.at = lines.indexOf(byId[im.from]); });
+lines.forEach((L, k) => {
+  let i = 0;
+  while (i + 1 < imgs.length && imgs[i + 1].at <= k) i++;
+  L.img = i;
+});
+const endMark = document.createElement('div'); endMark.className = 'end-mark'; endMark.textContent = '— 全书完 —';
+story.appendChild(endMark);
+
+// ---------- 播放 ----------
+const audio = new Audio();
+audio.preload = 'auto';
+let cur = -1, active = null, playing = false;
+let follow = true, userScrollAt = 0, speedIdx = 1;
+const SPEEDS = [0.8, 1, 1.2, 1.5];
+
+function loadChapter(ci) {
+  if (ci === cur) return Promise.resolve();
+  cur = ci;
+  audio.src = BOOK.chapters[ci].audio;
+  audio.playbackRate = SPEEDS[speedIdx];
+  document.querySelectorAll('.toc button').forEach((b, i) => b.classList.toggle('now', i === ci));
+  $('#seek').max = BOOK.chapters[ci].duration;
+  updateMedia();
+  return new Promise(res => audio.addEventListener('loadedmetadata', res, { once: true }));
+}
+
+async function playFrom(ci, t, autoplay = true) {
+  await loadChapter(ci);
+  audio.currentTime = t;
+  sync(true);
+  if (autoplay) { try { await audio.play(); } catch (e) { toast('点击播放按钮开始朗读'); } }
+}
+const playLine = (L, autoplay = true) => playFrom(L.ch, L.start + 0.001, autoplay);
+
+function lineAt(ci, t) {
+  // 找本章里开始时间 ≤ t 的最后一句
+  let best = null;
+  for (const L of lines) {
+    if (L.ch !== ci) { if (best) break; continue; }
+    if (L.start <= t + 0.03) best = L; else break;
+  }
+  return best;
+}
+
+function setActive(L, force) {
+  if (L === active && !force) return;
+  if (active) active.el.classList.remove('on');
+  active = L;
+  if (!L) return;
+  L.el.classList.add('on');
+  const idx = lines.indexOf(L);
+  lines.forEach((x, i) => x.el.classList.toggle('past', i < idx));
+  const ch = BOOK.chapters[L.ch];
+  $('#nowTitle').textContent = ch.title.replace('　', ' ');
+  if (mode !== 'read') showStage(L.img);   // 阅读模式不用舞台，免得在后台加载动图
+  setSubtitle(L);
+  if (follow && mode !== 'picture' && (force || Date.now() - userScrollAt > 5000)) {
+    const r = L.el.getBoundingClientRect();
+    const vh = window.innerHeight;
+    if (r.top < vh * 0.18 || r.bottom > vh * 0.62) {
+      programmatic = Date.now();
+      window.scrollBy({ top: r.top - vh * 0.32, behavior: 'smooth' });
+    }
+  }
+}
+
+function sync(force) {
+  if (cur < 0) return;
+  const t = audio.currentTime;
+  setActive(lineAt(cur, t), force);
+  if (!seeking) $('#seek').value = t;
+  $('#nowTime').textContent = `${fmt(t)} / ${fmt(BOOK.chapters[cur].duration)}`;
+}
+
+let raf = 0;
+function loop() { sync(false); raf = requestAnimationFrame(loop); }
+audio.addEventListener('play', () => { playing = true; document.body.classList.add('playing'); story.classList.add('reading'); renderPlay(); cancelAnimationFrame(raf); loop(); });
+audio.addEventListener('pause', () => { playing = false; document.body.classList.remove('playing'); renderPlay(); cancelAnimationFrame(raf); sync(false); savePos(); });
+audio.addEventListener('ended', () => {
+  if (cur < BOOK.chapters.length - 1) playFrom(cur + 1, 0);
+  else { toast('故事讲完啦，晚安 🌙'); setActive(null); localStorage.removeItem(POS_KEY); }
+});
+
+function renderPlay() {
+  $('#playBtn').innerHTML = playing ? ICON_PAUSE : ICON_PLAY;
+  $('#playBtn').setAttribute('aria-label', playing ? '暂停' : '播放');
+}
+renderPlay();
+
+function toggle() {
+  if (cur < 0) { const p = readPos(); return p ? playFrom(p.ch, p.t) : playFrom(0, 0); }
+  playing ? audio.pause() : audio.play();
+}
+function step(d) {
+  const i = active ? lines.indexOf(active) : -1;
+  // 上一句：如果当前句已读了 1.5 秒以上，先回到本句开头
+  if (d < 0 && active && audio.currentTime - active.start > 1.5) return playLine(active, playing || cur < 0);
+  const L = lines[Math.min(lines.length - 1, Math.max(0, i + d))];
+  if (L) playLine(L, true);
+}
+function chapterJump(d) {
+  const ci = Math.min(BOOK.chapters.length - 1, Math.max(0, (cur < 0 ? 0 : cur) + d));
+  playFrom(ci, 0);
+}
+
+// ---------- 交互 ----------
+$('#playBtn').onclick = toggle;
+$('#prevS').onclick = () => step(-1);
+$('#nextS').onclick = () => step(1);
+$('#prevCh').onclick = () => chapterJump(-1);
+$('#nextCh').onclick = () => chapterJump(1);
+$('#startBtn').onclick = () => playFrom(0, 0);
+$('#tocBtn').onclick = () => {
+  if (mode === 'picture') setMode('read', true);   // 纯图模式没有目录，先回到阅读模式
+  $('.toc').scrollIntoView({ behavior: 'smooth' });
+};
+story.addEventListener('click', e => {
+  const el = e.target.closest('[data-id]');
+  if (el) { playLine(byId[el.dataset.id], true); userScrollAt = 0; return; }
+  const pic = e.target.closest('figure .pic'), img = pic && pic.querySelector('img');
+  if (img) { const lb = $('#lightbox'); lb.querySelector('img').src = img.src; lb.querySelector('p').textContent = img.alt; lb.classList.add('open'); }
+});
+$('#lightbox').onclick = () => $('#lightbox').classList.remove('open');
+$('#toc').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  const ci = +b.dataset.ch;
+  playFrom(ci, 0);
+  document.getElementById('ch' + (ci + 1)).scrollIntoView({ behavior: 'smooth' });
+});
+$('#speedBtn').onclick = () => {
+  speedIdx = (speedIdx + 1) % SPEEDS.length;
+  audio.playbackRate = SPEEDS[speedIdx];
+  $('#speedBtn').textContent = SPEEDS[speedIdx].toFixed(1) + '×';
+};
+$('#followBtn').onclick = () => {
+  follow = !follow;
+  $('#followBtn').setAttribute('aria-pressed', follow);
+  toast(follow ? '跟读：自动翻到正在读的地方' : '跟读已关闭，可以自由翻看');
+  if (follow && active) setActive(active, true);
+};
+// ---------- 显示模式：阅读 / 左图右文（宽屏才有）/ 纯图 ----------
+const MODES = { read: '阅读', split: '左图右文', picture: '纯图' };
+const wide = matchMedia('(min-width: 900px)');
+let mode = 'read', stageIdx = -1, stageLayer = 0;
+$('#stageVid').onplaying = () => $('#stageVid').classList.add('show');
+function showStage(i, force) {
+  if (i === stageIdx && !force) return;
+  stageIdx = i;
+  const im = imgs[i];
+  const layers = document.querySelectorAll('#stage img');
+  const next = layers[stageLayer ^= 1], prev = layers[stageLayer ^ 1];
+  next.onload = () => { next.classList.add('show'); prev.classList.remove('show'); };
+  next.src = im.src;
+  next.alt = im.cap;
+  // 动图短片盖在静态图上，开始播放再淡入；阅读模式看不见舞台，不播
+  const v = $('#stageVid');
+  v.classList.remove('show');
+  if (anim && im.vid && mode !== 'read') { v.src = im.vid; v.play().catch(() => {}); }
+  else if (v.getAttribute('src')) { v.pause(); v.removeAttribute('src'); v.load(); }
+  $('#stageBg').style.backgroundImage = `url("${im.src}")`;
+  $('#stageCap').textContent = `插图 ${im.n} · ${im.cap}`;
+  $('#stageTop').textContent = BOOK.chapters[(active || {}).ch ?? im.ch].title.replace('　', ' ');
+}
+// 字幕换句时先淡出再换字，免得两句文字跳动
+let subT = 0;
+function setSubtitle(L) {
+  const sub = $('#stageSub');
+  const text = !L ? '' : L.el.tagName === 'H2' ? BOOK.chapters[L.ch].title.replace('　', ' ')
+    : L.el.tagName === 'H3' ? '♪ ' + L.el.textContent : L.el.closest('.song') ? '♪ ' + L.el.textContent + ' ♪' : L.el.textContent;
+  if (sub.dataset.text === text) return;
+  sub.dataset.text = text;
+  sub.classList.add('fade');
+  clearTimeout(subT);
+  subT = setTimeout(() => { sub.textContent = text; sub.classList.remove('fade'); }, 180);
+}
+function setMode(m, quiet) {
+  if (m === 'split' && !wide.matches) m = 'read';
+  mode = m;
+  document.body.dataset.mode = m;
+  $('#modeBtn').textContent = MODES[m];
+  try { localStorage.setItem(PREF + 'mode', m); } catch (e) {}
+  showStage(active ? active.img : Math.max(0, stageIdx), true);
+  if (m !== 'picture' && active) setTimeout(() => setActive(active, true), 30);
+  if (!quiet) toast('显示模式：' + MODES[m] + (m === 'picture' ? '（点画面播放 / 暂停）' : ''));
+}
+$('#modeBtn').onclick = () => {
+  const order = wide.matches ? ['read', 'split', 'picture'] : ['read', 'picture'];
+  setMode(order[(order.indexOf(mode) + 1) % order.length]);
+};
+wide.addEventListener('change', () => { if (mode === 'split' && !wide.matches) setMode('read', true); });
+$('#stage').onclick = () => { if (mode === 'picture') toggle(); };
+$('#stagePlay').onclick = e => { e.stopPropagation(); toggle(); };
+// 舞台的底边贴着播放条
+new ResizeObserver(() => document.documentElement.style.setProperty('--ph', $('#player').offsetHeight + 'px')).observe($('#player'));
+try { setMode(localStorage.getItem(PREF + 'mode') || 'read', true); } catch (e) { setMode('read', true); }
+
+function renderAnim() {
+  $('#animBtn').setAttribute('aria-pressed', anim);
+  document.querySelectorAll('figure video').forEach(v => {
+    if (anim) { vio.unobserve(v); vio.observe(v); }   // 重新观察会立即回调一次，看得见的接着播
+    else { v.pause(); v.classList.remove('on'); }
+  });
+  if (stageIdx >= 0) showStage(stageIdx, true);
+}
+$('#animBtn').onclick = () => {
+  anim = !anim;
+  try { localStorage.setItem(PREF + 'anim', anim ? 'on' : 'off'); } catch (e) {}
+  renderAnim();
+  toast(anim ? '插图：动图' : '插图：静态图');
+};
+renderAnim();
+$('#themeBtn').onclick = () => {
+  const root = document.documentElement;
+  const dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  root.dataset.theme = dark ? 'light' : 'dark';
+  try { localStorage.setItem(PREF + 'theme', root.dataset.theme); } catch (e) {}
+};
+try { const th = localStorage.getItem(PREF + 'theme'); if (th) document.documentElement.dataset.theme = th; } catch (e) {}
+
+let seeking = false;
+$('#seek').addEventListener('input', () => { seeking = true; if (cur < 0) return; audio.currentTime = +$('#seek').value; sync(true); });
+$('#seek').addEventListener('change', () => { seeking = false; });
+if (cur < 0) $('#seek').addEventListener('pointerdown', () => { if (cur < 0) loadChapter(0); }, { once: true });
+
+// 用户自己滚动页面时，暂停自动跟读 5 秒
+let programmatic = 0;
+['wheel', 'touchmove'].forEach(ev => addEventListener(ev, () => { userScrollAt = Date.now(); }, { passive: true }));
+addEventListener('keydown', e => {
+  if (e.target.matches('input, textarea')) return;
+  if (e.code === 'Space') { e.preventDefault(); toggle(); }
+  else if (e.key === 'ArrowLeft') step(-1);
+  else if (e.key === 'ArrowRight') step(1);
+  else if (e.key === 'Escape') $('#lightbox').classList.remove('open');
+});
+
+// ---------- 记住上次听到哪里 ----------
+function savePos() { if (cur < 0) return; try { localStorage.setItem(POS_KEY, JSON.stringify({ ch: cur, t: audio.currentTime, id: active && active.id })); } catch (e) {} }
+function readPos() { try { const p = JSON.parse(localStorage.getItem(POS_KEY)); return p && p.ch >= 0 && p.ch < BOOK.chapters.length ? p : null; } catch (e) { return null; } }
+setInterval(() => { if (playing) savePos(); }, 3000);
+const last = readPos();
+if (last && (last.ch > 0 || last.t > 5)) {
+  const rb = $('#resumeBtn');
+  rb.hidden = false;
+  rb.textContent = `继续听 · ${BOOK.chapters[last.ch].title.split('　')[0]} ${fmt(last.t)}`;
+  rb.onclick = () => {
+    const L = last.id && byId[last.id];
+    L ? playLine(L) : playFrom(last.ch, last.t);
+    if (L) setTimeout(() => setActive(L, true), 50);
+  };
+}
+$('#nowTitle').textContent = '点击任意一句，就从那里开始听';
+
+// ---------- 锁屏 / 耳机控制 ----------
+function updateMedia() {
+  if (!('mediaSession' in navigator) || cur < 0) return;
+  navigator.mediaSession.metadata = new MediaMetadata({
+    title: BOOK.chapters[cur].title.replace('　', ' '), artist: BOOK.voice, album: BOOK.title,
+    artwork: [{ src: BOOK.cover, sizes: '1152x768', type: 'image/webp' }]
+  });
+  navigator.mediaSession.setActionHandler('previoustrack', () => chapterJump(-1));
+  navigator.mediaSession.setActionHandler('nexttrack', () => chapterJump(1));
+}
+
+let toastT = 0;
+function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2200); }
+</script>
+</body>
+</html>

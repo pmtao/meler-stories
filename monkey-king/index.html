@@ -1,0 +1,652 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>海的女儿 · 有声绘本</title>
+<style>
+:root {
+  --paper: #f8f3e8;
+  --paper-2: #f1e9d8;
+  --ink: #2c2a33;
+  --ink-soft: #6b6672;
+  --sea: #1d6c88;
+  --sea-deep: #123f55;
+  --line: #e2d7c1;
+  --mark: #ffe39a;
+  --mark-ink: #2c2a33;
+  --done: #8d8792;
+  --bar: rgba(255, 252, 245, .94);
+  --shadow: 0 8px 30px rgba(30, 50, 70, .14);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0f1a23; --paper-2: #15232f; --ink: #e9e4d8; --ink-soft: #a29fa8;
+    --sea: #6cc3dd; --sea-deep: #9fdcef; --line: #263744; --mark: rgba(255, 210, 110, .26);
+    --mark-ink: #fff6dc; --done: #8b8a90; --bar: rgba(17, 29, 39, .94);
+    --shadow: 0 8px 30px rgba(0, 0, 0, .45); color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0f1a23; --paper-2: #15232f; --ink: #e9e4d8; --ink-soft: #a29fa8;
+  --sea: #6cc3dd; --sea-deep: #9fdcef; --line: #263744; --mark: rgba(255, 210, 110, .26);
+  --mark-ink: #fff6dc; --done: #8b8a90; --bar: rgba(17, 29, 39, .94);
+  --shadow: 0 8px 30px rgba(0, 0, 0, .45); color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-padding-top: 30vh; }
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font-family: -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+button { font: inherit; color: inherit; }
+
+/* 封面 */
+.cover { position: relative; min-height: 92vh; display: flex; align-items: flex-end; overflow: hidden; color: #fff; }
+.cover img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.cover::after { content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(8, 25, 40, 0) 30%, rgba(8, 25, 40, .55) 62%, rgba(8, 25, 40, .9)); }
+.cover-in { position: relative; z-index: 1; width: 100%; max-width: 760px; margin: 0 auto; padding: 0 20px 56px; }
+.kicker { letter-spacing: .3em; font-size: 13px; opacity: .85; }
+.home { position: absolute; top: 18px; left: 20px; z-index: 2; color: #fff; text-decoration: none; font-size: 14px;
+  padding: 7px 14px; border-radius: 999px; background: rgba(8, 25, 40, .35); backdrop-filter: blur(6px); }
+.home:hover { background: rgba(8, 25, 40, .55); }
+.cover h1 { font-family: "Kaiti SC", "STKaiti", "KaiTi", serif; font-size: clamp(48px, 11vw, 84px);
+  margin: 10px 0 6px; letter-spacing: .12em; font-weight: 700; text-shadow: 0 4px 24px rgba(0, 0, 0, .35); }
+.cover p { margin: 0 0 22px; max-width: 30em; line-height: 1.8; opacity: .92; font-size: 15px; }
+.cover .meta { font-size: 13px; opacity: .78; margin-bottom: 24px; }
+.cta { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn { border: 0; border-radius: 999px; padding: 13px 26px; font-size: 16px; cursor: pointer; font-weight: 600;
+  display: inline-flex; align-items: center; gap: 8px; }
+.btn-main { background: #fff; color: #123f55; }
+.btn-ghost { background: rgba(255, 255, 255, .16); color: #fff; backdrop-filter: blur(6px);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .4); }
+.btn:hover { filter: brightness(1.05); }
+.btn[hidden] { display: none; }
+.btn svg { width: 18px; height: 18px; }
+
+/* 目录 */
+.toc { max-width: 760px; margin: 0 auto; padding: 40px 20px 8px; }
+.toc-home { float: right; letter-spacing: .05em; font-weight: 500; color: var(--sea); text-decoration: none; }
+.toc h2 { font-size: 15px; letter-spacing: .2em; color: var(--ink-soft); font-weight: 600; margin: 0 0 14px; }
+.toc ol { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 8px; }
+.toc li button { width: 100%; text-align: left; background: var(--paper-2); border: 0; border-radius: 12px;
+  padding: 11px 14px; cursor: pointer; display: flex; justify-content: space-between; gap: 10px; font-size: 15px; }
+.toc li button:hover { box-shadow: inset 0 0 0 1px var(--sea); }
+.toc li button.now { box-shadow: inset 0 0 0 2px var(--sea); }
+.toc .dur { color: var(--ink-soft); font-size: 13px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* 正文 */
+main { max-width: 760px; margin: 0 auto; padding: 8px 20px 160px; }
+.chapter { padding-top: 48px; }
+.chapter h2 { font-family: "Kaiti SC", "STKaiti", "KaiTi", serif; font-size: 30px; color: var(--sea-deep);
+  margin: 0 0 22px; padding: 4px 10px; margin-left: -10px; border-radius: 10px; cursor: pointer;
+  transition: background .3s; letter-spacing: .06em; }
+.chapter h2 small { display: block; font-family: -apple-system, "PingFang SC", sans-serif; font-size: 13px;
+  color: var(--ink-soft); letter-spacing: .2em; font-weight: 500; margin-bottom: 4px; }
+.story p { font-family: "Kaiti SC", "STKaiti", "KaiTi", "Songti SC", serif; font-size: 21px; line-height: 2.05;
+  margin: 0 0 1.1em; text-align: justify; text-indent: 2em; }
+.s { cursor: pointer; border-radius: 6px; padding: 2px 0; transition: background .35s, color .35s, box-shadow .35s;
+  -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.s:hover { background: color-mix(in srgb, var(--mark) 45%, transparent); }
+.s.on, h2.on { background: var(--mark); color: var(--mark-ink); box-shadow: 0 0 0 3px var(--mark); }
+.reading .s.past { color: var(--done); }
+figure { margin: 30px -20px 34px; }
+figure .pic { position: relative; }
+figure img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 0;
+  background: var(--paper-2); cursor: zoom-in; box-shadow: var(--shadow); }
+/* 动图是叠在静态图上的循环短片，开始播放才显出来 */
+figure video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 0;
+  cursor: zoom-in; opacity: 0; transition: opacity .4s; }
+figure video.on { opacity: 1; }
+figcaption { text-align: center; color: var(--ink-soft); font-size: 14px; margin-top: 12px; letter-spacing: .05em; padding: 0 20px; }
+figcaption b { color: var(--sea); font-weight: 600; margin-right: 6px; font-variant-numeric: tabular-nums; }
+@media (min-width: 800px) { figure { margin: 36px -40px 40px; } figure img, figure video { border-radius: 18px; } }
+.note { font-size: 15px; line-height: 1.9; color: var(--ink-soft); background: var(--paper-2); border-radius: 14px;
+  padding: 16px 20px; margin-top: 28px; }
+.song { margin: 6px 0 30px; padding: 20px 16px 22px; text-align: center; border-radius: 18px;
+  background: linear-gradient(var(--paper-2), transparent); }
+.song h3 { margin: 0 0 12px; font-family: "Kaiti SC", "STKaiti", "KaiTi", serif; font-size: 22px; font-weight: normal;
+  color: var(--sea-deep); letter-spacing: .1em; display: inline-block; padding: 2px 12px; border-radius: 8px; cursor: pointer;
+  transition: background .35s, box-shadow .35s; }
+.song h3::before { content: '♪ '; color: var(--sea); }
+.song h3.on { background: var(--mark); color: var(--mark-ink); box-shadow: 0 0 0 3px var(--mark); }
+.song .s { display: table; margin: 2px auto; padding: 1px 10px; font-family: "Kaiti SC", "STKaiti", "KaiTi", serif;
+  font-size: 19px; line-height: 1.9; font-style: italic; color: var(--ink-soft); }
+.song .s.on { color: var(--mark-ink); }
+.end-mark { text-align: center; color: var(--ink-soft); margin: 40px 0 0; font-size: 14px; letter-spacing: .3em; }
+
+/* 播放条 */
+.player { position: fixed; left: 0; right: 0; bottom: 0; z-index: 10; background: var(--bar);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-top: 1px solid var(--line);
+  padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); transform: translateY(0); transition: transform .3s; }
+.player-in { max-width: 760px; margin: 0 auto; }
+.now-line { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-size: 13px; color: var(--ink-soft); }
+.now-line .title { color: var(--ink); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: none; max-width: 60%; }
+.now-left { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
+/* 插图名称：纯图 / 左图右文模式下显示在章节标题右边 */
+.now-cap { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.now-cap:empty, body[data-mode="read"] .now-cap { display: none; }
+.time { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.seek { width: 100%; margin: 8px 0 6px; accent-color: var(--sea); height: 18px; cursor: pointer; }
+.ctrls { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+.ctrls .mid { display: flex; align-items: center; gap: 4px; }
+.ib { width: 42px; height: 42px; border-radius: 50%; border: 0; background: transparent; cursor: pointer;
+  display: grid; place-items: center; color: var(--ink); }
+.ib:hover { background: var(--paper-2); }
+.ib svg { width: 22px; height: 22px; }
+.play { width: 54px; height: 54px; background: var(--sea); color: #fff; }
+.play:hover { background: var(--sea); filter: brightness(1.08); }
+.play svg { width: 26px; height: 26px; }
+.pill { border: 0; background: var(--paper-2); border-radius: 999px; padding: 7px 12px; font-size: 13px;
+  cursor: pointer; min-width: 58px; font-variant-numeric: tabular-nums; }
+.pill[aria-pressed="false"] { opacity: .55; }
+.side { display: flex; gap: 6px; align-items: center; }
+
+/* 看大图 */
+.lightbox { position: fixed; inset: 0; z-index: 20; background: rgba(5, 12, 18, .92); display: none;
+  align-items: center; justify-content: center; padding: 16px; cursor: zoom-out; flex-direction: column; gap: 14px; }
+.lightbox.open { display: flex; }
+.lightbox img { max-width: 100%; max-height: 86vh; border-radius: 10px; }
+.lightbox p { color: #e8e4da; margin: 0; font-size: 15px; text-align: center; }
+
+.toast { position: fixed; left: 50%; bottom: 150px; transform: translateX(-50%); background: var(--sea-deep);
+  color: var(--paper); padding: 8px 16px; border-radius: 999px; font-size: 14px; opacity: 0; pointer-events: none;
+  transition: opacity .3s; z-index: 15; }
+.toast.show { opacity: .95; }
+
+/* 插图舞台：纯图模式铺满屏幕，左图右文模式占左半边 */
+.stage { display: none; position: fixed; left: 0; right: 0; top: 0; bottom: var(--ph, 120px); z-index: 5;
+  background: #07121b; overflow: hidden; cursor: pointer; }
+.stage-bg { position: absolute; inset: -40px; background-size: cover; background-position: center;
+  filter: blur(28px) brightness(.55) saturate(1.2); transition: background-image .8s; }
+.stage img, .stage video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0;
+  transition: opacity .9s ease; }
+.stage img.show, .stage video.show { opacity: 1; }
+.stage video { transition-duration: .4s; }
+.stage-top { position: absolute; left: 0; right: 0; top: 0; padding: 14px 18px 30px; color: #fff; display: flex;
+  justify-content: space-between; align-items: baseline; gap: 6px 16px; flex-wrap: wrap;
+  font-size: 14px; letter-spacing: .1em; background: linear-gradient(rgba(5, 15, 25, .6), transparent); pointer-events: none; }
+/* 纯图模式的字幕：当前朗读的句子 */
+.stage-sub { position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%); width: max-content;
+  max-width: min(92%, 960px); padding: 10px 20px; border-radius: 14px; background: rgba(4, 12, 20, .3);
+  color: #fff; text-align: center; pointer-events: none;
+  text-shadow: 0 0 2px rgba(0, 0, 0, .9), 0 1px 3px rgba(0, 0, 0, .8), 0 0 12px rgba(0, 0, 0, .55);
+  font-family: "Kaiti SC", "STKaiti", "KaiTi", serif; font-size: clamp(19px, 2.4vw, 30px); line-height: 1.55;
+  letter-spacing: .03em; transition: opacity .25s; }
+.stage-sub:empty, .stage-sub.fade { opacity: 0; }
+body:not([data-mode="picture"]) .stage-sub { display: none; }
+body[data-mode="picture"] .toast { bottom: auto; top: 64px; }
+@media (max-width: 520px) {
+  .stage-top { flex-direction: column; }
+  .stage-sub { bottom: 16px; padding: 8px 14px; }
+}
+.stage-play { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 84px; height: 84px;
+  border-radius: 50%; border: 0; background: rgba(255, 255, 255, .9); color: #123f55; display: grid; place-items: center;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, .35); cursor: pointer; transition: opacity .3s; }
+.stage-play svg { width: 38px; height: 38px; margin-left: 4px; }
+body.playing .stage-play { opacity: 0; pointer-events: none; }
+
+body[data-mode="picture"] .cover, body[data-mode="picture"] .toc, body[data-mode="picture"] main { display: none; }
+body[data-mode="picture"] .stage { display: block; }
+body[data-mode="picture"] #followBtn { display: none; }
+
+@media (min-width: 900px) {
+  body[data-mode="split"] .stage { display: block; right: 50%; }
+  body[data-mode="split"] .stage img, body[data-mode="split"] .stage video { object-fit: cover; }
+  body[data-mode="split"] .stage-bg, body[data-mode="split"] .stage-play { display: none; }
+  body[data-mode="split"] .cover { display: none; }
+  body[data-mode="split"] .toc, body[data-mode="split"] main { margin-left: 50%; max-width: none; padding-left: 48px; padding-right: 48px; }
+  body[data-mode="split"] main figure { display: none; }
+  body[data-mode="split"] .chapter:first-child { padding-top: 24px; }
+}
+
+/* 横屏手机：播放条收紧，把高度留给插图 */
+@media (max-height: 500px) {
+  .player { padding-top: 4px; padding-bottom: calc(4px + env(safe-area-inset-bottom)); }
+  .now-line { display: none; }
+  .seek { margin: 2px 0; }
+  .play { width: 44px; height: 44px; }
+  .ib { width: 36px; height: 36px; }
+}
+
+@media (max-width: 520px) {
+  .story p { font-size: 19px; line-height: 1.95; }
+  .chapter h2 { font-size: 26px; }
+  .side .pill.opt { display: none; }
+  .pill { padding: 6px 9px; min-width: 0; font-size: 12px; }
+  #prevCh, #nextCh { display: none; }
+  .side { gap: 4px; }
+  .ib { width: 38px; height: 38px; }
+}
+</style>
+</head>
+<body>
+
+<header class="cover" id="top">
+  <img id="coverImg" alt="">
+  <a class="home" href="../index.html">‹ 故事目录</a>
+  <div class="cover-in">
+    <div class="kicker" id="kicker"></div>
+    <h1 id="bookTitle"></h1>
+    <p id="intro"></p>
+    <div class="meta" id="meta"></div>
+    <div class="cta">
+      <button class="btn btn-main" id="startBtn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>从头开始听</button>
+      <button class="btn btn-ghost" id="resumeBtn" hidden></button>
+    </div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="目录">
+  <h2>目　录<a class="toc-home" href="../index.html">更多故事 ›</a></h2>
+  <ol id="toc"></ol>
+</nav>
+
+<main class="story" id="story"></main>
+
+<div class="stage" id="stage" aria-label="插图">
+  <div class="stage-bg" id="stageBg"></div>
+  <img alt=""><img alt=""><video id="stageVid" muted loop playsinline></video>
+  <div class="stage-top"><span id="stageTop"></span></div>
+  <div class="stage-sub" id="stageSub" aria-live="polite"></div>
+  <button class="stage-play" id="stagePlay" aria-label="播放"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg></button>
+</div>
+
+<div class="player" id="player">
+  <div class="player-in">
+    <div class="now-line"><span class="now-left"><span class="title" id="nowTitle"></span><span class="now-cap" id="stageCap"></span></span><span class="time" id="nowTime">00:00 / 00:00</span></div>
+    <input class="seek" id="seek" type="range" min="0" max="100" step="0.1" value="0" aria-label="本章进度">
+    <div class="ctrls">
+      <div class="side">
+        <button class="pill" id="modeBtn" title="切换显示模式：阅读 / 左图右文 / 纯图">阅读</button>
+        <button class="pill" id="speedBtn" title="朗读速度">1.0×</button>
+        <button class="pill opt" id="followBtn" aria-pressed="true" title="朗读时自动翻到正在读的地方">跟读</button>
+      </div>
+      <div class="mid">
+        <button class="ib" id="prevCh" title="上一章"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg></button>
+        <button class="ib" id="prevS" title="上一句（←）"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+        <button class="ib play" id="playBtn" title="播放 / 暂停（空格）"></button>
+        <button class="ib" id="nextS" title="下一句（→）"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+        <button class="ib" id="nextCh" title="下一章"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 6h2v12h-2zM6 18l8.5-6L6 6z"/></svg></button>
+      </div>
+      <div class="side">
+        <button class="pill" id="animBtn" title="插图用动图还是静态图">动图</button>
+        <button class="pill opt" id="themeBtn" title="切换深浅色">主题</button>
+        <button class="pill" id="tocBtn" title="回到目录">目录</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="lightbox" id="lightbox"><img alt=""><p></p></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const BOOK = {"id": "monkey-king", "title": "大闹天宫", "intro": "根据吴承恩《西游记》第一回到第七回浓缩改写，适合 5 到 10 岁的小朋友和爸爸妈妈一起读、一起听。", "kicker": "西游记", "cover": "images/37.webp", "voice": "考拉（本地 Qwen3-TTS 复刻音色）", "chapters": [{"title": "第一章　石头里蹦出的猴子", "head": "c01-h", "audio": "audio/ch01.m4a", "duration": 67.402, "times": {"c01-h": [0.0, 4.056], "c01-001": [5.056, 10.652], "c01-002": [11.002, 17.07], "c01-003": [17.92, 22.019], "c01-004": [22.369, 28.158], "c01-005": [29.008, 33.16], "c01-006": [37.204, 43.131], "c01-007": [43.981, 50.492], "c01-008": [50.842, 58.302], "c01-009": [59.152, 65.902]}, "blocks": [{"t": "img", "src": "images/01.webp", "vid": "images/01.mp4", "cap": "东海边的花果山", "n": 1}, {"t": "p", "s": [["c01-001", "在很远很远的东海边上，有一座美丽的大山，名叫花果山。"], ["c01-002", "山上开满了鲜花，树上结满了果子，一年四季都像春天一样。"]]}, {"t": "img", "src": "images/02.webp", "vid": "images/02.mp4", "cap": "山顶的仙石", "n": 2}, {"t": "p", "s": [["c01-003", "花果山的山顶上，有一块又高又圆的仙石。"], ["c01-004", "它每天晒着太阳，吹着海风，看着月亮，不知道过了多少年。"]]}, {"t": "img", "src": "images/03.webp", "vid": "images/03.mp4", "cap": "仙石裂开了", "n": 3}, {"t": "img", "src": "images/04.webp", "vid": "images/04.mp4", "cap": "石蛋变成了小石猴", "n": 4}, {"t": "p", "s": [["c01-005", "有一天，只听“轰隆”一声巨响，仙石裂开了！"], ["c01-006", "石头里滚出一个圆圆的石蛋，风一吹，石蛋变成了一只小石猴。"]]}, {"t": "img", "src": "images/05.webp", "vid": "images/05.mp4", "cap": "两道金光射到天上", "n": 5}, {"t": "p", "s": [["c01-007", "小石猴睁开眼睛，两道金光一直射到了天上，把天宫里的玉皇大帝都吓了一跳。"], ["c01-008", "玉帝派千里眼、顺风耳去看，他们回来说：“只是一只石头里蹦出来的猴子，不要紧的。”"]]}, {"t": "img", "src": "images/06.webp", "vid": "images/06.mp4", "cap": "和猴子们一起玩耍", "n": 6}, {"t": "p", "s": [["c01-009", "小石猴学会了爬树、学会了摘果子，每天和山里的猴子们一起玩耍，开心极了。"]]}]}, {"title": "第二章　水帘洞里的美猴王", "head": "c02-h", "audio": "audio/ch02.m4a", "duration": 68.98, "times": {"c02-h": [0.0, 2.973], "c02-001": [3.973, 7.355], "c02-002": [7.705, 13.452], "c02-003": [14.302, 23.353], "c02-004": [24.203, 27.85], "c02-005": [28.2, 31.576], "c02-006": [32.426, 36.016], "c02-007": [36.366, 49.351], "c02-008": [50.201, 53.72], "c02-009": [54.07, 59.179], "c02-010": [60.029, 67.48]}, "blocks": [{"t": "img", "src": "images/07.webp", "vid": "images/07.mp4", "cap": "山涧里的大瀑布", "n": 7}, {"t": "p", "s": [["c02-001", "一个炎热的夏天，猴子们到山涧里洗澡。"], ["c02-002", "它们看见一道大瀑布，从山上哗啦啦地冲下来，像一挂白色的珠帘。"]]}, {"t": "p", "s": [["c02-003", "一只老猴子说：“谁要是敢钻进瀑布里面看一看，又能平平安安地出来，我们就拜他做大王！”"]]}, {"t": "img", "src": "images/08.webp", "vid": "images/08.mp4", "cap": "我去，我去！", "n": 8}, {"t": "p", "s": [["c02-004", "猴子们你看看我，我看看你，谁也不敢去。"], ["c02-005", "小石猴跳出来大声说：“我去，我去！”"]]}, {"t": "img", "src": "images/09.webp", "vid": "images/09.mp4", "cap": "纵身一跳穿过瀑布", "n": 9}, {"t": "img", "src": "images/10.webp", "vid": "images/10.mp4", "cap": "水帘洞洞天", "n": 10}, {"t": "p", "s": [["c02-006", "他闭上眼睛，纵身一跳，穿过了瀑布。"], ["c02-007", "睁眼一看，里面没有水，却有一座漂亮的石头房子，有石桌、石凳、石床，还有一块石碑，上面写着：“花果山福地，水帘洞洞天。”"]]}, {"t": "img", "src": "images/11.webp", "vid": "images/11.mp4", "cap": "拜他做美猴王", "n": 11}, {"t": "p", "s": [["c02-008", "石猴跳出来，把猴子们都带进了水帘洞。"], ["c02-009", "大家高高兴兴地拜他做了大王，从此，他就叫“美猴王”。"]]}, {"t": "img", "src": "images/12.webp", "vid": "images/12.mp4", "cap": "快快活活的日子", "n": 12}, {"t": "p", "s": [["c02-010", "美猴王带着猴子猴孙，白天摘果子，晚上睡在水帘洞里，快快活活地过了好几百年。"]]}]}, {"title": "第三章　漂洋过海去拜师", "head": "c03-h", "audio": "audio/ch03.m4a", "duration": 57.268, "times": {"c03-h": [0.0, 2.918], "c03-001": [3.918, 8.466], "c03-002": [9.316, 11.141], "c03-003": [11.491, 18.005], "c03-004": [18.855, 26.059], "c03-005": [26.909, 31.736], "c03-006": [32.586, 37.286], "c03-007": [37.636, 46.514], "c03-008": [47.364, 50.843], "c03-009": [51.193, 55.768]}, "blocks": [{"t": "img", "src": "images/13.webp", "vid": "images/13.mp4", "cap": "美猴王忽然哭了", "n": 13}, {"t": "p", "s": [["c03-001", "有一天，大家正在开宴会，美猴王却忽然哭了起来。"]]}, {"t": "p", "s": [["c03-002", "猴子们问他为什么难过。"], ["c03-003", "美猴王说：“现在我们虽然快活，可是等我们老了，总有一天会死去，再也不能在一起玩了。”"]]}, {"t": "p", "s": [["c03-004", "一只老猴子说：“听说有神仙能长生不老，不过他们住在很远很远的地方。”"]]}, {"t": "p", "s": [["c03-005", "美猴王擦干眼泪说：“我要去找神仙，学长生不老的本领！”"]]}, {"t": "img", "src": "images/14.webp", "vid": "images/14.mp4", "cap": "坐着木筏漂过大海", "n": 14}, {"t": "img", "src": "images/15.webp", "vid": "images/15.mp4", "cap": "高山上的老神仙", "n": 15}, {"t": "p", "s": [["c03-006", "第二天，美猴王坐上一只小木筏，一个人漂过了大海。"], ["c03-007", "他走了很多很多年，翻过了很多座山，终于在一座高山上，找到了一位老神仙，他叫菩提祖师。"]]}, {"t": "img", "src": "images/16.webp", "vid": "images/16.mp4", "cap": "名叫孙悟空", "n": 16}, {"t": "p", "s": [["c03-008", "祖师给他起了一个名字，叫“孙悟空”。"], ["c03-009", "孙悟空高兴极了，从此就在山上认真地学本领。"]]}]}, {"title": "第四章　七十二变和筋斗云", "head": "c04-h", "audio": "audio/ch04.m4a", "duration": 77.769, "times": {"c04-h": [0.0, 3.117], "c04-001": [4.117, 9.353], "c04-002": [10.203, 18.211], "c04-003": [21.055, 28.42], "c04-004": [29.27, 32.62], "c04-005": [32.97, 38.34], "c04-006": [39.19, 44.98], "c04-007": [45.33, 50.28], "c04-008": [53.567, 61.462], "c04-009": [61.812, 68.178], "c04-010": [68.528, 69.839], "c04-011": [70.689, 72.939], "c04-012": [73.289, 76.269]}, "blocks": [{"t": "img", "src": "images/17.webp", "vid": "images/17.mp4", "cap": "扫地挑水砍柴", "n": 17}, {"t": "p", "s": [["c04-001", "孙悟空在山上扫地、挑水、砍柴，一住就是七年。"]]}, {"t": "p", "s": [["c04-002", "有一天，祖师讲完课，在孙悟空头上敲了三下，背着手走进了里屋，把中门关上了。"], ["c04-003", "别人都不明白，只有孙悟空猜到了，祖师是让他半夜三更，从后门进去学本领。"]]}, {"t": "img", "src": "images/18.webp", "vid": "images/18.mp4", "cap": "半夜来到祖师床前", "n": 18}, {"t": "p", "s": [["c04-004", "半夜里，孙悟空悄悄来到祖师床前。"], ["c04-005", "祖师果然教了他长生不老的秘诀，后来又教了他七十二般变化。"]]}, {"t": "img", "src": "images/19.webp", "vid": "images/19.mp4", "cap": "学会了七十二变", "n": 19}, {"t": "img", "src": "images/20.webp", "vid": "images/20.mp4", "cap": "一个跟头十万八千里", "n": 20}, {"t": "p", "s": [["c04-006", "孙悟空学会了变大树、变小鸟、变石头，想变什么就变什么。"], ["c04-007", "他还学会了筋斗云，一个跟头，就能翻出十万八千里。"]]}, {"t": "img", "src": "images/21.webp", "vid": "images/21.mp4", "cap": "变了一棵大松树", "n": 21}, {"t": "p", "s": [["c04-008", "可是有一天，孙悟空在师兄们面前变了一棵大松树，大家都拍手叫好，吵吵嚷嚷的。"], ["c04-009", "祖师生气地说：“学了本领就到处卖弄，会惹出大祸的！"], ["c04-010", "你回家去吧。”"]]}, {"t": "p", "s": [["c04-011", "孙悟空只好跟祖师告别。"], ["c04-012", "他一个筋斗云，就回到了花果山。"]]}]}, {"title": "第五章　龙宫借宝", "head": "c05-h", "audio": "audio/ch05.m4a", "duration": 79.697, "times": {"c05-h": [0.0, 2.184], "c05-001": [3.184, 6.214], "c05-002": [6.564, 11.567], "c05-003": [12.417, 18.142], "c05-004": [18.992, 23.383], "c05-005": [23.733, 33.199], "c05-006": [34.049, 41.079], "c05-007": [41.929, 49.214], "c05-008": [49.564, 52.515], "c05-009": [52.865, 56.493], "c05-010": [58.667, 65.54], "c05-011": [65.89, 70.183], "c05-012": [71.033, 78.197]}, "blocks": [{"t": "img", "src": "images/22.webp", "vid": "images/22.mp4", "cap": "回到花果山练兵", "n": 22}, {"t": "p", "s": [["c05-001", "回到花果山，猴子们高兴极了。"], ["c05-002", "孙悟空教大家练兵习武，可是他自己还缺一件称手的兵器。"]]}, {"t": "p", "s": [["c05-003", "一只老猴子说：“大王，东海龙王的龙宫里，宝贝可多啦！”"]]}, {"t": "img", "src": "images/23.webp", "vid": "images/23.mp4", "cap": "跳进东海去龙宫", "n": 23}, {"t": "img", "src": "images/24.webp", "vid": "images/24.mp4", "cap": "这些兵器都太轻了", "n": 24}, {"t": "p", "s": [["c05-004", "孙悟空念了一个避水咒，跳进大海，来到了东海龙宫。"], ["c05-005", "龙王拿出一把大刀，他嫌太轻；拿出一支九股叉，他也嫌太轻；又拿出一杆方天画戟，他还是嫌太轻。"]]}, {"t": "p", "s": [["c05-006", "龙王的妻子说：“海底有一根定海神针，这几天一直在放光，说不定就是在等他呢。”"]]}, {"t": "img", "src": "images/25.webp", "vid": "images/25.mp4", "cap": "金光闪闪的定海神针", "n": 25}, {"t": "img", "src": "images/26.webp", "vid": "images/26.mp4", "cap": "变细变短的金箍棒", "n": 26}, {"t": "p", "s": [["c05-007", "孙悟空走过去一看，是一根金光闪闪的大铁柱子，比水桶还粗，两头是金箍。"], ["c05-008", "他说：“要是细一点、短一点就好了。”"], ["c05-009", "话刚说完，铁柱真的变细了、变短了。"]]}, {"t": "p", "s": [["c05-010", "原来，这就是如意金箍棒，有一万三千五百斤重，能大能小，听话极了。"], ["c05-011", "小的时候，它能变成一根绣花针，藏在耳朵里。"]]}, {"t": "img", "src": "images/27.webp", "vid": "images/27.mp4", "cap": "威风凛凛回花果山", "n": 27}, {"t": "p", "s": [["c05-012", "孙悟空又向龙王们要了一身金盔金甲，穿戴得威风凛凛，高高兴兴地回了花果山。"]]}]}, {"title": "第六章　大闹地府", "head": "c06-h", "audio": "audio/ch06.m4a", "duration": 52.342, "times": {"c06-h": [0.0, 2.345], "c06-001": [3.345, 6.98], "c06-002": [7.33, 12.557], "c06-003": [13.407, 18.981], "c06-004": [19.331, 22.285], "c06-005": [23.135, 27.184], "c06-006": [27.534, 32.624], "c06-007": [33.474, 39.35], "c06-008": [39.7, 42.623], "c06-009": [43.473, 50.842]}, "blocks": [{"t": "img", "src": "images/28.webp", "vid": "images/28.mp4", "cap": "树下睡着了", "n": 28}, {"t": "img", "src": "images/29.webp", "vid": "images/29.mp4", "cap": "两个鬼差来拉他", "n": 29}, {"t": "p", "s": [["c06-001", "有一天，孙悟空喝了酒，在树下睡着了。"], ["c06-002", "梦里来了两个鬼差，用绳子一套，就把他拉到了阴曹地府。"]]}, {"t": "p", "s": [["c06-003", "孙悟空一下子醒了，大声说：“我已经超出三界，不归你们管了！”"], ["c06-004", "他掏出金箍棒，把鬼差打跑了。"]]}, {"t": "img", "src": "images/30.webp", "vid": "images/30.mp4", "cap": "闯进森罗殿", "n": 30}, {"t": "img", "src": "images/31.webp", "vid": "images/31.mp4", "cap": "勾掉生死簿上的名字", "n": 31}, {"t": "p", "s": [["c06-005", "他闯进森罗殿，让十位阎王把生死簿拿出来。"], ["c06-006", "他找到了自己的名字，拿起笔来，一下把自己的名字勾掉了。"]]}, {"t": "p", "s": [["c06-007", "他还把所有猴子的名字也都勾掉了，说：“这下好了，我们都不会死啦！”"], ["c06-008", "然后，他一路打出了地府。"]]}, {"t": "p", "s": [["c06-009", "东海龙王和地府的阎王，都跑到天宫去告状：“孙悟空太调皮了，请玉帝快管管他吧！”"]]}]}, {"title": "第七章　当上弼马温", "head": "c07-h", "audio": "audio/ch07.m4a", "duration": 53.159, "times": {"c07-h": [0.0, 2.317], "c07-001": [3.317, 5.859], "c07-002": [6.209, 15.307], "c07-003": [16.157, 20.217], "c07-004": [20.567, 23.47], "c07-005": [24.32, 26.932], "c07-006": [27.282, 31.86], "c07-007": [32.71, 36.748], "c07-008": [37.098, 41.243], "c07-009": [42.093, 46.569], "c07-010": [46.919, 51.659]}, "blocks": [{"t": "img", "src": "images/32.webp", "vid": "images/32.mp4", "cap": "太白金星出主意", "n": 32}, {"t": "p", "s": [["c07-001", "玉帝本来想派天兵去捉孙悟空。"], ["c07-002", "太白金星是一位白胡子老神仙，他笑眯眯地说：“不如把他请到天上来，给他一个官做，他就不会再闹了。”"]]}, {"t": "img", "src": "images/33.webp", "vid": "images/33.mp4", "cap": "被请上了天宫", "n": 33}, {"t": "p", "s": [["c07-003", "太白金星来到花果山，把孙悟空请上了天宫。"], ["c07-004", "玉帝让他做了一个官，名叫“弼马温”。"]]}, {"t": "img", "src": "images/34.webp", "vid": "images/34.mp4", "cap": "当弼马温养天马", "n": 34}, {"t": "p", "s": [["c07-005", "孙悟空一点儿也不知道这个官有多大。"], ["c07-006", "他每天认真地照顾天马，天马被他养得又肥又壮。"]]}, {"t": "p", "s": [["c07-007", "过了半个多月，孙悟空问别人：“弼马温是多大的官？”"], ["c07-008", "大家说：“这是最小最小的官，只是个养马的。”"]]}, {"t": "img", "src": "images/35.webp", "vid": "images/35.mp4", "cap": "气得哇哇大叫", "n": 35}, {"t": "img", "src": "images/36.webp", "vid": "images/36.mp4", "cap": "打出南天门", "n": 36}, {"t": "p", "s": [["c07-009", "孙悟空一听，气得哇哇大叫：“玉帝竟然这样小看我！”"], ["c07-010", "他掏出金箍棒，一路打出了南天门，回花果山去了。"]]}]}, {"title": "第八章　齐天大圣", "head": "c08-h", "audio": "audio/ch08.m4a", "duration": 68.802, "times": {"c08-h": [0.0, 2.474], "c08-001": [3.474, 10.444], "c08-002": [10.794, 13.331], "c08-003": [14.181, 19.462], "c08-004": [20.312, 24.768], "c08-005": [28.84, 34.125], "c08-006": [34.975, 36.834], "c08-007": [37.184, 45.923], "c08-008": [46.273, 48.55], "c08-009": [49.4, 57.875], "c08-010": [58.725, 60.205], "c08-011": [60.555, 67.302]}, "blocks": [{"t": "img", "src": "images/37.webp", "vid": "images/37.mp4", "cap": "齐天大圣的大旗", "n": 37}, {"t": "p", "s": [["c08-001", "回到花果山，孙悟空让猴子们做了一面大旗，上面写着四个大字：“齐天大圣”。"], ["c08-002", "意思是，他的本领和天一样大。"]]}, {"t": "img", "src": "images/38.webp", "vid": "images/38.mp4", "cap": "李天王和哪吒来了", "n": 38}, {"t": "p", "s": [["c08-003", "玉帝派了托塔李天王和哪吒三太子，带着天兵天将来捉他。"]]}, {"t": "img", "src": "images/39.webp", "vid": "images/39.mp4", "cap": "三头六臂大战", "n": 39}, {"t": "p", "s": [["c08-004", "哪吒变出三个头、六只手，拿着六件兵器打过来。"], ["c08-005", "孙悟空也变出三个头、六只手，拿着三根金箍棒迎上去。"]]}, {"t": "img", "src": "images/40.webp", "vid": "images/40.mp4", "cap": "毫毛变出的假悟空", "n": 40}, {"t": "p", "s": [["c08-006", "两个人打得天昏地暗。"], ["c08-007", "孙悟空悄悄拔下一根毫毛，变成自己的样子和哪吒打，真身却绕到后面，一棒打在哪吒的胳膊上。"], ["c08-008", "哪吒疼得只好败下阵来。"]]}, {"t": "p", "s": [["c08-009", "太白金星又来劝玉帝：“就封他一个‘齐天大圣’吧，只是个名号，让他安安分分地待在天上就好。”"]]}, {"t": "img", "src": "images/41.webp", "vid": "images/41.mp4", "cap": "当上了齐天大圣", "n": 41}, {"t": "p", "s": [["c08-010", "玉帝只好同意了。"], ["c08-011", "孙悟空又一次来到天宫，当上了齐天大圣，还住进了一座漂亮的大圣府。"]]}]}, {"title": "第九章　看守蟠桃园", "head": "c09-h", "audio": "audio/ch09.m4a", "duration": 49.685, "times": {"c09-h": [0.0, 2.734], "c09-001": [3.734, 9.45], "c09-002": [9.8, 14.247], "c09-003": [15.097, 17.806], "c09-004": [18.156, 28.552], "c09-005": [29.402, 34.406], "c09-006": [35.256, 42.993], "c09-007": [43.343, 48.185]}, "blocks": [{"t": "p", "s": [["c09-001", "齐天大圣没有什么事情做，每天东游西逛，和神仙们交朋友。"], ["c09-002", "玉帝怕他闲着又惹事，就让他去看守蟠桃园。"]]}, {"t": "img", "src": "images/42.webp", "vid": "images/42.mp4", "cap": "三千六百棵蟠桃树", "n": 42}, {"t": "p", "s": [["c09-003", "蟠桃园里有三千六百棵桃树。"], ["c09-004", "有的桃子三千年一熟，吃了能成仙；有的六千年一熟，吃了能飞起来；还有的九千年一熟，吃了能和天地一样长寿。"]]}, {"t": "p", "s": [["c09-005", "孙悟空看着树上又大又红的桃子，口水都快流出来了。"]]}, {"t": "img", "src": "images/43.webp", "vid": "images/43.mp4", "cap": "爬上大树吃桃子", "n": 43}, {"t": "img", "src": "images/44.webp", "vid": "images/44.mp4", "cap": "变成小人儿睡觉", "n": 44}, {"t": "p", "s": [["c09-006", "他把守园的土地公和仙吏们都支开，脱了官服，爬上大树，挑最大最熟的桃子吃了个饱。"], ["c09-007", "吃饱了，他就变成两寸长的小人儿，躺在树叶里睡觉。"]]}]}, {"title": "第十章　搅乱蟠桃会", "head": "c10-h", "audio": "audio/ch10.m4a", "duration": 74.963, "times": {"c10-h": [0.0, 2.501], "c10-001": [3.501, 8.908], "c10-002": [9.258, 15.402], "c10-003": [16.252, 20.651], "c10-004": [21.001, 26.434], "c10-005": [27.284, 29.778], "c10-006": [30.128, 34.467], "c10-007": [37.754, 40.729], "c10-008": [41.079, 47.395], "c10-009": [47.745, 50.682], "c10-010": [51.532, 57.084], "c10-011": [57.434, 62.05], "c10-012": [62.9, 68.055], "c10-013": [68.405, 73.463]}, "blocks": [{"t": "img", "src": "images/45.webp", "vid": "images/45.mp4", "cap": "七仙女来摘桃", "n": 45}, {"t": "p", "s": [["c10-001", "这一天，王母娘娘要开蟠桃会，派七位仙女来园子里摘桃子。"], ["c10-002", "可是大桃子早就被孙悟空吃光了，仙女们只摘到了一些又小又青的桃子。"]]}, {"t": "p", "s": [["c10-003", "孙悟空醒了，问仙女们：“蟠桃会请了哪些客人呀？”"], ["c10-004", "仙女们说：“请了很多很多的神仙，可是没有听说请齐天大圣。”"]]}, {"t": "p", "s": [["c10-005", "孙悟空一听，又生气了。"], ["c10-006", "他用定身法把仙女们定住，一个筋斗来到瑶池。"]]}, {"t": "img", "src": "images/46.webp", "vid": "images/46.mp4", "cap": "瑶池的盛宴", "n": 46}, {"t": "p", "s": [["c10-007", "瑶池里摆满了山珍海味和美酒。"], ["c10-008", "孙悟空拔下一把毫毛，变成许多瞌睡虫，让做饭的仙官们都睡着了。"], ["c10-009", "然后，他一个人大吃大喝起来。"]]}, {"t": "img", "src": "images/47.webp", "vid": "images/47.mp4", "cap": "太上老君的兜率宫", "n": 47}, {"t": "p", "s": [["c10-010", "吃饱喝足以后，他迷迷糊糊地走错了路，来到了太上老君的兜率宫。"], ["c10-011", "老君不在家，炉子旁边放着五个葫芦，装满了金丹。"]]}, {"t": "img", "src": "images/48.webp", "vid": "images/48.mp4", "cap": "像吃炒豆子一样吃金丹", "n": 48}, {"t": "p", "s": [["c10-012", "孙悟空把五葫芦金丹，像吃炒豆子一样，全都吃光了。"], ["c10-013", "等他清醒过来，才知道自己闯了大祸，赶紧逃回了花果山。"]]}]}, {"title": "第十一章　十万天兵和二郎神", "head": "c11-h", "audio": "audio/ch11.m4a", "duration": 78.74, "times": {"c11-h": [0.0, 3.059], "c11-001": [4.059, 11.659], "c11-002": [12.509, 14.273], "c11-003": [14.623, 22.333], "c11-004": [23.183, 27.489], "c11-005": [27.839, 32.566], "c11-006": [33.416, 37.506], "c11-007": [37.856, 45.383], "c11-008": [46.233, 54.582], "c11-009": [54.932, 58.938], "c11-010": [59.288, 60.781], "c11-011": [61.631, 68.612], "c11-012": [68.962, 74.491]}, "blocks": [{"t": "img", "src": "images/49.webp", "vid": "images/49.mp4", "cap": "十万天兵围住花果山", "n": 49}, {"t": "p", "s": [["c11-001", "玉帝气坏了，派四大天王和托塔李天王，带着十万天兵天将，把花果山围得严严实实。"]]}, {"t": "img", "src": "images/50.webp", "vid": "images/50.mp4", "cap": "变出成百上千个小悟空", "n": 50}, {"t": "p", "s": [["c11-002", "孙悟空一点儿也不怕。"], ["c11-003", "他拔下一把毫毛，嚼碎了一吹，变出了成百上千个小孙悟空，打得天兵们东倒西歪。"]]}, {"t": "img", "src": "images/51.webp", "vid": "images/51.mp4", "cap": "二郎神来了", "n": 51}, {"t": "p", "s": [["c11-004", "观音菩萨推荐了一位厉害的神仙：二郎神杨戬。"], ["c11-005", "他额头上长着第三只眼睛，身边还跟着一只哮天犬。"]]}, {"t": "img", "src": "images/52.webp", "vid": "images/52.mp4", "cap": "麻雀和老鹰", "n": 52}, {"t": "p", "s": [["c11-006", "二郎神和孙悟空打了三百多个回合，不分胜负。"], ["c11-007", "孙悟空变成麻雀，二郎神就变成老鹰；孙悟空变成鱼，二郎神就变成鱼鹰。"]]}, {"t": "img", "src": "images/53.webp", "vid": "images/53.mp4", "cap": "庙后面的旗杆", "n": 53}, {"t": "p", "s": [["c11-008", "最后，孙悟空变成了一座小土地庙，尾巴没地方藏，只好变成一根旗杆，竖在庙的后面。"], ["c11-009", "二郎神看了哈哈大笑：“哪有旗杆竖在庙后面的？"], ["c11-010", "这一定是那只猴子！”"]]}, {"t": "img", "src": "images/54.webp", "vid": "images/54.mp4", "cap": "金刚圈从天而降", "n": 54}, {"t": "p", "s": [["c11-011", "正打得难分难解，太上老君从天上扔下一个金刚圈，正好打在孙悟空的头上。"], ["c11-012", "孙悟空一个跟头摔倒，被哮天犬咬住了腿，终于被捉住了。"]]}]}, {"title": "第十二章　八卦炉里的火眼金睛", "head": "c12-h", "audio": "audio/ch12.m4a", "duration": 62.336, "times": {"c12-h": [0.0, 3.206], "c12-001": [4.206, 6.328], "c12-002": [6.678, 13.078], "c12-003": [13.928, 20.871], "c12-004": [21.721, 23.808], "c12-005": [24.158, 27.025], "c12-006": [27.375, 34.199], "c12-007": [35.049, 38.626], "c12-008": [38.976, 47.252], "c12-009": [52.22, 60.836]}, "blocks": [{"t": "p", "s": [["c12-001", "天兵们想惩罚孙悟空。"], ["c12-002", "可是他吃了蟠桃，又吃了金丹，刀砍不伤，雷劈不动，谁也拿他没办法。"]]}, {"t": "img", "src": "images/55.webp", "vid": "images/55.mp4", "cap": "放进八卦炉里炼", "n": 55}, {"t": "p", "s": [["c12-003", "太上老君说：“把他放进我的八卦炉里，用三昧真火炼一炼，就能把金丹炼出来了。”"]]}, {"t": "img", "src": "images/56.webp", "vid": "images/56.mp4", "cap": "躲在巽宫里", "n": 56}, {"t": "p", "s": [["c12-004", "孙悟空被关进了八卦炉。"], ["c12-005", "他一进炉子，就钻到了巽宫的位置。"], ["c12-006", "巽是风，有风就没有火，所以火烧不着他，只是烟把他的眼睛熏得红红的。"]]}, {"t": "img", "src": "images/57.webp", "vid": "images/57.mp4", "cap": "一脚踢翻八卦炉", "n": 57}, {"t": "p", "s": [["c12-007", "整整四十九天过去了，老君打开炉门。"], ["c12-008", "孙悟空“呼”地一下跳了出来，一脚踢翻了八卦炉，炉子里的火砖掉到人间，变成了火焰山。"]]}, {"t": "img", "src": "images/58.webp", "vid": "images/58.mp4", "cap": "炼出了火眼金睛", "n": 58}, {"t": "p", "s": [["c12-009", "原来，孙悟空不但没有被炼化，还炼出了一双火眼金睛，不管妖怪变成什么样子，他都能一眼看出来。"]]}]}, {"title": "第十三章　大闹天宫", "head": "c13-h", "audio": "audio/ch13.m4a", "duration": 51.367, "times": {"c13-h": [0.0, 2.423], "c13-001": [3.423, 8.729], "c13-002": [9.079, 11.693], "c13-003": [12.543, 18.828], "c13-004": [19.178, 23.056], "c13-005": [23.906, 30.666], "c13-006": [35.239, 43.666], "c13-007": [44.516, 49.867]}, "blocks": [{"t": "img", "src": "images/59.webp", "vid": "images/59.mp4", "cap": "我老孙来也！", "n": 59}, {"t": "p", "s": [["c13-001", "孙悟空从耳朵里掏出金箍棒，迎风一晃，变得像碗口那么粗。"], ["c13-002", "他大喊一声：“我老孙来也！”"]]}, {"t": "img", "src": "images/60.webp", "vid": "images/60.mp4", "cap": "天宫乱成一团", "n": 60}, {"t": "p", "s": [["c13-003", "他从兜率宫一路打出来，打得九曜星闭门闭户，打得四大天王不见踪影。"], ["c13-004", "天宫里乱成了一团，神仙们东躲西藏。"]]}, {"t": "p", "s": [["c13-005", "一直打到玉帝的灵霄宝殿外面，王灵官带着三十六员雷将，把孙悟空围在了中间。"]]}, {"t": "img", "src": "images/61.webp", "vid": "images/61.mp4", "cap": "三头六臂谁也近不了身", "n": 61}, {"t": "p", "s": [["c13-006", "孙悟空摇身一变，变出三个头、六只手，三根金箍棒舞得像风车一样，谁也近不了他的身。"]]}, {"t": "p", "s": [["c13-007", "玉帝没有办法了，只好派人到西天，去请如来佛祖来帮忙。"]]}]}, {"title": "第十四章　如来佛的手掌", "head": "c14-h", "audio": "audio/ch14.m4a", "duration": 88.554, "times": {"c14-h": [0.0, 2.765], "c14-001": [3.765, 9.614], "c14-002": [10.464, 14.616], "c14-003": [15.466, 19.16], "c14-004": [19.51, 25.242], "c14-005": [25.592, 30.894], "c14-006": [31.744, 39.805], "c14-007": [40.655, 49.15], "c14-008": [51.938, 54.585], "c14-009": [55.435, 64.171], "c14-010": [65.021, 70.736], "c14-011": [71.086, 76.083], "c14-012": [76.933, 83.232], "c14-013": [83.582, 87.054]}, "blocks": [{"t": "img", "src": "images/62.webp", "vid": "images/62.mp4", "cap": "如来佛祖来了", "n": 62}, {"t": "p", "s": [["c14-001", "如来佛祖来到天宫，笑着问孙悟空：“你为什么要大闹天宫呢？”"]]}, {"t": "p", "s": [["c14-002", "孙悟空说：“玉帝的位子应该让给我坐，我的本领最大！”"]]}, {"t": "img", "src": "images/63.webp", "vid": "images/63.mp4", "cap": "跳上如来的手掌", "n": 63}, {"t": "p", "s": [["c14-003", "如来说：“好，我们来打个赌。"], ["c14-004", "你要是能一个筋斗翻出我的右手掌心，就算你赢。"], ["c14-005", "要是翻不出去，你就要回到人间去好好修行。”"]]}, {"t": "p", "s": [["c14-006", "孙悟空心想：我一个筋斗就是十万八千里，你的手掌还没有一片荷叶大，怎么会翻不出去？"]]}, {"t": "img", "src": "images/64.webp", "vid": "images/64.mp4", "cap": "天边的五根大柱子", "n": 64}, {"t": "p", "s": [["c14-007", "他跳上如来的手掌，一个筋斗翻了出去，飞呀飞，飞到了天边，看见五根肉红色的大柱子。"], ["c14-008", "他想：这一定是天的尽头了！"]]}, {"t": "img", "src": "images/65.webp", "vid": "images/65.mp4", "cap": "齐天大圣到此一游", "n": 65}, {"t": "p", "s": [["c14-009", "为了留个证据，他拔下一根毫毛，变成一支毛笔，在中间那根柱子上写了一行大字：“齐天大圣到此一游。”"]]}, {"t": "p", "s": [["c14-010", "他得意地翻回来，对如来说：“我已经去过天边，还在那里留了字呢！”"], ["c14-011", "如来笑着说：“你低头看看，那几个字写在哪里？”"]]}, {"t": "img", "src": "images/66.webp", "vid": "images/66.mp4", "cap": "原来写在中指上", "n": 66}, {"t": "p", "s": [["c14-012", "孙悟空低头一看，如来右手的中指上，正写着“齐天大圣到此一游”。"], ["c14-013", "原来，他一直都没有翻出如来的手掌心！"]]}]}, {"title": "第十五章　压在五行山下", "head": "c15-h", "audio": "audio/ch15.m4a", "duration": 69.886, "times": {"c15-h": [0.0, 2.658], "c15-001": [3.658, 15.928], "c15-002": [21.022, 23.253], "c15-003": [24.103, 29.039], "c15-004": [29.389, 34.493], "c15-005": [35.343, 39.045], "c15-006": [39.395, 44.817], "c15-007": [45.667, 51.076], "c15-008": [51.426, 55.94], "c15-009": [56.79, 58.334], "c15-010": [58.684, 60.841], "c15-011": [61.191, 64.182], "c15-012": [64.532, 66.356], "c15-013": [67.206, 68.386]}, "blocks": [{"t": "img", "src": "images/67.webp", "vid": "images/67.mp4", "cap": "五根手指变成五行山", "n": 67}, {"t": "p", "s": [["c15-001", "孙悟空吃了一惊，正想逃走，如来把手掌一翻，五根手指变成了金、木、水、火、土五座连在一起的大山，把孙悟空压在了山下。"], ["c15-002", "这座山，就叫五行山。"]]}, {"t": "img", "src": "images/68.webp", "vid": "images/68.mp4", "cap": "压在五行山下", "n": 68}, {"t": "p", "s": [["c15-003", "孙悟空的身子被压在山下，只有脑袋和一只手能伸出来。"], ["c15-004", "天宫终于又安静了，神仙们高高兴兴地开了一个“安天大会”。"]]}, {"t": "img", "src": "images/69.webp", "vid": "images/69.mp4", "cap": "山神和土地来看他", "n": 69}, {"t": "img", "src": "images/70.webp", "vid": "images/70.mp4", "cap": "春去秋来五百年", "n": 70}, {"t": "p", "s": [["c15-005", "山神和土地公常常来看他，陪他说说话。"], ["c15-006", "春去秋来，花开花落，孙悟空就这样在山下等了五百年。"]]}, {"t": "img", "src": "images/71.webp", "vid": "images/71.mp4", "cap": "骑白马的和尚来了", "n": 71}, {"t": "p", "s": [["c15-007", "五百年后，一位骑着白马的和尚，从东边的大唐来到了五行山。"], ["c15-008", "他要去西天取经，正需要一个有本领的徒弟来保护他。"]]}, {"t": "p", "s": [["c15-009", "他，就是唐僧。"], ["c15-010", "孙悟空会怎样被救出来？"], ["c15-011", "他又会跟着师父，经历怎样的冒险呢？"], ["c15-012", "这就是另一个故事了。"]]}, {"t": "p", "s": [["c15-013", "（完）"]]}, {"t": "note", "text": "读完以后，可以和孩子聊一聊：孙悟空本领那么大，为什么还是翻不出如来的手掌心？如果你会七十二变，最想变成什么？"}]}], "music": 3, "images": [{"from": "c01-h", "src": "images/01.webp", "vid": "images/01.mp4", "cap": "东海边的花果山", "n": 1}, {"from": "c01-003", "src": "images/02.webp", "vid": "images/02.mp4", "cap": "山顶的仙石", "n": 2}, {"from": "c01-005", "src": "images/03.webp", "vid": "images/03.mp4", "cap": "仙石裂开了", "n": 3}, {"from": "c01-006", "src": "images/04.webp", "vid": "images/04.mp4", "cap": "石蛋变成了小石猴", "n": 4}, {"from": "c01-007", "src": "images/05.webp", "vid": "images/05.mp4", "cap": "两道金光射到天上", "n": 5}, {"from": "c01-009", "src": "images/06.webp", "vid": "images/06.mp4", "cap": "和猴子们一起玩耍", "n": 6}, {"from": "c02-001", "src": "images/07.webp", "vid": "images/07.mp4", "cap": "山涧里的大瀑布", "n": 7}, {"from": "c02-005", "src": "images/08.webp", "vid": "images/08.mp4", "cap": "我去，我去！", "n": 8}, {"from": "c02-006", "src": "images/09.webp", "vid": "images/09.mp4", "cap": "纵身一跳穿过瀑布", "n": 9}, {"from": "c02-007", "src": "images/10.webp", "vid": "images/10.mp4", "cap": "水帘洞洞天", "n": 10}, {"from": "c02-009", "src": "images/11.webp", "vid": "images/11.mp4", "cap": "拜他做美猴王", "n": 11}, {"from": "c02-010", "src": "images/12.webp", "vid": "images/12.mp4", "cap": "快快活活的日子", "n": 12}, {"from": "c03-001", "src": "images/13.webp", "vid": "images/13.mp4", "cap": "美猴王忽然哭了", "n": 13}, {"from": "c03-006", "src": "images/14.webp", "vid": "images/14.mp4", "cap": "坐着木筏漂过大海", "n": 14}, {"from": "c03-007", "src": "images/15.webp", "vid": "images/15.mp4", "cap": "高山上的老神仙", "n": 15}, {"from": "c03-008", "src": "images/16.webp", "vid": "images/16.mp4", "cap": "名叫孙悟空", "n": 16}, {"from": "c04-001", "src": "images/17.webp", "vid": "images/17.mp4", "cap": "扫地挑水砍柴", "n": 17}, {"from": "c04-004", "src": "images/18.webp", "vid": "images/18.mp4", "cap": "半夜来到祖师床前", "n": 18}, {"from": "c04-006", "src": "images/19.webp", "vid": "images/19.mp4", "cap": "学会了七十二变", "n": 19}, {"from": "c04-007", "src": "images/20.webp", "vid": "images/20.mp4", "cap": "一个跟头十万八千里", "n": 20}, {"from": "c04-008", "src": "images/21.webp", "vid": "images/21.mp4", "cap": "变了一棵大松树", "n": 21}, {"from": "c05-001", "src": "images/22.webp", "vid": "images/22.mp4", "cap": "回到花果山练兵", "n": 22}, {"from": "c05-004", "src": "images/23.webp", "vid": "images/23.mp4", "cap": "跳进东海去龙宫", "n": 23}, {"from": "c05-005", "src": "images/24.webp", "vid": "images/24.mp4", "cap": "这些兵器都太轻了", "n": 24}, {"from": "c05-007", "src": "images/25.webp", "vid": "images/25.mp4", "cap": "金光闪闪的定海神针", "n": 25}, {"from": "c05-009", "src": "images/26.webp", "vid": "images/26.mp4", "cap": "变细变短的金箍棒", "n": 26}, {"from": "c05-012", "src": "images/27.webp", "vid": "images/27.mp4", "cap": "威风凛凛回花果山", "n": 27}, {"from": "c06-001", "src": "images/28.webp", "vid": "images/28.mp4", "cap": "树下睡着了", "n": 28}, {"from": "c06-002", "src": "images/29.webp", "vid": "images/29.mp4", "cap": "两个鬼差来拉他", "n": 29}, {"from": "c06-005", "src": "images/30.webp", "vid": "images/30.mp4", "cap": "闯进森罗殿", "n": 30}, {"from": "c06-006", "src": "images/31.webp", "vid": "images/31.mp4", "cap": "勾掉生死簿上的名字", "n": 31}, {"from": "c07-002", "src": "images/32.webp", "vid": "images/32.mp4", "cap": "太白金星出主意", "n": 32}, {"from": "c07-003", "src": "images/33.webp", "vid": "images/33.mp4", "cap": "被请上了天宫", "n": 33}, {"from": "c07-006", "src": "images/34.webp", "vid": "images/34.mp4", "cap": "当弼马温养天马", "n": 34}, {"from": "c07-009", "src": "images/35.webp", "vid": "images/35.mp4", "cap": "气得哇哇大叫", "n": 35}, {"from": "c07-010", "src": "images/36.webp", "vid": "images/36.mp4", "cap": "打出南天门", "n": 36}, {"from": "c08-001", "src": "images/37.webp", "vid": "images/37.mp4", "cap": "齐天大圣的大旗", "n": 37}, {"from": "c08-003", "src": "images/38.webp", "vid": "images/38.mp4", "cap": "李天王和哪吒来了", "n": 38}, {"from": "c08-005", "src": "images/39.webp", "vid": "images/39.mp4", "cap": "三头六臂大战", "n": 39}, {"from": "c08-007", "src": "images/40.webp", "vid": "images/40.mp4", "cap": "毫毛变出的假悟空", "n": 40}, {"from": "c08-011", "src": "images/41.webp", "vid": "images/41.mp4", "cap": "当上了齐天大圣", "n": 41}, {"from": "c09-003", "src": "images/42.webp", "vid": "images/42.mp4", "cap": "三千六百棵蟠桃树", "n": 42}, {"from": "c09-006", "src": "images/43.webp", "vid": "images/43.mp4", "cap": "爬上大树吃桃子", "n": 43}, {"from": "c09-007", "src": "images/44.webp", "vid": "images/44.mp4", "cap": "变成小人儿睡觉", "n": 44}, {"from": "c10-001", "src": "images/45.webp", "vid": "images/45.mp4", "cap": "七仙女来摘桃", "n": 45}, {"from": "c10-007", "src": "images/46.webp", "vid": "images/46.mp4", "cap": "瑶池的盛宴", "n": 46}, {"from": "c10-010", "src": "images/47.webp", "vid": "images/47.mp4", "cap": "太上老君的兜率宫", "n": 47}, {"from": "c10-012", "src": "images/48.webp", "vid": "images/48.mp4", "cap": "像吃炒豆子一样吃金丹", "n": 48}, {"from": "c11-001", "src": "images/49.webp", "vid": "images/49.mp4", "cap": "十万天兵围住花果山", "n": 49}, {"from": "c11-003", "src": "images/50.webp", "vid": "images/50.mp4", "cap": "变出成百上千个小悟空", "n": 50}, {"from": "c11-004", "src": "images/51.webp", "vid": "images/51.mp4", "cap": "二郎神来了", "n": 51}, {"from": "c11-007", "src": "images/52.webp", "vid": "images/52.mp4", "cap": "麻雀和老鹰", "n": 52}, {"from": "c11-008", "src": "images/53.webp", "vid": "images/53.mp4", "cap": "庙后面的旗杆", "n": 53}, {"from": "c11-011", "src": "images/54.webp", "vid": "images/54.mp4", "cap": "金刚圈从天而降", "n": 54}, {"from": "c12-003", "src": "images/55.webp", "vid": "images/55.mp4", "cap": "放进八卦炉里炼", "n": 55}, {"from": "c12-006", "src": "images/56.webp", "vid": "images/56.mp4", "cap": "躲在巽宫里", "n": 56}, {"from": "c12-008", "src": "images/57.webp", "vid": "images/57.mp4", "cap": "一脚踢翻八卦炉", "n": 57}, {"from": "c12-009", "src": "images/58.webp", "vid": "images/58.mp4", "cap": "炼出了火眼金睛", "n": 58}, {"from": "c13-001", "src": "images/59.webp", "vid": "images/59.mp4", "cap": "我老孙来也！", "n": 59}, {"from": "c13-004", "src": "images/60.webp", "vid": "images/60.mp4", "cap": "天宫乱成一团", "n": 60}, {"from": "c13-006", "src": "images/61.webp", "vid": "images/61.mp4", "cap": "三头六臂谁也近不了身", "n": 61}, {"from": "c14-001", "src": "images/62.webp", "vid": "images/62.mp4", "cap": "如来佛祖来了", "n": 62}, {"from": "c14-004", "src": "images/63.webp", "vid": "images/63.mp4", "cap": "跳上如来的手掌", "n": 63}, {"from": "c14-007", "src": "images/64.webp", "vid": "images/64.mp4", "cap": "天边的五根大柱子", "n": 64}, {"from": "c14-009", "src": "images/65.webp", "vid": "images/65.mp4", "cap": "齐天大圣到此一游", "n": 65}, {"from": "c14-012", "src": "images/66.webp", "vid": "images/66.mp4", "cap": "原来写在中指上", "n": 66}, {"from": "c15-001", "src": "images/67.webp", "vid": "images/67.mp4", "cap": "五根手指变成五行山", "n": 67}, {"from": "c15-003", "src": "images/68.webp", "vid": "images/68.mp4", "cap": "压在五行山下", "n": 68}, {"from": "c15-005", "src": "images/69.webp", "vid": "images/69.mp4", "cap": "山神和土地来看他", "n": 69}, {"from": "c15-006", "src": "images/70.webp", "vid": "images/70.mp4", "cap": "春去秋来五百年", "n": 70}, {"from": "c15-007", "src": "images/71.webp", "vid": "images/71.mp4", "cap": "骑白马的和尚来了", "n": 71}]};
+const POS_KEY = BOOK.id + '-audiobook-pos';   // 听到哪里：每本书分开记
+// 网上运行时音频、插图都从 Cloudflare 加载（网页仓库里只放 HTML）；本机、局域网、file:// 用相对路径。
+// ?assets=remote / pages / local 强制（pages = 默认的 pages.dev 域名，自定义域名没配好时用）
+const ASSET_HOSTS = { remote: 'https://meler-stories-assets.melerpaine.com/', pages: 'https://meler-stories-assets.pages.dev/' };
+const ASSET_BASE = (() => {
+  const q = new URLSearchParams(location.search).get('assets');
+  const local = location.protocol === 'file:' || /^(localhost|127\.|10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.|\[::1\]$)|\.local$/.test(location.hostname);
+  const host = ASSET_HOSTS[q] || (q !== 'local' && !local ? ASSET_HOSTS.remote : '');
+  return host ? host + BOOK.id + '/' : '';
+})();
+const A = p => p && ASSET_BASE + p;
+BOOK.cover = A(BOOK.cover);
+BOOK.images.forEach(im => { im.src = A(im.src); im.vid = A(im.vid); });
+BOOK.chapters.forEach(ch => { ch.audio = A(ch.audio); ch.blocks.forEach(b => { if (b.t === 'img') { b.src = A(b.src); b.vid = A(b.vid); } }); });
+const PREF = 'story-audiobook-';               // 主题、动图、显示模式：所有书共用
+const NUM = ['零','一','二','三','四','五','六','七','八','九','十','十一','十二','十三','十四','十五'];
+const ICON_PLAY = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>';
+const ICON_PAUSE = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 5h3.5v14H7zm6.5 0H17v14h-3.5z"/></svg>';
+const $ = s => document.querySelector(s);
+const fmt = t => { t = Math.max(0, t | 0); return String(t / 60 | 0).padStart(2, '0') + ':' + String(t % 60).padStart(2, '0'); };
+
+// ---------- 渲染 ----------
+const story = $('#story');
+let anim = true;   // 插图用动图还是静态图
+try { anim = localStorage.getItem(PREF + 'anim') !== 'off'; } catch (e) {}
+const lines = [];          // 全书按顺序：{id, ch, start, end, el, img}
+const imgs = BOOK.images;  // 全书插图（故事顺序）：{from, src, vid, cap, n}，from = 从哪一句开始显示；vid 是动图短片
+// 正文里的动图：进入视野附近才加载、播放，离开就暂停（几十段短片同时播手机吃不消）
+const vio = new IntersectionObserver(es => es.forEach(e => {
+  const v = e.target;
+  if (e.isIntersecting && anim) { if (!v.src) v.src = v.dataset.src; v.play().catch(() => {}); }
+  else v.pause();
+}), { rootMargin: '300px 0px' });
+const byId = {};
+document.title = BOOK.title + ' · 有声绘本';
+$('#bookTitle').textContent = BOOK.title;
+$('#kicker').textContent = BOOK.kicker + ' · 有声绘本';
+$('#intro').textContent = BOOK.intro;
+$('#coverImg').src = BOOK.cover;
+const total = BOOK.chapters.reduce((a, c) => a + c.duration, 0);
+const nImg = BOOK.chapters.reduce((a, c) => a + c.blocks.filter(b => b.t === 'img').length, 0);
+const nSong = BOOK.chapters.reduce((a, c) => a + c.blocks.filter(b => b.t === 'song').length, 0);
+$('#meta').textContent = `${BOOK.chapters.length} 章 · ${nImg} 幅插画${nSong ? ` · ${nSong} 首插曲` : ''}${BOOK.music ? ` · ${BOOK.music} 首配乐` : ''} · 全长约 ${Math.round(total / 60)} 分钟 · 朗读：${BOOK.voice}`;
+
+BOOK.chapters.forEach((ch, ci) => {
+  const sec = document.createElement('section');
+  sec.className = 'chapter'; sec.id = 'ch' + (ci + 1);
+  const [no, ...rest] = ch.title.split('　');
+  const h = document.createElement('h2');
+  h.innerHTML = `<small>${no}</small>${rest.join(' ')}`;
+  h.dataset.id = ch.head;
+  sec.appendChild(h);
+  const add = (id, el) => { const [s, e] = ch.times[id]; const L = { id, ch: ci, start: s, end: e, el }; lines.push(L); byId[id] = L; };
+  add(ch.head, h);
+  for (const b of ch.blocks) {
+    if (b.t === 'p') {
+      const p = document.createElement('p');
+      for (const [id, text] of b.s) {
+        const sp = document.createElement('span');
+        sp.className = 's'; sp.dataset.id = id; sp.textContent = text;
+        p.appendChild(sp); add(id, sp);
+      }
+      sec.appendChild(p);
+    } else if (b.t === 'song') {
+      // 插曲：歌名（前奏时高亮）+ 一行一句歌词，跟着演唱逐行高亮
+      const d = document.createElement('div'); d.className = 'song';
+      const h3 = document.createElement('h3'); h3.dataset.id = b.head; h3.textContent = b.title;
+      d.appendChild(h3); add(b.head, h3);
+      for (const [id, text] of b.lines) {
+        const sp = document.createElement('span');
+        sp.className = 's'; sp.dataset.id = id; sp.textContent = text;
+        d.appendChild(sp); add(id, sp);
+      }
+      sec.appendChild(d);
+    } else if (b.t === 'img') {
+      const f = document.createElement('figure');
+      f.innerHTML = `<div class="pic"><img loading="lazy" src="${b.src}" alt="${b.cap}"></div><figcaption><b>插图 ${b.n}</b>${b.cap}</figcaption>`;
+      if (b.vid) {
+        const v = document.createElement('video');
+        v.muted = v.loop = v.playsInline = true; v.preload = 'none'; v.dataset.src = b.vid;
+        v.setAttribute('muted', ''); v.setAttribute('playsinline', '');   // iOS 自动播放认属性
+        v.onplaying = () => v.classList.toggle('on', anim);
+        f.firstChild.appendChild(v); vio.observe(v);
+      }
+      sec.appendChild(f);
+    } else {
+      const d = document.createElement('div'); d.className = 'note'; d.textContent = b.text; sec.appendChild(d);
+    }
+  }
+  story.appendChild(sec);
+  const li = document.createElement('li');
+  li.innerHTML = `<button data-ch="${ci}"><span>${ch.title.replace('　', ' ')}</span><span class="dur">${fmt(ch.duration)}</span></button>`;
+  $('#toc').appendChild(li);
+});
+// 每幅插图从它的 from 那句开始显示，一直到下一幅开始
+imgs.forEach(im => { im.ch = byId[im.from].ch; im.at = lines.indexOf(byId[im.from]); });
+lines.forEach((L, k) => {
+  let i = 0;
+  while (i + 1 < imgs.length && imgs[i + 1].at <= k) i++;
+  L.img = i;
+});
+const endMark = document.createElement('div'); endMark.className = 'end-mark'; endMark.textContent = '— 全书完 —';
+story.appendChild(endMark);
+
+// ---------- 播放 ----------
+const audio = new Audio();
+audio.preload = 'auto';
+let cur = -1, active = null, playing = false;
+let follow = true, userScrollAt = 0, speedIdx = 1;
+const SPEEDS = [0.8, 1, 1.2, 1.5];
+
+function loadChapter(ci) {
+  if (ci === cur) return Promise.resolve();
+  cur = ci;
+  audio.src = BOOK.chapters[ci].audio;
+  audio.playbackRate = SPEEDS[speedIdx];
+  document.querySelectorAll('.toc button').forEach((b, i) => b.classList.toggle('now', i === ci));
+  $('#seek').max = BOOK.chapters[ci].duration;
+  updateMedia();
+  return new Promise(res => audio.addEventListener('loadedmetadata', res, { once: true }));
+}
+
+async function playFrom(ci, t, autoplay = true) {
+  await loadChapter(ci);
+  audio.currentTime = t;
+  sync(true);
+  if (autoplay) { try { await audio.play(); } catch (e) { toast('点击播放按钮开始朗读'); } }
+}
+const playLine = (L, autoplay = true) => playFrom(L.ch, L.start + 0.001, autoplay);
+
+function lineAt(ci, t) {
+  // 找本章里开始时间 ≤ t 的最后一句
+  let best = null;
+  for (const L of lines) {
+    if (L.ch !== ci) { if (best) break; continue; }
+    if (L.start <= t + 0.03) best = L; else break;
+  }
+  return best;
+}
+
+function setActive(L, force) {
+  if (L === active && !force) return;
+  if (active) active.el.classList.remove('on');
+  active = L;
+  if (!L) return;
+  L.el.classList.add('on');
+  const idx = lines.indexOf(L);
+  lines.forEach((x, i) => x.el.classList.toggle('past', i < idx));
+  const ch = BOOK.chapters[L.ch];
+  $('#nowTitle').textContent = ch.title.replace('　', ' ');
+  if (mode !== 'read') showStage(L.img);   // 阅读模式不用舞台，免得在后台加载动图
+  setSubtitle(L);
+  if (follow && mode !== 'picture' && (force || Date.now() - userScrollAt > 5000)) {
+    const r = L.el.getBoundingClientRect();
+    const vh = window.innerHeight;
+    if (r.top < vh * 0.18 || r.bottom > vh * 0.62) {
+      programmatic = Date.now();
+      window.scrollBy({ top: r.top - vh * 0.32, behavior: 'smooth' });
+    }
+  }
+}
+
+function sync(force) {
+  if (cur < 0) return;
+  const t = audio.currentTime;
+  setActive(lineAt(cur, t), force);
+  if (!seeking) $('#seek').value = t;
+  $('#nowTime').textContent = `${fmt(t)} / ${fmt(BOOK.chapters[cur].duration)}`;
+}
+
+let raf = 0;
+function loop() { sync(false); raf = requestAnimationFrame(loop); }
+audio.addEventListener('play', () => { playing = true; document.body.classList.add('playing'); story.classList.add('reading'); renderPlay(); cancelAnimationFrame(raf); loop(); });
+audio.addEventListener('pause', () => { playing = false; document.body.classList.remove('playing'); renderPlay(); cancelAnimationFrame(raf); sync(false); savePos(); });
+audio.addEventListener('ended', () => {
+  if (cur < BOOK.chapters.length - 1) playFrom(cur + 1, 0);
+  else { toast('故事讲完啦，晚安 🌙'); setActive(null); localStorage.removeItem(POS_KEY); }
+});
+
+function renderPlay() {
+  $('#playBtn').innerHTML = playing ? ICON_PAUSE : ICON_PLAY;
+  $('#playBtn').setAttribute('aria-label', playing ? '暂停' : '播放');
+}
+renderPlay();
+
+function toggle() {
+  if (cur < 0) { const p = readPos(); return p ? playFrom(p.ch, p.t) : playFrom(0, 0); }
+  playing ? audio.pause() : audio.play();
+}
+function step(d) {
+  const i = active ? lines.indexOf(active) : -1;
+  // 上一句：如果当前句已读了 1.5 秒以上，先回到本句开头
+  if (d < 0 && active && audio.currentTime - active.start > 1.5) return playLine(active, playing || cur < 0);
+  const L = lines[Math.min(lines.length - 1, Math.max(0, i + d))];
+  if (L) playLine(L, true);
+}
+function chapterJump(d) {
+  const ci = Math.min(BOOK.chapters.length - 1, Math.max(0, (cur < 0 ? 0 : cur) + d));
+  playFrom(ci, 0);
+}
+
+// ---------- 交互 ----------
+$('#playBtn').onclick = toggle;
+$('#prevS').onclick = () => step(-1);
+$('#nextS').onclick = () => step(1);
+$('#prevCh').onclick = () => chapterJump(-1);
+$('#nextCh').onclick = () => chapterJump(1);
+$('#startBtn').onclick = () => playFrom(0, 0);
+$('#tocBtn').onclick = () => {
+  if (mode === 'picture') setMode('read', true);   // 纯图模式没有目录，先回到阅读模式
+  $('.toc').scrollIntoView({ behavior: 'smooth' });
+};
+story.addEventListener('click', e => {
+  const el = e.target.closest('[data-id]');
+  if (el) { playLine(byId[el.dataset.id], true); userScrollAt = 0; return; }
+  const pic = e.target.closest('figure .pic'), img = pic && pic.querySelector('img');
+  if (img) { const lb = $('#lightbox'); lb.querySelector('img').src = img.src; lb.querySelector('p').textContent = img.alt; lb.classList.add('open'); }
+});
+$('#lightbox').onclick = () => $('#lightbox').classList.remove('open');
+$('#toc').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  const ci = +b.dataset.ch;
+  playFrom(ci, 0);
+  document.getElementById('ch' + (ci + 1)).scrollIntoView({ behavior: 'smooth' });
+});
+$('#speedBtn').onclick = () => {
+  speedIdx = (speedIdx + 1) % SPEEDS.length;
+  audio.playbackRate = SPEEDS[speedIdx];
+  $('#speedBtn').textContent = SPEEDS[speedIdx].toFixed(1) + '×';
+};
+$('#followBtn').onclick = () => {
+  follow = !follow;
+  $('#followBtn').setAttribute('aria-pressed', follow);
+  toast(follow ? '跟读：自动翻到正在读的地方' : '跟读已关闭，可以自由翻看');
+  if (follow && active) setActive(active, true);
+};
+// ---------- 显示模式：阅读 / 左图右文（宽屏才有）/ 纯图 ----------
+const MODES = { read: '阅读', split: '左图右文', picture: '纯图' };
+const wide = matchMedia('(min-width: 900px)');
+let mode = 'read', stageIdx = -1, stageLayer = 0;
+$('#stageVid').onplaying = () => $('#stageVid').classList.add('show');
+function showStage(i, force) {
+  if (i === stageIdx && !force) return;
+  stageIdx = i;
+  const im = imgs[i];
+  const layers = document.querySelectorAll('#stage img');
+  const next = layers[stageLayer ^= 1], prev = layers[stageLayer ^ 1];
+  next.onload = () => { next.classList.add('show'); prev.classList.remove('show'); };
+  next.src = im.src;
+  next.alt = im.cap;
+  // 动图短片盖在静态图上，开始播放再淡入；阅读模式看不见舞台，不播
+  const v = $('#stageVid');
+  v.classList.remove('show');
+  if (anim && im.vid && mode !== 'read') { v.src = im.vid; v.play().catch(() => {}); }
+  else if (v.getAttribute('src')) { v.pause(); v.removeAttribute('src'); v.load(); }
+  $('#stageBg').style.backgroundImage = `url("${im.src}")`;
+  $('#stageCap').textContent = `插图 ${im.n} · ${im.cap}`;
+  $('#stageTop').textContent = BOOK.chapters[(active || {}).ch ?? im.ch].title.replace('　', ' ');
+}
+// 字幕换句时先淡出再换字，免得两句文字跳动
+let subT = 0;
+function setSubtitle(L) {
+  const sub = $('#stageSub');
+  const text = !L ? '' : L.el.tagName === 'H2' ? BOOK.chapters[L.ch].title.replace('　', ' ')
+    : L.el.tagName === 'H3' ? '♪ ' + L.el.textContent : L.el.closest('.song') ? '♪ ' + L.el.textContent + ' ♪' : L.el.textContent;
+  if (sub.dataset.text === text) return;
+  sub.dataset.text = text;
+  sub.classList.add('fade');
+  clearTimeout(subT);
+  subT = setTimeout(() => { sub.textContent = text; sub.classList.remove('fade'); }, 180);
+}
+function setMode(m, quiet) {
+  if (m === 'split' && !wide.matches) m = 'read';
+  mode = m;
+  document.body.dataset.mode = m;
+  $('#modeBtn').textContent = MODES[m];
+  try { localStorage.setItem(PREF + 'mode', m); } catch (e) {}
+  showStage(active ? active.img : Math.max(0, stageIdx), true);
+  if (m !== 'picture' && active) setTimeout(() => setActive(active, true), 30);
+  if (!quiet) toast('显示模式：' + MODES[m] + (m === 'picture' ? '（点画面播放 / 暂停）' : ''));
+}
+$('#modeBtn').onclick = () => {
+  const order = wide.matches ? ['read', 'split', 'picture'] : ['read', 'picture'];
+  setMode(order[(order.indexOf(mode) + 1) % order.length]);
+};
+wide.addEventListener('change', () => { if (mode === 'split' && !wide.matches) setMode('read', true); });
+$('#stage').onclick = () => { if (mode === 'picture') toggle(); };
+$('#stagePlay').onclick = e => { e.stopPropagation(); toggle(); };
+// 舞台的底边贴着播放条
+new ResizeObserver(() => document.documentElement.style.setProperty('--ph', $('#player').offsetHeight + 'px')).observe($('#player'));
+try { setMode(localStorage.getItem(PREF + 'mode') || 'read', true); } catch (e) { setMode('read', true); }
+
+function renderAnim() {
+  $('#animBtn').setAttribute('aria-pressed', anim);
+  document.querySelectorAll('figure video').forEach(v => {
+    if (anim) { vio.unobserve(v); vio.observe(v); }   // 重新观察会立即回调一次，看得见的接着播
+    else { v.pause(); v.classList.remove('on'); }
+  });
+  if (stageIdx >= 0) showStage(stageIdx, true);
+}
+$('#animBtn').onclick = () => {
+  anim = !anim;
+  try { localStorage.setItem(PREF + 'anim', anim ? 'on' : 'off'); } catch (e) {}
+  renderAnim();
+  toast(anim ? '插图：动图' : '插图：静态图');
+};
+renderAnim();
+$('#themeBtn').onclick = () => {
+  const root = document.documentElement;
+  const dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  root.dataset.theme = dark ? 'light' : 'dark';
+  try { localStorage.setItem(PREF + 'theme', root.dataset.theme); } catch (e) {}
+};
+try { const th = localStorage.getItem(PREF + 'theme'); if (th) document.documentElement.dataset.theme = th; } catch (e) {}
+
+let seeking = false;
+$('#seek').addEventListener('input', () => { seeking = true; if (cur < 0) return; audio.currentTime = +$('#seek').value; sync(true); });
+$('#seek').addEventListener('change', () => { seeking = false; });
+if (cur < 0) $('#seek').addEventListener('pointerdown', () => { if (cur < 0) loadChapter(0); }, { once: true });
+
+// 用户自己滚动页面时，暂停自动跟读 5 秒
+let programmatic = 0;
+['wheel', 'touchmove'].forEach(ev => addEventListener(ev, () => { userScrollAt = Date.now(); }, { passive: true }));
+addEventListener('keydown', e => {
+  if (e.target.matches('input, textarea')) return;
+  if (e.code === 'Space') { e.preventDefault(); toggle(); }
+  else if (e.key === 'ArrowLeft') step(-1);
+  else if (e.key === 'ArrowRight') step(1);
+  else if (e.key === 'Escape') $('#lightbox').classList.remove('open');
+});
+
+// ---------- 记住上次听到哪里 ----------
+function savePos() { if (cur < 0) return; try { localStorage.setItem(POS_KEY, JSON.stringify({ ch: cur, t: audio.currentTime, id: active && active.id })); } catch (e) {} }
+function readPos() { try { const p = JSON.parse(localStorage.getItem(POS_KEY)); return p && p.ch >= 0 && p.ch < BOOK.chapters.length ? p : null; } catch (e) { return null; } }
+setInterval(() => { if (playing) savePos(); }, 3000);
+const last = readPos();
+if (last && (last.ch > 0 || last.t > 5)) {
+  const rb = $('#resumeBtn');
+  rb.hidden = false;
+  rb.textContent = `继续听 · ${BOOK.chapters[last.ch].title.split('　')[0]} ${fmt(last.t)}`;
+  rb.onclick = () => {
+    const L = last.id && byId[last.id];
+    L ? playLine(L) : playFrom(last.ch, last.t);
+    if (L) setTimeout(() => setActive(L, true), 50);
+  };
+}
+$('#nowTitle').textContent = '点击任意一句，就从那里开始听';
+
+// ---------- 锁屏 / 耳机控制 ----------
+function updateMedia() {
+  if (!('mediaSession' in navigator) || cur < 0) return;
+  navigator.mediaSession.metadata = new MediaMetadata({
+    title: BOOK.chapters[cur].title.replace('　', ' '), artist: BOOK.voice, album: BOOK.title,
+    artwork: [{ src: BOOK.cover, sizes: '1152x768', type: 'image/webp' }]
+  });
+  navigator.mediaSession.setActionHandler('previoustrack', () => chapterJump(-1));
+  navigator.mediaSession.setActionHandler('nexttrack', () => chapterJump(1));
+}
+
+let toastT = 0;
+function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2200); }
+</script>
+</body>
+</html>

@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>有声绘本故事屋</title>
+<style>
+:root {
+  --paper: #f8f3e8; --paper-2: #f1e9d8; --card: #fffdf8; --ink: #2c2a33; --ink-soft: #6b6672;
+  --sea: #1d6c88; --sea-deep: #123f55; --line: #e2d7c1; --tag: #fbe7b5;
+  --shadow: 0 8px 30px rgba(30, 50, 70, .12); color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0f1a23; --paper-2: #15232f; --card: #182836; --ink: #e9e4d8; --ink-soft: #a29fa8;
+    --sea: #6cc3dd; --sea-deep: #9fdcef; --line: #263744; --tag: rgba(255, 210, 110, .2);
+    --shadow: 0 8px 30px rgba(0, 0, 0, .45); color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0f1a23; --paper-2: #15232f; --card: #182836; --ink: #e9e4d8; --ink-soft: #a29fa8;
+  --sea: #6cc3dd; --sea-deep: #9fdcef; --line: #263744; --tag: rgba(255, 210, 110, .2);
+  --shadow: 0 8px 30px rgba(0, 0, 0, .45); color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink);
+  font-family: -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; }
+header { text-align: center; padding: 64px 16px 36px; background: linear-gradient(var(--paper-2), var(--paper)); position: relative; }
+header .kicker { color: var(--sea); letter-spacing: .3em; font-size: 14px; }
+header h1 { font-family: "Kaiti SC", "STKaiti", "KaiTi", serif; font-size: clamp(40px, 9vw, 68px); margin: 10px 0 8px; color: var(--sea-deep); font-weight: normal; }
+header p { color: var(--ink-soft); margin: 0; font-size: 15px; }
+#themeBtn { position: absolute; right: 16px; top: 16px; border: 1px solid var(--line); background: var(--card);
+  color: var(--ink-soft); border-radius: 99px; padding: 6px 14px; font-size: 13px; cursor: pointer; }
+main { max-width: 1100px; margin: 0 auto; padding: 0 16px 60px;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 360px)); justify-content: center; gap: 28px; }
+.card { display: flex; flex-direction: column; background: var(--card); border: 1px solid var(--line); border-radius: 18px;
+  overflow: hidden; text-decoration: none; color: inherit; box-shadow: var(--shadow); transition: transform .2s; }
+.card:hover { transform: translateY(-4px); }
+.pic { aspect-ratio: 3 / 2; background: var(--paper-2); overflow: hidden; position: relative; }
+.pic img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pic video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .4s; }
+.pic video.on { opacity: 1; }
+.body { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+.tag { align-self: flex-start; background: var(--tag); border-radius: 99px; padding: 2px 10px; font-size: 12px; color: var(--ink-soft); }
+.body h2 { font-family: "Kaiti SC", "STKaiti", "KaiTi", serif; font-size: 30px; margin: 2px 0 0; color: var(--sea-deep); font-weight: normal; }
+.body p { margin: 0; line-height: 1.7; color: var(--ink-soft); font-size: 15px; flex: 1; }
+.facts { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13px; color: var(--sea); margin-top: 6px; }
+footer { text-align: center; color: var(--ink-soft); font-size: 13px; padding: 0 16px 40px; line-height: 1.8; }
+@media (max-width: 520px) { header { padding-top: 56px; } main { gap: 20px; } }
+</style>
+</head>
+<body>
+<header>
+  <button id="themeBtn" title="切换深浅色">主题</button>
+  <div class="kicker">有声绘本</div>
+  <h1>故事屋</h1>
+  <p>10 个故事 · 共约 170 分钟 · 点开就能读、能听、能看图</p>
+</header>
+<main>
+  <a class="card" href="little-mermaid/index.html">
+    <div class="pic"><img data-src="little-mermaid/images/04.webp" alt="海的女儿封面" loading="eager"><video data-src="little-mermaid/images/04.mp4" muted loop playsinline preload="none"></video></div>
+    <div class="body">
+      <span class="tag">安徒生童话</span>
+      <h2>海的女儿</h2>
+      <p>住在深海里的小美人鱼，为了爱和一个永恒的灵魂，用美妙的歌声换来一双腿……</p>
+      <div class="facts"><span>13 章</span><span>44 幅插画</span><span>3 首配乐</span><span>约 27 分钟</span></div>
+    </div>
+  </a>
+  <a class="card" href="rapunzel/index.html">
+    <div class="pic"><img data-src="rapunzel/images/12.webp" alt="莴苣姑娘封面" loading="eager"><video data-src="rapunzel/images/12.mp4" muted loop playsinline preload="none"></video></div>
+    <div class="body">
+      <span class="tag">格林童话</span>
+      <h2>莴苣姑娘</h2>
+      <p>被关在高塔里的莴苣姑娘，用一头长长的金发和美妙的歌声，等来了改变命运的那个人……</p>
+      <div class="facts"><span>11 章</span><span>34 幅插画</span><span>1 首插曲</span><span>3 首配乐</span><span>约 14 分钟</span></div>
+    </div>
+  </a>
+  <a class="card" href="wizard-of-oz/index.html">
+    <div class="pic"><img data-src="wizard-of-oz/images/25.webp" alt="绿野仙踪封面" loading="lazy"><video data-src="wizard-of-oz/images/25.mp4" muted loop playsinline preload="none"></video></div>
+    <div class="body">
+      <span class="tag">鲍姆童话</span>
+      <h2>绿野仙踪</h2>
+      <p>一阵龙卷风把多萝西吹到了奥兹国。她和想要脑子的稻草人、想要心的铁皮人、想要勇气的狮子，一起踏上了黄砖路……</p>
+      <div class="facts"><span>15 章</span><span>60 幅插画</span><span>3 首配乐</span><span>约 16 分钟</span></div>
+    </div>
+  </a>
+  <a class="card" href="alice/index.html">
+    <div class="pic"><img data-src="alice/images/26.webp" alt="爱丽丝漫游奇境封面" loading="lazy"><video data-src="alice/images/26.mp4" muted loop playsinline preload="none"></video></div>
+    <div class="body">
+      <span class="tag">卡罗尔童话</span>
+      <h2>爱丽丝漫游奇境</h2>
+      <p>跟着一只拿怀表的白兔子掉进兔子洞，爱丽丝一会儿变大、一会儿变小，遇见了柴郡猫、疯帽子和凶巴巴的红心王后……</p>
+      <div class="facts"><span>14 章</span><span>57 幅插画</span><span>3 首配乐</span><span>约 16 分钟</span></div>
+    </div>
+  </a>
+  <a class="card" href="monkey-king/index.html">
+    <div class="pic"><img data-src="monkey-king/images/37.webp" alt="大闹天宫封面" loading="lazy"><video data-src="monkey-king/images/37.mp4" muted loop playsinline preload="none"></video></div>
+    <div class="body">
+      <span class="tag">西游记</span>
+      <h2>大闹天宫</h2>
+      <p>花果山的仙石里蹦出一只石猴。他学会了七十二变和筋斗云，借来金箍棒，自封齐天大圣，把天宫闹了个天翻地覆……</p>
+      <div class="facts"><span>15 章</span><span>71 幅插画</span><span>3 首配乐</span><span>约 17 分钟</span></div>
+    </div>
+  </a>
+  <a class="card" href="lotus-lantern/index.html">
+    <div class="pic"><img data-src="lotus-lantern/images/47.webp" alt="宝莲灯封面" loading="lazy"><video data-src="lotus-lantern/images/47.mp4" muted loop playsinline preload="none"></video></div>
+    <div class="body">
+      <span class="tag">中国民间传说</span>
+      <h2>宝莲灯</h2>
+      <p>华山的三圣母被压在了大山底下。她的儿子沉香长大以后，拜师学艺，拿着开山神斧和宝莲灯，去救他的妈妈……</p>
+      <div class="facts"><span>13 章</span><span>50 幅插画</span><span>3 首配乐</span><span>约 11 分钟</span></div>
+    </div>
+  </a>
+  <a class="card" href="thumbelina/index.html">
+    <div class="pic"><img data-src="thumbelina/images/05.webp" alt="拇指姑娘封面" loading="lazy"><video data-src="thumbelina/images/05.mp4" muted loop playsinline preload="none"></video></div>
+    <div class="body">
+      <span class="tag">安徒生童话</span>
+      <h2>拇指姑娘</h2>
+      <p>郁金香里长出了一个只有大拇指那么高的小姑娘。她被癞蛤蟆抢走，被金龟子丢下，在田鼠家过冬，还救活了一只冻僵的燕子……</p>
+      <div class="facts"><span>15 章</span><span>57 幅插画</span><span>3 首配乐</span><span>约 15 分钟</span></div>
+    </div>
+  </a>
+  <a class="card" href="pinocchio/index.html">
+    <div class="pic"><img data-src="pinocchio/images/33.webp" alt="木偶奇遇记封面" loading="lazy"><video data-src="pinocchio/images/33.mp4" muted loop playsinline preload="none"></video></div>
+    <div class="body">
+      <span class="tag">科洛迪童话</span>
+      <h2>木偶奇遇记</h2>
+      <p>老木匠杰佩托用一块会说话的木头做了个木偶，叫匹诺曹。他贪玩、爱说谎，一说谎鼻子就变长，还差点变成了驴子……</p>
+      <div class="facts"><span>15 章</span><span>57 幅插画</span><span>3 首配乐</span><span>约 16 分钟</span></div>
+    </div>
+  </a>
+  <a class="card" href="grimm/index.html">
+    <div class="pic"><img data-src="grimm/images/07.webp" alt="格林童话精选封面" loading="lazy"><video data-src="grimm/images/07.mp4" muted loop playsinline preload="none"></video></div>
+    <div class="body">
+      <span class="tag">格林童话</span>
+      <h2>格林童话精选</h2>
+      <p>糖果屋里的老巫婆、魔镜和毒苹果、井边的青蛙、森林里的大灰狼、女扮男装的十二个猎人、四个动物音乐家，还有用金子换来换去的汉斯——七个最有名的格林童话，一次听个够。</p>
+      <div class="facts"><span>17 章</span><span>73 幅插画</span><span>4 首配乐</span><span>约 24 分钟</span></div>
+    </div>
+  </a>
+  <a class="card" href="beauty-beast/index.html">
+    <div class="pic"><img data-src="beauty-beast/images/36.webp" alt="美女与野兽封面" loading="lazy"><video data-src="beauty-beast/images/36.mp4" muted loop playsinline preload="none"></video></div>
+    <div class="body">
+      <span class="tag">法国童话</span>
+      <h2>美女与野兽</h2>
+      <p>为了爸爸摘下的一朵玫瑰，善良的贝儿住进了森林里的城堡。城堡的主人是一只样子吓人的野兽，每天晚上，他都问贝儿同一个问题……</p>
+      <div class="facts"><span>15 章</span><span>49 幅插画</span><span>3 首配乐</span><span>约 13 分钟</span></div>
+    </div>
+  </a>
+</main>
+<footer>朗读、插画都由本机模型生成 · 听书时文字逐句高亮</footer>
+<script>
+// 主题和故事页共用同一个偏好键
+const KEY = 'story-audiobook-theme', root = document.documentElement;
+try { const th = localStorage.getItem(KEY); if (th) root.dataset.theme = th; } catch (e) {}
+document.getElementById('themeBtn').onclick = () => {
+  const dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  root.dataset.theme = dark ? 'light' : 'dark';
+  try { localStorage.setItem(KEY, root.dataset.theme); } catch (e) {}
+};
+// 网上运行时图片从 Cloudflare 加载（网页仓库里只放 HTML）；本机、局域网、file:// 用相对路径。
+// ?assets=remote / pages / local 强制，和故事页一样
+const HOSTS = { remote: 'https://meler-stories-assets.melerpaine.com/', pages: 'https://meler-stories-assets.pages.dev/' };
+const q = new URLSearchParams(location.search).get('assets');
+const local = location.protocol === 'file:' || /^(localhost|127\.|10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.|\[::1\]$)|\.local$/.test(location.hostname);
+const BASE = HOSTS[q] || (q !== 'local' && !local ? HOSTS.remote : '');
+document.querySelectorAll('.pic img').forEach(img => { img.src = BASE + img.dataset.src; });
+// 封面先显示静态图，鼠标移上去（或手机上滚到眼前）再叠上动图短片，省流量
+const play = v => { if (!v.src) { v.src = BASE + v.dataset.src; v.onplaying = () => v.classList.add('on'); } v.play().catch(() => {}); };
+document.querySelectorAll('.pic video').forEach(v => {
+  const card = v.closest('.card');
+  card.addEventListener('pointerenter', () => play(v));
+  card.addEventListener('pointerleave', () => v.pause());
+});
+if (matchMedia('(hover: none)').matches && 'IntersectionObserver' in window) {
+  const io = new IntersectionObserver(es => es.forEach(en => en.isIntersecting ? play(en.target) : en.target.pause()), { threshold: .6 });
+  document.querySelectorAll('.pic video').forEach(v => io.observe(v));
+}
+</script>
+</body>
+</html>
