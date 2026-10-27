@@ -45,6 +45,13 @@ main { max-width: 1100px; margin: 0 auto; padding: 0 16px 60px;
 .tag { align-self: flex-start; background: var(--tag); border-radius: 99px; padding: 2px 10px; font-size: 12px; color: var(--ink-soft); }
 .body h2 { font-family: "Kaiti SC", "STKaiti", "KaiTi", serif; font-size: 30px; margin: 2px 0 0; color: var(--sea-deep); font-weight: normal; }
 .body p { margin: 0; line-height: 1.7; color: var(--ink-soft); font-size: 15px; flex: 1; }
+.card .main { display: flex; flex-direction: column; flex: 1; color: inherit; text-decoration: none; }
+.versions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 20px 20px; }
+.versions a { display: flex; flex-direction: column; gap: 2px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px;
+  text-decoration: none; color: var(--sea-deep); background: var(--paper); transition: background .2s, border-color .2s; }
+.versions a:hover { background: var(--paper-2); border-color: var(--sea); }
+.versions b { font-size: 16px; font-weight: 600; }
+.versions span { font-size: 12px; color: var(--ink-soft); line-height: 1.5; }
 .facts { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13px; color: var(--sea); margin-top: 6px; }
 footer { text-align: center; color: var(--ink-soft); font-size: 13px; padding: 0 16px 40px; line-height: 1.8; }
 @media (max-width: 520px) { header { padding-top: 56px; } main { gap: 20px; } }
@@ -55,20 +62,25 @@ footer { text-align: center; color: var(--ink-soft); font-size: 13px; padding: 0
   <button id="themeBtn" title="切换深浅色">主题</button>
   <div class="kicker">有声绘本</div>
   <h1>故事屋</h1>
-  <p>10 个故事 · 共约 196 分钟 · 点开就能读、能听、能看图</p>
+  <p>10 个故事 · 共约 435 分钟 · 点开就能读、能听、能看图</p>
 </header>
 <main>
-  <a class="card" href="little-mermaid/index.html">
-    <div class="pic"><img data-src="little-mermaid/images/04.webp" alt="海的女儿封面" loading="eager"><video data-src="little-mermaid/images/04.mp4" muted loop playsinline preload="none"></video></div>
+  <div class="card">
+    <a class="main" href="little-mermaid/index.html">
+    <div class="pic"><img data-src="little-mermaid/images/04.webp?v=8a086c8afa" alt="海的女儿封面" loading="eager"><video data-src="little-mermaid/images/04.mp4?v=88a790fa40" muted loop playsinline preload="none"></video></div>
     <div class="body">
       <span class="tag">安徒生童话</span>
       <h2>海的女儿</h2>
       <p>住在深海里的小美人鱼，为了爱和一个永恒的灵魂，用美妙的歌声换来一双腿……</p>
-      <div class="facts"><span>13 章</span><span>44 幅插画</span><span>2 首插曲</span><span>3 首配乐</span><span>约 33 分钟</span></div>
     </div>
-  </a>
+    </a>
+    <nav class="versions" aria-label="海的女儿的版本">
+      <a href="little-mermaid/index.html"><b>精简版</b><span>13 章 · 44 幅插画<br>约 33 分钟</span></a>
+      <a href="little-mermaid-full/index.html"><b>完整版</b><span>24 章 · 87 幅插画<br>约 58 分钟</span></a>
+    </nav>
+  </div>
   <a class="card" href="rapunzel/index.html">
-    <div class="pic"><img data-src="rapunzel/images/12.webp" alt="莴苣姑娘封面" loading="eager"><video data-src="rapunzel/images/12.mp4" muted loop playsinline preload="none"></video></div>
+    <div class="pic"><img data-src="rapunzel/images/12.webp?v=f907fdad1d" alt="莴苣姑娘封面" loading="eager"><video data-src="rapunzel/images/12.mp4?v=7d0c3f65fb" muted loop playsinline preload="none"></video></div>
     <div class="body">
       <span class="tag">格林童话</span>
       <h2>莴苣姑娘</h2>
@@ -76,26 +88,36 @@ footer { text-align: center; color: var(--ink-soft); font-size: 13px; padding: 0
       <div class="facts"><span>11 章</span><span>34 幅插画</span><span>2 首插曲</span><span>3 首配乐</span><span>约 15 分钟</span></div>
     </div>
   </a>
-  <a class="card" href="wizard-of-oz/index.html">
-    <div class="pic"><img data-src="wizard-of-oz/images/25.webp" alt="绿野仙踪封面" loading="lazy"><video data-src="wizard-of-oz/images/25.mp4" muted loop playsinline preload="none"></video></div>
+  <div class="card">
+    <a class="main" href="wizard-of-oz/index.html">
+    <div class="pic"><img data-src="wizard-of-oz/images/25.webp?v=35d45238cb" alt="绿野仙踪封面" loading="lazy"><video data-src="wizard-of-oz/images/25.mp4?v=d15e14da71" muted loop playsinline preload="none"></video></div>
     <div class="body">
       <span class="tag">鲍姆童话</span>
       <h2>绿野仙踪</h2>
       <p>一阵龙卷风把多萝西吹到了奥兹国。她和想要脑子的稻草人、想要心的铁皮人、想要勇气的狮子，一起踏上了黄砖路……</p>
-      <div class="facts"><span>15 章</span><span>60 幅插画</span><span>2 首插曲</span><span>3 首配乐</span><span>约 19 分钟</span></div>
     </div>
-  </a>
-  <a class="card" href="alice/index.html">
-    <div class="pic"><img data-src="alice/images/26.webp" alt="爱丽丝漫游奇境封面" loading="lazy"><video data-src="alice/images/26.mp4" muted loop playsinline preload="none"></video></div>
+    </a>
+    <nav class="versions" aria-label="绿野仙踪的版本">
+      <a href="wizard-of-oz/index.html"><b>精简版</b><span>15 章 · 60 幅插画<br>约 20 分钟</span></a>
+      <a href="wizard-of-oz-full/index.html"><b>完整版</b><span>28 章 · 97 幅插画<br>约 42 分钟</span></a>
+    </nav>
+  </div>
+  <div class="card">
+    <a class="main" href="alice/index.html">
+    <div class="pic"><img data-src="alice/images/26.webp?v=66188890d3" alt="爱丽丝漫游奇境封面" loading="lazy"><video data-src="alice/images/26.mp4?v=dfce5e4568" muted loop playsinline preload="none"></video></div>
     <div class="body">
       <span class="tag">卡罗尔童话</span>
       <h2>爱丽丝漫游奇境</h2>
       <p>跟着一只拿怀表的白兔子掉进兔子洞，爱丽丝一会儿变大、一会儿变小，遇见了柴郡猫、疯帽子和凶巴巴的红心王后……</p>
-      <div class="facts"><span>14 章</span><span>57 幅插画</span><span>2 首插曲</span><span>3 首配乐</span><span>约 18 分钟</span></div>
     </div>
-  </a>
+    </a>
+    <nav class="versions" aria-label="爱丽丝漫游奇境的版本">
+      <a href="alice/index.html"><b>精简版</b><span>14 章 · 57 幅插画<br>约 18 分钟</span></a>
+      <a href="alice-full/index.html"><b>完整版</b><span>27 章 · 96 幅插画<br>约 54 分钟</span></a>
+    </nav>
+  </div>
   <a class="card" href="monkey-king/index.html">
-    <div class="pic"><img data-src="monkey-king/images/37.webp" alt="大闹天宫封面" loading="lazy"><video data-src="monkey-king/images/37.mp4" muted loop playsinline preload="none"></video></div>
+    <div class="pic"><img data-src="monkey-king/images/37.webp?v=3716168c05" alt="大闹天宫封面" loading="lazy"><video data-src="monkey-king/images/37.mp4?v=a3f67a0ed0" muted loop playsinline preload="none"></video></div>
     <div class="body">
       <span class="tag">西游记</span>
       <h2>大闹天宫</h2>
@@ -104,7 +126,7 @@ footer { text-align: center; color: var(--ink-soft); font-size: 13px; padding: 0
     </div>
   </a>
   <a class="card" href="lotus-lantern/index.html">
-    <div class="pic"><img data-src="lotus-lantern/images/47.webp" alt="宝莲灯封面" loading="lazy"><video data-src="lotus-lantern/images/47.mp4" muted loop playsinline preload="none"></video></div>
+    <div class="pic"><img data-src="lotus-lantern/images/47.webp?v=42b572998c" alt="宝莲灯封面" loading="lazy"><video data-src="lotus-lantern/images/47.mp4?v=0474d676b6" muted loop playsinline preload="none"></video></div>
     <div class="body">
       <span class="tag">中国民间传说</span>
       <h2>宝莲灯</h2>
@@ -113,7 +135,7 @@ footer { text-align: center; color: var(--ink-soft); font-size: 13px; padding: 0
     </div>
   </a>
   <a class="card" href="thumbelina/index.html">
-    <div class="pic"><img data-src="thumbelina/images/05.webp" alt="拇指姑娘封面" loading="lazy"><video data-src="thumbelina/images/05.mp4" muted loop playsinline preload="none"></video></div>
+    <div class="pic"><img data-src="thumbelina/images/05.webp?v=f6f728b734" alt="拇指姑娘封面" loading="lazy"><video data-src="thumbelina/images/05.mp4?v=f0bc8ddf41" muted loop playsinline preload="none"></video></div>
     <div class="body">
       <span class="tag">安徒生童话</span>
       <h2>拇指姑娘</h2>
@@ -121,26 +143,36 @@ footer { text-align: center; color: var(--ink-soft); font-size: 13px; padding: 0
       <div class="facts"><span>15 章</span><span>57 幅插画</span><span>2 首插曲</span><span>3 首配乐</span><span>约 17 分钟</span></div>
     </div>
   </a>
-  <a class="card" href="pinocchio/index.html">
-    <div class="pic"><img data-src="pinocchio/images/33.webp" alt="木偶奇遇记封面" loading="lazy"><video data-src="pinocchio/images/33.mp4" muted loop playsinline preload="none"></video></div>
+  <div class="card">
+    <a class="main" href="pinocchio/index.html">
+    <div class="pic"><img data-src="pinocchio/images/33.webp?v=2cd127b191" alt="木偶奇遇记封面" loading="lazy"><video data-src="pinocchio/images/33.mp4?v=4d4fc26da2" muted loop playsinline preload="none"></video></div>
     <div class="body">
       <span class="tag">科洛迪童话</span>
       <h2>木偶奇遇记</h2>
       <p>老木匠杰佩托用一块会说话的木头做了个木偶，叫匹诺曹。他贪玩、爱说谎，一说谎鼻子就变长，还差点变成了驴子……</p>
-      <div class="facts"><span>15 章</span><span>57 幅插画</span><span>2 首插曲</span><span>3 首配乐</span><span>约 18 分钟</span></div>
     </div>
-  </a>
-  <a class="card" href="grimm/index.html">
-    <div class="pic"><img data-src="grimm/images/07.webp" alt="格林童话精选封面" loading="lazy"><video data-src="grimm/images/07.mp4" muted loop playsinline preload="none"></video></div>
+    </a>
+    <nav class="versions" aria-label="木偶奇遇记的版本">
+      <a href="pinocchio/index.html"><b>精简版</b><span>15 章 · 57 幅插画<br>约 18 分钟</span></a>
+      <a href="pinocchio-full/index.html"><b>完整版</b><span>28 章 · 102 幅插画<br>约 38 分钟</span></a>
+    </nav>
+  </div>
+  <div class="card">
+    <a class="main" href="grimm/index.html">
+    <div class="pic"><img data-src="grimm/images/07.webp?v=947abd2632" alt="格林童话精选封面" loading="lazy"><video data-src="grimm/images/07.mp4?v=568f9f206b" muted loop playsinline preload="none"></video></div>
     <div class="body">
       <span class="tag">格林童话</span>
       <h2>格林童话精选</h2>
       <p>糖果屋里的老巫婆、魔镜和毒苹果、井边的青蛙、森林里的大灰狼、女扮男装的十二个猎人、四个动物音乐家，还有用金子换来换去的汉斯——七个最有名的格林童话，一次听个够。</p>
-      <div class="facts"><span>17 章</span><span>73 幅插画</span><span>2 首插曲</span><span>4 首配乐</span><span>约 27 分钟</span></div>
     </div>
-  </a>
+    </a>
+    <nav class="versions" aria-label="格林童话精选的版本">
+      <a href="grimm/index.html"><b>精简版</b><span>17 章 · 73 幅插画<br>约 28 分钟</span></a>
+      <a href="grimm-full/index.html"><b>完整版</b><span>26 章 · 113 幅插画<br>约 46 分钟</span></a>
+    </nav>
+  </div>
   <a class="card" href="beauty-beast/index.html">
-    <div class="pic"><img data-src="beauty-beast/images/36.webp" alt="美女与野兽封面" loading="lazy"><video data-src="beauty-beast/images/36.mp4" muted loop playsinline preload="none"></video></div>
+    <div class="pic"><img data-src="beauty-beast/images/36.webp?v=aac8392343" alt="美女与野兽封面" loading="lazy"><video data-src="beauty-beast/images/36.mp4?v=d34ed50dcb" muted loop playsinline preload="none"></video></div>
     <div class="body">
       <span class="tag">法国童话</span>
       <h2>美女与野兽</h2>

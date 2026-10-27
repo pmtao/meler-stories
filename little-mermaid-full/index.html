@@ -1,0 +1,784 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E📖%3C/text%3E%3C/svg%3E">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>海的女儿 · 有声绘本</title>
+<style>
+:root {
+  --paper: #f8f3e8;
+  --paper-2: #f1e9d8;
+  --ink: #2c2a33;
+  --ink-soft: #6b6672;
+  --sea: #1d6c88;
+  --sea-deep: #123f55;
+  --line: #e2d7c1;
+  --mark: #ffe39a;
+  --mark-ink: #2c2a33;
+  --done: #8d8792;
+  --bar: rgba(255, 252, 245, .94);
+  --shadow: 0 8px 30px rgba(30, 50, 70, .14);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0f1a23; --paper-2: #15232f; --ink: #e9e4d8; --ink-soft: #a29fa8;
+    --sea: #6cc3dd; --sea-deep: #9fdcef; --line: #263744; --mark: rgba(255, 210, 110, .26);
+    --mark-ink: #fff6dc; --done: #8b8a90; --bar: rgba(17, 29, 39, .94);
+    --shadow: 0 8px 30px rgba(0, 0, 0, .45); color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0f1a23; --paper-2: #15232f; --ink: #e9e4d8; --ink-soft: #a29fa8;
+  --sea: #6cc3dd; --sea-deep: #9fdcef; --line: #263744; --mark: rgba(255, 210, 110, .26);
+  --mark-ink: #fff6dc; --done: #8b8a90; --bar: rgba(17, 29, 39, .94);
+  --shadow: 0 8px 30px rgba(0, 0, 0, .45); color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-padding-top: 30vh; }
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font-family: -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+button { font: inherit; color: inherit; }
+
+/* 封面 */
+.cover { position: relative; min-height: 92vh; display: flex; align-items: flex-end; overflow: hidden; color: #fff; }
+.cover img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.cover::after { content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(8, 25, 40, 0) 30%, rgba(8, 25, 40, .55) 62%, rgba(8, 25, 40, .9)); }
+.cover-in { position: relative; z-index: 1; width: 100%; max-width: 760px; margin: 0 auto; padding: 0 20px 56px; }
+.kicker { letter-spacing: .3em; font-size: 13px; opacity: .85; }
+.home { position: absolute; top: 18px; left: 20px; z-index: 2; color: #fff; text-decoration: none; font-size: 14px;
+  padding: 7px 14px; border-radius: 999px; background: rgba(8, 25, 40, .35); backdrop-filter: blur(6px); }
+.home:hover { background: rgba(8, 25, 40, .55); }
+.cover h1 { font-family: "Kaiti SC", "STKaiti", "KaiTi", serif; font-size: clamp(48px, 11vw, 84px);
+  margin: 10px 0 6px; letter-spacing: .12em; font-weight: 700; text-shadow: 0 4px 24px rgba(0, 0, 0, .35); }
+.cover p { margin: 0 0 22px; max-width: 30em; line-height: 1.8; opacity: .92; font-size: 15px; }
+.cover .meta { font-size: 13px; opacity: .78; margin-bottom: 24px; }
+.versions { display: flex; flex-wrap: wrap; gap: 8px; margin: -10px 0 24px; }
+.versions a, .versions span { font-size: 13px; padding: 5px 14px; border-radius: 999px; color: #fff; text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, .5); background: rgba(8, 25, 40, .3); }
+.versions a:hover { background: rgba(8, 25, 40, .55); }
+.versions[hidden] { display: none; }
+.versions .on { background: #fff; color: #123f55; border-color: #fff; font-weight: 600; }
+.cta { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn { border: 0; border-radius: 999px; padding: 13px 26px; font-size: 16px; cursor: pointer; font-weight: 600;
+  display: inline-flex; align-items: center; gap: 8px; }
+.btn-main { background: #fff; color: #123f55; }
+.btn-ghost { background: rgba(255, 255, 255, .16); color: #fff; backdrop-filter: blur(6px);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .4); }
+.btn:hover { filter: brightness(1.05); }
+.btn[hidden] { display: none; }
+.btn svg { width: 18px; height: 18px; }
+
+/* 目录 */
+.toc { max-width: 760px; margin: 0 auto; padding: 40px 20px 8px; }
+.toc-home { float: right; letter-spacing: .05em; font-weight: 500; color: var(--sea); text-decoration: none; }
+.toc h2 { font-size: 15px; letter-spacing: .2em; color: var(--ink-soft); font-weight: 600; margin: 0 0 14px; }
+.toc ol { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 8px; }
+.toc li button { width: 100%; text-align: left; background: var(--paper-2); border: 0; border-radius: 12px;
+  padding: 11px 14px; cursor: pointer; display: flex; justify-content: space-between; gap: 10px; font-size: 15px; }
+.toc li button:hover { box-shadow: inset 0 0 0 1px var(--sea); }
+.toc li button.now { box-shadow: inset 0 0 0 2px var(--sea); }
+.toc .dur { color: var(--ink-soft); font-size: 13px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* 正文 */
+main { max-width: 760px; margin: 0 auto; padding: 8px 20px 160px; }
+.chapter { padding-top: 48px; }
+.chapter h2 { font-family: "Kaiti SC", "STKaiti", "KaiTi", serif; font-size: 30px; color: var(--sea-deep);
+  margin: 0 0 22px; padding: 4px 10px; margin-left: -10px; border-radius: 10px; cursor: pointer;
+  transition: background .3s; letter-spacing: .06em; }
+.chapter h2 small { display: block; font-family: -apple-system, "PingFang SC", sans-serif; font-size: 13px;
+  color: var(--ink-soft); letter-spacing: .2em; font-weight: 500; margin-bottom: 4px; }
+.story p { font-family: "Kaiti SC", "STKaiti", "KaiTi", "Songti SC", serif; font-size: 21px; line-height: 2.05;
+  margin: 0 0 1.1em; text-align: justify; text-indent: 2em; }
+.s { cursor: pointer; border-radius: 6px; padding: 2px 0; transition: background .35s, color .35s, box-shadow .35s;
+  -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.s:hover { background: color-mix(in srgb, var(--mark) 45%, transparent); }
+.s.on, h2.on { background: var(--mark); color: var(--mark-ink); box-shadow: 0 0 0 3px var(--mark); }
+.reading .s.past { color: var(--done); }
+figure { margin: 30px -20px 34px; }
+figure .pic { position: relative; }
+figure img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 0;
+  background: var(--paper-2); cursor: zoom-in; box-shadow: var(--shadow); }
+/* 动图是叠在静态图上的循环短片，开始播放才显出来 */
+figure video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 0;
+  cursor: zoom-in; opacity: 0; transition: opacity .4s; }
+figure video.on { opacity: 1; }
+figcaption { text-align: center; color: var(--ink-soft); font-size: 14px; margin-top: 12px; letter-spacing: .05em; padding: 0 20px; }
+figcaption b { color: var(--sea); font-weight: 600; margin-right: 6px; font-variant-numeric: tabular-nums; }
+@media (min-width: 800px) { figure { margin: 36px -40px 40px; } figure img, figure video { border-radius: 18px; } }
+.note { font-size: 15px; line-height: 1.9; color: var(--ink-soft); background: var(--paper-2); border-radius: 14px;
+  padding: 16px 20px; margin-top: 28px; }
+.song { margin: 6px 0 30px; padding: 20px 16px 22px; text-align: center; border-radius: 18px;
+  background: linear-gradient(var(--paper-2), transparent); }
+.song h3 { margin: 0 0 12px; font-family: "Kaiti SC", "STKaiti", "KaiTi", serif; font-size: 22px; font-weight: normal;
+  color: var(--sea-deep); letter-spacing: .1em; display: inline-block; padding: 2px 12px; border-radius: 8px; cursor: pointer;
+  transition: background .35s, box-shadow .35s; }
+.song h3::before { content: '♪ '; color: var(--sea); }
+.song h3.on { background: var(--mark); color: var(--mark-ink); box-shadow: 0 0 0 3px var(--mark); }
+.song .s { display: table; margin: 2px auto; padding: 1px 10px; font-family: "Kaiti SC", "STKaiti", "KaiTi", serif;
+  font-size: 19px; line-height: 1.9; font-style: italic; color: var(--ink-soft); }
+.song .s.on { color: var(--mark-ink); }
+.end-mark { text-align: center; color: var(--ink-soft); margin: 40px 0 0; font-size: 14px; letter-spacing: .3em; }
+/* 书末的「欣赏插曲」：全书插曲的播放列表 */
+.songlist { margin: 40px 0 0; padding: 24px 18px 22px; text-align: center; border-radius: 18px;
+  background: linear-gradient(var(--paper-2), transparent); }
+.songlist h3 { margin: 0 0 4px; font-family: "Kaiti SC", "STKaiti", "KaiTi", serif; font-size: 24px; font-weight: normal;
+  color: var(--sea-deep); letter-spacing: .1em; }
+.songlist .sub { margin: 0 0 16px; font-size: 14px; color: var(--ink-soft); }
+.btn-song { background: var(--sea); color: #fff; display: inline-flex; align-items: center; gap: 8px; }
+.songlist ol { list-style: none; padding: 0; margin: 18px 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 8px; text-align: left; counter-reset: song; }
+.songlist li button { width: 100%; display: grid; grid-template-columns: auto 1fr; column-gap: 10px; row-gap: 2px; align-items: baseline;
+  text-align: left; background: var(--paper); color: var(--ink); border: 0; border-radius: 12px; padding: 10px 14px; font-size: 15px; cursor: pointer; }
+.songlist li button::before { counter-increment: song; content: counter(song); grid-row: span 2; color: var(--sea); font-weight: 600;
+  font-variant-numeric: tabular-nums; }
+.songlist li button:hover { box-shadow: inset 0 0 0 1px var(--sea); }
+.songlist li button.now { box-shadow: inset 0 0 0 2px var(--sea); }
+.songlist .dur { color: var(--ink-soft); font-size: 13px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* 播放条 */
+.player { position: fixed; left: 0; right: 0; bottom: 0; z-index: 10; background: var(--bar);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-top: 1px solid var(--line);
+  padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); transform: translateY(0); transition: transform .3s; }
+.player-in { max-width: 760px; margin: 0 auto; }
+.now-line { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-size: 13px; color: var(--ink-soft); }
+.now-line .title { color: var(--ink); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: none; max-width: 60%; }
+.now-left { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
+/* 插图名称：纯图 / 左图右文模式下显示在章节标题右边 */
+.now-cap { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.now-cap:empty, body[data-mode="read"] .now-cap { display: none; }
+.time { font-variant-numeric: tabular-nums; white-space: nowrap; }
+/* 进度条：深色是已播放，浅色是已经下载好的部分（--seek-bg 由 paintSeek() 按 audio.buffered 算），网络慢时一眼看出还要等多久 */
+.seek { -webkit-appearance: none; appearance: none; display: block; width: 100%; margin: 8px 0 6px; height: 18px;
+  background: transparent; cursor: pointer; --seek-bg: var(--line); }
+.seek::-webkit-slider-runnable-track { height: 5px; border-radius: 3px; background: var(--seek-bg); }
+.seek::-moz-range-track { height: 5px; border-radius: 3px; background: var(--seek-bg); }
+.seek::-webkit-slider-thumb { -webkit-appearance: none; width: 15px; height: 15px; margin-top: -5px; border: 0;
+  border-radius: 50%; background: var(--sea); box-shadow: 0 1px 3px rgba(0, 0, 0, .25); }
+.seek::-moz-range-thumb { width: 15px; height: 15px; border: 0; border-radius: 50%; background: var(--sea);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .25); }
+/* 缓冲中：播放键外圈转圈 */
+.play { position: relative; }
+.play::after { content: ''; position: absolute; inset: -4px; border-radius: 50%; border: 2.5px solid transparent;
+  border-top-color: var(--sea); border-right-color: var(--sea); opacity: 0; transition: opacity .2s; pointer-events: none; }
+body.buffering .play::after { opacity: 1; animation: spin .9s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.ctrls { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+.ctrls .mid { display: flex; align-items: center; gap: 4px; }
+.ib { width: 42px; height: 42px; border-radius: 50%; border: 0; background: transparent; cursor: pointer;
+  display: grid; place-items: center; color: var(--ink); }
+.ib:hover { background: var(--paper-2); }
+.ib svg { width: 22px; height: 22px; }
+.play { width: 54px; height: 54px; background: var(--sea); color: #fff; }
+.play:hover { background: var(--sea); filter: brightness(1.08); }
+.play svg { width: 26px; height: 26px; }
+.pill { border: 0; background: var(--paper-2); border-radius: 999px; padding: 7px 12px; font-size: 13px;
+  cursor: pointer; min-width: 58px; font-variant-numeric: tabular-nums; }
+.pill[aria-pressed="false"] { opacity: .55; }
+.side { display: flex; gap: 6px; align-items: center; }
+
+/* 看大图 */
+.lightbox { position: fixed; inset: 0; z-index: 20; background: rgba(5, 12, 18, .92); display: none;
+  align-items: center; justify-content: center; padding: 16px; cursor: zoom-out; flex-direction: column; gap: 14px; }
+.lightbox.open { display: flex; }
+.lightbox img { max-width: 100%; max-height: 86vh; border-radius: 10px; }
+.lightbox p { color: #e8e4da; margin: 0; font-size: 15px; text-align: center; }
+
+.toast { position: fixed; left: 50%; bottom: 150px; transform: translateX(-50%); background: var(--sea-deep);
+  color: var(--paper); padding: 8px 16px; border-radius: 999px; font-size: 14px; opacity: 0; pointer-events: none;
+  transition: opacity .3s; z-index: 15; }
+.toast.show { opacity: .95; }
+
+/* 插图舞台：纯图模式铺满屏幕，左图右文模式占左半边 */
+.stage { display: none; position: fixed; left: 0; right: 0; top: 0; bottom: var(--ph, 120px); z-index: 5;
+  background: #07121b; overflow: hidden; cursor: pointer; }
+.stage-bg { position: absolute; inset: -40px; background-size: cover; background-position: center;
+  filter: blur(28px) brightness(.55) saturate(1.2); transition: background-image .8s; }
+.stage img, .stage video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0;
+  transition: opacity .9s ease; }
+.stage img.show, .stage video.show { opacity: 1; }
+.stage video { transition-duration: .4s; }
+.stage-top { position: absolute; left: 0; right: 0; top: 0; padding: 14px 18px 30px; color: #fff; display: flex;
+  justify-content: space-between; align-items: baseline; gap: 6px 16px; flex-wrap: wrap;
+  font-size: 14px; letter-spacing: .1em; background: linear-gradient(rgba(5, 15, 25, .6), transparent); pointer-events: none; }
+/* 纯图模式的字幕：当前朗读的句子 */
+.stage-sub { position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%); width: max-content;
+  max-width: min(92%, 960px); padding: 10px 20px; border-radius: 14px; background: rgba(4, 12, 20, .3);
+  color: #fff; text-align: center; pointer-events: none;
+  text-shadow: 0 0 2px rgba(0, 0, 0, .9), 0 1px 3px rgba(0, 0, 0, .8), 0 0 12px rgba(0, 0, 0, .55);
+  font-family: "Kaiti SC", "STKaiti", "KaiTi", serif; font-size: clamp(19px, 2.4vw, 30px); line-height: 1.55;
+  letter-spacing: .03em; transition: opacity .25s; }
+.stage-sub:empty, .stage-sub.fade { opacity: 0; }
+body:not([data-mode="picture"]) .stage-sub { display: none; }
+body[data-mode="picture"] .toast { bottom: auto; top: 64px; }
+@media (max-width: 520px) {
+  .stage-top { flex-direction: column; }
+  .stage-sub { bottom: 16px; padding: 8px 14px; }
+}
+.stage-play { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 84px; height: 84px;
+  border-radius: 50%; border: 0; background: rgba(255, 255, 255, .9); color: #123f55; display: grid; place-items: center;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, .35); cursor: pointer; transition: opacity .3s; }
+.stage-play svg { width: 38px; height: 38px; margin-left: 4px; }
+body.playing .stage-play { opacity: 0; pointer-events: none; }
+
+body[data-mode="picture"] .cover, body[data-mode="picture"] .toc, body[data-mode="picture"] main { display: none; }
+body[data-mode="picture"] .stage { display: block; }
+body[data-mode="picture"] #followBtn { display: none; }
+
+@media (min-width: 900px) {
+  body[data-mode="split"] .stage { display: block; right: 50%; }
+  body[data-mode="split"] .stage img, body[data-mode="split"] .stage video { object-fit: cover; }
+  body[data-mode="split"] .stage-bg, body[data-mode="split"] .stage-play { display: none; }
+  body[data-mode="split"] .cover { display: none; }
+  body[data-mode="split"] .toc, body[data-mode="split"] main { margin-left: 50%; max-width: none; padding-left: 48px; padding-right: 48px; }
+  body[data-mode="split"] main figure { display: none; }
+  body[data-mode="split"] .chapter:first-child { padding-top: 24px; }
+}
+
+/* 横屏手机：播放条收紧，把高度留给插图 */
+@media (max-height: 500px) {
+  .player { padding-top: 4px; padding-bottom: calc(4px + env(safe-area-inset-bottom)); }
+  .now-line { display: none; }
+  .seek { margin: 2px 0; }
+  .play { width: 44px; height: 44px; }
+  .ib { width: 36px; height: 36px; }
+}
+
+@media (max-width: 520px) {
+  .story p { font-size: 19px; line-height: 1.95; }
+  .chapter h2 { font-size: 26px; }
+  .side .pill.opt { display: none; }
+  .pill { padding: 6px 9px; min-width: 0; font-size: 12px; }
+  #prevCh, #nextCh { display: none; }
+  .side { gap: 4px; }
+  .ib { width: 38px; height: 38px; }
+}
+</style>
+</head>
+<body>
+
+<header class="cover" id="top">
+  <img id="coverImg" alt="">
+  <a class="home" href="../index.html">‹ 故事目录</a>
+  <div class="cover-in">
+    <div class="kicker" id="kicker"></div>
+    <h1 id="bookTitle"></h1>
+    <p id="intro"></p>
+    <div class="meta" id="meta"></div>
+    <div class="versions" id="versions" hidden></div>
+    <div class="cta">
+      <button class="btn btn-main" id="startBtn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>从头开始听</button>
+      <button class="btn btn-ghost" id="resumeBtn" hidden></button>
+    </div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="目录">
+  <h2>目　录<a class="toc-home" href="../index.html">更多故事 ›</a></h2>
+  <ol id="toc"></ol>
+</nav>
+
+<main class="story" id="story"></main>
+
+<div class="stage" id="stage" aria-label="插图">
+  <div class="stage-bg" id="stageBg"></div>
+  <img alt=""><img alt=""><video id="stageVid" muted loop playsinline></video>
+  <div class="stage-top"><span id="stageTop"></span></div>
+  <div class="stage-sub" id="stageSub" aria-live="polite"></div>
+  <button class="stage-play" id="stagePlay" aria-label="播放"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg></button>
+</div>
+
+<div class="player" id="player">
+  <div class="player-in">
+    <div class="now-line"><span class="now-left"><span class="title" id="nowTitle"></span><span class="now-cap" id="stageCap"></span></span><span class="time" id="nowTime">00:00 / 00:00</span></div>
+    <input class="seek" id="seek" type="range" min="0" max="100" step="0.1" value="0" aria-label="本章进度">
+    <div class="ctrls">
+      <div class="side">
+        <button class="pill" id="modeBtn" title="切换显示模式：阅读 / 左图右文 / 纯图">阅读</button>
+        <button class="pill" id="speedBtn" title="朗读速度">1.0×</button>
+        <button class="pill opt" id="followBtn" aria-pressed="true" title="朗读时自动翻到正在读的地方">跟读</button>
+      </div>
+      <div class="mid">
+        <button class="ib" id="prevCh" title="上一章"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg></button>
+        <button class="ib" id="prevS" title="上一句（←）"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+        <button class="ib play" id="playBtn" title="播放 / 暂停（空格）"></button>
+        <button class="ib" id="nextS" title="下一句（→）"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+        <button class="ib" id="nextCh" title="下一章"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 6h2v12h-2zM6 18l8.5-6L6 6z"/></svg></button>
+      </div>
+      <div class="side">
+        <button class="pill" id="animBtn" title="插图用动图还是静态图">动图</button>
+        <button class="pill opt" id="themeBtn" title="切换深浅色">主题</button>
+        <button class="pill" id="tocBtn" title="回到目录">目录</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="lightbox" id="lightbox"><img alt=""><p></p></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const BOOK = {"id": "little-mermaid-full", "title": "海的女儿", "intro": "根据安徒生童话《海的女儿》完整改写：原著里的情节一个不少，五个姐姐的海上见闻、海底舞会、去海巫婆家的路、邻国的婚礼和空气的女儿们都讲到了。适合 6 岁以上的小朋友和爸爸妈妈一起读、一起听，可以分几个晚上听完。", "kicker": "安徒生童话", "cover": "images/04.webp?v=8a086c8afa", "voice": "Seren（温和舒缓的姐姐），本地 Qwen3-TTS 复刻音色", "chapters": [{"title": "第一章　海底的王宫", "head": "c01-h", "audio": "audio/ch01.m4a?v=6ab9245676", "duration": 160.477, "times": {"c01-h": [0.0, 3.918], "c01-001": [4.918, 13.51], "c01-002": [13.86, 23.147], "c01-003": [23.997, 28.287], "c01-004": [28.637, 40.288], "c01-005": [40.638, 47.903], "c01-006": [48.753, 53.403], "c01-007": [53.753, 63.702], "c01-008": [64.052, 72.102], "c01-009": [72.452, 78.222], "c01-010": [79.072, 85.883], "c01-011": [86.233, 98.852], "c01-012": [99.702, 105.237], "c01-013": [105.587, 112.679], "c01-014": [113.529, 117.13], "c01-015": [117.48, 124.84], "c01-016": [125.19, 133.151], "c01-017": [134.001, 141.082], "c01-018": [141.432, 150.364], "c01-019": [150.714, 158.977]}, "blocks": [{"t": "img", "src": "images/01.webp?v=a8e07de353", "vid": "images/01.mp4?v=13823d5568", "cap": "蓝蓝的深海里，长着会摇摆的奇异花草", "n": 1}, {"t": "p", "s": [["c01-001", "在很远很远的大海里，海水蓝得像矢车菊的花瓣，又清得像最亮的玻璃。"], ["c01-002", "那里的海非常非常深，就算把好多好多座教堂的尖塔一座接一座地叠起来，也够不到海面。"]]}, {"t": "p", "s": [["c01-003", "你可不要以为，海底只有光秃秃的白沙。"], ["c01-004", "那里长着奇异的树和花，它们的叶子和枝条软软的，海水轻轻一动，它们就跟着摇摆，好像活的一样。"], ["c01-005", "大鱼小鱼在枝叶中间穿来穿去，就像陆地上的鸟儿在树林里飞。"]]}, {"t": "img", "src": "images/24.webp?v=20a4ad9278", "vid": "images/24.mp4?v=4a46b05b03", "cap": "珊瑚砌成的海王宫殿", "n": 2}, {"t": "p", "s": [["c01-006", "在海底最深的地方，有一座海王的宫殿。"], ["c01-007", "宫殿的墙是用珊瑚砌成的，又高又尖的窗子是用最亮的琥珀做的，屋顶上铺着黑色的贝壳。"], ["c01-008", "贝壳一张一合，随着海水呼吸，每一片贝壳里都躺着一颗亮晶晶的珍珠。"], ["c01-009", "随便哪一颗，都能放在王后的王冠上，做最显眼的装饰。"]]}, {"t": "img", "src": "images/25.webp?v=f79935d750", "vid": "images/25.mp4?v=dba496a765", "cap": "老祖母和六位小公主", "n": 3}, {"t": "p", "s": [["c01-010", "海王的妻子很早就去世了，宫里的事由他年老的母亲来照料。"], ["c01-011", "老祖母是一位聪明的老太太，她对自己高贵的出身很得意，所以她的尾巴上总是戴着十二只牡蛎，别的贵族最多只能戴六只。"]]}, {"t": "p", "s": [["c01-012", "除了这一点小小的骄傲，老祖母是一位非常慈祥的老人。"], ["c01-013", "她最疼爱的，是海王的六个小公主，六个女孩儿都长得很美。"]]}, {"t": "p", "s": [["c01-014", "其中最小的那一位，是最美的一个。"], ["c01-015", "她的皮肤像玫瑰花瓣一样光滑细嫩，她的眼睛像最深的海水一样蓝。"], ["c01-016", "不过，和姐姐们一样，她没有腿，她的身体下面是一条闪闪发光的鱼尾巴。"]]}, {"t": "img", "src": "images/45.webp?v=f3bff29b1d", "vid": "images/45.mp4?v=6ed8152801", "cap": "小公主们在大厅里，鱼儿从琥珀窗游进来", "n": 4}, {"t": "p", "s": [["c01-017", "公主们整天在宫殿的大厅里玩耍，大厅的墙上长着鲜活的花朵。"], ["c01-018", "琥珀做的大窗子一打开，鱼儿就游进来，就像我们打开窗子，燕子会飞进屋里一样。"], ["c01-019", "鱼儿一直游到小公主们的面前，在她们的手里吃东西，还让她们轻轻地摸一摸。"]]}]}, {"title": "第二章　小花园", "head": "c02-h", "audio": "audio/ch02.m4a?v=e03915655d", "duration": 115.652, "times": {"c02-h": [0.0, 2.688], "c02-001": [3.688, 17.699], "c02-002": [18.049, 23.327], "c02-003": [24.177, 35.572], "c02-004": [35.922, 45.119], "c02-005": [45.969, 51.549], "c02-006": [52.399, 59.728], "c02-007": [60.078, 69.172], "c02-008": [70.022, 74.829], "c02-009": [75.179, 84.433], "c02-010": [84.783, 91.032], "c02-011": [91.882, 97.388], "c02-012": [97.738, 106.748], "c02-013": [107.098, 114.152]}, "blocks": [{"t": "img", "src": "images/02.webp?v=49db3f1c59", "vid": "images/02.mp4?v=a3addbf7be", "cap": "六位公主各有一小块花园", "n": 5}, {"t": "p", "s": [["c02-001", "宫殿外面有一座大花园，长着火红色和深蓝色的树，果子亮得像金子，花儿像燃烧的小火苗，花梗和叶子一刻不停地摇摆着。"], ["c02-002", "地上铺着最细的沙子，蓝得像硫磺燃烧时的火焰。"]]}, {"t": "p", "s": [["c02-003", "海底的一切都罩着一层奇异的蓝光，你会以为自己是站在高高的空中，头上脚下都是蓝天，而不是在海底。"], ["c02-004", "海水平静的时候，可以看见太阳，它像一朵紫色的花，从花心里流出各种颜色的光。"]]}, {"t": "p", "s": [["c02-005", "六位公主每人都有一小块花园，可以随自己的心意种花。"]]}, {"t": "p", "s": [["c02-006", "大姐把花坛做成一头鲸鱼的样子，二姐把花坛做成一条小美人鱼的样子。"], ["c02-007", "可是最小的公主，把她的花坛做成圆圆的，像太阳一样，里面只种红得像太阳的花。"]]}, {"t": "img", "src": "images/26.webp?v=7738ad0439", "vid": "images/26.mp4?v=1cee7cb55c", "cap": "她只喜欢那尊大理石雕像", "n": 6}, {"t": "p", "s": [["c02-008", "小公主是个安静的孩子，常常一个人想心事。"], ["c02-009", "别的姐姐喜欢收集沉船里捡来的稀奇东西，她却只喜欢一件东西：一尊大理石雕像。"], ["c02-010", "那是一个英俊男孩的石像，是从一艘沉船上落到海底的。"]]}, {"t": "p", "s": [["c02-011", "她在雕像旁边种了一棵垂柳一样的红色珊瑚树。"], ["c02-012", "珊瑚树长得很茂盛，枝条垂下来，一直垂到蓝色的沙地上，投下紫色的影子。"], ["c02-013", "影子跟着枝条轻轻摇动，好像树梢和树根在互相亲吻。"]]}]}, {"title": "第三章　老祖母讲的故事", "head": "c03-h", "audio": "audio/ch03.m4a?v=a998c381e0", "duration": 138.453, "times": {"c03-h": [0.0, 3.034], "c03-001": [4.034, 8.077], "c03-002": [8.427, 15.403], "c03-003": [16.253, 21.178], "c03-004": [21.528, 29.815], "c03-005": [30.165, 40.378], "c03-006": [41.228, 47.628], "c03-007": [47.978, 55.006], "c03-008": [55.856, 59.957], "c03-009": [60.307, 71.876], "c03-010": [72.726, 81.888], "c03-011": [82.238, 87.631], "c03-012": [88.481, 94.991], "c03-013": [95.341, 105.785], "c03-014": [106.135, 115.312], "c03-015": [116.162, 120.435], "c03-016": [120.785, 128.131], "c03-017": [128.481, 136.953]}, "blocks": [{"t": "img", "src": "images/03.webp?v=5fbe00d871", "vid": "images/03.mp4?v=72f92ce236", "cap": "老祖母讲着海面上的世界", "n": 7}, {"t": "p", "s": [["c03-001", "她最喜欢听老祖母讲海面上的世界。"], ["c03-002", "老祖母把她知道的船只、城市、人和动物，全都讲给她听。"]]}, {"t": "p", "s": [["c03-003", "老祖母说：“陆地上的花是会散发香气的。"], ["c03-004", "那里的森林是绿色的，在树枝间游来游去的鱼儿会唱歌，唱得又清脆又好听。”"], ["c03-005", "老祖母说的鱼儿，其实就是小鸟，因为小公主们从来没有见过鸟，要是说鸟，她们就听不懂了。"]]}, {"t": "p", "s": [["c03-006", "老祖母说：“等你们满了十五岁，我就准许你们浮到海面上去。"], ["c03-007", "你们可以坐在月光下的礁石上，看大船从身边开过，还能看到森林和城市。”"]]}, {"t": "p", "s": [["c03-008", "第二年，大姐就要满十五岁了。"], ["c03-009", "姐妹们一个比一个小一岁，所以最小的公主还得等上整整五年，才能从海底浮上去，看看我们这个世界。"]]}, {"t": "p", "s": [["c03-010", "姐妹们互相约好：谁先上去，就要把第一天看到的、觉得最美的东西，回来讲给大家听。"], ["c03-011", "因为老祖母讲得还不够多，她们想知道的事情实在太多了。"]]}, {"t": "img", "src": "images/46.webp?v=a8af57c87a", "vid": "images/46.mp4?v=2e2352d0a1", "cap": "夜里，她透过海水望着月亮", "n": 8}, {"t": "p", "s": [["c03-012", "没有谁比最小的公主更盼望了，偏偏她要等的时间最长。"], ["c03-013", "许多个夜晚，她站在打开的窗子边，透过深蓝色的海水往上望，看着鱼儿摆动着尾巴和鳍。"], ["c03-014", "她能看到月亮和星星，虽然它们的光很淡，可是透过海水，它们显得比我们看到的大得多。"]]}, {"t": "img", "src": "images/47.webp?v=14fecdb4ef", "vid": "images/47.mp4?v=d2296decd9", "cap": "一团黑影从头顶滑过，那是一艘大船", "n": 9}, {"t": "p", "s": [["c03-015", "有时候，一团黑影从星星下面滑过去。"], ["c03-016", "她知道，那要么是一头鲸鱼游过，要么是一艘大船，船上坐满了人。"], ["c03-017", "那些人做梦也想不到，在他们下面，有一个美丽的小美人鱼，正向着船底伸出她白白的小手。"]]}]}, {"title": "第四章　大姐和二姐", "head": "c04-h", "audio": "audio/ch04.m4a?v=2f702a9ca3", "duration": 107.526, "times": {"c04-h": [0.0, 3.025], "c04-001": [4.025, 8.569], "c04-002": [9.418, 13.193], "c04-003": [13.543, 21.339], "c04-004": [21.689, 35.504], "c04-005": [35.854, 40.589], "c04-006": [41.439, 44.495], "c04-007": [44.845, 55.178], "c04-008": [55.528, 60.44], "c04-009": [66.002, 71.328], "c04-010": [71.678, 79.751], "c04-011": [80.601, 87.217], "c04-012": [87.567, 92.149], "c04-013": [92.499, 98.694], "c04-014": [99.044, 106.026]}, "blocks": [{"t": "p", "s": [["c04-001", "大姐满了十五岁，可以浮到海面上去了。"]]}, {"t": "img", "src": "images/27.webp?v=2f228e47a9", "vid": "images/27.mp4?v=ee3d857685", "cap": "姐姐们浮上海面，看见了城市的灯光", "n": 10}, {"t": "p", "s": [["c04-002", "她回来的时候，有一百件事情要讲。"], ["c04-003", "她说，最美的是在月光下躺在海边的沙滩上，望着海岸上的大城市。"], ["c04-004", "城里的灯光像几百颗星星一样闪烁，还能听到音乐声、马车的声音和人们说话的声音，还有教堂的尖塔和钟楼，钟声叮叮当当地响。"], ["c04-005", "正因为她到不了那里，所以她最想去的就是那里。"]]}, {"t": "p", "s": [["c04-006", "最小的公主听得多么入神啊！"], ["c04-007", "那天晚上，她又站在打开的窗子边，透过深蓝色的海水往上望，想着那座又大又热闹的城市。"], ["c04-008", "她好像听见了教堂的钟声，一直传到海底来。"]]}, {"t": "img", "src": "images/48.webp?v=9d17f83b1b", "vid": "images/48.mp4?v=29721d3cb2", "cap": "二姐看见天鹅向落山的太阳飞去", "n": 11}, {"t": "p", "s": [["c04-009", "第二年，二姐可以浮上去了，可以随便游到哪里去。"], ["c04-010", "她浮出海面的时候，太阳正好落山，她觉得这是她见过的最美的景象。"]]}, {"t": "p", "s": [["c04-011", "二姐说：“整个天空都像金子一样，那些云朵啊，我简直说不出它们有多美！"], ["c04-012", "它们一会儿是红色的，一会儿是紫色的，就在我的头顶上飘过去。"], ["c04-013", "还有一群野天鹅，像一条长长的白纱，贴着海面，向着落山的太阳飞去。"], ["c04-014", "我也朝着太阳游过去，可是太阳沉下去了，海面和云朵上的玫瑰色，也慢慢地消失了。”"]]}]}, {"title": "第五章　三姐、四姐和五姐", "head": "c05-h", "audio": "audio/ch05.m4a?v=1b51ed8387", "duration": 186.726, "times": {"c05-h": [0.0, 4.582], "c05-001": [5.582, 9.191], "c05-002": [9.541, 16.103], "c05-003": [16.953, 22.541], "c05-004": [22.891, 27.013], "c05-005": [27.363, 30.197], "c05-006": [30.547, 37.384], "c05-007": [38.234, 47.178], "c05-008": [47.528, 53.464], "c05-009": [53.814, 60.952], "c05-010": [61.302, 67.978], "c05-011": [68.828, 79.588], "c05-012": [80.438, 83.764], "c05-013": [84.114, 86.876], "c05-014": [87.226, 101.268], "c05-015": [102.118, 108.078], "c05-016": [108.428, 115.624], "c05-017": [116.474, 118.401], "c05-018": [118.751, 125.891], "c05-019": [126.741, 131.444], "c05-020": [131.794, 140.554], "c05-021": [140.904, 146.232], "c05-022": [147.082, 152.847], "c05-023": [153.197, 157.45], "c05-024": [157.8, 168.44], "c05-025": [173.507, 185.226]}, "blocks": [{"t": "img", "src": "images/49.webp?v=8069d80e86", "vid": "images/49.mp4?v=4aa845ac27", "cap": "三姐游进了大河，看见葡萄山和城堡", "n": 12}, {"t": "p", "s": [["c05-001", "又过了一年，三姐浮上去了。"], ["c05-002", "她是姐妹里胆子最大的，她游进了一条流进大海的宽阔的河。"]]}, {"t": "p", "s": [["c05-003", "她看见了美丽的绿色山丘，山上种满了一行一行的葡萄。"], ["c05-004", "宫殿和农庄在茂密的树林里露出头来。"], ["c05-005", "她听见各种各样的鸟儿在唱歌。"], ["c05-006", "太阳晒得暖暖的，她常常要潜到水里，让发烫的脸凉快一下。"]]}, {"t": "img", "src": "images/50.webp?v=215db7fab0", "vid": "images/50.mp4?v=9d01ed5e13", "cap": "小海湾里，人类的孩子们在玩水", "n": 13}, {"t": "img", "src": "images/51.webp?v=8c88c2387c", "vid": "images/51.mp4?v=523e70312a", "cap": "一条黑色的小狗对着她汪汪叫", "n": 14}, {"t": "p", "s": [["c05-007", "在一个小海湾里，她看见一群人类的小孩子，光着身子在水里跑来跑去，拍着水玩。"], ["c05-008", "她很想和他们一起玩，可是孩子们一看见她，就吓得跑掉了。"], ["c05-009", "接着，来了一只黑色的小动物，那是一条小狗，可是她从来没有见过狗。"], ["c05-010", "小狗对着她汪汪地叫个不停，她害怕极了，赶紧游回了大海。"]]}, {"t": "p", "s": [["c05-011", "可是她永远也忘不了那片美丽的森林、绿色的山丘，还有那些可爱的孩子：他们没有鱼尾巴，却也会游泳。"]]}, {"t": "img", "src": "images/52.webp?v=530dda4e08", "vid": "images/52.mp4?v=87468c6c07", "cap": "四姐在大海中央，看见鲸鱼喷水", "n": 15}, {"t": "p", "s": [["c05-012", "四姐的胆子就没有那么大了。"], ["c05-013", "她一直待在大海的中央。"], ["c05-014", "她说，那里才是最美的地方：从那里朝四周望去，好多好多里远，什么也挡不住，天空就像一口大大的玻璃钟，罩在头顶上。"]]}, {"t": "p", "s": [["c05-015", "四姐说：“我看见了大船，可是它们离得很远，看起来像一群海鸥。"], ["c05-016", "海豚在海浪里翻跟头，大鲸鱼从鼻孔里往上喷水，就好像周围有几百个喷泉在喷水一样。”"]]}, {"t": "p", "s": [["c05-017", "接着轮到了五姐。"], ["c05-018", "她的生日正好在冬天，所以她看到了别的姐姐们没有见过的东西。"]]}, {"t": "img", "src": "images/53.webp?v=45694eb33b", "vid": "images/53.mp4?v=60792fcbf1", "cap": "五姐坐在像珍珠一样的冰山上", "n": 16}, {"t": "p", "s": [["c05-019", "大海是绿色的，四周漂着巨大的冰山。"], ["c05-020", "五姐说，每一座冰山都像一颗大珍珠，可是比人类造的教堂塔楼还要高大得多。"], ["c05-021", "冰山的样子千奇百怪，闪着像钻石一样的光。"]]}, {"t": "img", "src": "images/54.webp?v=de58d4cb1c", "vid": "images/54.mp4?v=67885bb0d2", "cap": "闪电照亮了冰山，五姐安静地坐着", "n": 17}, {"t": "p", "s": [["c05-022", "她坐在一座最大的冰山上，让海风吹着她长长的头发。"], ["c05-023", "所有的船都吓得远远地绕开她驶过去。"], ["c05-024", "傍晚，天上布满了乌云，电光一闪一闪，雷声隆隆地响，红色的闪电照在冰山上。"], ["c05-025", "船上的人都很害怕，赶紧收起了帆，五姐却安安静静地坐在冰山上，看着蓝色的闪电弯弯曲曲地射进闪亮的大海。"]]}]}, {"title": "第六章　姐姐们的歌", "head": "c06-h", "audio": "audio/ch06.m4a?v=6ccfb35306", "duration": 95.156, "times": {"c06-h": [0.0, 2.688], "c06-001": [3.688, 9.95], "c06-002": [10.3, 18.017], "c06-003": [18.367, 25.07], "c06-004": [25.92, 33.345], "c06-005": [33.695, 37.47], "c06-006": [38.32, 44.895], "c06-007": [45.245, 52.099], "c06-008": [52.449, 58.073], "c06-009": [58.423, 65.718], "c06-010": [66.568, 78.115], "c06-011": [78.465, 83.983], "c06-012": [84.833, 88.806], "c06-013": [89.156, 93.656]}, "blocks": [{"t": "p", "s": [["c06-001", "姐姐们第一次浮上海面的时候，都对看到的新鲜东西着了迷。"], ["c06-002", "可是后来，她们长大了，可以随时浮上去了，也就不觉得那么稀奇了。"], ["c06-003", "过了一个月，她们都说，还是海底最好，待在家里最舒服。"]]}, {"t": "img", "src": "images/55.webp?v=99f36b763d", "vid": "images/55.mp4?v=27e19766dc", "cap": "五个姐姐在暴风雨前为水手唱歌", "n": 18}, {"t": "p", "s": [["c06-004", "可是到了傍晚，五个姐姐常常手挽着手，排成一排，一起浮上海面。"], ["c06-005", "她们的声音比任何人类的声音都好听。"]]}, {"t": "p", "s": [["c06-006", "当暴风雨快要来的时候，她们就游到船的前面，唱起好听的歌。"], ["c06-007", "她们唱的是海底有多么美丽，叫水手们不要害怕沉到海底去。"], ["c06-008", "可是水手们听不懂她们的歌，还以为那是暴风雨的声音。"], ["c06-009", "他们也永远看不到海底的美景，因为人一沉到海底，就再也活不过来了。"]]}, {"t": "img", "src": "images/28.webp?v=339b23635a", "vid": "images/28.mp4?v=be50c655d3", "cap": "姐姐们浮上去了，她独自留在海底", "n": 19}, {"t": "p", "s": [["c06-010", "每当姐姐们挽着手，一起浮上海面的时候，最小的公主就独自留在下面，望着她们的背影，真想哭出来。"], ["c06-011", "可是美人鱼是没有眼泪的，所以她心里更难过了。"]]}, {"t": "p", "s": [["c06-012", "她说：“啊，我要是满十五岁该多好啊！"], ["c06-013", "我知道，我一定会喜欢上面的世界，也会喜欢住在那里的人。”"]]}]}, {"title": "第七章　十五岁", "head": "c07-h", "audio": "audio/ch07.m4a?v=5d247db6a7", "duration": 92.599, "times": {"c07-h": [0.0, 2.385], "c07-001": [3.385, 6.722], "c07-002": [7.572, 11.738], "c07-003": [12.088, 16.942], "c07-004": [17.292, 25.018], "c07-005": [25.868, 34.126], "c07-006": [34.976, 38.048], "c07-007": [38.898, 43.285], "c07-008": [44.135, 52.385], "c07-009": [52.735, 57.757], "c07-010": [58.107, 60.061], "c07-011": [60.911, 61.622], "c07-012": [61.972, 67.895], "c07-013": [72.483, 80.447], "c07-014": [80.797, 85.59], "c07-015": [85.94, 91.099]}, "blocks": [{"t": "img", "src": "images/29.webp?v=a5750b445b", "vid": "images/29.mp4?v=83b4be071e", "cap": "老祖母给她戴上百合花环", "n": 20}, {"t": "p", "s": [["c07-001", "终于，她也满了十五岁。"]]}, {"t": "p", "s": [["c07-002", "老祖母说：“好啦，你也长大了。"], ["c07-003", "来吧，让我像打扮你的姐姐们一样，打扮打扮你。”"], ["c07-004", "老祖母在她的头发上戴了一个白百合花环，每一片花瓣都是半颗珍珠。"]]}, {"t": "img", "src": "images/56.webp?v=1e6b83af27", "vid": "images/56.mp4?v=35945da07f", "cap": "老祖母把八只大牡蛎夹在她的尾巴上", "n": 21}, {"t": "p", "s": [["c07-005", "老祖母还叫来八只大牡蛎，紧紧地夹在小公主的尾巴上，表示她是一位高贵的公主。"]]}, {"t": "p", "s": [["c07-006", "小公主说：“哎哟，好疼啊！”"]]}, {"t": "p", "s": [["c07-007", "老祖母说：“要漂亮，就得忍着点儿疼。”"]]}, {"t": "p", "s": [["c07-008", "其实，小公主真想把这些华丽的装饰全都甩掉，把沉甸甸的花环摘下来。"], ["c07-009", "她花园里那些红色的花，戴起来要好看得多。"], ["c07-010", "可是她不敢这样做。"]]}, {"t": "p", "s": [["c07-011", "“再见啦！”"], ["c07-012", "小公主说着，像一个气泡一样，轻轻地向上浮去。"]]}, {"t": "img", "src": "images/04.webp?v=8a086c8afa", "vid": "images/04.mp4?v=88a790fa40", "cap": "十五岁那天，她第一次浮出海面", "n": 22}, {"t": "p", "s": [["c07-013", "她把头伸出海面的时候，太阳刚刚落下去，云朵还是玫瑰色和金色的。"], ["c07-014", "在淡红色的天空里，第一颗星星亮了起来。"], ["c07-015", "空气又柔和又新鲜，海面一点儿波浪也没有。"]]}]}, {"title": "第八章　船上的生日", "head": "c08-h", "audio": "audio/ch08.m4a?v=ee6992d65a", "duration": 145.535, "times": {"c08-h": [0.0, 2.734], "c08-001": [3.734, 8.024], "c08-002": [8.374, 15.599], "c08-003": [15.949, 18.658], "c08-004": [19.008, 27.44], "c08-005": [28.29, 31.495], "c08-006": [31.845, 40.627], "c08-007": [40.977, 48.132], "c08-008": [48.482, 54.402], "c08-009": [55.252, 58.562], "c08-010": [58.912, 67.16], "c08-011": [72.15, 75.764], "c08-012": [76.114, 83.292], "c08-013": [84.142, 86.728], "c08-014": [87.078, 97.635], "c08-015": [97.985, 105.183], "c08-016": [106.033, 109.095], "c08-017": [109.445, 115.648], "c08-018": [116.498, 120.505], "c08-019": [120.855, 123.124], "c08-020": [123.474, 131.011], "c08-021": [131.361, 136.108], "c08-022": [136.458, 144.035]}, "blocks": [{"t": "img", "src": "images/05.webp?v=5c712ec0eb", "vid": "images/05.mp4?v=539447a012", "cap": "船上正在庆祝王子的生日", "n": 23}, {"t": "p", "s": [["c08-001", "海面上停着一艘有三根桅杆的大船。"], ["c08-002", "因为没有风，船上只挂起了一面帆，水手们坐在桅杆和绳子上。"], ["c08-003", "船上响着音乐和歌声。"], ["c08-004", "天黑以后，船上点起了几百盏彩色的灯笼，好像全世界的旗子都在空中飘扬。"]]}, {"t": "img", "src": "images/57.webp?v=a3a9b95332", "vid": "images/57.mp4?v=2c48ade0b1", "cap": "她游到船舱的窗边，看见了王子", "n": 24}, {"t": "p", "s": [["c08-005", "小公主一直游到船舱的窗边。"], ["c08-006", "每当海浪把她托起来，她就能透过明亮的玻璃窗，看见里面站着许多穿着漂亮衣服的人。"], ["c08-007", "其中最好看的，是一位年轻的王子，他有一双又大又黑的眼睛。"], ["c08-008", "原来，今天是王子的十六岁生日，所以大家才这样热闹。"]]}, {"t": "p", "s": [["c08-009", "水手们在甲板上跳起舞来。"], ["c08-010", "王子走出船舱的时候，一百多支烟火一起升上天空，把夜晚照得像白天一样亮。"], ["c08-011", "小公主吓了一跳，赶紧沉到水里。"], ["c08-012", "可是过了一会儿，她又忍不住把头伸出来，看着满天的星星好像都落了下来。"]]}, {"t": "img", "src": "images/58.webp?v=15b883f488", "vid": "images/58.mp4?v=c2c9cfcdcc", "cap": "满天的烟火，像火鱼在天空游", "n": 25}, {"t": "p", "s": [["c08-013", "她从来没有见过烟火。"], ["c08-014", "巨大的火球在空中旋转，鲜艳的火鱼在蓝色的天空里游来游去，平静的海面把这一切都映了出来。"], ["c08-015", "船上亮得连每一根细细的绳子都看得清清楚楚，人就更不用说了。"]]}, {"t": "p", "s": [["c08-016", "那位年轻的王子多么好看啊！"], ["c08-017", "他和每个人握手，笑着，音乐声在美丽的夜空里飘荡。"]]}, {"t": "img", "src": "images/59.webp?v=f4b3731c37", "vid": "images/59.mp4?v=ad9d39774b", "cap": "夜深了，她还舍不得离开", "n": 26}, {"t": "p", "s": [["c08-018", "夜深了，小公主还是舍不得离开。"], ["c08-019", "她一直望着那位王子。"], ["c08-020", "彩色的灯笼熄灭了，烟火不再升上天空，礼炮也不响了。"], ["c08-021", "可是在海的深处，传来一阵阵低沉的隆隆声。"], ["c08-022", "小公主坐在水面上，随着海浪一上一下地摇着，好往船舱里多看几眼。"]]}]}, {"title": "第九章　暴风雨", "head": "c09-h", "audio": "audio/ch09.m4a?v=6f1df7b623", "duration": 248.533, "times": {"c09-h": [0.0, 2.284], "c09-001": [3.284, 8.776], "c09-002": [9.126, 16.481], "c09-003": [21.548, 24.169], "c09-004": [24.519, 32.47], "c09-005": [33.32, 42.109], "c09-006": [42.459, 48.207], "c09-007": [49.057, 52.636], "c09-008": [56.217, 59.95], "c09-009": [60.3, 65.211], "c09-010": [65.561, 72.02], "c09-011": [72.87, 75.314], "c09-012": [75.664, 81.377], "c09-013": [81.727, 85.025], "c09-014": [85.875, 92.451], "c09-015": [92.801, 97.308], "c09-016": [97.658, 103.22], "c09-017": [104.07, 106.033], "c09-018": [106.883, 112.473], "c09-019": [112.823, 117.034], "c09-020": [117.384, 119.797], "c09-021": [120.147, 124.335], "c09-022": [124.685, 128.452], "c09-023": [128.802, 134.38], "c09-024": [135.23, 138.233], "c09-025": [138.583, 146.302], "c09-026": [146.652, 152.788], "c09-027": [153.138, 157.775], "c09-028": [158.125, 161.858], "c09-029": [162.708, 174.306], "c09-030": [174.656, 180.926], "c09-031": [181.276, 187.765], "c09-032": [188.115, 193.697], "c09-033": [194.547, 201.166], "c09-034": [206.228, 214.22], "c09-035": [215.07, 218.001], "c09-036": [218.351, 221.746], "c09-037": [222.096, 226.681], "c09-038": [227.031, 235.865], "c09-039": [236.715, 239.169], "c09-040": [239.519, 247.033]}, "blocks": [{"t": "img", "src": "images/06.webp?v=98610bcfb2", "vid": "images/06.mp4?v=a6a6fb117c", "cap": "暴风雨来了，大浪像黑色的高山", "n": 27}, {"t": "p", "s": [["c09-001", "船开得越来越快，帆一面一面地张开了。"], ["c09-002", "海浪越来越高，乌云压了过来，远处闪起了电光，打起了可怕的雷。"], ["c09-003", "水手们赶紧收起了帆。"], ["c09-004", "大船摇摇晃晃，大浪像黑色的高山一样，一次又一次地向船扑过来。"]]}, {"t": "p", "s": [["c09-005", "大船像一只天鹅，一会儿被浪托上高高的浪尖，一会儿又沉进深深的浪谷。"], ["c09-006", "小公主觉得这样游真有意思，可是水手们一点儿也不这样想。"]]}, {"t": "img", "src": "images/60.webp?v=01bcd0ae5c", "vid": "images/60.mp4?v=19d6bbabd9", "cap": "主桅断了，王子掉进了大海", "n": 28}, {"t": "p", "s": [["c09-007", "“咔嚓”一声，大船的主桅断了。"], ["c09-008", "船身歪倒，海水冲进了船舱。"], ["c09-009", "小公主这才明白，船上的人遇到了危险。"], ["c09-010", "她自己也得小心，因为水面上漂满了船的横梁和木板。"]]}, {"t": "p", "s": [["c09-011", "天黑得什么也看不见。"], ["c09-012", "可是一道闪电亮起来的时候，一切又都看得清清楚楚。"], ["c09-013", "她看见王子掉进了深深的大海。"]]}, {"t": "p", "s": [["c09-014", "一开始，她还高兴了一下，因为王子可以到她的宫殿里来了。"], ["c09-015", "可是她马上想起来：人是不能在水里生活的。"], ["c09-016", "王子只有变成没有生命的样子，才能到海王的宫殿里去。"]]}, {"t": "p", "s": [["c09-017", "“不，他绝对不能死！”"]]}, {"t": "img", "src": "images/30.webp?v=21e2b52175", "vid": "images/30.mp4?v=d3e850cf73", "cap": "她在漂来漂去的木头之间拼命地游", "n": 29}, {"t": "p", "s": [["c09-018", "她在漂来漂去的木头之间拼命地游，一点儿也不怕被它们撞伤。"], ["c09-019", "她一会儿沉下去，一会儿又浮上来。"], ["c09-020", "终于，她找到了王子。"], ["c09-021", "王子已经没有力气了，眼睛紧紧闭着。"], ["c09-022", "要是小公主没有赶到，他一定会死的。"], ["c09-023", "小公主把他的头托出水面，让海浪带着他们漂。"]]}, {"t": "img", "src": "images/07.webp?v=bcdfeec586", "vid": "images/07.mp4?v=26a92398cb", "cap": "她托着王子，在海浪里漂了一整夜", "n": 30}, {"t": "p", "s": [["c09-024", "天亮了，暴风雨停了。"], ["c09-025", "太阳升起来，把红色的光洒在海面上，王子的脸颊好像也有了一点儿血色。"], ["c09-026", "小公主轻轻吻了吻他的额头，把他湿漉漉的长发拨到后面。"], ["c09-027", "她觉得，他很像她花园里的那尊大理石雕像。"], ["c09-028", "她又吻了吻他，希望他能活过来。"]]}, {"t": "img", "src": "images/61.webp?v=94291ef316", "vid": "images/61.mp4?v=938c650cd8", "cap": "她托着王子游向有雪山和神庙的海岸", "n": 31}, {"t": "p", "s": [["c09-029", "她看见前面有一片陆地，远处有高高的蓝色的山，山顶的白雪亮闪闪的，好像一群卧着的天鹅。"], ["c09-030", "海岸边是一片美丽的绿色树林，树林前面有一座神庙。"], ["c09-031", "岸边有一片小海湾，水很平静，下面是细细的白沙。"], ["c09-032", "她把王子托到沙滩上，让他的头靠在温暖的阳光里。"]]}, {"t": "img", "src": "images/08.webp?v=b61e64b2c0", "vid": "images/08.mp4?v=8f4bb54cc3", "cap": "她躲在礁石后面，看着姑娘发现了王子", "n": 32}, {"t": "p", "s": [["c09-033", "不一会儿，神庙里的钟声响了，一群年轻的姑娘走进了花园。"], ["c09-034", "小公主赶紧游到远处的几块礁石后面，用海水的泡沫盖住头发，静静地看着。"]]}, {"t": "p", "s": [["c09-035", "一位年轻的姑娘发现了王子。"], ["c09-036", "她吃了一惊，马上叫来了别的人。"], ["c09-037", "王子醒了过来，对着身边的每一个人微笑。"], ["c09-038", "可是，他没有对小公主微笑，因为他根本不知道，是谁把他从大海里救了出来。"]]}, {"t": "p", "s": [["c09-039", "小公主心里难过极了。"], ["c09-040", "王子被抬进了那座高大的房子，她就沉进水里，悲伤地回到了父亲的宫殿。"]]}]}, {"title": "第十章　思念", "head": "c10-h", "audio": "audio/ch10.m4a?v=a48facdb16", "duration": 85.175, "times": {"c10-h": [0.0, 2.521], "c10-001": [3.521, 9.331], "c10-002": [9.681, 15.124], "c10-003": [15.974, 21.392], "c10-004": [21.742, 28.78], "c10-005": [29.13, 35.626], "c10-006": [36.476, 45.681], "c10-007": [46.031, 55.807], "c10-008": [56.657, 62.133], "c10-009": [62.483, 65.162], "c10-010": [65.512, 72.798], "c10-011": [73.648, 74.715], "c10-012": [75.065, 76.502], "c10-013": [76.852, 83.675]}, "blocks": [{"t": "img", "src": "images/31.webp?v=3488b8570f", "vid": "images/31.mp4?v=57eb10fb44", "cap": "她一次次浮到放下王子的地方", "n": 33}, {"t": "p", "s": [["c10-001", "从那以后，小公主变得更加安静，更加爱想心事了。"], ["c10-002", "姐姐们问她第一次去海面上看见了什么，她什么也不说。"]]}, {"t": "p", "s": [["c10-003", "许多个早晨和傍晚，她都浮到那个放下王子的地方。"], ["c10-004", "她看见花园里的果子熟了，被人摘走；她看见山顶上的雪化了。"], ["c10-005", "可是她一次也没有见到王子，于是每次回家，都比上一次更难过。"]]}, {"t": "img", "src": "images/09.webp?v=3992b0f058", "vid": "images/09.mp4?v=9077c46ca8", "cap": "她抱着那尊大理石雕像，想念王子", "n": 34}, {"t": "p", "s": [["c10-006", "她唯一的安慰，就是坐在自己的小花园里，用手臂抱住那尊很像王子的大理石雕像。"], ["c10-007", "她不再照顾她的花，花儿长得乱糟糟的，长长的枝叶缠在一起，把小花园遮得暗暗的。"]]}, {"t": "p", "s": [["c10-008", "后来，她实在忍不住了，就把心事告诉了一个姐姐。"], ["c10-009", "其他的姐姐也就都知道了。"], ["c10-010", "有一位美人鱼姐姐，正好知道那位王子是谁，也知道他的王宫在哪里。"]]}, {"t": "img", "src": "images/10.webp?v=c28326343e", "vid": "images/10.mp4?v=c0de1bd0c8", "cap": "姐姐们手挽着手，带她去看王子的王宫", "n": 35}, {"t": "p", "s": [["c10-011", "“来吧，小妹妹！”"], ["c10-012", "姐姐们说。"], ["c10-013", "她们手挽着手，排成长长的一排，浮到了王子的王宫前面。"]]}]}, {"title": "第十一章　王子的王宫", "head": "c11-h", "audio": "audio/ch11.m4a?v=025f71f65b", "duration": 154.934, "times": {"c11-h": [0.0, 4.162], "c11-001": [5.162, 12.937], "c11-002": [13.287, 21.648], "c11-003": [22.498, 34.513], "c11-004": [34.863, 47.741], "c11-005": [48.591, 54.097], "c11-006": [54.447, 61.966], "c11-007": [62.316, 66.662], "c11-008": [67.012, 76.339], "c11-009": [77.189, 87.292], "c11-010": [87.642, 90.981], "c11-011": [91.331, 98.524], "c11-012": [99.374, 103.951], "c11-013": [104.301, 111.681], "c11-014": [112.031, 118.637], "c11-015": [118.987, 125.03], "c11-016": [125.88, 130.877], "c11-017": [131.227, 144.08], "c11-018": [144.43, 153.434]}, "blocks": [{"t": "img", "src": "images/62.webp?v=1aff5d8e05", "vid": "images/62.mp4?v=eb925bca06", "cap": "王子的王宫，大理石台阶一直通到海里", "n": 36}, {"t": "p", "s": [["c11-001", "那座王宫是用淡黄色的石头砌成的，有宽大的大理石台阶，一直通到海里。"], ["c11-002", "屋顶上有金色的圆顶，柱子中间站着一尊尊大理石像，好像活人一样。"]]}, {"t": "img", "src": "images/63.webp?v=096c4502a4", "vid": "images/63.mp4?v=383cc6d9c1", "cap": "大厅中央的喷泉和玻璃圆屋顶", "n": 37}, {"t": "p", "s": [["c11-003", "透过高大明亮的窗子，可以看见华丽的大厅，里面挂着贵重的丝绸窗帘和绣着图画的挂毯，墙上挂满了美丽的画。"], ["c11-004", "最大的大厅中央有一个喷泉，水柱一直喷向玻璃做的圆屋顶，阳光透过玻璃，照在水上，也照在大水池里长着的美丽植物上。"]]}, {"t": "img", "src": "images/32.webp?v=2800b590a7", "vid": "images/32.mp4?v=e740188abe", "cap": "月光下，她静静地看着王子", "n": 38}, {"t": "p", "s": [["c11-005", "从那以后，小公主常常在傍晚和夜里游到那里。"], ["c11-006", "她游得比谁都近，甚至游进窄窄的水道，一直游到大理石的阳台下面。"], ["c11-007", "阳台在水面上投下长长的影子。"], ["c11-008", "她就坐在那里，在月光下，静静地看着那位年轻的王子，王子还以为只有他一个人呢。"]]}, {"t": "img", "src": "images/64.webp?v=67557b14df", "vid": "images/64.mp4?v=d8ed6aa36a", "cap": "王子的小船奏着音乐，她躲在芦苇里", "n": 39}, {"t": "p", "s": [["c11-009", "许多个晚上，她看见王子坐着一艘漂亮的小船出海，船上奏着音乐，旗子迎风飘扬。"], ["c11-010", "她躲在绿色的芦苇里偷偷地看。"], ["c11-011", "风吹起她银白色的长纱，有人看见了，还以为是一只天鹅在张开翅膀。"]]}, {"t": "img", "src": "images/65.webp?v=1128bc9972", "vid": "images/65.mp4?v=878f69d7c9", "cap": "渔夫们打着火把，说着王子的好事", "n": 40}, {"t": "p", "s": [["c11-012", "许多个夜里，渔夫们打着火把在海上捕鱼。"], ["c11-013", "她听见他们说起王子做的许多好事，心里就更高兴了：是她救了他的命啊。"], ["c11-014", "她想起王子的头曾经靠在她的怀里，她曾经那么温柔地吻过他。"], ["c11-015", "可是王子一点儿也不知道这件事，他连做梦也不会梦见她。"]]}, {"t": "p", "s": [["c11-016", "她越来越喜欢人类，越来越想走到他们中间去。"], ["c11-017", "她觉得，人类的世界比她的世界大得多：他们坐着船在海上飞驶，他们能爬上高高的山，一直爬到云朵上面。"], ["c11-018", "他们的土地上有森林、有田野，远远地伸展开去，她的眼睛怎么望也望不到头。"]]}]}, {"title": "第十二章　灵魂", "head": "c12-h", "audio": "audio/ch12.m4a?v=dedbfb5dd3", "duration": 171.708, "times": {"c12-h": [0.0, 2.727], "c12-001": [3.727, 9.729], "c12-002": [10.079, 19.026], "c12-003": [19.876, 24.446], "c12-004": [24.796, 26.961], "c12-005": [27.811, 31.247], "c12-006": [31.597, 34.532], "c12-007": [34.882, 44.458], "c12-008": [44.808, 51.968], "c12-009": [52.818, 58.406], "c12-010": [58.756, 67.178], "c12-011": [67.528, 76.444], "c12-012": [77.294, 81.881], "c12-013": [82.231, 87.986], "c12-014": [88.836, 92.201], "c12-015": [92.551, 96.23], "c12-016": [97.08, 108.356], "c12-017": [108.706, 111.73], "c12-018": [112.58, 116.107], "c12-019": [116.457, 126.733], "c12-020": [127.083, 130.587], "c12-021": [130.937, 137.188], "c12-022": [137.538, 146.246], "c12-023": [147.096, 152.579], "c12-024": [153.429, 162.027], "c12-025": [162.377, 166.051], "c12-026": [166.401, 170.208]}, "blocks": [{"t": "img", "src": "images/33.webp?v=84230e52df", "vid": "images/33.mp4?v=d7b047ded0", "cap": "她问老祖母：人类会永远活着吗？", "n": 41}, {"t": "p", "s": [["c12-001", "她想知道的事情太多了，姐姐们回答不了，她就去问老祖母。"], ["c12-002", "老祖母对上面的世界知道得很清楚，她把它叫作“海上的国家”，这个名字一点儿也不错。"]]}, {"t": "p", "s": [["c12-003", "小公主问老祖母：“人类要是不淹死，就会永远活着吗？"], ["c12-004", "他们会不会像我们一样死去呢？”"]]}, {"t": "p", "s": [["c12-005", "老祖母说：“他们也会死的。"], ["c12-006", "而且他们的生命比我们短。"], ["c12-007", "我们可以活三百岁，可是当我们的生命结束的时候，我们就会变成海上的泡沫，连一座坟墓都没有。"], ["c12-008", "我们没有不灭的灵魂，就像那些绿色的海草，一旦割断了，就再也绿不起来了。”"]]}, {"t": "img", "src": "images/66.webp?v=b5ff054002", "vid": "images/66.mp4?v=1861d9bb4f", "cap": "人的灵魂会升到闪亮的星星那里", "n": 42}, {"t": "p", "s": [["c12-009", "老祖母接着说：“人类却不一样，他们有一个灵魂。"], ["c12-010", "身体消失以后，灵魂还会一直活着，升上明亮的天空，升到闪亮的星星那里。"], ["c12-011", "就像我们浮出海面，看见人类的国家一样，他们的灵魂会升到我们永远看不到的美丽地方去。”"]]}, {"t": "p", "s": [["c12-012", "小公主难过地问：“为什么我们得不到一个不灭的灵魂呢？"], ["c12-013", "我愿意用我的三百年，去换一个人类的灵魂，哪怕只做一天的人也好。”"]]}, {"t": "p", "s": [["c12-014", "老祖母说：“你可不能这么想。"], ["c12-015", "我们在海底，比上面的人幸福多啦。”"]]}, {"t": "p", "s": [["c12-016", "小公主说：“那么，我就只能死去，变成泡沫在海上漂着，再也听不见海浪的音乐，再也看不见美丽的花和红红的太阳了吗？"], ["c12-017", "有没有什么办法，让我也得到一个灵魂呢？”"]]}, {"t": "img", "src": "images/67.webp?v=3850aebecb", "vid": "images/67.mp4?v=ac77e5d8a4", "cap": "她难过地看着自己的鱼尾巴", "n": 43}, {"t": "p", "s": [["c12-018", "老祖母说：“只有一个办法。"], ["c12-019", "要是有一个人爱你，爱你胜过爱他的爸爸妈妈，全心全意地爱你，还和你结婚，那么他的灵魂就会分一部分给你。"], ["c12-020", "可是，这种事情是不可能发生的。"], ["c12-021", "你的鱼尾巴在海里是最美的，可是在陆地上，人们却觉得它很难看。"], ["c12-022", "他们不懂得什么是美，他们觉得要长两根笨笨的柱子才好看，他们把那叫作腿。”"]]}, {"t": "p", "s": [["c12-023", "小公主叹了一口气，难过地低头看了看自己的鱼尾巴。"]]}, {"t": "p", "s": [["c12-024", "老祖母说：“我们快快活活地过日子吧，在我们这三百年里，跳舞，唱歌。"], ["c12-025", "三百年可是很长很长的时间呢。"], ["c12-026", "今天晚上，宫里要开一场舞会。”"]]}]}, {"title": "第十三章　海底的舞会", "head": "c13-h", "audio": "audio/ch13.m4a?v=d60b05fc5a", "duration": 176.927, "times": {"c13-h": [0.0, 3.369], "c13-001": [4.369, 8.761], "c13-002": [9.111, 15.027], "c13-003": [15.377, 32.999], "c13-004": [33.849, 44.157], "c13-005": [44.507, 53.687], "c13-006": [54.537, 58.936], "c13-007": [59.286, 67.132], "song-sea-song": [68.332, 74.332], "song-sea-song-01": [74.332, 78.312], "song-sea-song-02": [81.132, 84.872], "song-sea-song-03": [87.632, 92.212], "song-sea-song-04": [94.092, 99.152], "song-sea-song-05": [100.672, 106.132], "song-sea-song-06": [107.612, 113.012], "song-sea-song-07": [114.652, 120.012], "song-sea-song-08": [121.212, 126.912], "c13-008": [133.112, 142.189], "c13-009": [142.539, 148.125], "c13-010": [148.975, 154.478], "c13-011": [154.828, 159.098], "c13-012": [159.448, 161.992], "c13-013": [162.342, 168.012], "c13-014": [168.362, 171.905], "c13-015": [172.255, 175.427]}, "blocks": [{"t": "img", "src": "images/68.webp?v=779eb18c6d", "vid": "images/68.mp4?v=e720ae448f", "cap": "玻璃做的舞厅，贝壳里燃着蓝色火焰", "n": 44}, {"t": "p", "s": [["c13-001", "那是一场陆地上从来没有见过的盛大舞会。"], ["c13-002", "大舞厅的墙壁和天花板，都是用厚厚的透明玻璃做成的。"], ["c13-003", "几百只巨大的贝壳，一排一排地立在四周，有玫瑰红的，有草绿色的，贝壳里燃着蓝色的火焰，把整个舞厅照得亮堂堂的，光还透过墙壁，把外面的大海也照亮了。"]]}, {"t": "p", "s": [["c13-004", "数不清的大鱼小鱼，在玻璃墙外面游来游去，有的鳞片闪着紫色的光，有的像金子和银子一样发亮。"], ["c13-005", "舞厅中间流过一条宽宽的小河，海里的男男女女，伴着自己美妙的歌声，在小河里跳舞。"]]}, {"t": "img", "src": "images/34.webp?v=edee807b33", "vid": "images/34.mp4?v=0e40834052", "cap": "宫殿里的舞会，她的歌声最美", "n": 45}, {"t": "p", "s": [["c13-006", "小公主的歌声是最美的，大家都为她鼓掌。"], ["c13-007", "她也开心了一会儿，因为她知道，她的声音是陆地上和海底最好听的声音。"]]}, {"t": "song", "title": "海底的歌", "head": "song-sea-song", "lines": [["song-sea-song-01", "海水蓝蓝像一块水晶"], ["song-sea-song-02", "珊瑚花园里亮晶晶"], ["song-sea-song-03", "我把心事唱给小鱼听"], ["song-sea-song-04", "唱给头顶的月亮和星星"], ["song-sea-song-05", "啦啦啦，海浪轻轻摇"], ["song-sea-song-06", "我想浮上海面去瞧一瞧"], ["song-sea-song-07", "那里的太阳暖暖地照"], ["song-sea-song-08", "花儿会开，小鸟会唱歌谣"]]}, {"t": "img", "src": "images/69.webp?v=5a3d656170", "vid": "images/69.mp4?v=4d85cc6e05", "cap": "她独自在花园里，听见海面上的号角声", "n": 46}, {"t": "p", "s": [["c13-008", "可是很快，她又想起了上面的世界，想起了那位英俊的王子，想起了自己没有一个不灭的灵魂。"], ["c13-009", "她悄悄地离开了宫殿，一个人坐在自己的小花园里。"]]}, {"t": "p", "s": [["c13-010", "忽然，她听见一阵号角声从海面上传下来。"], ["c13-011", "她在心里想：“他一定正坐着船，在上面经过。"], ["c13-012", "我爱他，胜过爱我的爸爸妈妈。"], ["c13-013", "我愿意把我一生的幸福都交给他，只为了得到他，得到一个不灭的灵魂。"], ["c13-014", "趁姐姐们还在宫里跳舞，我要去找海巫婆。"], ["c13-015", "我一直很怕她，可是也许她能帮助我。”"]]}]}, {"title": "第十四章　去海巫婆家的路", "head": "c14-h", "audio": "audio/ch14.m4a?v=592d0c2a50", "duration": 150.879, "times": {"c14-h": [0.0, 3.521], "c14-001": [4.521, 10.098], "c14-002": [10.448, 13.806], "c14-003": [14.656, 23.153], "c14-004": [23.503, 32.438], "c14-005": [32.788, 38.458], "c14-006": [39.308, 43.867], "c14-007": [44.217, 54.98], "c14-008": [55.33, 66.741], "c14-009": [67.091, 73.445], "c14-010": [74.295, 83.078], "c14-011": [83.928, 92.025], "c14-012": [92.375, 97.929], "c14-013": [98.279, 112.013], "c14-014": [112.863, 116.647], "c14-015": [116.997, 124.364], "c14-016": [124.714, 132.615], "c14-017": [133.465, 142.093], "c14-018": [142.443, 149.379]}, "blocks": [{"t": "img", "src": "images/11.webp?v=5370cb44b6", "vid": "images/11.mp4?v=7f19096d81", "cap": "去海巫婆家的路，没有花也没有海草", "n": 47}, {"t": "p", "s": [["c14-001", "于是，小公主离开花园，向海巫婆住的地方游去。"], ["c14-002", "以前，她从来没有走过这条路。"]]}, {"t": "img", "src": "images/70.webp?v=a5b967888c", "vid": "images/70.mp4?v=b2f238bcc8", "cap": "旋转的漩涡和冒泡的烂泥地", "n": 48}, {"t": "p", "s": [["c14-003", "那里没有花，也没有海草，只有光秃秃的灰色沙地，一直伸展到海巫婆的家。"], ["c14-004", "她要穿过一个个像水车一样旋转的大漩涡，漩涡把碰到的东西统统卷进深深的海底。"], ["c14-005", "接着，她又要穿过一大片冒着泡泡的热乎乎的烂泥地。"]]}, {"t": "img", "src": "images/71.webp?v=bfee3b19b6", "vid": "images/71.mp4?v=ea3ff0605e", "cap": "珊瑚虫的树林，长着软软的长手臂", "n": 49}, {"t": "p", "s": [["c14-006", "海巫婆的房子在一片奇怪的树林中间。"], ["c14-007", "那里的树和灌木都是珊瑚虫，它们一半是动物，一半是植物，好像从地里长出来的、长着一百个头的大蛇。"], ["c14-008", "它们的枝条是长长的、黏糊糊的手臂，手指像虫子一样扭来扭去，从根到梢一节一节地动着。"], ["c14-009", "它们一抓住海里的什么东西，就紧紧缠住，再也不放开。"]]}, {"t": "p", "s": [["c14-010", "小公主看见，它们的手臂里紧紧抓着沉船上的船舵和箱子，还有一些白白的骨头。"]]}, {"t": "img", "src": "images/12.webp?v=03c7cfefdc", "vid": "images/12.mp4?v=925e3e63b9", "cap": "穿过伸着长手臂的珊瑚虫树林", "n": 50}, {"t": "p", "s": [["c14-011", "小公主害怕极了，停在树林外面，心怦怦直跳，差点儿就要转身回去。"], ["c14-012", "可是她一想起王子，想起人类的灵魂，又鼓起了勇气。"], ["c14-013", "她把飘动的长头发紧紧地盘在头上，免得被珊瑚虫抓住，双手抱在胸前，像一条鱼一样，飞快地从那些伸过来的手臂中间游了过去。"]]}, {"t": "img", "src": "images/72.webp?v=7c1bbafd73", "vid": "images/72.mp4?v=fe9520a604", "cap": "黏糊糊的空地上，大水蛇在打滚", "n": 51}, {"t": "p", "s": [["c14-014", "穿过树林，是一片黏糊糊的空地。"], ["c14-015", "几条又大又肥的水蛇在那里打滚，露出它们难看的、灰黄色的肚皮。"], ["c14-016", "空地中间，就是海巫婆的房子，是用沉船的木板和大鱼的白骨搭起来的。"]]}, {"t": "img", "src": "images/73.webp?v=b9d86292c3", "vid": "images/73.mp4?v=3e5e8b802f", "cap": "海巫婆和她的癞蛤蟆、水蛇", "n": 52}, {"t": "p", "s": [["c14-017", "海巫婆正坐在那里，让一只癞蛤蟆从她的嘴里吃东西，就像人们让金丝雀啄糖粒一样。"], ["c14-018", "她把那些难看的水蛇叫作“我的小鸡”，让它们在她胸前爬来爬去。"]]}]}, {"title": "第十五章　交换", "head": "c15-h", "audio": "audio/ch15.m4a?v=5e48300e4f", "duration": 268.0, "times": {"c15-h": [0.0, 2.437], "c15-001": [3.437, 6.781], "c15-002": [7.131, 8.634], "c15-003": [8.984, 15.852], "c15-004": [16.202, 26.79], "c15-005": [27.64, 36.069], "c15-006": [36.919, 39.923], "c15-007": [40.273, 45.263], "c15-008": [45.613, 47.23], "c15-009": [47.58, 52.93], "c15-010": [53.28, 58.044], "c15-011": [58.394, 63.425], "c15-012": [64.275, 70.718], "c15-013": [71.068, 74.919], "c15-014": [75.269, 79.09], "c15-015": [79.44, 81.235], "c15-016": [82.085, 82.846], "c15-017": [83.196, 85.587], "c15-018": [85.937, 90.72], "c15-019": [91.57, 98.578], "c15-020": [98.928, 102.778], "c15-021": [103.128, 115.04], "c15-022": [115.89, 116.648], "c15-023": [116.998, 122.137], "c15-024": [122.987, 126.405], "c15-025": [126.755, 128.575], "c15-026": [128.925, 134.344], "c15-027": [134.694, 137.492], "c15-028": [138.342, 143.615], "c15-029": [144.465, 151.606], "c15-030": [151.956, 154.92], "c15-031": [155.27, 158.044], "c15-032": [158.894, 159.767], "c15-033": [160.117, 161.616], "c15-034": [162.466, 166.394], "c15-035": [166.744, 173.931], "c15-036": [174.281, 179.793], "c15-037": [180.143, 183.49], "c15-038": [183.84, 188.446], "c15-039": [189.296, 195.037], "c15-040": [198.558, 204.074], "c15-041": [204.424, 211.745], "c15-042": [212.595, 223.161], "c15-043": [224.011, 227.377], "c15-044": [227.727, 233.623], "c15-045": [233.973, 238.685], "c15-046": [239.535, 242.327], "c15-047": [242.677, 247.023], "c15-048": [247.373, 252.908], "c15-049": [253.258, 266.5]}, "blocks": [{"t": "img", "src": "images/35.webp?v=739a55a489", "vid": "images/35.mp4?v=a0e9334d6d", "cap": "海巫婆说：我知道你想要什么", "n": 53}, {"t": "p", "s": [["c15-001", "海巫婆说：“我知道你想要什么。"], ["c15-002", "你真是太傻了！"], ["c15-003", "不过，我会让你如愿的，因为它会给你带来不幸，我美丽的小公主。"], ["c15-004", "你想去掉你的鱼尾巴，换成两条腿，像人一样走路，好让那位年轻的王子爱上你，好让你得到一个不灭的灵魂，对不对？”"]]}, {"t": "p", "s": [["c15-005", "海巫婆哈哈大笑，笑得那么可怕，连癞蛤蟆和水蛇都掉到地上，扭来扭去。"]]}, {"t": "p", "s": [["c15-006", "海巫婆说：“你来得正是时候。"], ["c15-007", "明天太阳一出来，我就没法帮你了，得再等上一整年。"], ["c15-008", "我可以给你调一服药。"], ["c15-009", "你在太阳升起以前，游到陆地上，坐在海岸边把它喝下去。"], ["c15-010", "你的尾巴就会分开，变成人们说的一双漂亮的腿。"], ["c15-011", "可是，那会很疼，就像有一把尖刀刺过你的身体。”"]]}, {"t": "p", "s": [["c15-012", "海巫婆接着说：“凡是看见你的人，都会说你是他们见过的最美的人。"], ["c15-013", "你走起路来，会比任何一个跳舞的人都轻盈。"], ["c15-014", "可是你每走一步，都会像踩在刀尖上一样疼。"], ["c15-015", "你愿意忍受这一切吗？”"]]}, {"t": "p", "s": [["c15-016", "“我愿意。”"], ["c15-017", "小公主声音发抖地说。"], ["c15-018", "她想着王子，也想着那个永远不会消失的灵魂。"]]}, {"t": "p", "s": [["c15-019", "海巫婆说：“可是你要记住，你一旦变成了人，就再也不能变回美人鱼了。"], ["c15-020", "你再也不能回到姐姐们身边，也不能回到父亲的宫殿。"], ["c15-021", "要是王子没有全心全意地爱你，没有和你结婚，而是娶了别人，那么在他结婚后的第一个早晨，你的心就会碎掉，你就会变成海上的泡沫。”"]]}, {"t": "p", "s": [["c15-022", "“我不怕。”"], ["c15-023", "小公主说，她的脸变得像死一样苍白。"]]}, {"t": "p", "s": [["c15-024", "海巫婆说：“还有，你得付给我报酬。"], ["c15-025", "我要的东西可不少。"], ["c15-026", "你有海底最美的声音，你想用它去打动王子的心。"], ["c15-027", "可是这个声音，你必须交给我。”"]]}, {"t": "p", "s": [["c15-028", "小公主说：“可是，如果你拿走了我的声音，我还剩下什么呢？”"]]}, {"t": "p", "s": [["c15-029", "海巫婆说：“你还有美丽的样子，轻盈的步子，还有一双会说话的眼睛。"], ["c15-030", "用这些，你就能打动一个人的心了。"], ["c15-031", "怎么样，你没有勇气了吗？”"]]}, {"t": "p", "s": [["c15-032", "“那就这样吧。”"], ["c15-033", "小公主说。"]]}, {"t": "img", "src": "images/74.webp?v=e97ed50e6c", "vid": "images/74.mp4?v=d84826760e", "cap": "海巫婆架起大锅熬药", "n": 54}, {"t": "p", "s": [["c15-034", "海巫婆架起一口大锅，开始熬药。"], ["c15-035", "她先用几条水蛇把锅擦得干干净净，又往锅里滴了一些黑乎乎的东西。"], ["c15-036", "锅里冒出的热气，变成各种奇怪的、吓人的形状。"], ["c15-037", "她不停地往锅里加新的东西。"], ["c15-038", "等药熬好的时候，看起来就像一汪清清的水。"]]}, {"t": "img", "src": "images/13.webp?v=def3227ccd", "vid": "images/13.mp4?v=d9e214e0b6", "cap": "海巫婆把她的歌声收进了海螺里", "n": 55}, {"t": "p", "s": [["c15-039", "海巫婆把小公主最美的歌声，收进了一只小小的海螺里。"], ["c15-040", "从那一刻起，小公主再也不能说话，也不能唱歌了。"], ["c15-041", "海巫婆把一小瓶亮晶晶的药水交给了她，那药水像一颗星星一样闪着光。"]]}, {"t": "p", "s": [["c15-042", "海巫婆说：“回去的时候，要是珊瑚虫想抓你，你就往它们身上洒一滴药水，它们的手臂就会碎成一千块。”"]]}, {"t": "img", "src": "images/75.webp?v=a8ba628457", "vid": "images/75.mp4?v=d0bb2e0d3b", "cap": "珊瑚虫看见发光的药水，缩了回去", "n": 56}, {"t": "p", "s": [["c15-043", "可是小公主用不着这样做。"], ["c15-044", "珊瑚虫一看见她手里闪着星光的药水，就害怕地缩了回去。"], ["c15-045", "她很快就穿过了树林、烂泥地和旋转的漩涡。"]]}, {"t": "img", "src": "images/36.webp?v=54b06661c9", "vid": "images/36.mp4?v=676d5f5ae7", "cap": "她向宫殿送出了一千个吻", "n": 57}, {"t": "p", "s": [["c15-046", "小公主回头看了看父亲的宫殿。"], ["c15-047", "舞厅里的火把已经熄灭了，大家都睡着了。"], ["c15-048", "她不敢进去，因为她已经不能说话，又快要永远离开了。"], ["c15-049", "她悄悄地走进花园，从每个姐姐的花坛里摘了一朵花，向着宫殿送出了一千个吻，然后穿过深蓝色的海水，浮了上去。"]]}]}, {"title": "第十六章　来到陆地", "head": "c16-h", "audio": "audio/ch16.m4a?v=14159369d1", "duration": 162.839, "times": {"c16-h": [0.0, 3.246], "c16-001": [4.246, 9.109], "c16-002": [9.459, 15.931], "c16-003": [16.281, 22.903], "c16-004": [23.753, 28.448], "c16-005": [28.798, 35.982], "c16-006": [36.332, 39.613], "c16-007": [39.963, 47.177], "c16-008": [48.027, 51.866], "c16-009": [52.216, 59.309], "c16-010": [59.659, 63.251], "c16-011": [64.101, 70.531], "c16-012": [70.881, 74.146], "c16-013": [74.496, 79.042], "c16-014": [79.392, 84.824], "c16-015": [85.674, 90.734], "c16-016": [91.084, 97.221], "c16-017": [97.571, 108.183], "c16-018": [108.533, 114.673], "c16-019": [115.523, 123.384], "c16-020": [124.234, 126.904], "c16-021": [127.254, 134.526], "c16-022": [134.876, 137.194], "c16-023": [137.544, 145.644], "c16-024": [146.494, 151.276], "c16-025": [151.626, 153.975], "c16-026": [154.325, 161.339]}, "blocks": [{"t": "img", "src": "images/14.webp?v=9677823918", "vid": "images/14.mp4?v=fba16950f4", "cap": "在月光下的大理石台阶上，她喝下了药水", "n": 58}, {"t": "p", "s": [["c16-001", "她来到王子的王宫时，太阳还没有出来。"], ["c16-002", "月亮明亮地照着，她坐在大理石台阶上，喝下了那瓶药水。"], ["c16-003", "她觉得好像有一把锋利的刀子刺进了她的身体，她疼得晕了过去。"]]}, {"t": "img", "src": "images/15.webp?v=e8baaae1ca", "vid": "images/15.mp4?v=79974970f5", "cap": "醒来时，王子正望着她", "n": 59}, {"t": "p", "s": [["c16-004", "太阳升起来照在海面上的时候，她醒了过来。"], ["c16-005", "她感到一阵剧痛，可是就在她面前，站着那位年轻英俊的王子。"], ["c16-006", "他那双乌黑的眼睛正望着她。"], ["c16-007", "她低下头，发现自己的鱼尾巴不见了，变成了一双可爱的白白的小腿。"]]}, {"t": "p", "s": [["c16-008", "王子问她是谁，是怎样来到这里的。"], ["c16-009", "她用那双深蓝色的眼睛，温柔又难过地望着他，因为她已经不能说话了。"], ["c16-010", "王子拉着她的手，把她领进了王宫。"]]}, {"t": "p", "s": [["c16-011", "就像海巫婆说的那样，她每走一步，都像踩在尖刀上。"], ["c16-012", "可是她心甘情愿地忍受着。"], ["c16-013", "她牵着王子的手，走得像水泡一样轻盈。"], ["c16-014", "王子和所有的人，都对她那优美的步子感到惊奇。"]]}, {"t": "img", "src": "images/37.webp?v=47a0da5635", "vid": "images/37.mp4?v=fe1ca059df", "cap": "她穿上了丝绸衣服，却不能唱歌", "n": 60}, {"t": "p", "s": [["c16-015", "宫里的人给她穿上了丝绸和细纱做的漂亮衣服。"], ["c16-016", "她是王宫里最美的人，可是她不能说话，也不能唱歌。"], ["c16-017", "有一天，一群穿着丝绸衣服的女孩子为王子唱歌，有一个唱得最好，王子为她鼓掌，对她微笑。"], ["c16-018", "小公主难过起来，因为她知道，自己原来唱得比她好听得多。"]]}, {"t": "p", "s": [["c16-019", "她在心里想：“啊，要是他知道，为了和他在一起，我永远交出了我的声音，那该多好啊！”"]]}, {"t": "img", "src": "images/16.webp?v=1478e46bc1", "vid": "images/16.mp4?v=da993cb889", "cap": "她踮起脚尖跳舞，没有人跳得像她那样美", "n": 61}, {"t": "p", "s": [["c16-020", "接着，女孩子们跳起舞来。"], ["c16-021", "小公主也举起美丽的手臂，踮起脚尖，在地板上轻轻地跳起舞来。"], ["c16-022", "没有人跳得像她那样美。"], ["c16-023", "她的每一个动作，都显出她的美丽；她的眼睛，比歌声更能打动人的心。"]]}, {"t": "p", "s": [["c16-024", "大家都看得入了迷，王子更是喜欢极了。"], ["c16-025", "他叫她“我的小孤儿”。"], ["c16-026", "她不停地跳着，虽然每一次脚碰到地面，都像踩在尖刀上一样。"]]}]}, {"title": "第十七章　王子身边", "head": "c17-h", "audio": "audio/ch17.m4a?v=83eb4190b3", "duration": 104.547, "times": {"c17-h": [0.0, 2.91], "c17-001": [3.91, 7.993], "c17-002": [8.343, 13.332], "c17-003": [13.682, 19.825], "c17-004": [20.675, 31.586], "c17-005": [31.936, 47.502], "c17-006": [48.352, 51.919], "c17-007": [52.269, 59.942], "c17-008": [60.292, 64.272], "c17-009": [65.122, 70.798], "c17-010": [71.148, 74.925], "c17-011": [75.275, 83.862], "c17-012": [84.212, 89.272], "c17-013": [90.122, 97.096], "c17-014": [97.446, 103.047]}, "blocks": [{"t": "img", "src": "images/76.webp?v=864064a790", "vid": "images/76.mp4?v=9eab6db0f7", "cap": "她睡在王子门外的天鹅绒垫子上", "n": 62}, {"t": "p", "s": [["c17-001", "王子说，她应该永远留在他的身边。"], ["c17-002", "晚上，她可以睡在王子门外的一个天鹅绒垫子上。"], ["c17-003", "王子还叫人给她做了一套男孩子的骑马衣服，好让她陪着他骑马。"]]}, {"t": "img", "src": "images/17.webp?v=28fc722b15", "vid": "images/17.mp4?v=48a632cefd", "cap": "她和王子骑马穿过香喷喷的树林", "n": 63}, {"t": "img", "src": "images/77.webp?v=fbccb30df7", "vid": "images/77.mp4?v=7334d25750", "cap": "她和王子爬上高山，云朵在脚下飘", "n": 64}, {"t": "p", "s": [["c17-004", "他们骑着马，穿过香喷喷的树林，绿色的树枝拂过她的肩膀，小鸟在新长出的叶子里唱歌。"], ["c17-005", "她和王子一起爬上高高的山顶，她纤细的脚流了血，大家都看见了，可她只是笑着，跟着王子一直走，直到看见云朵在脚下飘过，就像一群飞向远方的鸟儿。"]]}, {"t": "img", "src": "images/78.webp?v=5fcc7637d3", "vid": "images/78.mp4?v=de5326790f", "cap": "夜里，她把发烫的双脚泡在海水里", "n": 65}, {"t": "p", "s": [["c17-006", "夜里，王宫里的人都睡着了。"], ["c17-007", "小公主就走下宽大的大理石台阶，把发烫的双脚泡在凉凉的海水里。"], ["c17-008", "这时，她就会想起海底的家人。"]]}, {"t": "img", "src": "images/18.webp?v=ac224b63d0", "vid": "images/18.mp4?v=737a26dc2e", "cap": "夜里，姐姐们浮出海面来看她", "n": 66}, {"t": "p", "s": [["c17-009", "有一天夜里，她的姐姐们手挽着手，浮出了海面。"], ["c17-010", "她们一边游，一边唱着悲伤的歌。"], ["c17-011", "小公主向她们招手，姐姐们认出了她，告诉她，她走了以后，大家有多么难过。"], ["c17-012", "从那以后，姐姐们每天夜里都来看她。"]]}, {"t": "img", "src": "images/79.webp?v=617ac49fbd", "vid": "images/79.mp4?v=8b6f7e6b2c", "cap": "远处，老祖母和海王向她伸出手", "n": 67}, {"t": "p", "s": [["c17-013", "有一次，她还远远地看见了好多年没有浮上海面的老祖母，和戴着王冠的海王。"], ["c17-014", "他们向她伸出手，可是不敢像姐姐们那样靠近岸边。"]]}]}, {"title": "第十八章　神庙里的姑娘", "head": "c18-h", "audio": "audio/ch18.m4a?v=02d2907519", "duration": 96.819, "times": {"c18-h": [0.0, 3.635], "c18-001": [4.635, 10.615], "c18-002": [10.965, 15.67], "c18-003": [16.02, 27.548], "c18-004": [28.398, 29.891], "c18-005": [30.241, 37.988], "c18-006": [38.838, 42.527], "c18-007": [42.877, 44.479], "c18-008": [44.829, 50.936], "c18-009": [51.286, 53.664], "c18-010": [54.014, 57.23], "c18-011": [57.58, 62.92], "c18-012": [63.77, 69.249], "c18-013": [69.599, 76.494], "c18-014": [76.844, 80.724], "c18-015": [81.574, 89.244], "c18-016": [89.594, 95.319]}, "blocks": [{"t": "img", "src": "images/38.webp?v=bdd089d945", "vid": "images/38.mp4?v=56e7e8fa77", "cap": "王子说：你让我想起神庙边的那个姑娘", "n": 68}, {"t": "p", "s": [["c18-001", "王子一天比一天更喜欢她，就像喜欢一个善良可爱的小孩子。"], ["c18-002", "可是，他从来没有想过要让她做他的王后。"], ["c18-003", "而她必须做他的妻子，不然她就得不到一个不灭的灵魂，在王子结婚的第二天早晨，她就会变成海上的泡沫。"]]}, {"t": "p", "s": [["c18-004", "“你是我最亲爱的人吗？”"], ["c18-005", "每当王子把她抱在怀里，吻她的额头的时候，小公主的眼睛好像就在这样问。"]]}, {"t": "p", "s": [["c18-006", "王子说：“是的，你是我最亲爱的人。"], ["c18-007", "因为你有一颗最善良的心。"], ["c18-008", "你让我想起一个姑娘，在我的船遇难以后，是她在海边的一座神庙旁边发现了我。"], ["c18-009", "她是我在这个世界上唯一会爱的人。"], ["c18-010", "可是她住在神庙里，我大概再也见不到她了。"], ["c18-011", "你和她长得很像，所以上天把你送到了我身边，我们永远也不分开。”"]]}, {"t": "p", "s": [["c18-012", "小公主在心里想：“唉，他不知道是我救了他的命啊！"], ["c18-013", "是我把他从海里托到了神庙旁边的树林里，是我躲在泡沫后面，看着那个姑娘走过来。”"], ["c18-014", "她不能说话，只能深深地叹气。"]]}, {"t": "p", "s": [["c18-015", "她在心里又想：“他说那个姑娘住在神庙里，永远不会到外面的世界来，他们再也不会见面了。"], ["c18-016", "可是我每天都在他身边，我要照顾他，爱他，为他献出我的一生。”"]]}]}, {"title": "第十九章　海上的旅行", "head": "c19-h", "audio": "audio/ch19.m4a?v=9a217aa995", "duration": 125.514, "times": {"c19-h": [0.0, 3.41], "c19-001": [4.41, 9.325], "c19-002": [9.675, 14.174], "c19-003": [14.524, 23.462], "c19-004": [24.312, 29.106], "c19-005": [29.456, 31.308], "c19-006": [31.658, 36.246], "c19-007": [36.596, 42.245], "c19-008": [43.095, 49.923], "c19-009": [50.273, 55.518], "c19-010": [56.368, 61.56], "c19-011": [61.91, 70.336], "c19-012": [70.686, 78.438], "c19-013": [79.288, 86.24], "c19-014": [86.59, 90.383], "c19-015": [90.733, 97.994], "c19-016": [98.844, 105.628], "c19-017": [105.978, 113.38], "c19-018": [113.73, 118.778], "c19-019": [119.128, 124.014]}, "blocks": [{"t": "p", "s": [["c19-001", "后来，大家都说，王子要娶邻国国王的女儿了。"], ["c19-002", "王子要坐一艘漂亮的大船，去拜访邻国。"], ["c19-003", "可是小公主只是摇摇头，笑了笑，因为她比谁都清楚王子心里在想什么。"]]}, {"t": "p", "s": [["c19-004", "王子对小公主说：“我不能不去，这是我父母的意思。"], ["c19-005", "可是他们不会逼我娶她当新娘。"], ["c19-006", "我不会爱她的，她不像神庙里那个美丽的姑娘，可是你像。"], ["c19-007", "如果有一天我要选一个新娘，那我宁愿选你，我的会说话的眼睛的小孤儿。”"]]}, {"t": "p", "s": [["c19-008", "王子吻了吻她的额头，摸着她长长的头发，把头靠在她的心口。"], ["c19-009", "她梦想着人间的幸福，梦想着一个不灭的灵魂。"]]}, {"t": "img", "src": "images/80.webp?v=c9b7cef124", "vid": "images/80.mp4?v=cf604b176b", "cap": "王子给她讲大海的故事", "n": 69}, {"t": "p", "s": [["c19-010", "王子对小公主说：“你不怕大海吧，我的不会说话的孩子？”"], ["c19-011", "他给她讲大海的风暴和平静，讲海里奇怪的鱼，讲潜水的人在海底看到的东西。"], ["c19-012", "小公主听着，微微地笑了，因为海底的事情，她比谁都知道得清楚。"]]}, {"t": "img", "src": "images/39.webp?v=c62a3af2e0", "vid": "images/39.mp4?v=7fe4352593", "cap": "她坐在船边，好像看见了海底的家", "n": 70}, {"t": "p", "s": [["c19-013", "月光明亮的夜里，大家都睡了，只有掌舵的人还站在舵边。"], ["c19-014", "小公主坐在船边，望着清澈的海水。"], ["c19-015", "她好像看见了父亲的宫殿，看见老祖母戴着银色的王冠，抬头望着船底。"]]}, {"t": "img", "src": "images/81.webp?v=456017847d", "vid": "images/81.mp4?v=1ec7e6d15a", "cap": "姐姐们浮出海面，难过地望着她", "n": 71}, {"t": "p", "s": [["c19-016", "这时，姐姐们浮出了海面，难过地望着她，绞着她们白白的手。"], ["c19-017", "小公主向她们招手，笑着，想告诉她们，她过得很好，很幸福。"], ["c19-018", "可是一个小水手走了过来，姐姐们赶紧沉了下去。"], ["c19-019", "小水手还以为，他看见的只是海上白色的泡沫。"]]}]}, {"title": "第二十章　邻国的公主", "head": "c20-h", "audio": "audio/ch20.m4a?v=b2436ed332", "duration": 113.236, "times": {"c20-h": [0.0, 3.453], "c20-001": [4.453, 9.52], "c20-002": [9.87, 20.756], "c20-003": [26.318, 31.962], "c20-004": [32.312, 35.435], "c20-005": [35.785, 43.739], "c20-006": [44.089, 47.597], "c20-007": [48.447, 51.459], "c20-008": [51.809, 55.914], "c20-009": [56.264, 66.392], "c20-010": [67.242, 72.088], "c20-011": [72.438, 76.124], "c20-012": [76.474, 82.849], "c20-013": [83.699, 86.556], "c20-014": [86.906, 90.687], "c20-015": [91.037, 93.666], "c20-016": [94.016, 98.457], "c20-017": [99.307, 101.828], "c20-018": [102.178, 105.546], "c20-019": [105.896, 111.736]}, "blocks": [{"t": "img", "src": "images/82.webp?v=575ed1258f", "vid": "images/82.mp4?v=15267527fd", "cap": "邻国的城市，钟声和号角迎接王子", "n": 72}, {"t": "p", "s": [["c20-001", "第二天早上，船开进了邻国美丽的城市。"], ["c20-002", "教堂的钟声响了起来，高高的塔楼上吹起了号角，士兵们举着飘扬的旗子和闪亮的刺刀，排成一行一行地敬礼。"]]}, {"t": "img", "src": "images/19.webp?v=ec2614fd54", "vid": "images/19.mp4?v=d9d3feb4a9", "cap": "邻国的公主来了", "n": 73}, {"t": "p", "s": [["c20-003", "每天都有一个节日，舞会和宴会一个接着一个。"], ["c20-004", "可是邻国的公主还没有回来。"], ["c20-005", "人们说，她在很远的一座神庙里长大，在那里学会了许多美好的品德。"], ["c20-006", "没过多久，邻国的公主来了。"]]}, {"t": "p", "s": [["c20-007", "小公主急着想看看她到底有多美。"], ["c20-008", "她不得不承认，她从来没有见过这么美的人。"], ["c20-009", "公主的皮肤又白又细，长长的黑睫毛下面，一双深蓝色的眼睛带着笑意，又真诚，又温柔。"]]}, {"t": "p", "s": [["c20-010", "王子一看见邻国公主，就高兴地叫了起来：“就是你！"], ["c20-011", "当我像死了一样躺在海岸上的时候，救了我的就是你！”"], ["c20-012", "原来，这位公主就是那个在神庙里长大、在海边发现王子的姑娘。"]]}, {"t": "img", "src": "images/40.webp?v=55831c18f9", "vid": "images/40.mp4?v=a836b6ba4e", "cap": "她吻了吻王子的手，心已经开始碎了", "n": 74}, {"t": "p", "s": [["c20-013", "王子把新娘紧紧地抱在怀里。"], ["c20-014", "他对小公主说：“啊，我太幸福了！"], ["c20-015", "我从来不敢想的愿望，终于实现了。"], ["c20-016", "你一定也会为我高兴的，因为在所有人里，你是最关心我的。”"]]}, {"t": "p", "s": [["c20-017", "小公主吻了吻王子的手。"], ["c20-018", "她觉得自己的心已经开始碎了。"], ["c20-019", "王子结婚后的第一个早晨，就是她变成海上泡沫的时候。"]]}]}, {"title": "第二十一章　婚礼", "head": "c21-h", "audio": "audio/ch21.m4a?v=744c7ca572", "duration": 164.671, "times": {"c21-h": [0.0, 2.98], "c21-001": [3.98, 10.95], "c21-002": [16.012, 22.632], "c21-003": [22.982, 28.131], "c21-004": [28.981, 37.014], "c21-005": [37.364, 44.7], "c21-006": [45.05, 51.57], "c21-007": [52.42, 57.558], "c21-008": [57.908, 61.628], "c21-009": [61.978, 74.342], "c21-010": [74.692, 80.884], "c21-011": [81.734, 87.176], "c21-012": [87.526, 96.475], "c21-013": [97.325, 99.602], "c21-014": [99.952, 105.151], "c21-015": [105.501, 109.776], "c21-016": [110.126, 116.613], "c21-017": [117.463, 122.055], "c21-018": [122.405, 133.476], "c21-019": [133.826, 142.39], "c21-020": [143.24, 148.459], "c21-021": [148.809, 153.637], "c21-022": [153.987, 163.171]}, "blocks": [{"t": "img", "src": "images/83.webp?v=ffd4513331", "vid": "images/83.mp4?v=18655dc97a", "cap": "婚礼上，她托着新娘长长的礼服", "n": 75}, {"t": "p", "s": [["c21-001", "教堂的钟声响了，传令的人骑着马在街上宣布王子订婚的喜讯。"], ["c21-002", "祭坛上，银灯里燃着香喷喷的油，牧师们摇着香炉。"], ["c21-003", "新郎和新娘手拉着手，接受了主教的祝福。"]]}, {"t": "p", "s": [["c21-004", "小公主穿着丝绸的衣服，戴着金色的首饰，在后面托着新娘长长的礼服。"], ["c21-005", "可是她的耳朵听不见欢乐的音乐，她的眼睛也看不见隆重的婚礼。"], ["c21-006", "她想着自己即将到来的死亡，想着她在这个世界上失去的一切。"]]}, {"t": "img", "src": "images/84.webp?v=915c2441cc", "vid": "images/84.mp4?v=ec9cbbdaf9", "cap": "傍晚，新郎和新娘上了大船", "n": 76}, {"t": "p", "s": [["c21-007", "就在那天傍晚，新郎和新娘一起上了大船。"], ["c21-008", "礼炮响了，旗子在风里飘扬。"], ["c21-009", "船舱布置得金碧辉煌，挂着金色和紫色的帘子，铺着最柔软的垫子，新婚夫妇要在这里度过这个安静凉爽的夜晚。"], ["c21-010", "风鼓起了船帆，大船轻快地在平静的海面上滑行。"]]}, {"t": "img", "src": "images/41.webp?v=2d7a56904a", "vid": "images/41.mp4?v=ebcc3a1283", "cap": "婚礼的大船上，她跳得从来没有这样美", "n": 77}, {"t": "p", "s": [["c21-011", "天黑了，船上挂起了彩灯，水手们快乐地跳着舞。"], ["c21-012", "小公主想起了她第一次浮出海面的那个晚上，那时她看到的，也是这样的欢乐和热闹。"]]}, {"t": "p", "s": [["c21-013", "小公主也跳起舞来。"], ["c21-014", "她跳得那么轻快，就像燕子被追赶时那样飞旋。"], ["c21-015", "大家都为她喝彩，她从来没有跳得这样美。"], ["c21-016", "她的脚像被刀割一样疼，可是她不觉得，因为她的心更疼。"]]}, {"t": "p", "s": [["c21-017", "她知道，这是她能看见王子的最后一个夜晚了。"], ["c21-018", "为了他，她离开了家人和家乡，交出了美妙的声音，每天忍受着疼痛，可是王子一点儿也不知道。"], ["c21-019", "这是她最后一次和他呼吸同样的空气，最后一次看见深深的大海和满天的星星。"]]}, {"t": "p", "s": [["c21-020", "船上的欢笑和舞蹈，一直持续到半夜以后。"], ["c21-021", "小公主笑着，跳着，心里却想着死亡。"], ["c21-022", "王子吻了吻他美丽的新娘，新娘摸着王子乌黑的头发，他们手挽着手，走进了华丽的船舱。"]]}]}, {"title": "第二十二章　最后的夜晚", "head": "c22-h", "audio": "audio/ch22.m4a?v=ff536f2c0a", "duration": 145.731, "times": {"c22-h": [0.0, 3.114], "c22-001": [4.114, 9.179], "c22-002": [9.529, 16.955], "c22-003": [17.305, 21.61], "c22-004": [22.46, 27.091], "c22-005": [27.441, 36.284], "c22-006": [37.134, 43.51], "c22-007": [43.86, 47.075], "c22-008": [47.425, 56.108], "c22-009": [56.458, 62.421], "c22-010": [62.771, 63.487], "c22-011": [63.837, 65.925], "c22-012": [66.775, 71.701], "c22-013": [72.551, 76.602], "c22-014": [76.952, 82.509], "c22-015": [82.859, 87.902], "c22-016": [88.752, 93.293], "c22-017": [93.643, 97.31], "c22-018": [97.66, 101.419], "c22-019": [102.269, 104.805], "c22-020": [105.655, 109.648], "c22-021": [110.498, 114.124], "c22-022": [117.02, 125.377], "c22-023": [126.227, 131.407], "c22-024": [131.757, 135.514], "c22-025": [139.592, 144.231]}, "blocks": [{"t": "img", "src": "images/85.webp?v=215263a8e7", "vid": "images/85.mp4?v=8e3dca4173", "cap": "黎明前，她独自望着东方", "n": 78}, {"t": "p", "s": [["c22-001", "船上安静下来了，只有掌舵的人站在舵边。"], ["c22-002", "小公主把她白白的手臂靠在船边，望着东方，等着第一道阳光。"], ["c22-003", "她知道，第一道阳光就会让她死去。"]]}, {"t": "img", "src": "images/20.webp?v=d644e1bfac", "vid": "images/20.mp4?v=81ba7fd064", "cap": "姐姐们剪掉了长发，换来一把刀子", "n": 79}, {"t": "p", "s": [["c22-004", "这时，她看见姐姐们从海浪里浮了起来。"], ["c22-005", "她们的脸色和她一样苍白，她们那美丽的长头发，不再在风里飘了，全被剪掉了。"]]}, {"t": "p", "s": [["c22-006", "姐姐们说：“我们把头发交给了海巫婆，请她帮忙，好让你今晚不会死去。"], ["c22-007", "她给了我们一把刀子，你看，它多么锋利！"], ["c22-008", "在太阳出来以前，你要是把它刺进王子的心里，你的双腿就会重新变成鱼尾巴，你就可以回到我们身边，再活三百年。"], ["c22-009", "老祖母难过得白头发都掉光了，就像我们的头发被海巫婆的剪刀剪掉一样。"], ["c22-010", "快一点儿！"], ["c22-011", "太阳一出来，你就要死去了！”"]]}, {"t": "p", "s": [["c22-012", "姐姐们深深地叹了一口气，沉进了海浪里。"]]}, {"t": "img", "src": "images/42.webp?v=27e85ad5ac", "vid": "images/42.mp4?v=cb2bcea794", "cap": "她拿着刀子，走到王子的房门口", "n": 80}, {"t": "p", "s": [["c22-013", "小公主拿着刀子，走到王子的房门口。"], ["c22-014", "她看见美丽的新娘把头靠在王子的胸口，安静地睡着。"], ["c22-015", "王子在睡梦里，轻轻地叫着新娘的名字。"]]}, {"t": "p", "s": [["c22-016", "小公主弯下腰，吻了吻王子美丽的额头。"], ["c22-017", "她看看天空，朝霞越来越亮了。"], ["c22-018", "她看看手里锋利的刀子，又看看王子。"]]}, {"t": "p", "s": [["c22-019", "刀子在她手里抖动着。"]]}, {"t": "p", "s": [["c22-020", "可是，她怎么能伤害自己深爱的人呢？"]]}, {"t": "img", "src": "images/21.webp?v=c1fc9472a2", "vid": "images/21.mp4?v=bd5f75c764", "cap": "黎明前，她把刀子远远地扔进了海里", "n": 81}, {"t": "p", "s": [["c22-021", "她把刀子远远地扔进了海浪里。"], ["c22-022", "刀子落下的地方，海水闪出了一片红光，好像有几滴血从水里冒了出来。"]]}, {"t": "img", "src": "images/22.webp?v=e571972562", "vid": "images/22.mp4?v=63d4571e73", "cap": "她跳进大海，慢慢化成了泡沫", "n": 82}, {"t": "p", "s": [["c22-023", "她最后一次望了望王子，眼睛已经有一点儿模糊了。"], ["c22-024", "然后，她从船上跳进了大海。"], ["c22-025", "她觉得，自己的身体正在慢慢地化成泡沫。"]]}]}, {"title": "第二十三章　空气的女儿", "head": "c23-h", "audio": "audio/ch23.m4a?v=5211c6aa8d", "duration": 146.168, "times": {"c23-h": [0.0, 3.333], "c23-001": [4.333, 6.966], "c23-002": [7.316, 13.716], "c23-003": [14.066, 22.132], "c23-004": [22.482, 28.997], "c23-005": [29.347, 37.402], "c23-006": [37.752, 43.515], "c23-007": [44.365, 52.292], "c23-008": [56.313, 57.919], "c23-009": [58.269, 59.204], "c23-010": [59.554, 64.862], "c23-011": [65.712, 69.224], "c23-012": [69.574, 73.324], "c23-013": [73.674, 79.329], "c23-014": [80.179, 84.306], "c23-015": [84.656, 87.953], "c23-016": [88.303, 92.29], "c23-017": [93.14, 101.626], "c23-018": [101.976, 108.04], "c23-019": [108.89, 116.262], "c23-020": [117.112, 119.816], "c23-021": [120.166, 124.054], "c23-022": [124.404, 130.412], "c23-023": [131.262, 136.453], "c23-024": [136.803, 144.668]}, "blocks": [{"t": "img", "src": "images/86.webp?v=47950815e0", "vid": "images/86.mp4?v=45e586a972", "cap": "日出，泡沫上飘着透明的身影", "n": 83}, {"t": "p", "s": [["c23-001", "太阳从海上升起来了。"], ["c23-002", "温柔的阳光照在冰冷的泡沫上，小公主并没有感到死亡的痛苦。"], ["c23-003", "她看见了明亮的太阳，在她的上空，飘浮着几百个透明的、美丽的身影。"], ["c23-004", "透过她们，她还能看见船上白色的帆和天上玫瑰色的云。"], ["c23-005", "她们的声音像音乐一样好听，可是人的耳朵听不到，人的眼睛也看不见。"], ["c23-006", "她们没有翅膀，因为身体很轻，就在空中飘来飘去。"]]}, {"t": "p", "s": [["c23-007", "小公主发现，自己也有了一个和她们一样的身体，正从泡沫里慢慢地升起来。"]]}, {"t": "p", "s": [["c23-008", "“我要到什么地方去呢？”"], ["c23-009", "她问。"], ["c23-010", "她的声音和那些身影一样，好听得没法形容。"]]}, {"t": "img", "src": "images/43.webp?v=721b99cc5f", "vid": "images/43.mp4?v=e098ea71ad", "cap": "空气的女儿们为人们送去凉风和花香", "n": 84}, {"t": "p", "s": [["c23-011", "她们回答说：“到空气的女儿们这里来！"], ["c23-012", "美人鱼没有不灭的灵魂，除非得到一个人的爱。"], ["c23-013", "空气的女儿也没有，可是我们能用善良的行动，为自己创造一个灵魂。”"]]}, {"t": "p", "s": [["c23-014", "“我们飞到炎热的地方，给那里的人送去凉爽的风。"], ["c23-015", "我们把花香散布到空气里，让人们感到快乐。"], ["c23-016", "当我们做了三百年的好事以后，就能得到一个不灭的灵魂。”"]]}, {"t": "p", "s": [["c23-017", "“可怜的小美人鱼，你像我们一样，用全部的心去追求，去爱，你忍受了那么多的痛苦，却从不伤害别人。"], ["c23-018", "现在，你也来到了空气的女儿们中间，你也可以用善良的行动，为自己创造一个灵魂。”"]]}, {"t": "p", "s": [["c23-019", "小公主向着太阳举起了她透明的手臂，第一次感到了眼泪在眼里流动。"]]}, {"t": "img", "src": "images/44.webp?v=7cccd34e22", "vid": "images/44.mp4?v=4f5c7d66a0", "cap": "王子和新娘望着海上的泡沫", "n": 85}, {"t": "p", "s": [["c23-020", "船上又热闹起来了。"], ["c23-021", "她看见王子和他美丽的新娘在寻找她。"], ["c23-022", "他们难过地望着翻滚的泡沫，好像知道她已经跳进了大海。"]]}, {"t": "img", "src": "images/23.webp?v=1e18488ade", "vid": "images/23.mp4?v=5be61cc4a8", "cap": "她和空气的女儿们，坐着玫瑰色的云飞向天空", "n": 86}, {"t": "p", "s": [["c23-023", "小公主悄悄地吻了吻新娘的额头，对王子微微一笑。"], ["c23-024", "然后，她和空气的女儿们一起，骑上一朵玫瑰色的云，飞向了高高的天空。"]]}]}, {"title": "第二十四章　看不见的客人", "head": "c24-h", "audio": "audio/ch24.m4a?v=1549feeef9", "duration": 105.622, "times": {"c24-h": [0.0, 3.54], "c24-001": [4.54, 9.242], "c24-002": [10.092, 14.78], "c24-003": [15.13, 19.015], "c24-004": [19.366, 25.94], "c24-005": [26.29, 29.779], "c24-006": [30.129, 34.263], "c24-007": [35.113, 42.38], "c24-008": [42.73, 45.839], "c24-009": [46.689, 57.185], "c24-010": [58.035, 59.312], "song-theme": [60.512, 66.512], "song-theme-01": [66.512, 70.112], "song-theme-02": [70.132, 73.732], "song-theme-03": [74.232, 77.392], "song-theme-04": [77.392, 81.192], "song-theme-05": [82.932, 86.392], "song-theme-06": [86.392, 89.892], "song-theme-07": [90.152, 93.672], "song-theme-08": [93.672, 98.772]}, "blocks": [{"t": "p", "s": [["c24-001", "小公主问：“三百年以后，我们就能飞到天国去了吗？”"]]}, {"t": "img", "src": "images/87.webp?v=05879a3345", "vid": "images/87.mp4?v=c24200b008", "cap": "空气的女儿悄悄飞进孩子的房间", "n": 87}, {"t": "p", "s": [["c24-002", "一个空气的女儿轻轻地说：“也许用不了那么久。"], ["c24-003", "我们会悄悄地飞进有小孩子的人家，谁也看不见我们。"], ["c24-004", "只要我们找到一个好孩子，他让爸爸妈妈高兴，值得爸爸妈妈爱他，我们考验的时间就会缩短。"], ["c24-005", "孩子不会知道我们从他的房间里飞过。"], ["c24-006", "我们对着好孩子快乐地笑一笑，三百年就会少掉一年。”"]]}, {"t": "p", "s": [["c24-007", "空气的女儿接着说：“可是，要是我们看见一个淘气、不听话的孩子，我们就会伤心地哭起来。"], ["c24-008", "我们每流一滴眼泪，考验的时间就会多一天。”"]]}, {"t": "p", "s": [["c24-009", "所以，小朋友，也许今天晚上，就有一个看不见的、温柔的客人，正从你的窗前轻轻飞过呢。"]]}, {"t": "p", "s": [["c24-010", "（完）"]]}, {"t": "song", "title": "海的女儿", "head": "song-theme", "lines": [["song-theme-01", "大海的深处有一座宫殿"], ["song-theme-02", "小小的公主望着海面"], ["song-theme-03", "她用最美的歌声换来双脚"], ["song-theme-04", "一步一步走到王子的身边"], ["song-theme-05", "啦啦啦，浪花轻轻唱"], ["song-theme-06", "她把爱藏在心房"], ["song-theme-07", "化作泡沫飞向天上"], ["song-theme-08", "变成阳光照在海面上"]]}, {"t": "note", "text": "读完以后，可以和孩子聊一聊：小美人鱼为什么最后把刀子扔进了大海？她得到了什么，又失去了什么？真正的爱是什么样子的？"}]}], "music": 3, "images": [{"from": "c01-h", "src": "images/01.webp?v=a8e07de353", "vid": "images/01.mp4?v=13823d5568", "cap": "蓝蓝的深海里，长着会摇摆的奇异花草", "n": 1}, {"from": "c01-006", "src": "images/24.webp?v=20a4ad9278", "vid": "images/24.mp4?v=4a46b05b03", "cap": "珊瑚砌成的海王宫殿", "n": 2}, {"from": "c01-010", "src": "images/25.webp?v=f79935d750", "vid": "images/25.mp4?v=dba496a765", "cap": "老祖母和六位小公主", "n": 3}, {"from": "c01-017", "src": "images/45.webp?v=f3bff29b1d", "vid": "images/45.mp4?v=6ed8152801", "cap": "小公主们在大厅里，鱼儿从琥珀窗游进来", "n": 4}, {"from": "c02-h", "src": "images/02.webp?v=49db3f1c59", "vid": "images/02.mp4?v=a3addbf7be", "cap": "六位公主各有一小块花园", "n": 5}, {"from": "c02-008", "src": "images/26.webp?v=7738ad0439", "vid": "images/26.mp4?v=1cee7cb55c", "cap": "她只喜欢那尊大理石雕像", "n": 6}, {"from": "c03-001", "src": "images/03.webp?v=5fbe00d871", "vid": "images/03.mp4?v=72f92ce236", "cap": "老祖母讲着海面上的世界", "n": 7}, {"from": "c03-012", "src": "images/46.webp?v=a8af57c87a", "vid": "images/46.mp4?v=2e2352d0a1", "cap": "夜里，她透过海水望着月亮", "n": 8}, {"from": "c03-015", "src": "images/47.webp?v=14fecdb4ef", "vid": "images/47.mp4?v=d2296decd9", "cap": "一团黑影从头顶滑过，那是一艘大船", "n": 9}, {"from": "c04-003", "src": "images/27.webp?v=2f228e47a9", "vid": "images/27.mp4?v=ee3d857685", "cap": "姐姐们浮上海面，看见了城市的灯光", "n": 10}, {"from": "c04-010", "src": "images/48.webp?v=9d17f83b1b", "vid": "images/48.mp4?v=29721d3cb2", "cap": "二姐看见天鹅向落山的太阳飞去", "n": 11}, {"from": "c05-001", "src": "images/49.webp?v=8069d80e86", "vid": "images/49.mp4?v=4aa845ac27", "cap": "三姐游进了大河，看见葡萄山和城堡", "n": 12}, {"from": "c05-007", "src": "images/50.webp?v=215db7fab0", "vid": "images/50.mp4?v=9d01ed5e13", "cap": "小海湾里，人类的孩子们在玩水", "n": 13}, {"from": "c05-009", "src": "images/51.webp?v=8c88c2387c", "vid": "images/51.mp4?v=523e70312a", "cap": "一条黑色的小狗对着她汪汪叫", "n": 14}, {"from": "c05-012", "src": "images/52.webp?v=530dda4e08", "vid": "images/52.mp4?v=87468c6c07", "cap": "四姐在大海中央，看见鲸鱼喷水", "n": 15}, {"from": "c05-019", "src": "images/53.webp?v=45694eb33b", "vid": "images/53.mp4?v=60792fcbf1", "cap": "五姐坐在像珍珠一样的冰山上", "n": 16}, {"from": "c05-024", "src": "images/54.webp?v=de58d4cb1c", "vid": "images/54.mp4?v=67885bb0d2", "cap": "闪电照亮了冰山，五姐安静地坐着", "n": 17}, {"from": "c06-004", "src": "images/55.webp?v=99f36b763d", "vid": "images/55.mp4?v=27e19766dc", "cap": "五个姐姐在暴风雨前为水手唱歌", "n": 18}, {"from": "c06-010", "src": "images/28.webp?v=339b23635a", "vid": "images/28.mp4?v=be50c655d3", "cap": "姐姐们浮上去了，她独自留在海底", "n": 19}, {"from": "c07-001", "src": "images/29.webp?v=a5750b445b", "vid": "images/29.mp4?v=83b4be071e", "cap": "老祖母给她戴上百合花环", "n": 20}, {"from": "c07-005", "src": "images/56.webp?v=1e6b83af27", "vid": "images/56.mp4?v=35945da07f", "cap": "老祖母把八只大牡蛎夹在她的尾巴上", "n": 21}, {"from": "c07-013", "src": "images/04.webp?v=8a086c8afa", "vid": "images/04.mp4?v=88a790fa40", "cap": "十五岁那天，她第一次浮出海面", "n": 22}, {"from": "c08-001", "src": "images/05.webp?v=5c712ec0eb", "vid": "images/05.mp4?v=539447a012", "cap": "船上正在庆祝王子的生日", "n": 23}, {"from": "c08-005", "src": "images/57.webp?v=a3a9b95332", "vid": "images/57.mp4?v=2c48ade0b1", "cap": "她游到船舱的窗边，看见了王子", "n": 24}, {"from": "c08-013", "src": "images/58.webp?v=15b883f488", "vid": "images/58.mp4?v=c2c9cfcdcc", "cap": "满天的烟火，像火鱼在天空游", "n": 25}, {"from": "c08-018", "src": "images/59.webp?v=f4b3731c37", "vid": "images/59.mp4?v=ad9d39774b", "cap": "夜深了，她还舍不得离开", "n": 26}, {"from": "c09-h", "src": "images/06.webp?v=98610bcfb2", "vid": "images/06.mp4?v=a6a6fb117c", "cap": "暴风雨来了，大浪像黑色的高山", "n": 27}, {"from": "c09-007", "src": "images/60.webp?v=01bcd0ae5c", "vid": "images/60.mp4?v=19d6bbabd9", "cap": "主桅断了，王子掉进了大海", "n": 28}, {"from": "c09-018", "src": "images/30.webp?v=21e2b52175", "vid": "images/30.mp4?v=d3e850cf73", "cap": "她在漂来漂去的木头之间拼命地游", "n": 29}, {"from": "c09-024", "src": "images/07.webp?v=bcdfeec586", "vid": "images/07.mp4?v=26a92398cb", "cap": "她托着王子，在海浪里漂了一整夜", "n": 30}, {"from": "c09-029", "src": "images/61.webp?v=94291ef316", "vid": "images/61.mp4?v=938c650cd8", "cap": "她托着王子游向有雪山和神庙的海岸", "n": 31}, {"from": "c09-033", "src": "images/08.webp?v=b61e64b2c0", "vid": "images/08.mp4?v=8f4bb54cc3", "cap": "她躲在礁石后面，看着姑娘发现了王子", "n": 32}, {"from": "c10-h", "src": "images/31.webp?v=3488b8570f", "vid": "images/31.mp4?v=57eb10fb44", "cap": "她一次次浮到放下王子的地方", "n": 33}, {"from": "c10-006", "src": "images/09.webp?v=3992b0f058", "vid": "images/09.mp4?v=9077c46ca8", "cap": "她抱着那尊大理石雕像，想念王子", "n": 34}, {"from": "c10-011", "src": "images/10.webp?v=c28326343e", "vid": "images/10.mp4?v=c0de1bd0c8", "cap": "姐姐们手挽着手，带她去看王子的王宫", "n": 35}, {"from": "c11-h", "src": "images/62.webp?v=1aff5d8e05", "vid": "images/62.mp4?v=eb925bca06", "cap": "王子的王宫，大理石台阶一直通到海里", "n": 36}, {"from": "c11-004", "src": "images/63.webp?v=096c4502a4", "vid": "images/63.mp4?v=383cc6d9c1", "cap": "大厅中央的喷泉和玻璃圆屋顶", "n": 37}, {"from": "c11-005", "src": "images/32.webp?v=2800b590a7", "vid": "images/32.mp4?v=e740188abe", "cap": "月光下，她静静地看着王子", "n": 38}, {"from": "c11-009", "src": "images/64.webp?v=67557b14df", "vid": "images/64.mp4?v=d8ed6aa36a", "cap": "王子的小船奏着音乐，她躲在芦苇里", "n": 39}, {"from": "c11-012", "src": "images/65.webp?v=1128bc9972", "vid": "images/65.mp4?v=878f69d7c9", "cap": "渔夫们打着火把，说着王子的好事", "n": 40}, {"from": "c12-h", "src": "images/33.webp?v=84230e52df", "vid": "images/33.mp4?v=d7b047ded0", "cap": "她问老祖母：人类会永远活着吗？", "n": 41}, {"from": "c12-009", "src": "images/66.webp?v=b5ff054002", "vid": "images/66.mp4?v=1861d9bb4f", "cap": "人的灵魂会升到闪亮的星星那里", "n": 42}, {"from": "c12-021", "src": "images/67.webp?v=3850aebecb", "vid": "images/67.mp4?v=ac77e5d8a4", "cap": "她难过地看着自己的鱼尾巴", "n": 43}, {"from": "c13-h", "src": "images/68.webp?v=779eb18c6d", "vid": "images/68.mp4?v=e720ae448f", "cap": "玻璃做的舞厅，贝壳里燃着蓝色火焰", "n": 44}, {"from": "c13-006", "src": "images/34.webp?v=edee807b33", "vid": "images/34.mp4?v=0e40834052", "cap": "宫殿里的舞会，她的歌声最美", "n": 45}, {"from": "c13-009", "src": "images/69.webp?v=5a3d656170", "vid": "images/69.mp4?v=4d85cc6e05", "cap": "她独自在花园里，听见海面上的号角声", "n": 46}, {"from": "c14-h", "src": "images/11.webp?v=5370cb44b6", "vid": "images/11.mp4?v=7f19096d81", "cap": "去海巫婆家的路，没有花也没有海草", "n": 47}, {"from": "c14-004", "src": "images/70.webp?v=a5b967888c", "vid": "images/70.mp4?v=b2f238bcc8", "cap": "旋转的漩涡和冒泡的烂泥地", "n": 48}, {"from": "c14-006", "src": "images/71.webp?v=bfee3b19b6", "vid": "images/71.mp4?v=ea3ff0605e", "cap": "珊瑚虫的树林，长着软软的长手臂", "n": 49}, {"from": "c14-011", "src": "images/12.webp?v=03c7cfefdc", "vid": "images/12.mp4?v=925e3e63b9", "cap": "穿过伸着长手臂的珊瑚虫树林", "n": 50}, {"from": "c14-014", "src": "images/72.webp?v=7c1bbafd73", "vid": "images/72.mp4?v=fe9520a604", "cap": "黏糊糊的空地上，大水蛇在打滚", "n": 51}, {"from": "c14-017", "src": "images/73.webp?v=b9d86292c3", "vid": "images/73.mp4?v=3e5e8b802f", "cap": "海巫婆和她的癞蛤蟆、水蛇", "n": 52}, {"from": "c15-h", "src": "images/35.webp?v=739a55a489", "vid": "images/35.mp4?v=a0e9334d6d", "cap": "海巫婆说：我知道你想要什么", "n": 53}, {"from": "c15-034", "src": "images/74.webp?v=e97ed50e6c", "vid": "images/74.mp4?v=d84826760e", "cap": "海巫婆架起大锅熬药", "n": 54}, {"from": "c15-039", "src": "images/13.webp?v=def3227ccd", "vid": "images/13.mp4?v=d9e214e0b6", "cap": "海巫婆把她的歌声收进了海螺里", "n": 55}, {"from": "c15-043", "src": "images/75.webp?v=a8ba628457", "vid": "images/75.mp4?v=d0bb2e0d3b", "cap": "珊瑚虫看见发光的药水，缩了回去", "n": 56}, {"from": "c15-046", "src": "images/36.webp?v=54b06661c9", "vid": "images/36.mp4?v=676d5f5ae7", "cap": "她向宫殿送出了一千个吻", "n": 57}, {"from": "c16-h", "src": "images/14.webp?v=9677823918", "vid": "images/14.mp4?v=fba16950f4", "cap": "在月光下的大理石台阶上，她喝下了药水", "n": 58}, {"from": "c16-004", "src": "images/15.webp?v=e8baaae1ca", "vid": "images/15.mp4?v=79974970f5", "cap": "醒来时，王子正望着她", "n": 59}, {"from": "c16-015", "src": "images/37.webp?v=47a0da5635", "vid": "images/37.mp4?v=fe1ca059df", "cap": "她穿上了丝绸衣服，却不能唱歌", "n": 60}, {"from": "c16-020", "src": "images/16.webp?v=1478e46bc1", "vid": "images/16.mp4?v=da993cb889", "cap": "她踮起脚尖跳舞，没有人跳得像她那样美", "n": 61}, {"from": "c17-h", "src": "images/76.webp?v=864064a790", "vid": "images/76.mp4?v=9eab6db0f7", "cap": "她睡在王子门外的天鹅绒垫子上", "n": 62}, {"from": "c17-004", "src": "images/17.webp?v=28fc722b15", "vid": "images/17.mp4?v=48a632cefd", "cap": "她和王子骑马穿过香喷喷的树林", "n": 63}, {"from": "c17-005", "src": "images/77.webp?v=fbccb30df7", "vid": "images/77.mp4?v=7334d25750", "cap": "她和王子爬上高山，云朵在脚下飘", "n": 64}, {"from": "c17-006", "src": "images/78.webp?v=5fcc7637d3", "vid": "images/78.mp4?v=de5326790f", "cap": "夜里，她把发烫的双脚泡在海水里", "n": 65}, {"from": "c17-009", "src": "images/18.webp?v=ac224b63d0", "vid": "images/18.mp4?v=737a26dc2e", "cap": "夜里，姐姐们浮出海面来看她", "n": 66}, {"from": "c17-013", "src": "images/79.webp?v=617ac49fbd", "vid": "images/79.mp4?v=8b6f7e6b2c", "cap": "远处，老祖母和海王向她伸出手", "n": 67}, {"from": "c18-h", "src": "images/38.webp?v=bdd089d945", "vid": "images/38.mp4?v=56e7e8fa77", "cap": "王子说：你让我想起神庙边的那个姑娘", "n": 68}, {"from": "c19-010", "src": "images/80.webp?v=c9b7cef124", "vid": "images/80.mp4?v=cf604b176b", "cap": "王子给她讲大海的故事", "n": 69}, {"from": "c19-013", "src": "images/39.webp?v=c62a3af2e0", "vid": "images/39.mp4?v=7fe4352593", "cap": "她坐在船边，好像看见了海底的家", "n": 70}, {"from": "c19-016", "src": "images/81.webp?v=456017847d", "vid": "images/81.mp4?v=1ec7e6d15a", "cap": "姐姐们浮出海面，难过地望着她", "n": 71}, {"from": "c20-001", "src": "images/82.webp?v=575ed1258f", "vid": "images/82.mp4?v=15267527fd", "cap": "邻国的城市，钟声和号角迎接王子", "n": 72}, {"from": "c20-006", "src": "images/19.webp?v=ec2614fd54", "vid": "images/19.mp4?v=d9d3feb4a9", "cap": "邻国的公主来了", "n": 73}, {"from": "c20-013", "src": "images/40.webp?v=55831c18f9", "vid": "images/40.mp4?v=a836b6ba4e", "cap": "她吻了吻王子的手，心已经开始碎了", "n": 74}, {"from": "c21-h", "src": "images/83.webp?v=ffd4513331", "vid": "images/83.mp4?v=18655dc97a", "cap": "婚礼上，她托着新娘长长的礼服", "n": 75}, {"from": "c21-007", "src": "images/84.webp?v=915c2441cc", "vid": "images/84.mp4?v=ec9cbbdaf9", "cap": "傍晚，新郎和新娘上了大船", "n": 76}, {"from": "c21-011", "src": "images/41.webp?v=2d7a56904a", "vid": "images/41.mp4?v=ebcc3a1283", "cap": "婚礼的大船上，她跳得从来没有这样美", "n": 77}, {"from": "c22-h", "src": "images/85.webp?v=215263a8e7", "vid": "images/85.mp4?v=8e3dca4173", "cap": "黎明前，她独自望着东方", "n": 78}, {"from": "c22-004", "src": "images/20.webp?v=d644e1bfac", "vid": "images/20.mp4?v=81ba7fd064", "cap": "姐姐们剪掉了长发，换来一把刀子", "n": 79}, {"from": "c22-013", "src": "images/42.webp?v=27e85ad5ac", "vid": "images/42.mp4?v=cb2bcea794", "cap": "她拿着刀子，走到王子的房门口", "n": 80}, {"from": "c22-021", "src": "images/21.webp?v=c1fc9472a2", "vid": "images/21.mp4?v=bd5f75c764", "cap": "黎明前，她把刀子远远地扔进了海里", "n": 81}, {"from": "c22-024", "src": "images/22.webp?v=e571972562", "vid": "images/22.mp4?v=63d4571e73", "cap": "她跳进大海，慢慢化成了泡沫", "n": 82}, {"from": "c23-h", "src": "images/86.webp?v=47950815e0", "vid": "images/86.mp4?v=45e586a972", "cap": "日出，泡沫上飘着透明的身影", "n": 83}, {"from": "c23-011", "src": "images/43.webp?v=721b99cc5f", "vid": "images/43.mp4?v=e098ea71ad", "cap": "空气的女儿们为人们送去凉风和花香", "n": 84}, {"from": "c23-020", "src": "images/44.webp?v=7cccd34e22", "vid": "images/44.mp4?v=4f5c7d66a0", "cap": "王子和新娘望着海上的泡沫", "n": 85}, {"from": "c23-024", "src": "images/23.webp?v=1e18488ade", "vid": "images/23.mp4?v=5be61cc4a8", "cap": "她和空气的女儿们，坐着玫瑰色的云飞向天空", "n": 86}, {"from": "c24-002", "src": "images/87.webp?v=05879a3345", "vid": "images/87.mp4?v=c24200b008", "cap": "空气的女儿悄悄飞进孩子的房间", "n": 87}], "versions": [{"dir": "little-mermaid", "label": "精简版", "current": false}, {"dir": "little-mermaid-full", "label": "完整版", "current": true}]};
+const POS_KEY = BOOK.id + '-audiobook-pos';   // 听到哪里：每本书分开记
+// 网上运行时音频、插图都从 Cloudflare 加载（网页仓库里只放 HTML）；本机、局域网、file:// 用相对路径。
+// ?assets=remote / pages / local 强制（pages = 默认的 pages.dev 域名，自定义域名没配好时用）
+const ASSET_HOSTS = { remote: 'https://meler-stories-assets.melerpaine.com/', pages: 'https://meler-stories-assets.pages.dev/' };
+const ASSET_BASE = (() => {
+  const q = new URLSearchParams(location.search).get('assets');
+  const local = location.protocol === 'file:' || /^(localhost|127\.|10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.|\[::1\]$)|\.local$/.test(location.hostname);
+  const host = ASSET_HOSTS[q] || (q !== 'local' && !local ? ASSET_HOSTS.remote : '');
+  return host ? host + BOOK.id + '/' : '';
+})();
+const A = p => p && ASSET_BASE + p;
+BOOK.cover = A(BOOK.cover);
+BOOK.images.forEach(im => { im.src = A(im.src); im.vid = A(im.vid); });
+BOOK.chapters.forEach(ch => { ch.audio = A(ch.audio); ch.blocks.forEach(b => { if (b.t === 'img') { b.src = A(b.src); b.vid = A(b.vid); } }); });
+const PREF = 'story-audiobook-';               // 主题、动图、显示模式：所有书共用
+const NUM = ['零','一','二','三','四','五','六','七','八','九','十','十一','十二','十三','十四','十五'];
+const ICON_PLAY = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>';
+const ICON_PAUSE = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 5h3.5v14H7zm6.5 0H17v14h-3.5z"/></svg>';
+const $ = s => document.querySelector(s);
+const fmt = t => { t = Math.max(0, t | 0); return String(t / 60 | 0).padStart(2, '0') + ':' + String(t % 60).padStart(2, '0'); };
+
+// ---------- 渲染 ----------
+const story = $('#story');
+let anim = true;   // 插图用动图还是静态图
+try { anim = localStorage.getItem(PREF + 'anim') !== 'off'; } catch (e) {}
+const lines = [];          // 全书按顺序：{id, ch, start, end, el, img}
+const imgs = BOOK.images;  // 全书插图（故事顺序）：{from, src, vid, cap, n}，from = 从哪一句开始显示；vid 是动图短片
+// 正文里的动图：进入视野附近才加载、播放，离开就暂停（几十段短片同时播手机吃不消）
+const vio = new IntersectionObserver(es => es.forEach(e => {
+  const v = e.target;
+  if (e.isIntersecting && anim) { if (!v.src) v.src = v.dataset.src; v.play().catch(() => {}); }
+  else v.pause();
+}), { rootMargin: '300px 0px' });
+const byId = {};
+document.title = BOOK.title + ' · 有声绘本';
+$('#bookTitle').textContent = BOOK.title;
+$('#kicker').textContent = BOOK.kicker + ' · 有声绘本';
+$('#intro').textContent = BOOK.intro;
+$('#coverImg').src = BOOK.cover;
+const total = BOOK.chapters.reduce((a, c) => a + c.duration, 0);
+const nImg = BOOK.chapters.reduce((a, c) => a + c.blocks.filter(b => b.t === 'img').length, 0);
+const nSong = BOOK.chapters.reduce((a, c) => a + c.blocks.filter(b => b.t === 'song').length, 0);
+// 同一个故事的其他版本（精简版 / 完整版）
+if (BOOK.versions) {
+  const box = $('#versions'); box.hidden = false;
+  BOOK.versions.forEach(v => {
+    const el = document.createElement(v.current ? 'span' : 'a');
+    el.textContent = v.current ? v.label : v.label + ' ›';
+    if (v.current) el.className = 'on'; else el.href = `../${v.dir}/index.html`;
+    box.append(el);
+  });
+}
+$('#meta').textContent = `${BOOK.chapters.length} 章 · ${nImg} 幅插画${nSong ? ` · ${nSong} 首插曲` : ''}${BOOK.music ? ` · ${BOOK.music} 首配乐` : ''} · 全长约 ${Math.round(total / 60)} 分钟 · 朗读：${BOOK.voice}`;
+
+BOOK.chapters.forEach((ch, ci) => {
+  const sec = document.createElement('section');
+  sec.className = 'chapter'; sec.id = 'ch' + (ci + 1);
+  const [no, ...rest] = ch.title.split('　');
+  const h = document.createElement('h2');
+  h.innerHTML = `<small>${no}</small>${rest.join(' ')}`;
+  h.dataset.id = ch.head;
+  sec.appendChild(h);
+  const add = (id, el) => { const [s, e] = ch.times[id]; const L = { id, ch: ci, start: s, end: e, el }; lines.push(L); byId[id] = L; };
+  add(ch.head, h);
+  for (const b of ch.blocks) {
+    if (b.t === 'p') {
+      const p = document.createElement('p');
+      for (const [id, text] of b.s) {
+        const sp = document.createElement('span');
+        sp.className = 's'; sp.dataset.id = id; sp.textContent = text;
+        p.appendChild(sp); add(id, sp);
+      }
+      sec.appendChild(p);
+    } else if (b.t === 'song') {
+      // 插曲：歌名（前奏时高亮）+ 一行一句歌词，跟着演唱逐行高亮
+      const d = document.createElement('div'); d.className = 'song';
+      const h3 = document.createElement('h3'); h3.dataset.id = b.head; h3.textContent = b.title;
+      d.appendChild(h3); add(b.head, h3);
+      for (const [id, text] of b.lines) {
+        const sp = document.createElement('span');
+        sp.className = 's'; sp.dataset.id = id; sp.textContent = text;
+        d.appendChild(sp); add(id, sp);
+      }
+      sec.appendChild(d);
+    } else if (b.t === 'img') {
+      const f = document.createElement('figure');
+      f.innerHTML = `<div class="pic"><img loading="lazy" src="${b.src}" alt="${b.cap}"></div><figcaption><b>插图 ${b.n}</b>${b.cap}</figcaption>`;
+      if (b.vid) {
+        const v = document.createElement('video');
+        v.muted = v.loop = v.playsInline = true; v.preload = 'none'; v.dataset.src = b.vid;
+        v.setAttribute('muted', ''); v.setAttribute('playsinline', '');   // iOS 自动播放认属性
+        v.onplaying = () => v.classList.toggle('on', anim);
+        f.firstChild.appendChild(v); vio.observe(v);
+      }
+      sec.appendChild(f);
+    } else {
+      const d = document.createElement('div'); d.className = 'note'; d.textContent = b.text; sec.appendChild(d);
+    }
+  }
+  story.appendChild(sec);
+  const li = document.createElement('li');
+  li.innerHTML = `<button data-ch="${ci}"><span>${ch.title.replace('　', ' ')}</span><span class="dur">${fmt(ch.duration)}</span></button>`;
+  $('#toc').appendChild(li);
+});
+// 每幅插图从它的 from 那句开始显示，一直到下一幅开始
+imgs.forEach(im => { im.ch = byId[im.from].ch; im.at = lines.indexOf(byId[im.from]); });
+lines.forEach((L, k) => {
+  let i = 0;
+  while (i + 1 < imgs.length && imgs[i + 1].at <= k) i++;
+  L.img = i;
+});
+const endMark = document.createElement('div'); endMark.className = 'end-mark'; endMark.textContent = '— 全书完 —';
+story.appendChild(endMark);
+
+// ---------- 欣赏插曲：全书插曲排成播放列表，每首只放章节音频里歌的那一段，放完接着下一首 ----------
+const songs = [];
+BOOK.chapters.forEach((ch, ci) => ch.blocks.forEach(b => {
+  if (b.t !== 'song') return;
+  const i = lines.indexOf(byId[b.lines[b.lines.length - 1][0]]), next = lines[i + 1];
+  songs.push({ title: b.title, ch: ci, start: byId[b.head].start, end: next && next.ch === ci ? next.start : ch.duration });
+}));
+let plIdx = -1;   // 正在放播放列表里的第几首，-1 是平常听书
+if (songs.length) {
+  const box = document.createElement('section'); box.className = 'songlist'; box.id = 'songlist';
+  const mins = Math.max(1, Math.round(songs.reduce((a, s) => a + s.end - s.start, 0) / 60));
+  box.innerHTML = `<h3>♪ 本书插曲</h3><div class="sub">${songs.length} 首 · 约 ${mins} 分钟</div>
+    <button class="btn btn-song" id="songAll">${ICON_PLAY}欣赏插曲</button><ol></ol>`;
+  songs.forEach((s, i) => {
+    const li = document.createElement('li');
+    li.innerHTML = `<button data-song="${i}"><span></span><span class="dur">${BOOK.chapters[s.ch].title.split('　')[0]} · ${fmt(s.end - s.start)}</span></button>`;
+    li.querySelector('span').textContent = s.title;
+    box.querySelector('ol').appendChild(li);
+  });
+  box.querySelector('#songAll').onclick = () => playSong(0);
+  box.querySelector('ol').onclick = e => { const b = e.target.closest('button'); if (b) playSong(+b.dataset.song); };
+  story.appendChild(box);
+}
+function renderSongs() {
+  document.querySelectorAll('.songlist li button').forEach((b, i) => b.classList.toggle('now', i === plIdx));
+}
+function playSong(i) {
+  if (i >= songs.length) { plIdx = -1; renderSongs(); audio.pause(); toast('插曲都放完啦'); return; }
+  plIdx = Math.max(0, i); renderSongs();
+  const s = songs[plIdx];
+  playFrom(s.ch, s.start + 0.001).then(updateMedia);
+  toast(`♪ 插曲 ${plIdx + 1}/${songs.length}：${s.title}`);
+}
+const stopSongs = () => { if (plIdx >= 0) { plIdx = -1; renderSongs(); } };
+
+// ---------- 播放 ----------
+const audio = new Audio();
+audio.preload = 'auto';
+let cur = -1, active = null, playing = false;
+let follow = true, userScrollAt = 0, speedIdx = 1;
+const SPEEDS = [0.8, 1, 1.2, 1.5];
+
+function loadChapter(ci) {
+  if (ci === cur) return Promise.resolve();
+  cur = ci;
+  audio.src = BOOK.chapters[ci].audio;
+  setBuffering(true);   // 到能播放之前转圈（canplay / playing 时停）
+  audio.playbackRate = SPEEDS[speedIdx];
+  document.querySelectorAll('.toc button').forEach((b, i) => b.classList.toggle('now', i === ci));
+  $('#seek').max = BOOK.chapters[ci].duration;
+  updateMedia();
+  return new Promise(res => audio.addEventListener('loadedmetadata', res, { once: true }));
+}
+
+async function playFrom(ci, t, autoplay = true) {
+  await loadChapter(ci);
+  audio.currentTime = t;
+  sync(true);
+  if (autoplay) { try { await audio.play(); } catch (e) { toast('点击播放按钮开始朗读'); } }
+}
+const playLine = (L, autoplay = true) => playFrom(L.ch, L.start + 0.001, autoplay);
+
+function lineAt(ci, t) {
+  // 找本章里开始时间 ≤ t 的最后一句
+  let best = null;
+  for (const L of lines) {
+    if (L.ch !== ci) { if (best) break; continue; }
+    if (L.start <= t + 0.03) best = L; else break;
+  }
+  return best;
+}
+
+function setActive(L, force) {
+  if (L === active && !force) return;
+  if (active) active.el.classList.remove('on');
+  active = L;
+  if (!L) return;
+  L.el.classList.add('on');
+  const idx = lines.indexOf(L);
+  lines.forEach((x, i) => x.el.classList.toggle('past', i < idx));
+  const ch = BOOK.chapters[L.ch];
+  $('#nowTitle').textContent = plIdx >= 0 ? `♪ ${plIdx + 1}/${songs.length} ${songs[plIdx].title}` : ch.title.replace('　', ' ');
+  if (mode !== 'read') showStage(L.img);   // 阅读模式不用舞台，免得在后台加载动图
+  setSubtitle(L);
+  if (follow && mode !== 'picture' && (force || Date.now() - userScrollAt > 5000)) {
+    const r = L.el.getBoundingClientRect();
+    const vh = window.innerHeight;
+    if (r.top < vh * 0.18 || r.bottom > vh * 0.62) {
+      programmatic = Date.now();
+      window.scrollBy({ top: r.top - vh * 0.32, behavior: 'smooth' });
+    }
+  }
+}
+
+function sync(force) {
+  if (cur < 0) return;
+  const t = audio.currentTime;
+  const s = songs[plIdx];
+  if (s && playing && cur === s.ch && t >= s.end - 0.05) return playSong(plIdx + 1);   // 这首唱完了，接下一首
+  setActive(lineAt(cur, t), force);
+  if (!seeking) $('#seek').value = t;
+  $('#nowTime').textContent = `${buffering ? '加载中… ' : ''}${fmt(t)} / ${fmt(BOOK.chapters[cur].duration)}`;
+  paintSeek();
+}
+
+// ---------- 弱网：显示下载进度、缓冲提示、预先加载下一章、出错重试 ----------
+const SEEK_PLAYED = 'var(--sea)', SEEK_BUF = 'color-mix(in srgb, var(--sea) 50%, var(--line))';
+let buffering = false, retry = null, prefetched = new Set();
+function paintSeek() {
+  const seek = $('#seek');
+  const d = cur < 0 ? 0 : (audio.duration || BOOK.chapters[cur].duration);
+  if (!d) { seek.style.setProperty('--seek-bg', 'var(--line)'); return; }
+  const pc = x => (Math.min(1, Math.max(0, x / d)) * 100).toFixed(2) + '%';
+  const p = pc(+seek.value), stops = [];
+  for (let i = 0; i < audio.buffered.length; i++) {
+    const a = pc(audio.buffered.start(i)), b = pc(audio.buffered.end(i));
+    stops.push(`transparent ${a}`, `${SEEK_BUF} ${a}`, `${SEEK_BUF} ${b}`, `transparent ${b}`);
+  }
+  const buf = stops.length ? `linear-gradient(to right, ${stops.join(', ')}), ` : '';
+  seek.style.setProperty('--seek-bg', `linear-gradient(to right, ${SEEK_PLAYED} ${p}, transparent ${p}), ${buf}var(--line)`);
+}
+function setBuffering(on) {
+  if (buffering === on) return;
+  buffering = on;
+  document.body.classList.toggle('buffering', on);
+  if (cur >= 0) sync(false);
+}
+audio.addEventListener('waiting', () => setBuffering(true));
+['playing', 'canplay', 'pause'].forEach(ev => audio.addEventListener(ev, () => setBuffering(false)));
+audio.addEventListener('progress', () => {
+  paintSeek();
+  // 这一章下载完了而且正在听：提前把下一章拉进浏览器缓存（地址带内容指纹、长期缓存），换章时不用再等
+  const next = BOOK.chapters[cur + 1], b = audio.buffered, d = audio.duration;
+  if (!playing || !next || prefetched.has(next.audio) || !b.length || !(b.end(b.length - 1) >= d - 0.5)) return;
+  if (navigator.connection && navigator.connection.saveData) return;
+  prefetched.add(next.audio);
+  fetch(next.audio, { priority: 'low' }).then(r => r.blob()).catch(() => {});   // 只试一次，失败了到时照常边下边放
+});
+audio.addEventListener('error', () => {
+  if (cur < 0) return;
+  setBuffering(false);
+  retry = { ch: cur, t: audio.currentTime };   // 再点播放时从断开的地方重新加载
+  cur = -1;
+  toast('网络不太好，音频没加载出来，点播放键重试');
+});
+
+let raf = 0;
+function loop() { sync(false); raf = requestAnimationFrame(loop); }
+audio.addEventListener('play', () => { playing = true; document.body.classList.add('playing'); story.classList.add('reading'); renderPlay(); cancelAnimationFrame(raf); loop(); });
+audio.addEventListener('pause', () => { playing = false; document.body.classList.remove('playing'); renderPlay(); cancelAnimationFrame(raf); sync(false); savePos(); });
+audio.addEventListener('ended', () => {
+  if (plIdx >= 0) playSong(plIdx + 1);   // 插曲在章末：这章放完就是这首唱完了
+  else if (cur < BOOK.chapters.length - 1) playFrom(cur + 1, 0);
+  else { toast('故事讲完啦，晚安 🌙'); setActive(null); localStorage.removeItem(POS_KEY); }
+});
+
+function renderPlay() {
+  $('#playBtn').innerHTML = playing ? ICON_PAUSE : ICON_PLAY;
+  $('#playBtn').setAttribute('aria-label', playing ? '暂停' : '播放');
+}
+renderPlay();
+
+function toggle() {
+  if (cur < 0) { const p = retry || readPos(); retry = null; return p ? playFrom(p.ch, p.t) : playFrom(0, 0); }
+  playing ? audio.pause() : audio.play();
+}
+function step(d) {
+  const i = active ? lines.indexOf(active) : -1;
+  // 上一句：如果当前句已读了 1.5 秒以上，先回到本句开头
+  if (d < 0 && active && audio.currentTime - active.start > 1.5) return playLine(active, playing || cur < 0);
+  const L = lines[Math.min(lines.length - 1, Math.max(0, i + d))];
+  if (L) playLine(L, true);
+}
+function chapterJump(d) {
+  if (plIdx >= 0) return playSong(Math.min(songs.length - 1, plIdx + d));   // 欣赏插曲时，上一章 / 下一章换成上一首 / 下一首
+  const ci = Math.min(BOOK.chapters.length - 1, Math.max(0, (cur < 0 ? 0 : cur) + d));
+  playFrom(ci, 0);
+}
+
+// ---------- 交互 ----------
+$('#playBtn').onclick = toggle;
+$('#prevS').onclick = () => step(-1);
+$('#nextS').onclick = () => step(1);
+$('#prevCh').onclick = () => chapterJump(-1);
+$('#nextCh').onclick = () => chapterJump(1);
+$('#startBtn').onclick = () => { stopSongs(); playFrom(0, 0); };
+$('#tocBtn').onclick = () => {
+  if (mode === 'picture') setMode('read', true);   // 纯图模式没有目录，先回到阅读模式
+  $('.toc').scrollIntoView({ behavior: 'smooth' });
+};
+story.addEventListener('click', e => {
+  const el = e.target.closest('[data-id]');
+  if (el) { stopSongs(); playLine(byId[el.dataset.id], true); userScrollAt = 0; return; }
+  const pic = e.target.closest('figure .pic'), img = pic && pic.querySelector('img');
+  if (img) { const lb = $('#lightbox'); lb.querySelector('img').src = img.src; lb.querySelector('p').textContent = img.alt; lb.classList.add('open'); }
+});
+$('#lightbox').onclick = () => $('#lightbox').classList.remove('open');
+$('#toc').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  const ci = +b.dataset.ch;
+  stopSongs(); playFrom(ci, 0);
+  document.getElementById('ch' + (ci + 1)).scrollIntoView({ behavior: 'smooth' });
+});
+$('#speedBtn').onclick = () => {
+  speedIdx = (speedIdx + 1) % SPEEDS.length;
+  audio.playbackRate = SPEEDS[speedIdx];
+  $('#speedBtn').textContent = SPEEDS[speedIdx].toFixed(1) + '×';
+};
+$('#followBtn').onclick = () => {
+  follow = !follow;
+  $('#followBtn').setAttribute('aria-pressed', follow);
+  toast(follow ? '跟读：自动翻到正在读的地方' : '跟读已关闭，可以自由翻看');
+  if (follow && active) setActive(active, true);
+};
+// ---------- 显示模式：阅读 / 左图右文（宽屏才有）/ 纯图 ----------
+const MODES = { read: '阅读', split: '左图右文', picture: '纯图' };
+const wide = matchMedia('(min-width: 900px)');
+let mode = 'read', stageIdx = -1, stageLayer = 0;
+$('#stageVid').onplaying = () => $('#stageVid').classList.add('show');
+function showStage(i, force) {
+  if (i === stageIdx && !force) return;
+  stageIdx = i;
+  const im = imgs[i];
+  const layers = document.querySelectorAll('#stage img');
+  const next = layers[stageLayer ^= 1], prev = layers[stageLayer ^ 1];
+  next.onload = () => { next.classList.add('show'); prev.classList.remove('show'); };
+  next.src = im.src;
+  if (imgs[i + 1]) new Image().src = imgs[i + 1].src;   // 顺手预载下一张，念到时直接换上
+  next.alt = im.cap;
+  // 动图短片盖在静态图上，开始播放再淡入；阅读模式看不见舞台，不播
+  const v = $('#stageVid');
+  v.classList.remove('show');
+  if (anim && im.vid && mode !== 'read') { v.src = im.vid; v.play().catch(() => {}); }
+  else if (v.getAttribute('src')) { v.pause(); v.removeAttribute('src'); v.load(); }
+  $('#stageBg').style.backgroundImage = `url("${im.src}")`;
+  $('#stageCap').textContent = `插图 ${im.n} · ${im.cap}`;
+  $('#stageTop').textContent = BOOK.chapters[(active || {}).ch ?? im.ch].title.replace('　', ' ');
+}
+// 字幕换句时先淡出再换字，免得两句文字跳动
+let subT = 0;
+function setSubtitle(L) {
+  const sub = $('#stageSub');
+  const text = !L ? '' : L.el.tagName === 'H2' ? BOOK.chapters[L.ch].title.replace('　', ' ')
+    : L.el.tagName === 'H3' ? '♪ ' + L.el.textContent : L.el.closest('.song') ? '♪ ' + L.el.textContent + ' ♪' : L.el.textContent;
+  if (sub.dataset.text === text) return;
+  sub.dataset.text = text;
+  sub.classList.add('fade');
+  clearTimeout(subT);
+  subT = setTimeout(() => { sub.textContent = text; sub.classList.remove('fade'); }, 180);
+}
+function setMode(m, quiet) {
+  if (m === 'split' && !wide.matches) m = 'read';
+  mode = m;
+  document.body.dataset.mode = m;
+  $('#modeBtn').textContent = MODES[m];
+  try { localStorage.setItem(PREF + 'mode', m); } catch (e) {}
+  showStage(active ? active.img : Math.max(0, stageIdx), true);
+  if (m !== 'picture' && active) setTimeout(() => setActive(active, true), 30);
+  if (!quiet) toast('显示模式：' + MODES[m] + (m === 'picture' ? '（点画面播放 / 暂停）' : ''));
+}
+$('#modeBtn').onclick = () => {
+  const order = wide.matches ? ['read', 'split', 'picture'] : ['read', 'picture'];
+  setMode(order[(order.indexOf(mode) + 1) % order.length]);
+};
+wide.addEventListener('change', () => { if (mode === 'split' && !wide.matches) setMode('read', true); });
+$('#stage').onclick = () => { if (mode === 'picture') toggle(); };
+$('#stagePlay').onclick = e => { e.stopPropagation(); toggle(); };
+// 舞台的底边贴着播放条
+new ResizeObserver(() => document.documentElement.style.setProperty('--ph', $('#player').offsetHeight + 'px')).observe($('#player'));
+try { setMode(localStorage.getItem(PREF + 'mode') || 'read', true); } catch (e) { setMode('read', true); }
+
+function renderAnim() {
+  $('#animBtn').setAttribute('aria-pressed', anim);
+  document.querySelectorAll('figure video').forEach(v => {
+    if (anim) { vio.unobserve(v); vio.observe(v); }   // 重新观察会立即回调一次，看得见的接着播
+    else { v.pause(); v.classList.remove('on'); }
+  });
+  if (stageIdx >= 0) showStage(stageIdx, true);
+}
+$('#animBtn').onclick = () => {
+  anim = !anim;
+  try { localStorage.setItem(PREF + 'anim', anim ? 'on' : 'off'); } catch (e) {}
+  renderAnim();
+  toast(anim ? '插图：动图' : '插图：静态图');
+};
+renderAnim();
+$('#themeBtn').onclick = () => {
+  const root = document.documentElement;
+  const dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  root.dataset.theme = dark ? 'light' : 'dark';
+  try { localStorage.setItem(PREF + 'theme', root.dataset.theme); } catch (e) {}
+};
+try { const th = localStorage.getItem(PREF + 'theme'); if (th) document.documentElement.dataset.theme = th; } catch (e) {}
+
+let seeking = false;
+$('#seek').addEventListener('input', () => { seeking = true; if (cur < 0) return; audio.currentTime = +$('#seek').value; sync(true); });
+$('#seek').addEventListener('change', () => { seeking = false; });
+if (cur < 0) $('#seek').addEventListener('pointerdown', () => { if (cur < 0) loadChapter(0); }, { once: true });
+
+// 用户自己滚动页面时，暂停自动跟读 5 秒
+let programmatic = 0;
+['wheel', 'touchmove'].forEach(ev => addEventListener(ev, () => { userScrollAt = Date.now(); }, { passive: true }));
+addEventListener('keydown', e => {
+  if (e.target.matches('input, textarea')) return;
+  if (e.code === 'Space') { e.preventDefault(); toggle(); }
+  else if (e.key === 'ArrowLeft') step(-1);
+  else if (e.key === 'ArrowRight') step(1);
+  else if (e.key === 'Escape') $('#lightbox').classList.remove('open');
+});
+
+// ---------- 记住上次听到哪里 ----------
+function savePos() { if (cur < 0) return; try { localStorage.setItem(POS_KEY, JSON.stringify({ ch: cur, t: audio.currentTime, id: active && active.id })); } catch (e) {} }
+function readPos() { try { const p = JSON.parse(localStorage.getItem(POS_KEY)); return p && p.ch >= 0 && p.ch < BOOK.chapters.length ? p : null; } catch (e) { return null; } }
+setInterval(() => { if (playing) savePos(); }, 3000);
+const last = readPos();
+if (last && (last.ch > 0 || last.t > 5)) {
+  const rb = $('#resumeBtn');
+  rb.hidden = false;
+  rb.textContent = `继续听 · ${BOOK.chapters[last.ch].title.split('　')[0]} ${fmt(last.t)}`;
+  rb.onclick = () => {
+    stopSongs();
+    const L = last.id && byId[last.id];
+    L ? playLine(L) : playFrom(last.ch, last.t);
+    if (L) setTimeout(() => setActive(L, true), 50);
+  };
+}
+$('#nowTitle').textContent = '点击任意一句，就从那里开始听';
+
+// ---------- 锁屏 / 耳机控制 ----------
+function updateMedia() {
+  if (!('mediaSession' in navigator) || cur < 0) return;
+  navigator.mediaSession.metadata = new MediaMetadata({
+    title: plIdx >= 0 ? songs[plIdx].title : BOOK.chapters[cur].title.replace('　', ' '), artist: BOOK.voice, album: BOOK.title,
+    artwork: [{ src: BOOK.cover, sizes: '1152x768', type: 'image/webp' }]
+  });
+  navigator.mediaSession.setActionHandler('previoustrack', () => chapterJump(-1));
+  navigator.mediaSession.setActionHandler('nexttrack', () => chapterJump(1));
+}
+
+let toastT = 0;
+function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2200); }
+</script>
+</body>
+</html>

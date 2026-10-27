@@ -1,0 +1,784 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E📖%3C/text%3E%3C/svg%3E">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>海的女儿 · 有声绘本</title>
+<style>
+:root {
+  --paper: #f8f3e8;
+  --paper-2: #f1e9d8;
+  --ink: #2c2a33;
+  --ink-soft: #6b6672;
+  --sea: #1d6c88;
+  --sea-deep: #123f55;
+  --line: #e2d7c1;
+  --mark: #ffe39a;
+  --mark-ink: #2c2a33;
+  --done: #8d8792;
+  --bar: rgba(255, 252, 245, .94);
+  --shadow: 0 8px 30px rgba(30, 50, 70, .14);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0f1a23; --paper-2: #15232f; --ink: #e9e4d8; --ink-soft: #a29fa8;
+    --sea: #6cc3dd; --sea-deep: #9fdcef; --line: #263744; --mark: rgba(255, 210, 110, .26);
+    --mark-ink: #fff6dc; --done: #8b8a90; --bar: rgba(17, 29, 39, .94);
+    --shadow: 0 8px 30px rgba(0, 0, 0, .45); color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0f1a23; --paper-2: #15232f; --ink: #e9e4d8; --ink-soft: #a29fa8;
+  --sea: #6cc3dd; --sea-deep: #9fdcef; --line: #263744; --mark: rgba(255, 210, 110, .26);
+  --mark-ink: #fff6dc; --done: #8b8a90; --bar: rgba(17, 29, 39, .94);
+  --shadow: 0 8px 30px rgba(0, 0, 0, .45); color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-padding-top: 30vh; }
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font-family: -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+button { font: inherit; color: inherit; }
+
+/* 封面 */
+.cover { position: relative; min-height: 92vh; display: flex; align-items: flex-end; overflow: hidden; color: #fff; }
+.cover img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.cover::after { content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(8, 25, 40, 0) 30%, rgba(8, 25, 40, .55) 62%, rgba(8, 25, 40, .9)); }
+.cover-in { position: relative; z-index: 1; width: 100%; max-width: 760px; margin: 0 auto; padding: 0 20px 56px; }
+.kicker { letter-spacing: .3em; font-size: 13px; opacity: .85; }
+.home { position: absolute; top: 18px; left: 20px; z-index: 2; color: #fff; text-decoration: none; font-size: 14px;
+  padding: 7px 14px; border-radius: 999px; background: rgba(8, 25, 40, .35); backdrop-filter: blur(6px); }
+.home:hover { background: rgba(8, 25, 40, .55); }
+.cover h1 { font-family: "Kaiti SC", "STKaiti", "KaiTi", serif; font-size: clamp(48px, 11vw, 84px);
+  margin: 10px 0 6px; letter-spacing: .12em; font-weight: 700; text-shadow: 0 4px 24px rgba(0, 0, 0, .35); }
+.cover p { margin: 0 0 22px; max-width: 30em; line-height: 1.8; opacity: .92; font-size: 15px; }
+.cover .meta { font-size: 13px; opacity: .78; margin-bottom: 24px; }
+.versions { display: flex; flex-wrap: wrap; gap: 8px; margin: -10px 0 24px; }
+.versions a, .versions span { font-size: 13px; padding: 5px 14px; border-radius: 999px; color: #fff; text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, .5); background: rgba(8, 25, 40, .3); }
+.versions a:hover { background: rgba(8, 25, 40, .55); }
+.versions[hidden] { display: none; }
+.versions .on { background: #fff; color: #123f55; border-color: #fff; font-weight: 600; }
+.cta { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn { border: 0; border-radius: 999px; padding: 13px 26px; font-size: 16px; cursor: pointer; font-weight: 600;
+  display: inline-flex; align-items: center; gap: 8px; }
+.btn-main { background: #fff; color: #123f55; }
+.btn-ghost { background: rgba(255, 255, 255, .16); color: #fff; backdrop-filter: blur(6px);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .4); }
+.btn:hover { filter: brightness(1.05); }
+.btn[hidden] { display: none; }
+.btn svg { width: 18px; height: 18px; }
+
+/* 目录 */
+.toc { max-width: 760px; margin: 0 auto; padding: 40px 20px 8px; }
+.toc-home { float: right; letter-spacing: .05em; font-weight: 500; color: var(--sea); text-decoration: none; }
+.toc h2 { font-size: 15px; letter-spacing: .2em; color: var(--ink-soft); font-weight: 600; margin: 0 0 14px; }
+.toc ol { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 8px; }
+.toc li button { width: 100%; text-align: left; background: var(--paper-2); border: 0; border-radius: 12px;
+  padding: 11px 14px; cursor: pointer; display: flex; justify-content: space-between; gap: 10px; font-size: 15px; }
+.toc li button:hover { box-shadow: inset 0 0 0 1px var(--sea); }
+.toc li button.now { box-shadow: inset 0 0 0 2px var(--sea); }
+.toc .dur { color: var(--ink-soft); font-size: 13px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* 正文 */
+main { max-width: 760px; margin: 0 auto; padding: 8px 20px 160px; }
+.chapter { padding-top: 48px; }
+.chapter h2 { font-family: "Kaiti SC", "STKaiti", "KaiTi", serif; font-size: 30px; color: var(--sea-deep);
+  margin: 0 0 22px; padding: 4px 10px; margin-left: -10px; border-radius: 10px; cursor: pointer;
+  transition: background .3s; letter-spacing: .06em; }
+.chapter h2 small { display: block; font-family: -apple-system, "PingFang SC", sans-serif; font-size: 13px;
+  color: var(--ink-soft); letter-spacing: .2em; font-weight: 500; margin-bottom: 4px; }
+.story p { font-family: "Kaiti SC", "STKaiti", "KaiTi", "Songti SC", serif; font-size: 21px; line-height: 2.05;
+  margin: 0 0 1.1em; text-align: justify; text-indent: 2em; }
+.s { cursor: pointer; border-radius: 6px; padding: 2px 0; transition: background .35s, color .35s, box-shadow .35s;
+  -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.s:hover { background: color-mix(in srgb, var(--mark) 45%, transparent); }
+.s.on, h2.on { background: var(--mark); color: var(--mark-ink); box-shadow: 0 0 0 3px var(--mark); }
+.reading .s.past { color: var(--done); }
+figure { margin: 30px -20px 34px; }
+figure .pic { position: relative; }
+figure img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 0;
+  background: var(--paper-2); cursor: zoom-in; box-shadow: var(--shadow); }
+/* 动图是叠在静态图上的循环短片，开始播放才显出来 */
+figure video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 0;
+  cursor: zoom-in; opacity: 0; transition: opacity .4s; }
+figure video.on { opacity: 1; }
+figcaption { text-align: center; color: var(--ink-soft); font-size: 14px; margin-top: 12px; letter-spacing: .05em; padding: 0 20px; }
+figcaption b { color: var(--sea); font-weight: 600; margin-right: 6px; font-variant-numeric: tabular-nums; }
+@media (min-width: 800px) { figure { margin: 36px -40px 40px; } figure img, figure video { border-radius: 18px; } }
+.note { font-size: 15px; line-height: 1.9; color: var(--ink-soft); background: var(--paper-2); border-radius: 14px;
+  padding: 16px 20px; margin-top: 28px; }
+.song { margin: 6px 0 30px; padding: 20px 16px 22px; text-align: center; border-radius: 18px;
+  background: linear-gradient(var(--paper-2), transparent); }
+.song h3 { margin: 0 0 12px; font-family: "Kaiti SC", "STKaiti", "KaiTi", serif; font-size: 22px; font-weight: normal;
+  color: var(--sea-deep); letter-spacing: .1em; display: inline-block; padding: 2px 12px; border-radius: 8px; cursor: pointer;
+  transition: background .35s, box-shadow .35s; }
+.song h3::before { content: '♪ '; color: var(--sea); }
+.song h3.on { background: var(--mark); color: var(--mark-ink); box-shadow: 0 0 0 3px var(--mark); }
+.song .s { display: table; margin: 2px auto; padding: 1px 10px; font-family: "Kaiti SC", "STKaiti", "KaiTi", serif;
+  font-size: 19px; line-height: 1.9; font-style: italic; color: var(--ink-soft); }
+.song .s.on { color: var(--mark-ink); }
+.end-mark { text-align: center; color: var(--ink-soft); margin: 40px 0 0; font-size: 14px; letter-spacing: .3em; }
+/* 书末的「欣赏插曲」：全书插曲的播放列表 */
+.songlist { margin: 40px 0 0; padding: 24px 18px 22px; text-align: center; border-radius: 18px;
+  background: linear-gradient(var(--paper-2), transparent); }
+.songlist h3 { margin: 0 0 4px; font-family: "Kaiti SC", "STKaiti", "KaiTi", serif; font-size: 24px; font-weight: normal;
+  color: var(--sea-deep); letter-spacing: .1em; }
+.songlist .sub { margin: 0 0 16px; font-size: 14px; color: var(--ink-soft); }
+.btn-song { background: var(--sea); color: #fff; display: inline-flex; align-items: center; gap: 8px; }
+.songlist ol { list-style: none; padding: 0; margin: 18px 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 8px; text-align: left; counter-reset: song; }
+.songlist li button { width: 100%; display: grid; grid-template-columns: auto 1fr; column-gap: 10px; row-gap: 2px; align-items: baseline;
+  text-align: left; background: var(--paper); color: var(--ink); border: 0; border-radius: 12px; padding: 10px 14px; font-size: 15px; cursor: pointer; }
+.songlist li button::before { counter-increment: song; content: counter(song); grid-row: span 2; color: var(--sea); font-weight: 600;
+  font-variant-numeric: tabular-nums; }
+.songlist li button:hover { box-shadow: inset 0 0 0 1px var(--sea); }
+.songlist li button.now { box-shadow: inset 0 0 0 2px var(--sea); }
+.songlist .dur { color: var(--ink-soft); font-size: 13px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* 播放条 */
+.player { position: fixed; left: 0; right: 0; bottom: 0; z-index: 10; background: var(--bar);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-top: 1px solid var(--line);
+  padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); transform: translateY(0); transition: transform .3s; }
+.player-in { max-width: 760px; margin: 0 auto; }
+.now-line { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-size: 13px; color: var(--ink-soft); }
+.now-line .title { color: var(--ink); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: none; max-width: 60%; }
+.now-left { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
+/* 插图名称：纯图 / 左图右文模式下显示在章节标题右边 */
+.now-cap { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.now-cap:empty, body[data-mode="read"] .now-cap { display: none; }
+.time { font-variant-numeric: tabular-nums; white-space: nowrap; }
+/* 进度条：深色是已播放，浅色是已经下载好的部分（--seek-bg 由 paintSeek() 按 audio.buffered 算），网络慢时一眼看出还要等多久 */
+.seek { -webkit-appearance: none; appearance: none; display: block; width: 100%; margin: 8px 0 6px; height: 18px;
+  background: transparent; cursor: pointer; --seek-bg: var(--line); }
+.seek::-webkit-slider-runnable-track { height: 5px; border-radius: 3px; background: var(--seek-bg); }
+.seek::-moz-range-track { height: 5px; border-radius: 3px; background: var(--seek-bg); }
+.seek::-webkit-slider-thumb { -webkit-appearance: none; width: 15px; height: 15px; margin-top: -5px; border: 0;
+  border-radius: 50%; background: var(--sea); box-shadow: 0 1px 3px rgba(0, 0, 0, .25); }
+.seek::-moz-range-thumb { width: 15px; height: 15px; border: 0; border-radius: 50%; background: var(--sea);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .25); }
+/* 缓冲中：播放键外圈转圈 */
+.play { position: relative; }
+.play::after { content: ''; position: absolute; inset: -4px; border-radius: 50%; border: 2.5px solid transparent;
+  border-top-color: var(--sea); border-right-color: var(--sea); opacity: 0; transition: opacity .2s; pointer-events: none; }
+body.buffering .play::after { opacity: 1; animation: spin .9s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.ctrls { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+.ctrls .mid { display: flex; align-items: center; gap: 4px; }
+.ib { width: 42px; height: 42px; border-radius: 50%; border: 0; background: transparent; cursor: pointer;
+  display: grid; place-items: center; color: var(--ink); }
+.ib:hover { background: var(--paper-2); }
+.ib svg { width: 22px; height: 22px; }
+.play { width: 54px; height: 54px; background: var(--sea); color: #fff; }
+.play:hover { background: var(--sea); filter: brightness(1.08); }
+.play svg { width: 26px; height: 26px; }
+.pill { border: 0; background: var(--paper-2); border-radius: 999px; padding: 7px 12px; font-size: 13px;
+  cursor: pointer; min-width: 58px; font-variant-numeric: tabular-nums; }
+.pill[aria-pressed="false"] { opacity: .55; }
+.side { display: flex; gap: 6px; align-items: center; }
+
+/* 看大图 */
+.lightbox { position: fixed; inset: 0; z-index: 20; background: rgba(5, 12, 18, .92); display: none;
+  align-items: center; justify-content: center; padding: 16px; cursor: zoom-out; flex-direction: column; gap: 14px; }
+.lightbox.open { display: flex; }
+.lightbox img { max-width: 100%; max-height: 86vh; border-radius: 10px; }
+.lightbox p { color: #e8e4da; margin: 0; font-size: 15px; text-align: center; }
+
+.toast { position: fixed; left: 50%; bottom: 150px; transform: translateX(-50%); background: var(--sea-deep);
+  color: var(--paper); padding: 8px 16px; border-radius: 999px; font-size: 14px; opacity: 0; pointer-events: none;
+  transition: opacity .3s; z-index: 15; }
+.toast.show { opacity: .95; }
+
+/* 插图舞台：纯图模式铺满屏幕，左图右文模式占左半边 */
+.stage { display: none; position: fixed; left: 0; right: 0; top: 0; bottom: var(--ph, 120px); z-index: 5;
+  background: #07121b; overflow: hidden; cursor: pointer; }
+.stage-bg { position: absolute; inset: -40px; background-size: cover; background-position: center;
+  filter: blur(28px) brightness(.55) saturate(1.2); transition: background-image .8s; }
+.stage img, .stage video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0;
+  transition: opacity .9s ease; }
+.stage img.show, .stage video.show { opacity: 1; }
+.stage video { transition-duration: .4s; }
+.stage-top { position: absolute; left: 0; right: 0; top: 0; padding: 14px 18px 30px; color: #fff; display: flex;
+  justify-content: space-between; align-items: baseline; gap: 6px 16px; flex-wrap: wrap;
+  font-size: 14px; letter-spacing: .1em; background: linear-gradient(rgba(5, 15, 25, .6), transparent); pointer-events: none; }
+/* 纯图模式的字幕：当前朗读的句子 */
+.stage-sub { position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%); width: max-content;
+  max-width: min(92%, 960px); padding: 10px 20px; border-radius: 14px; background: rgba(4, 12, 20, .3);
+  color: #fff; text-align: center; pointer-events: none;
+  text-shadow: 0 0 2px rgba(0, 0, 0, .9), 0 1px 3px rgba(0, 0, 0, .8), 0 0 12px rgba(0, 0, 0, .55);
+  font-family: "Kaiti SC", "STKaiti", "KaiTi", serif; font-size: clamp(19px, 2.4vw, 30px); line-height: 1.55;
+  letter-spacing: .03em; transition: opacity .25s; }
+.stage-sub:empty, .stage-sub.fade { opacity: 0; }
+body:not([data-mode="picture"]) .stage-sub { display: none; }
+body[data-mode="picture"] .toast { bottom: auto; top: 64px; }
+@media (max-width: 520px) {
+  .stage-top { flex-direction: column; }
+  .stage-sub { bottom: 16px; padding: 8px 14px; }
+}
+.stage-play { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 84px; height: 84px;
+  border-radius: 50%; border: 0; background: rgba(255, 255, 255, .9); color: #123f55; display: grid; place-items: center;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, .35); cursor: pointer; transition: opacity .3s; }
+.stage-play svg { width: 38px; height: 38px; margin-left: 4px; }
+body.playing .stage-play { opacity: 0; pointer-events: none; }
+
+body[data-mode="picture"] .cover, body[data-mode="picture"] .toc, body[data-mode="picture"] main { display: none; }
+body[data-mode="picture"] .stage { display: block; }
+body[data-mode="picture"] #followBtn { display: none; }
+
+@media (min-width: 900px) {
+  body[data-mode="split"] .stage { display: block; right: 50%; }
+  body[data-mode="split"] .stage img, body[data-mode="split"] .stage video { object-fit: cover; }
+  body[data-mode="split"] .stage-bg, body[data-mode="split"] .stage-play { display: none; }
+  body[data-mode="split"] .cover { display: none; }
+  body[data-mode="split"] .toc, body[data-mode="split"] main { margin-left: 50%; max-width: none; padding-left: 48px; padding-right: 48px; }
+  body[data-mode="split"] main figure { display: none; }
+  body[data-mode="split"] .chapter:first-child { padding-top: 24px; }
+}
+
+/* 横屏手机：播放条收紧，把高度留给插图 */
+@media (max-height: 500px) {
+  .player { padding-top: 4px; padding-bottom: calc(4px + env(safe-area-inset-bottom)); }
+  .now-line { display: none; }
+  .seek { margin: 2px 0; }
+  .play { width: 44px; height: 44px; }
+  .ib { width: 36px; height: 36px; }
+}
+
+@media (max-width: 520px) {
+  .story p { font-size: 19px; line-height: 1.95; }
+  .chapter h2 { font-size: 26px; }
+  .side .pill.opt { display: none; }
+  .pill { padding: 6px 9px; min-width: 0; font-size: 12px; }
+  #prevCh, #nextCh { display: none; }
+  .side { gap: 4px; }
+  .ib { width: 38px; height: 38px; }
+}
+</style>
+</head>
+<body>
+
+<header class="cover" id="top">
+  <img id="coverImg" alt="">
+  <a class="home" href="../index.html">‹ 故事目录</a>
+  <div class="cover-in">
+    <div class="kicker" id="kicker"></div>
+    <h1 id="bookTitle"></h1>
+    <p id="intro"></p>
+    <div class="meta" id="meta"></div>
+    <div class="versions" id="versions" hidden></div>
+    <div class="cta">
+      <button class="btn btn-main" id="startBtn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>从头开始听</button>
+      <button class="btn btn-ghost" id="resumeBtn" hidden></button>
+    </div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="目录">
+  <h2>目　录<a class="toc-home" href="../index.html">更多故事 ›</a></h2>
+  <ol id="toc"></ol>
+</nav>
+
+<main class="story" id="story"></main>
+
+<div class="stage" id="stage" aria-label="插图">
+  <div class="stage-bg" id="stageBg"></div>
+  <img alt=""><img alt=""><video id="stageVid" muted loop playsinline></video>
+  <div class="stage-top"><span id="stageTop"></span></div>
+  <div class="stage-sub" id="stageSub" aria-live="polite"></div>
+  <button class="stage-play" id="stagePlay" aria-label="播放"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg></button>
+</div>
+
+<div class="player" id="player">
+  <div class="player-in">
+    <div class="now-line"><span class="now-left"><span class="title" id="nowTitle"></span><span class="now-cap" id="stageCap"></span></span><span class="time" id="nowTime">00:00 / 00:00</span></div>
+    <input class="seek" id="seek" type="range" min="0" max="100" step="0.1" value="0" aria-label="本章进度">
+    <div class="ctrls">
+      <div class="side">
+        <button class="pill" id="modeBtn" title="切换显示模式：阅读 / 左图右文 / 纯图">阅读</button>
+        <button class="pill" id="speedBtn" title="朗读速度">1.0×</button>
+        <button class="pill opt" id="followBtn" aria-pressed="true" title="朗读时自动翻到正在读的地方">跟读</button>
+      </div>
+      <div class="mid">
+        <button class="ib" id="prevCh" title="上一章"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg></button>
+        <button class="ib" id="prevS" title="上一句（←）"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+        <button class="ib play" id="playBtn" title="播放 / 暂停（空格）"></button>
+        <button class="ib" id="nextS" title="下一句（→）"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+        <button class="ib" id="nextCh" title="下一章"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 6h2v12h-2zM6 18l8.5-6L6 6z"/></svg></button>
+      </div>
+      <div class="side">
+        <button class="pill" id="animBtn" title="插图用动图还是静态图">动图</button>
+        <button class="pill opt" id="themeBtn" title="切换深浅色">主题</button>
+        <button class="pill" id="tocBtn" title="回到目录">目录</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="lightbox" id="lightbox"><img alt=""><p></p></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const BOOK = {"id": "alice-full", "title": "爱丽丝漫游奇境", "intro": "根据刘易斯·卡罗尔《爱丽丝漫游奇境》完整改写：原著里的情节一个不少，公爵夫人的厨房、睡鼠讲的糖浆井、假海龟的学校、龙虾方块舞和法庭上的那封信都讲到了。适合 6 岁以上的小朋友和爸爸妈妈一起读、一起听，可以分几个晚上听完。", "kicker": "卡罗尔童话", "cover": "images/26.webp?v=66188890d3", "voice": "Cherry（阳光亲切的姐姐），本地 Qwen3-TTS 复刻音色", "chapters": [{"title": "第一章　掉进兔子洞", "head": "c01-h", "audio": "audio/ch01.m4a?v=71fb0ad631", "duration": 84.496, "times": {"c01-h": [0.0, 4.286], "c01-001": [5.286, 10.45], "c01-002": [10.8, 14.965], "c01-003": [15.815, 20.095], "c01-004": [20.445, 21.539], "c01-005": [21.889, 25.31], "c01-006": [25.66, 29.982], "c01-007": [30.332, 33.067], "c01-008": [33.917, 38.44], "c01-009": [38.79, 50.11], "c01-010": [50.46, 58.547], "c01-011": [61.737, 63.867], "c01-012": [64.217, 67.895], "c01-013": [68.245, 75.123], "c01-014": [75.973, 79.227], "c01-015": [79.577, 82.996]}, "blocks": [{"t": "img", "src": "images/01.webp?v=6a4b4cd33b", "vid": "images/01.mp4?v=fe2f68cd93", "cap": "河边大树下的夏日午后", "n": 1}, {"t": "p", "s": [["c01-001", "一个暖洋洋的夏日午后，爱丽丝和姐姐坐在河边的大树下。"], ["c01-002", "姐姐在看一本书，书里没有图画，也没有对话。"]]}, {"t": "p", "s": [["c01-003", "“一本书里没有图画，也没有对话，有什么意思呢？”"], ["c01-004", "爱丽丝想。"], ["c01-005", "她越坐越困，眼皮都快要合上了。"], ["c01-006", "她想，要不要起来去摘些雏菊，编一个花环呢？"], ["c01-007", "可是天气这么热，她又懒得动。"]]}, {"t": "img", "src": "images/02.webp?v=a1be6d62c0", "vid": "images/02.mp4?v=a874efc059", "cap": "拿着怀表的白兔子", "n": 2}, {"t": "p", "s": [["c01-008", "忽然，一只粉红眼睛的白兔子从她身边跑了过去。"], ["c01-009", "这本来没什么奇怪的，就连听见白兔子自言自语地说“哎呀，哎呀，我要迟到了”，爱丽丝也没觉得太奇怪。"], ["c01-010", "可是，白兔子竟然从背心口袋里掏出一块怀表，看了看，又急急忙忙地往前跑。"]]}, {"t": "img", "src": "images/03.webp?v=a7210c9aec", "vid": "images/03.mp4?v=13a8f0ae9f", "cap": "白兔子钻进了兔子洞", "n": 3}, {"t": "p", "s": [["c01-011", "爱丽丝一下子跳了起来。"], ["c01-012", "她从来没见过穿背心、还带着怀表的兔子！"], ["c01-013", "她好奇极了，跟着白兔子跑过草地，看见它钻进了篱笆下面的一个大兔子洞。"]]}, {"t": "p", "s": [["c01-014", "爱丽丝想也没想，也跟着钻了进去。"], ["c01-015", "至于以后怎么出来，她连想都没有想过。"]]}]}, {"title": "第二章　很深很深的井", "head": "c02-h", "audio": "audio/ch02.m4a?v=ae23f6e955", "duration": 174.896, "times": {"c02-h": [0.0, 2.902], "c02-001": [3.902, 7.843], "c02-002": [8.193, 13.261], "c02-003": [16.94, 19.956], "c02-004": [20.306, 24.934], "c02-005": [25.784, 32.283], "c02-006": [32.633, 37.04], "c02-007": [37.39, 44.087], "c02-008": [44.937, 52.044], "c02-009": [52.394, 55.551], "c02-010": [56.401, 59.148], "c02-011": [59.498, 65.565], "c02-012": [65.915, 68.692], "c02-013": [69.042, 74.418], "c02-014": [74.768, 77.14], "c02-015": [77.99, 81.434], "c02-016": [81.784, 83.376], "c02-017": [83.726, 87.046], "song-falling": [88.246, 88.246], "song-falling-01": [88.246, 101.506], "song-falling-02": [102.216, 105.756], "song-falling-03": [105.846, 110.086], "song-falling-04": [110.086, 114.286], "song-falling-05": [114.286, 118.566], "song-falling-06": [119.346, 122.826], "song-falling-07": [122.826, 126.836], "song-falling-08": [126.946, 131.306], "song-falling-09": [132.606, 135.786], "song-falling-10": [135.786, 140.126], "song-falling-11": [140.126, 144.286], "song-falling-12": [144.286, 148.186], "song-falling-13": [150.886, 155.146], "song-falling-14": [155.766, 159.306], "song-falling-15": [159.306, 163.586], "song-falling-16": [164.346, 168.046]}, "blocks": [{"t": "p", "s": [["c02-001", "兔子洞先是像一条隧道，接着突然往下一沉。"], ["c02-002", "爱丽丝还没来得及停住，就掉进了一口很深很深的井里。"]]}, {"t": "img", "src": "images/04.webp?v=c0c4d68191", "vid": "images/04.mp4?v=eb530e980d", "cap": "掉进一口很深很深的井", "n": 4}, {"t": "p", "s": [["c02-003", "她慢慢地往下落，落了很久很久。"], ["c02-004", "井壁上摆满了柜子和书架，还挂着地图和图画。"]]}, {"t": "img", "src": "images/58.webp?v=954dad614e", "vid": "images/58.mp4?v=979fe6e6e8", "cap": "一边往下落，一边拿下一罐橘子酱", "n": 5}, {"t": "p", "s": [["c02-005", "经过一个架子的时候，爱丽丝顺手拿下了一个罐子，上面贴着“橘子酱”的标签。"], ["c02-006", "可是打开一看，里面是空的，真叫人失望。"], ["c02-007", "她怕罐子掉下去砸着下面的人，就趁经过另一个柜子的时候，把它放了回去。"]]}, {"t": "p", "s": [["c02-008", "爱丽丝一边落，一边想：“我会不会一直穿过地球，掉到地球的另一边去呢？"], ["c02-009", "那边的人走路，是不是头朝下的？”"]]}, {"t": "img", "src": "images/59.webp?v=2091e09d25", "vid": "images/59.mp4?v=50080959fd", "cap": "她想起家里的小猫黛娜和蝙蝠", "n": 6}, {"t": "p", "s": [["c02-010", "她落呀落，一直也落不到底。"], ["c02-011", "爱丽丝只好跟自己说话：“家里的小猫黛娜今天晚上一定会想我的。"], ["c02-012", "黛娜呀，你要是也在这里就好了！"], ["c02-013", "不过半空中可没有老鼠给你抓，也许能抓到一只蝙蝠。"], ["c02-014", "可是，猫吃蝙蝠吗？”"]]}, {"t": "p", "s": [["c02-015", "她迷迷糊糊地念叨着：“猫吃蝙蝠吗？"], ["c02-016", "蝙蝠吃猫吗？”"], ["c02-017", "她念着念着，好像就要睡着了。"]]}, {"t": "song", "title": "往下落呀往下落", "head": "song-falling", "lines": [["song-falling-01", "白兔白兔跑得快"], ["song-falling-02", "怀表滴答响起来"], ["song-falling-03", "我跟着它钻进洞"], ["song-falling-04", "一下掉进井里来"], ["song-falling-05", "往下落呀往下落"], ["song-falling-06", "书架柜子身边过"], ["song-falling-07", "地球那边有什么"], ["song-falling-08", "慢慢飘呀慢慢落"], ["song-falling-09", "黛娜黛娜你在哪"], ["song-falling-10", "是不是在想我呀"], ["song-falling-11", "半空没有小老鼠"], ["song-falling-12", "抓只蝙蝠行不行"], ["song-falling-13", "往下落呀往下落"], ["song-falling-14", "书架柜子身边过"], ["song-falling-15", "猫吃蝙蝠蝙蝠吃猫"], ["song-falling-16", "迷迷糊糊睡着了"]]}]}, {"title": "第三章　小门和小瓶子", "head": "c03-h", "audio": "audio/ch03.m4a?v=bdaeeaa780", "duration": 114.452, "times": {"c03-h": [0.0, 2.624], "c03-001": [3.624, 9.579], "c03-002": [11.254, 16.352], "c03-003": [16.702, 26.657], "c03-004": [27.007, 29.997], "c03-005": [30.847, 38.221], "c03-006": [38.571, 44.159], "c03-007": [45.009, 49.803], "c03-008": [50.153, 58.498], "c03-009": [59.348, 63.426], "c03-010": [63.776, 65.495], "c03-011": [66.345, 72.953], "c03-012": [73.803, 78.783], "c03-013": [79.133, 83.242], "c03-014": [83.592, 88.659], "c03-015": [91.374, 94.656], "c03-016": [95.006, 101.615], "c03-017": [101.965, 104.227], "c03-018": [105.077, 112.952]}, "blocks": [{"t": "p", "s": [["c03-001", "“扑通”一声，爱丽丝落在了一堆树枝和干树叶上，一点儿也没摔疼。"]]}, {"t": "img", "src": "images/60.webp?v=2dbb469b10", "vid": "images/60.mp4?v=1d19f6e1a3", "cap": "白兔子沿着长长的走廊飞跑", "n": 7}, {"t": "p", "s": [["c03-002", "她跳起来往前一看，白兔子正沿着一条长长的走廊飞跑。"], ["c03-003", "爱丽丝像风一样追过去，正好听见它在拐角那里说：“哎呀，我的耳朵和胡子呀，这么晚了！”"], ["c03-004", "可是一拐过弯，白兔子就不见了。"]]}, {"t": "img", "src": "images/05.webp?v=79d9a98b9d", "vid": "images/05.mp4?v=99e1d1529c", "cap": "四周全是门的大厅", "n": 8}, {"t": "p", "s": [["c03-005", "她站起来，发现自己在一个长长的大厅里，四周全是门，可是每一扇门都锁着。"], ["c03-006", "大厅中间有一张玻璃小桌子，桌上放着一把小小的金钥匙。"]]}, {"t": "img", "src": "images/06.webp?v=2be4349614", "vid": "images/06.mp4?v=026bcfc3aa", "cap": "小门外是最美丽的花园", "n": 9}, {"t": "p", "s": [["c03-007", "爱丽丝在帘子后面发现了一扇很小的门，只有一尺高。"], ["c03-008", "她用金钥匙打开小门，看见门外是一座最美丽的花园，有鲜艳的花坛，还有清凉的喷泉。"]]}, {"t": "p", "s": [["c03-009", "“可是我太大了，连脑袋都钻不过去呀。”"], ["c03-010", "爱丽丝叹了口气。"]]}, {"t": "img", "src": "images/07.webp?v=35a499349a", "vid": "images/07.mp4?v=182a9cc9ad", "cap": "瓶子上写着“喝我”", "n": 10}, {"t": "p", "s": [["c03-011", "她回到桌子边，发现桌上多了一个小瓶子，瓶子上写着两个大字：“喝我”。"]]}, {"t": "p", "s": [["c03-012", "爱丽丝先仔细看了看，确定上面没写“有毒”，才尝了一口。"], ["c03-013", "味道好极了，像樱桃馅饼，又像烤火鸡。"], ["c03-014", "她一口气喝完了，身子一下子缩小了，变得只有十寸高。"]]}, {"t": "p", "s": [["c03-015", "她等了一会儿，看自己还会不会再缩下去。"], ["c03-016", "她有点儿担心：“要是一直缩下去，会不会像蜡烛一样，一下子灭掉了呢？”"], ["c03-017", "还好，她没有再变小了。"]]}, {"t": "img", "src": "images/08.webp?v=c1fc8d77b4", "vid": "images/08.mp4?v=dc531f6374", "cap": "她变得只有十寸高", "n": 11}, {"t": "p", "s": [["c03-018", "她高兴地跑到小门前，可是糟糕，金钥匙还放在高高的玻璃桌上，她怎么也够不着了！"]]}]}, {"title": "第四章　越来越奇怪", "head": "c04-h", "audio": "audio/ch04.m4a?v=c82e219771", "duration": 71.212, "times": {"c04-h": [0.0, 2.35], "c04-001": [3.35, 12.578], "c04-002": [13.428, 15.675], "c04-003": [16.025, 20.045], "c04-004": [20.395, 25.12], "c04-005": [25.97, 31.701], "c04-006": [32.051, 41.146], "c04-007": [45.242, 46.528], "c04-008": [46.878, 49.632], "c04-009": [49.982, 55.307], "c04-010": [56.157, 58.121], "c04-011": [58.471, 62.511], "c04-012": [62.861, 65.935], "c04-013": [66.285, 69.712]}, "blocks": [{"t": "img", "src": "images/61.webp?v=0e486d6b24", "vid": "images/61.mp4?v=17df7d841b", "cap": "变小的爱丽丝爬不上滑溜溜的桌子腿", "n": 12}, {"t": "p", "s": [["c04-001", "爱丽丝想顺着桌子腿爬上去，可是桌子腿太滑了，她爬一次滑下来一次，最后累得坐在地上哭了起来。"]]}, {"t": "p", "s": [["c04-002", "“好啦，哭有什么用！”"], ["c04-003", "爱丽丝严厉地对自己说，“我劝你马上别哭了！”"], ["c04-004", "她常常这样给自己出主意，有时候还把自己骂哭呢。"]]}, {"t": "img", "src": "images/09.webp?v=f9dbd8fbc3", "vid": "images/09.mp4?v=548794837a", "cap": "她的身子拉得老长老长", "n": 13}, {"t": "p", "s": [["c04-005", "这时，她看见桌子底下有一块小蛋糕，上面写着：“吃我”。"], ["c04-006", "爱丽丝吃了下去，这一次，她的身子像望远镜一样，一下子拉得老长老长，脑袋都碰到天花板了！"]]}, {"t": "p", "s": [["c04-007", "“越来越奇怪了！”"], ["c04-008", "爱丽丝惊讶得连话都说不好了。"], ["c04-009", "她低头一看，自己的脚已经离得好远好远，快要看不见了。"]]}, {"t": "img", "src": "images/62.webp?v=564356f7b4", "vid": "images/62.mp4?v=c70154bdad", "cap": "“再见啦，我的脚！”", "n": 14}, {"t": "p", "s": [["c04-010", "“再见啦，我的脚！”"], ["c04-011", "爱丽丝说，“以后谁给你们穿鞋穿袜子呢？"], ["c04-012", "我离得这么远，可管不了你们啦。"], ["c04-013", "每年圣诞节，我就给你们寄一双新靴子吧！”"]]}]}, {"title": "第五章　眼泪池", "head": "c05-h", "audio": "audio/ch05.m4a?v=16c1feed26", "duration": 112.352, "times": {"c05-h": [0.0, 2.018], "c05-001": [3.018, 6.594], "c05-002": [6.944, 9.688], "c05-003": [10.038, 15.889], "c05-004": [16.739, 31.434], "c05-005": [31.784, 35.335], "c05-006": [36.185, 39.144], "c05-007": [39.994, 45.55], "c05-008": [46.4, 52.449], "c05-009": [52.799, 55.257], "c05-010": [55.607, 58.978], "c05-011": [59.828, 65.654], "c05-012": [66.004, 67.675], "c05-013": [68.025, 73.148], "c05-014": [73.998, 77.04], "c05-015": [77.39, 80.568], "c05-016": [82.783, 86.398], "c05-017": [87.248, 92.753], "c05-018": [93.103, 103.688], "c05-019": [105.394, 108.338], "c05-020": [108.688, 110.852]}, "blocks": [{"t": "img", "src": "images/10.webp?v=014690f71e", "vid": "images/10.mp4?v=48d9f419a7", "cap": "她伤心地哭了起来", "n": 15}, {"t": "p", "s": [["c05-001", "爱丽丝变得这么高，更进不了那扇小门了。"], ["c05-002", "她坐在地上，伤心地哭了起来。"], ["c05-003", "她哭呀哭，眼泪流了一大摊，在大厅里汇成了一个大水池。"]]}, {"t": "img", "src": "images/63.webp?v=91edee58c3", "vid": "images/63.mp4?v=050d6cabf9", "cap": "白兔子念叨着公爵夫人，急急忙忙地跑来", "n": 16}, {"t": "p", "s": [["c05-004", "这时，白兔子又急急忙忙地跑过来，它穿得整整齐齐，一手拿着一副白手套，一手拿着一把大扇子，嘴里念叨着：“哎呀，公爵夫人，公爵夫人！"], ["c05-005", "我让她等了这么久，她一定会大发脾气的！”"]]}, {"t": "p", "s": [["c05-006", "爱丽丝小声说：“对不起，先生……”"]]}, {"t": "img", "src": "images/11.webp?v=1fba937735", "vid": "images/11.mp4?v=068bb44be2", "cap": "白兔子吓得扔下扇子和手套", "n": 17}, {"t": "p", "s": [["c05-007", "白兔子一看见巨人一样的爱丽丝，吓得扔下扇子和手套就跑了。"]]}, {"t": "p", "s": [["c05-008", "爱丽丝捡起扇子和手套，自言自语地说：“今天什么事都这么奇怪！"], ["c05-009", "我是不是一夜之间变成别人了？"], ["c05-010", "要是我已经不是我了，那我到底是谁呢？”"]]}, {"t": "p", "s": [["c05-011", "她想试试自己还记不记得以前学过的东西：“四五一十二，四六一十三……"], ["c05-012", "哎呀，不对不对！”"], ["c05-013", "她又背了一首诗，可是背出来的话，跟原来的一点儿也不一样。"]]}, {"t": "p", "s": [["c05-014", "爱丽丝一边说，一边扇着扇子。"], ["c05-015", "没想到，她又一点一点地变小了。"], ["c05-016", "她赶紧扔掉扇子，才没有缩得完全不见。"]]}, {"t": "img", "src": "images/12.webp?v=e06888f710", "vid": "images/12.mp4?v=57c0142407", "cap": "掉进了自己的眼泪池", "n": 18}, {"t": "p", "s": [["c05-017", "她跑到小门前，可是小门又锁上了，金钥匙也还在桌子上。"], ["c05-018", "爱丽丝刚想“这下可糟透了”，脚下一滑，“扑通”一声，她掉进了自己哭出来的眼泪池里，咸咸的眼泪一直淹到了下巴。"]]}, {"t": "p", "s": [["c05-019", "“我要是刚才不哭得那么厉害就好了！”"], ["c05-020", "爱丽丝一边游，一边说。"]]}]}, {"title": "第六章　池子里的老鼠", "head": "c06-h", "audio": "audio/ch06.m4a?v=5ef80395dc", "duration": 116.603, "times": {"c06-h": [0.0, 2.482], "c06-001": [3.482, 5.799], "c06-002": [6.149, 11.524], "c06-003": [12.374, 13.799], "c06-004": [14.149, 19.215], "c06-005": [20.065, 23.929], "c06-006": [24.779, 30.208], "c06-007": [30.558, 35.346], "c06-008": [36.196, 40.951], "c06-009": [41.801, 43.045], "c06-010": [43.395, 47.051], "c06-011": [47.401, 50.449], "c06-012": [50.799, 58.238], "c06-013": [58.588, 60.512], "c06-014": [61.362, 65.815], "c06-015": [66.165, 68.008], "c06-016": [68.858, 70.08], "c06-017": [70.43, 73.576], "c06-018": [73.926, 75.267], "c06-019": [75.617, 80.544], "c06-020": [80.894, 82.563], "c06-021": [83.413, 85.379], "c06-022": [85.729, 89.713], "c06-023": [90.063, 91.887], "c06-024": [92.237, 101.093], "c06-025": [101.943, 111.018], "c06-026": [111.368, 115.103]}, "blocks": [{"t": "img", "src": "images/64.webp?v=978eade3f0", "vid": "images/64.mp4?v=692735b5cb", "cap": "泪水池里，游来了一只小老鼠", "n": 19}, {"t": "p", "s": [["c06-001", "池子里有什么东西在扑腾。"], ["c06-002", "爱丽丝游过去一看，原来是一只老鼠，它也是不小心滑进来的。"]]}, {"t": "p", "s": [["c06-003", "“喂，老鼠！”"], ["c06-004", "爱丽丝客客气气地说，“你知道怎么从这个池子里出去吗？”"]]}, {"t": "p", "s": [["c06-005", "老鼠瞪着小眼睛看了看她，一句话也没说。"]]}, {"t": "p", "s": [["c06-006", "爱丽丝想：“说不定它是一只法国老鼠，听不懂我的话。”"], ["c06-007", "于是她用课本上学来的第一句法语说：“我的猫在哪儿？”"]]}, {"t": "img", "src": "images/65.webp?v=af462cfbf6", "vid": "images/65.mp4?v=d4616dd860", "cap": "一听见“猫”，老鼠吓得跳出水面", "n": 20}, {"t": "p", "s": [["c06-008", "老鼠一听，吓得从水里跳了起来，浑身发抖。"]]}, {"t": "p", "s": [["c06-009", "“哎呀，对不起！”"], ["c06-010", "爱丽丝赶紧说，“我忘了你不喜欢猫。"], ["c06-011", "可是，你要是见过我的黛娜就好了。"], ["c06-012", "它可乖了，会坐在火炉边舔爪子、洗脸，抓起老鼠来也特别厉害……"], ["c06-013", "哎呀，对不起，对不起！”"]]}, {"t": "p", "s": [["c06-014", "老鼠气得胡子都翘起来了：“我们家世世代代都讨厌猫！"], ["c06-015", "以后别再让我听见这个字！”"]]}, {"t": "p", "s": [["c06-016", "“我再也不说了！”"], ["c06-017", "爱丽丝说，“那么，你……"], ["c06-018", "你喜欢狗吗？"], ["c06-019", "我家隔壁有一只小狗，眼睛亮亮的，抓起老鼠来……"], ["c06-020", "哎呀，又说错了！”"]]}, {"t": "p", "s": [["c06-021", "老鼠拼命地游走了。"], ["c06-022", "爱丽丝在后面温柔地叫它：“老鼠，回来吧！"], ["c06-023", "我们再也不说猫和狗了！”"], ["c06-024", "老鼠这才慢慢地游回来，说：“到岸上去，我讲我的故事给你听，你就知道我为什么讨厌猫和狗了。”"]]}, {"t": "img", "src": "images/13.webp?v=136eb33e7e", "vid": "images/13.mp4?v=4d2f421da3", "cap": "池子里的小动物们", "n": 21}, {"t": "p", "s": [["c06-025", "池子里的动物越来越多了，后来又来了一只鸭子、一只渡渡鸟、一只小鹦鹉，还有许多奇怪的小动物。"], ["c06-026", "大家都掉进了眼泪池里，浑身湿淋淋的。"]]}]}, {"title": "第七章　大家都赢了", "head": "c07-h", "audio": "audio/ch07.m4a?v=c20180db6d", "duration": 147.611, "times": {"c07-h": [0.0, 2.096], "c07-001": [3.096, 7.451], "c07-002": [8.301, 11.788], "c07-003": [12.138, 13.675], "c07-004": [14.025, 17.322], "c07-005": [17.672, 23.536], "c07-006": [24.386, 30.676], "c07-007": [31.526, 36.369], "c07-008": [36.719, 44.087], "c07-009": [44.937, 48.137], "c07-010": [48.487, 50.95], "c07-011": [51.3, 53.994], "c07-012": [54.844, 56.683], "c07-013": [57.033, 63.323], "c07-014": [64.173, 66.123], "c07-015": [66.473, 67.541], "c07-016": [67.891, 73.146], "c07-017": [73.496, 79.057], "c07-018": [79.407, 81.018], "c07-019": [81.868, 90.121], "song-caucus-race": [91.321, 97.321], "song-caucus-race-01": [97.321, 99.541], "song-caucus-race-02": [99.541, 100.801], "song-caucus-race-03": [100.801, 103.081], "song-caucus-race-04": [103.081, 104.401], "song-caucus-race-05": [113.381, 115.981], "song-caucus-race-06": [115.981, 118.841], "song-caucus-race-07": [119.641, 122.581], "song-caucus-race-08": [122.781, 126.361], "song-caucus-race-09": [126.361, 129.921], "song-caucus-race-10": [129.921, 133.541], "song-caucus-race-11": [133.541, 135.881], "song-caucus-race-12": [135.881, 137.741], "song-caucus-race-13": [137.741, 140.761]}, "blocks": [{"t": "p", "s": [["c07-001", "大家游上了岸，一个个湿漉漉的，冷得直发抖。"]]}, {"t": "img", "src": "images/66.webp?v=5d2636031b", "vid": "images/66.mp4?v=266bc904cf", "cap": "老鼠给大家讲最干巴巴的历史", "n": 22}, {"t": "p", "s": [["c07-002", "老鼠神气地说：“都坐下，听我说！"], ["c07-003", "我马上让你们干起来。"], ["c07-004", "我要讲的，是我知道的最干巴巴的东西！”"], ["c07-005", "它讲起了一段古代国王的历史，又长又干，大家还是冷得直哆嗦。"]]}, {"t": "img", "src": "images/14.webp?v=e2e85ae2a3", "vid": "images/14.mp4?v=c9df44e67e", "cap": "渡渡鸟一本正经地说话", "n": 23}, {"t": "p", "s": [["c07-006", "渡渡鸟一本正经地说：“要想把身上弄干，最好的办法，就是来一场会议式赛跑。”"]]}, {"t": "img", "src": "images/15.webp?v=ea63d78d37", "vid": "images/15.mp4?v=cb4da53b79", "cap": "会议式赛跑", "n": 24}, {"t": "p", "s": [["c07-007", "渡渡鸟在地上画了一个圆圈，让大家随便站在圈上。"], ["c07-008", "没有人喊“预备，开始”，大家想什么时候跑就什么时候跑，想什么时候停就什么时候停。"]]}, {"t": "p", "s": [["c07-009", "跑了半个钟头，大家的身上都干了。"], ["c07-010", "渡渡鸟宣布：“比赛结束！"], ["c07-011", "每个人都赢了，每个人都有奖品！”"]]}, {"t": "img", "src": "images/16.webp?v=408009ed21", "vid": "images/16.mp4?v=4360846909", "cap": "每人一颗糖果", "n": 25}, {"t": "p", "s": [["c07-012", "可是奖品从哪里来呢？"], ["c07-013", "爱丽丝只好从口袋里掏出一盒糖果，给每人发了一颗，正好一人一颗。"]]}, {"t": "img", "src": "images/67.webp?v=693be9a9cc", "vid": "images/67.mp4?v=dbf6978722", "cap": "渡渡鸟郑重地把顶针颁给爱丽丝", "n": 26}, {"t": "p", "s": [["c07-014", "“那她自己也应该有奖品呀。”"], ["c07-015", "老鼠说。"], ["c07-016", "渡渡鸟问爱丽丝口袋里还有什么，爱丽丝掏出了一个顶针。"], ["c07-017", "渡渡鸟郑重地接过来，又郑重地还给她：“请接受这个漂亮的顶针！”"], ["c07-018", "大家都鼓起掌来。"]]}, {"t": "p", "s": [["c07-019", "爱丽丝觉得这一切都很好笑，可是大家都那么严肃，她只好忍住，也一本正经地鞠了一躬。"]]}, {"t": "song", "title": "会议式赛跑", "head": "song-caucus-race", "lines": [["song-caucus-race-01", "画个圆圈圈"], ["song-caucus-race-02", "站在圈上边"], ["song-caucus-race-03", "不用喊预备"], ["song-caucus-race-04", "想跑就向前"], ["song-caucus-race-05", "鸭子扭一扭"], ["song-caucus-race-06", "鹦鹉蹦一蹦"], ["song-caucus-race-07", "渡渡鸟大摇大摆"], ["song-caucus-race-08", "跑了一圈又一圈"], ["song-caucus-race-09", "跑呀跑，绕呀绕"], ["song-caucus-race-10", "身上的水都跑干了"], ["song-caucus-race-11", "谁赢了，谁赢了"], ["song-caucus-race-12", "每个人都赢了"], ["song-caucus-race-13", "每个人都有奖品"]]}]}, {"title": "第八章　老鼠的长故事", "head": "c08-h", "audio": "audio/ch08.m4a?v=377aa7c273", "duration": 90.533, "times": {"c08-h": [0.0, 2.605], "c08-001": [3.605, 8.683], "c08-002": [9.533, 12.127], "c08-003": [12.476, 14.188], "c08-004": [15.038, 23.147], "c08-005": [23.497, 30.872], "c08-006": [31.722, 32.651], "c08-007": [33.001, 35.735], "c08-008": [36.585, 40.957], "c08-009": [41.807, 42.77], "c08-010": [43.12, 45.293], "c08-011": [46.143, 53.073], "c08-012": [53.923, 55.799], "c08-013": [56.149, 57.156], "c08-014": [58.006, 59.338], "c08-015": [59.688, 67.049], "c08-016": [67.899, 70.44], "c08-017": [70.79, 76.665], "c08-018": [77.015, 82.872], "c08-019": [83.722, 85.248], "c08-020": [85.598, 89.033]}, "blocks": [{"t": "p", "s": [["c08-001", "大家吃完了糖果，又围成一圈坐下，请老鼠讲它的故事。"]]}, {"t": "p", "s": [["c08-002", "“我的故事，又长又伤心。”"], ["c08-003", "老鼠叹了口气说。"]]}, {"t": "img", "src": "images/68.webp?v=de80139bb1", "vid": "images/68.mp4?v=b3798cf98c", "cap": "老鼠又长又伤心的故事，像一条长尾巴", "n": 27}, {"t": "p", "s": [["c08-004", "爱丽丝看着老鼠长长的尾巴，想：“尾巴确实很长，可是尾巴为什么会伤心呢？”"], ["c08-005", "她一边听，一边琢磨，老鼠讲的故事在她脑袋里，就像一条弯弯曲曲的长尾巴。"]]}, {"t": "p", "s": [["c08-006", "“你没有在听！”"], ["c08-007", "老鼠生气地说，“你在想什么？”"]]}, {"t": "p", "s": [["c08-008", "“对不起，”爱丽丝说，“你已经讲到第五个弯了吧？”"]]}, {"t": "p", "s": [["c08-009", "“我才没有！”"], ["c08-010", "老鼠气呼呼地站起来就走。"]]}, {"t": "p", "s": [["c08-011", "“我要是把黛娜带来就好了，”爱丽丝自言自语，“它一下子就能把老鼠抓回来！”"]]}, {"t": "p", "s": [["c08-012", "“请问，黛娜是谁？”"], ["c08-013", "小鹦鹉问。"]]}, {"t": "p", "s": [["c08-014", "“黛娜是我的猫！”"], ["c08-015", "爱丽丝高兴地说，“它抓老鼠可厉害了，还会抓小鸟，一看见小鸟，一口就……”"]]}, {"t": "img", "src": "images/69.webp?v=60543102dd", "vid": "images/69.mp4?v=1c172fdbc7", "cap": "一听说黛娜会抓小鸟，大家全都慌了", "n": 28}, {"t": "p", "s": [["c08-016", "这话一说，大家全都慌了。"], ["c08-017", "老喜鹊说天凉了，要回家；金丝雀说要带孩子们去睡觉了。"], ["c08-018", "不一会儿，所有的动物都找了个借口走掉了，只剩下爱丽丝一个人。"]]}, {"t": "p", "s": [["c08-019", "“我真不该提黛娜！”"], ["c08-020", "爱丽丝难过地说，又伤心地哭了起来。"]]}]}, {"title": "第九章　白兔子的房子", "head": "c09-h", "audio": "audio/ch09.m4a?v=2f985942a5", "duration": 67.236, "times": {"c09-h": [0.0, 2.429], "c09-001": [3.429, 6.5], "c09-002": [6.85, 10.747], "c09-003": [11.097, 17.927], "c09-004": [18.777, 21.381], "c09-005": [21.731, 26.661], "c09-006": [27.011, 31.45], "c09-007": [31.8, 35.044], "c09-008": [35.894, 48.808], "c09-009": [52.904, 60.803], "c09-010": [61.153, 65.736]}, "blocks": [{"t": "img", "src": "images/17.webp?v=d4f5fdeae4", "vid": "images/17.mp4?v=f7102abd41", "cap": "快回家给我拿手套和扇子", "n": 29}, {"t": "p", "s": [["c09-001", "过了一会儿，远处又传来“嗒嗒”的脚步声。"], ["c09-002", "白兔子又回来了，它在找丢掉的扇子和手套。"], ["c09-003", "它把爱丽丝当成了自己的女仆：“玛丽安，快回家给我拿一副手套和一把扇子来！”"]]}, {"t": "img", "src": "images/18.webp?v=64ee3a2fa9", "vid": "images/18.mp4?v=439792b5cd", "cap": "白兔子的小房子", "n": 30}, {"t": "p", "s": [["c09-004", "爱丽丝跑进了白兔子的小房子。"], ["c09-005", "门上挂着一块亮闪闪的铜牌，上面刻着“白兔”两个字。"], ["c09-006", "她在房间里找到了扇子和手套，还看见一个小瓶子。"], ["c09-007", "她想：“喝了它，说不定能变大一点儿。”"]]}, {"t": "img", "src": "images/19.webp?v=d79a42048c", "vid": "images/19.mp4?v=41e8feb690", "cap": "整个小房子都被她塞满了", "n": 31}, {"t": "p", "s": [["c09-008", "谁知道，她刚喝了一半，就飞快地长呀长，脑袋顶到了天花板，一只胳膊伸出了窗户，一只脚伸进了烟囱里，整个小房子都被她塞满了！"]]}, {"t": "p", "s": [["c09-009", "“在家里多好呀，”爱丽丝想，“不会一会儿变大一会儿变小，也不会被老鼠和兔子使唤。"], ["c09-010", "可是，要是不来这里，我也见不到这么多奇怪的事了。”"]]}]}, {"title": "第十章　小蜥蜴比尔", "head": "c10-h", "audio": "audio/ch10.m4a?v=566f0ea889", "duration": 107.91, "times": {"c10-h": [0.0, 2.691], "c10-001": [3.691, 6.435], "c10-002": [6.785, 11.256], "c10-003": [12.106, 13.628], "c10-004": [13.978, 15.0], "c10-005": [15.35, 21.596], "c10-006": [22.446, 23.069], "c10-007": [23.419, 24.193], "c10-008": [24.543, 25.268], "c10-009": [25.618, 29.457], "c10-010": [30.307, 32.475], "c10-011": [32.825, 34.234], "c10-012": [35.084, 35.804], "c10-013": [36.154, 38.089], "c10-014": [38.439, 39.505], "c10-015": [40.355, 47.34], "c10-016": [47.69, 52.545], "c10-017": [55.93, 64.48], "c10-018": [64.83, 72.93], "c10-019": [73.78, 76.156], "c10-020": [76.506, 80.574], "c10-021": [80.924, 84.074], "c10-022": [86.288, 89.972], "c10-023": [90.822, 96.06], "c10-024": [96.41, 102.887], "c10-025": [103.237, 106.41]}, "blocks": [{"t": "p", "s": [["c10-001", "白兔子跑到门口，想推门进来。"], ["c10-002", "可是爱丽丝的胳膊肘正好顶着门，它怎么也推不开。"]]}, {"t": "img", "src": "images/70.webp?v=3e95bd9186", "vid": "images/70.mp4?v=58d9b23add", "cap": "白兔子摔进了黄瓜架", "n": 32}, {"t": "p", "s": [["c10-003", "“那我从窗户爬进去！”"], ["c10-004", "白兔子说。"], ["c10-005", "爱丽丝在窗口一挥手，只听“哗啦”一声，白兔子摔进了园子里的黄瓜架。"]]}, {"t": "p", "s": [["c10-006", "“帕特！"], ["c10-007", "帕特！"], ["c10-008", "你在哪儿？”"], ["c10-009", "白兔子大喊，“窗户里那个是什么东西？”"]]}, {"t": "p", "s": [["c10-010", "“那是一条胳膊，先生。”"], ["c10-011", "园丁帕特说。"]]}, {"t": "p", "s": [["c10-012", "“胳膊？"], ["c10-013", "哪有这么大的胳膊！"], ["c10-014", "快把它弄走！”"]]}, {"t": "img", "src": "images/20.webp?v=60dd408bb5", "vid": "images/20.mp4?v=c8ec5f476d", "cap": "比尔像火箭一样飞上了天", "n": 33}, {"t": "p", "s": [["c10-015", "白兔子在外面急得团团转，它叫来了小蜥蜴比尔，让它从烟囱爬进去。"], ["c10-016", "爱丽丝用脚轻轻一踢，比尔就像火箭一样飞上了天。"]]}, {"t": "img", "src": "images/71.webp?v=8b7c853598", "vid": "images/71.mp4?v=91820b55f5", "cap": "小动物们七手八脚地接住比尔", "n": 34}, {"t": "p", "s": [["c10-017", "外面的小动物七手八脚地接住比尔，给它喝了点儿水，问它：“比尔，刚才是怎么回事？”"], ["c10-018", "比尔晕乎乎地说：“我只知道，有个东西像玩偶匣子一样冲过来，然后我就像火箭一样飞起来了！”"]]}, {"t": "img", "src": "images/21.webp?v=171b904334", "vid": "images/21.mp4?v=a710c2fb8d", "cap": "小石子变成了小蛋糕", "n": 35}, {"t": "p", "s": [["c10-019", "大家又往窗户里扔小石子。"], ["c10-020", "小石子落在地板上，竟然都变成了小蛋糕。"], ["c10-021", "爱丽丝吃了一块，身子又变小了。"], ["c10-022", "她赶紧跑出房子，一口气跑进了树林里。"]]}, {"t": "img", "src": "images/72.webp?v=8d20010be5", "vid": "images/72.mp4?v=5b4e13ea27", "cap": "树林里，一只巨大的小狗看着她", "n": 36}, {"t": "p", "s": [["c10-023", "树林里，一只大得吓人的小狗正用圆圆的大眼睛看着她。"], ["c10-024", "爱丽丝捡起一根小树枝，往远处一扔，小狗就欢快地扑过去追树枝。"], ["c10-025", "爱丽丝趁这个机会，一溜烟地逃走了。"]]}]}, {"title": "第十一章　毛毛虫的忠告", "head": "c11-h", "audio": "audio/ch11.m4a?v=30d6b6072f", "duration": 117.613, "times": {"c11-h": [0.0, 2.424], "c11-001": [3.424, 7.35], "c11-002": [7.7, 13.822], "c11-003": [14.672, 15.447], "c11-004": [15.797, 17.726], "c11-005": [18.576, 19.578], "c11-006": [19.928, 30.509], "c11-007": [31.359, 32.638], "c11-008": [32.988, 34.141], "c11-009": [34.991, 42.045], "c11-010": [42.395, 47.818], "c11-011": [48.668, 49.777], "c11-012": [50.127, 51.315], "c11-013": [52.165, 55.141], "c11-014": [55.491, 58.322], "c11-015": [58.672, 60.604], "c11-016": [60.954, 62.727], "c11-017": [63.577, 65.063], "c11-018": [65.413, 66.47], "c11-019": [66.82, 69.432], "c11-020": [70.282, 76.351], "c11-021": [76.701, 82.812], "c11-022": [83.662, 86.316], "c11-023": [86.666, 87.698], "c11-024": [88.548, 90.427], "c11-025": [90.777, 91.812], "c11-026": [92.662, 98.156], "c11-027": [99.006, 101.566], "c11-028": [101.916, 105.608], "c11-029": [106.458, 116.113]}, "blocks": [{"t": "img", "src": "images/22.webp?v=4f380cf62a", "vid": "images/22.mp4?v=c9d6bf7906", "cap": "树林里的大蘑菇", "n": 37}, {"t": "img", "src": "images/23.webp?v=f12fe60110", "vid": "images/23.mp4?v=aed448d298", "cap": "你是谁？", "n": 38}, {"t": "p", "s": [["c11-001", "树林里有一朵大蘑菇，和爱丽丝差不多高。"], ["c11-002", "蘑菇顶上，坐着一条蓝色的大毛毛虫，它抱着胳膊，慢悠悠的。"]]}, {"t": "p", "s": [["c11-003", "“你是谁？”"], ["c11-004", "毛毛虫懒洋洋地问。"]]}, {"t": "p", "s": [["c11-005", "“我……"], ["c11-006", "我也不太清楚，”爱丽丝说，“今天早上起床的时候，我还知道我是谁，可是从那以后，我已经变了好几次了。”"]]}, {"t": "p", "s": [["c11-007", "“说清楚点儿！”"], ["c11-008", "毛毛虫说。"]]}, {"t": "p", "s": [["c11-009", "“我说不清楚，”爱丽丝说，“一天之内变了好几回大小，真叫人糊涂。"], ["c11-010", "等你有一天变成蛹，再变成蝴蝶，你也会觉得有点儿奇怪的，对不对？”"]]}, {"t": "p", "s": [["c11-011", "“一点儿也不。”"], ["c11-012", "毛毛虫说。"]]}, {"t": "p", "s": [["c11-013", "爱丽丝有点儿生气，转身要走。"], ["c11-014", "毛毛虫在后面叫她：“回来！"], ["c11-015", "我有重要的话要说。”"], ["c11-016", "爱丽丝又走了回来。"]]}, {"t": "p", "s": [["c11-017", "“别发脾气。”"], ["c11-018", "毛毛虫说。"], ["c11-019", "爱丽丝忍着气问：“就这些吗？”"]]}, {"t": "p", "s": [["c11-020", "“不，”毛毛虫说，“你说你变了，那你背一首诗给我听听。”"], ["c11-021", "爱丽丝背了一首《威廉老爸爸》，可是背出来的句子，全都乱七八糟。"]]}, {"t": "p", "s": [["c11-022", "“从头到尾都背错了。”"], ["c11-023", "毛毛虫说。"]]}, {"t": "p", "s": [["c11-024", "“你想变成多大？”"], ["c11-025", "毛毛虫问。"]]}, {"t": "p", "s": [["c11-026", "爱丽丝说：“稍微大一点儿就好，只有三寸高，实在太矮了。”"]]}, {"t": "p", "s": [["c11-027", "“三寸高正好！”"], ["c11-028", "毛毛虫生气地说，它自己正好三寸高。"]]}, {"t": "img", "src": "images/24.webp?v=1c5fa00fe2", "vid": "images/24.mp4?v=0737b551af", "cap": "一边让你长高，另一边让你变矮", "n": 39}, {"t": "p", "s": [["c11-029", "毛毛虫从蘑菇上爬下来，一边往草丛里爬，一边说：“一边让你长高，另一边让你变矮。”"]]}]}, {"title": "第十二章　鸽子和蛇", "head": "c12-h", "audio": "audio/ch12.m4a?v=b51c4b9b78", "duration": 74.391, "times": {"c12-h": [0.0, 2.746], "c12-001": [3.746, 7.005], "c12-002": [7.355, 18.128], "c12-003": [18.978, 24.519], "c12-004": [24.869, 25.656], "c12-005": [26.506, 27.545], "c12-006": [27.895, 28.936], "c12-007": [29.786, 31.177], "c12-008": [31.527, 40.005], "c12-009": [40.355, 45.894], "c12-010": [46.744, 49.866], "c12-011": [50.216, 51.257], "c12-012": [52.107, 53.108], "c12-013": [53.458, 54.157], "c12-014": [55.007, 60.237], "c12-015": [61.087, 62.922], "c12-016": [63.272, 66.197], "c12-017": [67.047, 72.891]}, "blocks": [{"t": "img", "src": "images/25.webp?v=5972d9c557", "vid": "images/25.mp4?v=661ca7ffe1", "cap": "脖子伸得老长老长", "n": 40}, {"t": "p", "s": [["c12-001", "爱丽丝两只手各掰下一小块蘑菇边。"], ["c12-002", "她咬了右手的一小口，下巴一下子碰到了脚背；又赶紧咬了左手的一小口，脖子却一下子伸得老长老长，脑袋冒出了树梢。"]]}, {"t": "img", "src": "images/73.webp?v=8fc1b79b32", "vid": "images/73.mp4?v=a731c684ee", "cap": "鸽子以为她是一条蛇", "n": 41}, {"t": "p", "s": [["c12-003", "一只鸽子扑扇着翅膀飞过来，拼命地拍打她的脸：“蛇！"], ["c12-004", "蛇！”"]]}, {"t": "p", "s": [["c12-005", "“我不是蛇！”"], ["c12-006", "爱丽丝说。"]]}, {"t": "p", "s": [["c12-007", "“你就是蛇！”"], ["c12-008", "鸽子说，“我在树根下面试过，在河岸上试过，在篱笆上也试过，可是到哪儿都躲不开蛇！"], ["c12-009", "我好不容易在最高的树上搭了个窝，你们蛇竟然从天上弯下来了！”"]]}, {"t": "p", "s": [["c12-010", "“我真的不是蛇，我是一个小女孩。”"], ["c12-011", "爱丽丝说。"]]}, {"t": "p", "s": [["c12-012", "“那你吃不吃蛋？”"], ["c12-013", "鸽子问。"]]}, {"t": "p", "s": [["c12-014", "“当然吃蛋，”爱丽丝老老实实地说，“小女孩也吃蛋的呀。”"]]}, {"t": "p", "s": [["c12-015", "“那小女孩就是一种蛇！”"], ["c12-016", "鸽子说完，生气地飞回了窝里。"]]}, {"t": "p", "s": [["c12-017", "爱丽丝小心地这边咬一点儿，那边咬一点儿，终于变回了原来的高矮。"]]}]}, {"title": "第十三章　公爵夫人的厨房", "head": "c13-h", "audio": "audio/ch13.m4a?v=3f4a96ac4e", "duration": 174.754, "times": {"c13-h": [0.0, 2.968], "c13-001": [3.968, 8.401], "c13-002": [8.751, 12.399], "c13-003": [12.749, 16.319], "c13-004": [17.169, 22.567], "c13-005": [22.917, 25.7], "c13-006": [26.05, 28.104], "c13-007": [28.954, 36.81], "c13-008": [37.16, 43.043], "c13-009": [43.393, 47.488], "c13-010": [48.338, 50.282], "c13-011": [50.632, 53.766], "c13-012": [54.116, 58.46], "c13-013": [58.81, 63.429], "c13-014": [64.279, 64.886], "c13-015": [65.236, 67.084], "c13-016": [67.434, 68.171], "c13-017": [68.521, 69.995], "c13-018": [70.345, 74.254], "c13-019": [74.604, 78.908], "c13-020": [79.758, 82.526], "c13-021": [82.876, 83.871], "c13-022": [84.721, 88.133], "c13-023": [88.983, 97.607], "c13-024": [97.957, 100.678], "c13-025": [101.528, 104.05], "c13-026": [104.4, 105.88], "c13-027": [106.73, 111.588], "song-sneeze-lullaby": [112.788, 118.788], "song-sneeze-lullaby-01": [118.788, 124.008], "song-sneeze-lullaby-02": [124.168, 128.628], "song-sneeze-lullaby-03": [129.188, 133.628], "song-sneeze-lullaby-04": [133.628, 139.008], "song-sneeze-lullaby-05": [139.288, 143.608], "song-sneeze-lullaby-06": [144.048, 148.628], "song-sneeze-lullaby-07": [148.628, 153.668], "song-sneeze-lullaby-08": [153.668, 158.588], "c13-028": [164.788, 169.674], "c13-029": [170.024, 171.769], "c13-030": [172.119, 173.254]}, "blocks": [{"t": "p", "s": [["c13-001", "爱丽丝走着走着，看见了一座四尺高的小房子。"], ["c13-002", "她想：“我这么大，会把里面的人吓坏的。”"], ["c13-003", "于是又咬了一口蘑菇，变成了九寸高。"]]}, {"t": "img", "src": "images/74.webp?v=2f0b0f87d8", "vid": "images/74.mp4?v=36cc8d69af", "cap": "鱼脸仆人和青蛙脸仆人", "n": 42}, {"t": "p", "s": [["c13-004", "这时，一个长着鱼脸的仆人从树林里跑过来，“砰砰砰”地敲门。"], ["c13-005", "开门的是一个长着青蛙脸的仆人。"], ["c13-006", "他们都戴着卷卷的假发。"]]}, {"t": "p", "s": [["c13-007", "鱼仆人拿出一封和他自己一样大的信，一本正经地说：“王后请公爵夫人去打槌球。”"], ["c13-008", "青蛙仆人也一本正经地说：“公爵夫人接受王后的邀请去打槌球。”"], ["c13-009", "两个仆人鞠躬鞠得太低，假发都缠在了一起。"]]}, {"t": "img", "src": "images/75.webp?v=f7134fa175", "vid": "images/75.mp4?v=3679a4f0b0", "cap": "烟雾腾腾的胡椒厨房", "n": 43}, {"t": "p", "s": [["c13-010", "爱丽丝推门走了进去。"], ["c13-011", "屋里是一间大厨房，烟雾腾腾的。"], ["c13-012", "公爵夫人坐在中间的小凳子上，抱着一个小宝宝。"], ["c13-013", "厨娘正在炉子边搅一大锅汤，汤里放了太多胡椒。"]]}, {"t": "p", "s": [["c13-014", "“哈啾！”"], ["c13-015", "公爵夫人打了个喷嚏。"], ["c13-016", "“哈啾！”"], ["c13-017", "宝宝也打了个喷嚏。"], ["c13-018", "整个厨房里，只有厨娘和一只大猫不打喷嚏。"], ["c13-019", "那只猫趴在炉边，咧着嘴，一直笑嘻嘻的。"]]}, {"t": "p", "s": [["c13-020", "“请问，你的猫为什么这样笑？”"], ["c13-021", "爱丽丝问。"]]}, {"t": "p", "s": [["c13-022", "“它是柴郡猫，”公爵夫人说，“所以它会笑。”"]]}, {"t": "img", "src": "images/76.webp?v=76fb06a34e", "vid": "images/76.mp4?v=121d85c458", "cap": "厨娘把锅碗瓢盆往外扔", "n": 44}, {"t": "p", "s": [["c13-023", "厨娘忽然把炉子边的东西一件件往外扔：火钳、平底锅、盘子、碟子，乒乒乓乓地飞过来。"], ["c13-024", "公爵夫人好像一点儿也没看见。"]]}, {"t": "p", "s": [["c13-025", "“哎呀，小心宝宝的鼻子！”"], ["c13-026", "爱丽丝急得直叫。"]]}, {"t": "p", "s": [["c13-027", "公爵夫人一边摇宝宝，一边唱起了一首古怪的摇篮曲。"]]}, {"t": "song", "title": "哈啾摇篮曲", "head": "song-sneeze-lullaby", "lines": [["song-sneeze-lullaby-01", "小宝宝，快睡觉"], ["song-sneeze-lullaby-02", "胡椒多，汤也香"], ["song-sneeze-lullaby-03", "厨房里，烟腾腾"], ["song-sneeze-lullaby-04", "不许哭来不许闹"], ["song-sneeze-lullaby-05", "摇呀摇，哈啾"], ["song-sneeze-lullaby-06", "晃呀晃，哈啾"], ["song-sneeze-lullaby-07", "小宝宝，快睡觉"], ["song-sneeze-lullaby-08", "哈，哈，哈啾"]]}, {"t": "p", "s": [["c13-028", "唱完，她把宝宝往爱丽丝怀里一扔：“给你，你来抱一会儿吧！"], ["c13-029", "我要去准备跟王后打槌球了！”"], ["c13-030", "说完就走了。"]]}]}, {"title": "第十四章　小猪宝宝", "head": "c14-h", "audio": "audio/ch14.m4a?v=17b07ef97b", "duration": 48.387, "times": {"c14-h": [0.0, 2.423], "c14-001": [3.423, 5.734], "c14-002": [6.084, 9.037], "c14-003": [9.887, 14.441], "c14-004": [15.291, 17.201], "c14-005": [17.551, 27.709], "c14-006": [28.559, 31.803], "c14-007": [32.653, 38.017], "c14-008": [38.367, 46.887]}, "blocks": [{"t": "p", "s": [["c14-001", "爱丽丝抱着宝宝走出了房子。"], ["c14-002", "宝宝哼哼唧唧的，一直扭来扭去。"]]}, {"t": "p", "s": [["c14-003", "“别哼哼，”爱丽丝说，“这可不是表达意思的好办法。”"]]}, {"t": "img", "src": "images/77.webp?v=dc5e32a276", "vid": "images/77.mp4?v=41dc25de29", "cap": "怀里的宝宝越看越像一只小猪", "n": 45}, {"t": "p", "s": [["c14-004", "宝宝又哼了一声。"], ["c14-005", "爱丽丝低头一看，宝宝的鼻子往上翘着，越看越像一个小猪鼻子；眼睛也越来越小，根本不像小宝宝的眼睛。"]]}, {"t": "p", "s": [["c14-006", "再一看，怀里的竟然是一只小猪！"]]}, {"t": "img", "src": "images/78.webp?v=a2d7e98505", "vid": "images/78.mp4?v=94abe1e302", "cap": "小猪一溜小跑钻进了树林", "n": 46}, {"t": "p", "s": [["c14-007", "爱丽丝把小猪放到地上，小猪就一溜小跑，钻进了树林里。"], ["c14-008", "爱丽丝想：“它要是长大了，会是一个很难看的孩子；可是做一只小猪，倒是挺漂亮的。”"]]}]}, {"title": "第十五章　柴郡猫", "head": "c15-h", "audio": "audio/ch15.m4a?v=4eedb534c2", "duration": 118.147, "times": {"c15-h": [0.0, 2.227], "c15-001": [3.227, 11.044], "c15-002": [11.894, 15.824], "c15-003": [16.674, 18.078], "c15-004": [18.428, 19.123], "c15-005": [19.973, 21.13], "c15-006": [21.48, 22.521], "c15-007": [23.371, 26.049], "c15-008": [26.399, 30.758], "c15-009": [31.108, 34.198], "c15-010": [35.048, 38.018], "c15-011": [38.368, 39.409], "c15-012": [40.259, 43.834], "c15-013": [44.184, 45.932], "c15-014": [46.782, 48.341], "c15-015": [48.691, 49.686], "c15-016": [50.536, 53.93], "c15-017": [54.78, 57.678], "c15-018": [58.528, 62.221], "c15-019": [62.571, 63.612], "c15-020": [64.462, 65.927], "c15-021": [66.277, 69.061], "c15-022": [69.911, 75.883], "c15-023": [76.733, 78.322], "c15-024": [78.672, 79.714], "c15-025": [80.564, 81.649], "c15-026": [81.999, 83.856], "c15-027": [84.706, 91.498], "c15-028": [92.348, 92.762], "c15-029": [93.112, 93.807], "c15-030": [94.657, 97.488], "c15-031": [100.771, 110.362], "c15-032": [111.212, 116.647]}, "blocks": [{"t": "img", "src": "images/26.webp?v=66188890d3", "vid": "images/26.mp4?v=dfce5e4568", "cap": "树枝上笑嘻嘻的大猫", "n": 47}, {"t": "p", "s": [["c15-001", "爱丽丝继续往前走，忽然看见树枝上坐着一只大猫，它咧着嘴，一直笑嘻嘻的。"]]}, {"t": "p", "s": [["c15-002", "爱丽丝说：“请问，我应该走哪条路呢？”"]]}, {"t": "p", "s": [["c15-003", "“那要看你想去哪儿了。”"], ["c15-004", "猫说。"]]}, {"t": "p", "s": [["c15-005", "“去哪儿都行。”"], ["c15-006", "爱丽丝说。"]]}, {"t": "img", "src": "images/27.webp?v=b38a09ccb5", "vid": "images/27.mp4?v=03c3f6fdec", "cap": "往这边走，往那边走", "n": 48}, {"t": "p", "s": [["c15-007", "猫笑着说：“那你走哪条路都行。"], ["c15-008", "往这边走，住着一个帽匠；往那边走，住着一只三月兔。"], ["c15-009", "随便你去拜访谁，反正他们两个都是疯子。”"]]}, {"t": "p", "s": [["c15-010", "“可是我不想到疯子那里去。”"], ["c15-011", "爱丽丝说。"]]}, {"t": "p", "s": [["c15-012", "“这可没办法，”猫说，“我们这里谁都是疯子。"], ["c15-013", "我是疯子，你也是疯子。”"]]}, {"t": "p", "s": [["c15-014", "“你怎么知道我是疯子？”"], ["c15-015", "爱丽丝问。"]]}, {"t": "p", "s": [["c15-016", "“你一定是，”猫说，“不然你就不会到这儿来了。”"]]}, {"t": "p", "s": [["c15-017", "猫又问：“你今天去跟王后打槌球吗？”"]]}, {"t": "p", "s": [["c15-018", "“我很想去，可是还没人请我。”"], ["c15-019", "爱丽丝说。"]]}, {"t": "p", "s": [["c15-020", "“你会在那里见到我的。”"], ["c15-021", "猫说完，一下子就不见了。"]]}, {"t": "p", "s": [["c15-022", "爱丽丝正往那棵树看着，猫又一下子出现了：“对了，那个宝宝怎么样了？”"]]}, {"t": "p", "s": [["c15-023", "“它变成一只小猪了。”"], ["c15-024", "爱丽丝说。"]]}, {"t": "p", "s": [["c15-025", "“我就知道会这样。”"], ["c15-026", "猫说完，又不见了。"]]}, {"t": "p", "s": [["c15-027", "“请你别这样一下子出现、一下子消失的，”爱丽丝说，“弄得人头都晕了。”"]]}, {"t": "p", "s": [["c15-028", "“好吧。”"], ["c15-029", "猫说。"]]}, {"t": "img", "src": "images/28.webp?v=d0cec72e39", "vid": "images/28.mp4?v=6bcf065505", "cap": "只剩下一张笑嘴", "n": 49}, {"t": "p", "s": [["c15-030", "说完，柴郡猫慢慢地消失了。"], ["c15-031", "先是尾巴尖不见了，接着身子不见了，最后只剩下一张咧着的笑嘴，挂在树枝上，过了好一会儿才不见。"]]}, {"t": "p", "s": [["c15-032", "爱丽丝想：“我见过不笑的猫，可是从来没见过没有猫的笑！”"]]}]}, {"title": "第十六章　疯狂的茶会", "head": "c16-h", "audio": "audio/ch16.m4a?v=1007012697", "duration": 101.01, "times": {"c16-h": [0.0, 2.855], "c16-001": [3.855, 8.148], "c16-002": [8.498, 15.324], "c16-003": [19.775, 20.436], "c16-004": [20.786, 21.447], "c16-005": [21.797, 24.592], "c16-006": [25.442, 26.686], "c16-007": [27.036, 31.344], "c16-008": [32.194, 36.749], "c16-009": [37.599, 40.961], "c16-010": [41.311, 44.19], "c16-011": [45.04, 47.337], "c16-012": [47.687, 48.922], "c16-013": [49.772, 50.298], "c16-014": [50.648, 51.69], "c16-015": [52.54, 54.78], "c16-016": [55.13, 56.194], "c16-017": [57.044, 63.438], "c16-018": [64.288, 65.386], "c16-019": [65.736, 71.771], "c16-020": [72.621, 79.042], "c16-021": [79.392, 81.33], "c16-022": [82.18, 83.159], "c16-023": [83.509, 88.92], "c16-024": [89.77, 91.352], "c16-025": [91.702, 92.766], "c16-026": [93.116, 99.51]}, "blocks": [{"t": "img", "src": "images/29.webp?v=28317b34f9", "vid": "images/29.mp4?v=240b026e25", "cap": "大树下的长桌子", "n": 50}, {"t": "img", "src": "images/30.webp?v=5ddcb1aa79", "vid": "images/30.mp4?v=286b92f3e1", "cap": "疯帽子、三月兔和睡鼠", "n": 51}, {"t": "p", "s": [["c16-001", "三月兔家门前的大树下，摆着一张长长的桌子。"], ["c16-002", "三月兔和疯帽子坐在桌边喝茶，一只睡鼠夹在他们中间，呼呼地睡着大觉。"]]}, {"t": "p", "s": [["c16-003", "“没地方了！"], ["c16-004", "没地方了！”"], ["c16-005", "他们一看见爱丽丝，就大声嚷嚷。"]]}, {"t": "img", "src": "images/31.webp?v=ed784e475f", "vid": "images/31.mp4?v=8e544ad908", "cap": "爱丽丝在大扶手椅上坐下", "n": 52}, {"t": "p", "s": [["c16-006", "“地方多着呢！”"], ["c16-007", "爱丽丝生气地说，在一张大扶手椅上坐了下来。"]]}, {"t": "img", "src": "images/32.webp?v=c8ce64e4cd", "vid": "images/32.mp4?v=ddc82c14cf", "cap": "乌鸦为什么像写字台？", "n": 53}, {"t": "p", "s": [["c16-008", "疯帽子看了爱丽丝半天，问：“乌鸦为什么像写字台？”"]]}, {"t": "p", "s": [["c16-009", "爱丽丝想：“太好了，要猜谜语了！”"], ["c16-010", "她说：“我想我能猜出来。”"]]}, {"t": "p", "s": [["c16-011", "“你的意思是说，你能找到答案？”"], ["c16-012", "三月兔问。"]]}, {"t": "p", "s": [["c16-013", "“对呀。”"], ["c16-014", "爱丽丝说。"]]}, {"t": "p", "s": [["c16-015", "“那你就应该说你想说的话。”"], ["c16-016", "三月兔说。"]]}, {"t": "p", "s": [["c16-017", "“我是这样做的呀，”爱丽丝说，“至少，我说的就是我想的，这是一回事。”"]]}, {"t": "p", "s": [["c16-018", "“根本不是一回事！”"], ["c16-019", "疯帽子说，“那你也可以说，‘我吃我看见的东西’，跟‘我看见我吃的东西’是一回事了？”"]]}, {"t": "img", "src": "images/79.webp?v=c77e64cf3c", "vid": "images/79.mp4?v=419d23a50d", "cap": "疯帽子的怀表：黄油不能放进表里修", "n": 54}, {"t": "p", "s": [["c16-020", "疯帽子掏出一块怀表，摇了摇，又放到耳边听了听，问：“今天几号？”"], ["c16-021", "爱丽丝说：“四号。”"]]}, {"t": "p", "s": [["c16-022", "“慢了两天！”"], ["c16-023", "疯帽子叹气说，“我早就告诉过你，黄油不能放进表里修！”"]]}, {"t": "p", "s": [["c16-024", "“那可是最好的黄油呀。”"], ["c16-025", "三月兔说。"], ["c16-026", "他把表放进茶杯里蘸了蘸，又看了看，还是只会说：“那可是最好的黄油呀。”"]]}]}, {"title": "第十七章　永远六点钟", "head": "c17-h", "audio": "audio/ch17.m4a?v=2ba7be6fd3", "duration": 134.594, "times": {"c17-h": [0.0, 2.702], "c17-001": [3.702, 8.713], "c17-002": [9.563, 10.296], "c17-003": [10.646, 11.703], "c17-004": [12.053, 12.919], "c17-005": [13.269, 14.333], "c17-006": [15.183, 22.326], "c17-007": [23.176, 28.187], "c17-008": [28.537, 38.05], "song-twinkle-bat": [39.25, 45.25], "song-twinkle-bat-01": [45.25, 50.23], "song-twinkle-bat-02": [50.23, 55.55], "song-twinkle-bat-03": [55.55, 59.91], "song-twinkle-bat-04": [59.91, 65.13], "song-twinkle-bat-05": [65.13, 69.41], "song-twinkle-bat-06": [70.23, 74.69], "c17-009": [80.89, 82.172], "c17-010": [82.522, 83.563], "c17-011": [84.413, 89.359], "c17-012": [89.709, 90.891], "c17-013": [91.741, 98.15], "c17-014": [98.5, 109.914], "c17-015": [110.764, 113.457], "c17-016": [113.807, 114.802], "c17-017": [115.652, 119.712], "c17-018": [120.062, 121.503], "c17-019": [122.353, 124.418], "c17-020": [124.768, 126.338], "c17-021": [127.188, 128.251], "c17-022": [128.601, 130.053], "c17-023": [130.403, 133.094]}, "blocks": [{"t": "p", "s": [["c17-001", "爱丽丝想了很久，说：“我猜不出来，答案是什么？”"]]}, {"t": "p", "s": [["c17-002", "“我也不知道。”"], ["c17-003", "疯帽子说。"], ["c17-004", "“我也不知道。”"], ["c17-005", "三月兔说。"]]}, {"t": "p", "s": [["c17-006", "爱丽丝叹了口气：“你们与其问一些没有答案的谜语，浪费时间，还不如做点儿别的事。”"]]}, {"t": "img", "src": "images/80.webp?v=7d6a42661e", "vid": "images/80.mp4?v=cf0273f16e", "cap": "疯帽子在王后的音乐会上唱歌", "n": 55}, {"t": "p", "s": [["c17-007", "“你要是像我一样认识时间老人，”疯帽子说，“就不会说浪费它了。"], ["c17-008", "去年三月，红心王后开了一场音乐会，我在会上唱歌，唱的是：‘一闪一闪小蝙蝠，我想知道你在忙什么……’”"]]}, {"t": "song", "title": "一闪一闪小蝙蝠", "head": "song-twinkle-bat", "lines": [["song-twinkle-bat-01", "一闪一闪小蝙蝠"], ["song-twinkle-bat-02", "我想知道你在忙什么"], ["song-twinkle-bat-03", "高高飞在天空里"], ["song-twinkle-bat-04", "像个茶盘飘呀飘"], ["song-twinkle-bat-05", "一闪一闪小蝙蝠"], ["song-twinkle-bat-06", "我想知道你在忙什么"]]}, {"t": "p", "s": [["c17-009", "“这首歌我听过。”"], ["c17-010", "爱丽丝说。"]]}, {"t": "p", "s": [["c17-011", "“我还没唱完第一段，”疯帽子说，“王后就大叫：‘他在浪费时间！"], ["c17-012", "砍掉他的头！’”"]]}, {"t": "img", "src": "images/33.webp?v=3f7d8a88de", "vid": "images/33.mp4?v=8eba32720c", "cap": "永远都是下午六点", "n": 56}, {"t": "p", "s": [["c17-013", "原来，从那以后，时间老人就生了疯帽子的气，再也不肯听他的话了。"], ["c17-014", "疯帽子的时间永远停在了下午六点，永远都是喝下午茶的时候，所以他们只好一直喝茶，喝完了就往旁边挪一个座位，换一套新茶杯。"]]}, {"t": "p", "s": [["c17-015", "“那你们转回到开头的时候怎么办呢？”"], ["c17-016", "爱丽丝问。"]]}, {"t": "p", "s": [["c17-017", "“我们换个话题吧，”三月兔打着哈欠说，“我听烦了。"], ["c17-018", "让这位小姑娘讲个故事。”"]]}, {"t": "p", "s": [["c17-019", "“我恐怕一个故事也不会。”"], ["c17-020", "爱丽丝有点儿着急。"]]}, {"t": "img", "src": "images/81.webp?v=d23ce963c8", "vid": "images/81.mp4?v=4e112acad5", "cap": "“醒醒，睡鼠！”", "n": 57}, {"t": "p", "s": [["c17-021", "“那就让睡鼠讲！"], ["c17-022", "醒醒，睡鼠！”"], ["c17-023", "他们一边一个，捏了捏睡鼠。"]]}]}, {"title": "第十八章　睡鼠讲故事", "head": "c18-h", "audio": "audio/ch18.m4a?v=7fef74f936", "duration": 87.854, "times": {"c18-h": [0.0, 2.652], "c18-001": [3.652, 11.572], "c18-002": [12.422, 13.628], "c18-003": [13.978, 16.714], "c18-004": [17.564, 21.291], "c18-005": [22.141, 26.916], "c18-006": [27.766, 30.64], "c18-007": [30.99, 32.107], "c18-008": [32.957, 35.907], "c18-009": [36.257, 37.358], "c18-010": [38.208, 42.503], "c18-011": [43.353, 44.816], "c18-012": [45.166, 50.366], "c18-013": [50.716, 55.491], "c18-014": [56.341, 61.332], "c18-015": [62.182, 73.184], "c18-016": [73.534, 77.716], "c18-017": [78.566, 81.069], "c18-018": [81.419, 86.354]}, "blocks": [{"t": "img", "src": "images/82.webp?v=e99e5634ab", "vid": "images/82.mp4?v=be1e519028", "cap": "睡鼠讲糖浆井里的三姐妹", "n": 58}, {"t": "p", "s": [["c18-001", "睡鼠慢慢地睁开眼睛，用沙哑的声音说：“从前，有三个小姐妹，她们住在一口井的井底。”"]]}, {"t": "p", "s": [["c18-002", "“她们吃什么呢？”"], ["c18-003", "爱丽丝总是对吃的东西很感兴趣。"]]}, {"t": "p", "s": [["c18-004", "睡鼠想了一两分钟，说：“她们吃糖浆。”"]]}, {"t": "p", "s": [["c18-005", "“那可不行，”爱丽丝说，“光吃糖浆会生病的。”"]]}, {"t": "p", "s": [["c18-006", "“对，所以她们都病了，病得很厉害。”"], ["c18-007", "睡鼠说。"]]}, {"t": "p", "s": [["c18-008", "“那她们为什么要住在井底下呢？”"], ["c18-009", "爱丽丝又问。"]]}, {"t": "p", "s": [["c18-010", "睡鼠又想了一两分钟，说：“那是一口糖浆井。”"]]}, {"t": "p", "s": [["c18-011", "“哪有糖浆井！”"], ["c18-012", "爱丽丝刚要生气，疯帽子和三月兔就“嘘、嘘”地让她安静。"], ["c18-013", "睡鼠也不高兴地说：“你要是这么没礼貌，就自己把故事讲完吧。”"]]}, {"t": "p", "s": [["c18-014", "“对不起，请你讲下去吧，”爱丽丝说，“我再也不打岔了。”"]]}, {"t": "p", "s": [["c18-015", "睡鼠接着说：“三个小姐妹在井里学画画，她们画各种各样的东西，凡是用‘毛’字开头的东西都画：毛毛虫、毛线团、毛毛雨……”"], ["c18-016", "说着说着，它的眼睛又闭上了，打起了呼噜。"]]}, {"t": "img", "src": "images/34.webp?v=15380e6fc5", "vid": "images/34.mp4?v=da34821e17", "cap": "把睡鼠塞进茶壶里", "n": 59}, {"t": "p", "s": [["c18-017", "他们还想把睡鼠塞进茶壶里。"], ["c18-018", "爱丽丝觉得这是她参加过的最傻的茶会，就起身走开了。"]]}]}, {"title": "第十九章　王后的花园", "head": "c19-h", "audio": "audio/ch19.m4a?v=afb7911b9b", "duration": 64.212, "times": {"c19-h": [0.0, 2.659], "c19-001": [3.659, 6.374], "c19-002": [6.724, 10.19], "c19-003": [10.54, 19.487], "c19-004": [20.337, 24.662], "c19-005": [25.012, 30.105], "c19-006": [30.955, 32.059], "c19-007": [32.41, 33.727], "c19-008": [34.078, 35.405], "c19-009": [35.755, 39.69], "c19-010": [40.54, 42.399], "c19-011": [42.749, 43.745], "c19-012": [44.595, 49.62], "c19-013": [49.97, 52.643], "c19-014": [53.493, 56.835], "c19-015": [57.185, 58.059], "c19-016": [58.409, 62.712]}, "blocks": [{"t": "img", "src": "images/35.webp?v=3cb81ec9a8", "vid": "images/35.mp4?v=06b8280dec", "cap": "树上的一扇门", "n": 60}, {"t": "p", "s": [["c19-001", "爱丽丝在一棵树上发现了一扇门。"], ["c19-002", "她走进去，又回到了那个长长的大厅。"], ["c19-003", "这一次，她吃了一点儿蘑菇，变得正好一尺高，用金钥匙打开小门，终于走进了那座美丽的花园。"]]}, {"t": "img", "src": "images/36.webp?v=2b17dec672", "vid": "images/36.mp4?v=627e921e05", "cap": "把白玫瑰涂成红色", "n": 61}, {"t": "p", "s": [["c19-004", "花园门口有一棵大玫瑰树，开着白色的玫瑰花。"], ["c19-005", "三个扑克牌园丁正忙着，用刷子把白玫瑰涂成红色。"]]}, {"t": "p", "s": [["c19-006", "“小心点儿，老五！"], ["c19-007", "别把颜料溅到我身上！”"], ["c19-008", "一个园丁说。"], ["c19-009", "“又不怪我，”老五说，“是老七碰了我的胳膊肘。”"]]}, {"t": "p", "s": [["c19-010", "“你们为什么要涂玫瑰呀？”"], ["c19-011", "爱丽丝问。"]]}, {"t": "p", "s": [["c19-012", "黑桃二小声说：“嘘，这里本来应该种红玫瑰，我们种错了。"], ["c19-013", "要是被王后发现，我们的脑袋就保不住了！”"]]}, {"t": "img", "src": "images/83.webp?v=f4db32fc3f", "vid": "images/83.mp4?v=1370efa149", "cap": "“王后来了！”园丁们赶紧趴下", "n": 62}, {"t": "p", "s": [["c19-014", "这时，老五紧张地喊起来：“王后！"], ["c19-015", "王后来了！”"], ["c19-016", "三个园丁马上脸朝下，扑通一声趴在了地上。"]]}]}, {"title": "第二十章　红心王后", "head": "c20-h", "audio": "audio/ch20.m4a?v=3f27d66bfa", "duration": 117.334, "times": {"c20-h": [0.0, 2.526], "c20-001": [3.526, 9.001], "c20-002": [9.851, 20.669], "c20-003": [21.019, 28.806], "c20-004": [29.156, 34.417], "c20-005": [34.767, 38.567], "c20-006": [39.417, 42.109], "c20-007": [42.459, 46.838], "c20-008": [47.688, 49.816], "c20-009": [50.166, 57.238], "c20-010": [58.088, 62.666], "c20-011": [63.016, 69.79], "c20-012": [70.64, 71.63], "c20-013": [71.98, 74.79], "c20-014": [75.64, 80.095], "c20-015": [80.945, 81.612], "c20-016": [81.962, 83.442], "c20-017": [83.792, 86.872], "c20-018": [87.222, 93.139], "c20-019": [93.989, 100.404], "c20-020": [100.754, 104.97], "c20-021": [105.82, 107.351], "c20-022": [107.701, 111.654], "c20-023": [112.004, 115.834]}, "blocks": [{"t": "img", "src": "images/37.webp?v=eee38a1621", "vid": "images/37.mp4?v=04f6d6fd23", "cap": "国王和王后来了", "n": 63}, {"t": "p", "s": [["c20-001", "就在这时，一队扑克牌士兵走了过来，后面跟着国王和王后。"]]}, {"t": "img", "src": "images/84.webp?v=ec66fbacb1", "vid": "images/84.mp4?v=b8d61b65af", "cap": "红心杰克托着王冠，走在队伍里", "n": 64}, {"t": "p", "s": [["c20-002", "最前面是十个拿着棍子的梅花士兵，接着是十个浑身戴着钻石的方块侍臣，再后面是十个蹦蹦跳跳的红心小王子和小公主。"], ["c20-003", "客人们大多是国王和王后，爱丽丝还在里面认出了白兔子，它正紧张地东张西望。"], ["c20-004", "接着是红心杰克，他用红丝绒垫子托着国王的王冠。"], ["c20-005", "走在最后的，就是红心国王和红心王后。"]]}, {"t": "img", "src": "images/38.webp?v=0264f9a60c", "vid": "images/38.mp4?v=f4337c0504", "cap": "你叫什么名字？", "n": 65}, {"t": "p", "s": [["c20-006", "队伍走到爱丽丝面前，停了下来。"], ["c20-007", "红心王后看见了爱丽丝，大声问：“你叫什么名字？”"]]}, {"t": "p", "s": [["c20-008", "“回禀陛下，我叫爱丽丝。”"], ["c20-009", "爱丽丝很有礼貌地回答，心里却想：“哼，他们不过是一副纸牌，我才不怕呢！”"]]}, {"t": "p", "s": [["c20-010", "王后指着趴在玫瑰树下的三个园丁问：“那他们是谁？”"], ["c20-011", "园丁们背朝上趴着，背上的花纹和一副牌里别的牌一模一样，谁也认不出来。"]]}, {"t": "p", "s": [["c20-012", "“我怎么知道？”"], ["c20-013", "爱丽丝说，“这又不关我的事。”"]]}, {"t": "p", "s": [["c20-014", "王后气得满脸通红，大叫起来：“砍掉她的头！”"]]}, {"t": "p", "s": [["c20-015", "“胡说！”"], ["c20-016", "爱丽丝大声说。"], ["c20-017", "王后一下子愣住了，不说话了。"], ["c20-018", "国王拉了拉王后的胳膊，轻轻地说：“亲爱的，她还只是个孩子呢。”"]]}, {"t": "p", "s": [["c20-019", "王后转过身，又发现了涂了一半的玫瑰，气得大喊：“砍掉他们的头！”"], ["c20-020", "三个园丁吓得直哆嗦，跑过来求爱丽丝救命。"]]}, {"t": "img", "src": "images/85.webp?v=a0df613c0b", "vid": "images/85.mp4?v=c79bdfe9fb", "cap": "爱丽丝把园丁藏进大花盆", "n": 66}, {"t": "p", "s": [["c20-021", "“你们不会被砍头的！”"], ["c20-022", "爱丽丝说着，把他们藏进了旁边的一个大花盆里。"], ["c20-023", "士兵们找来找去，没找着，只好走开了。"]]}]}, {"title": "第二十一章　王后的槌球比赛", "head": "c21-h", "audio": "audio/ch21.m4a?v=eab9e6f943", "duration": 107.303, "times": {"c21-h": [0.0, 3.426], "c21-001": [4.426, 5.858], "c21-002": [6.208, 7.222], "c21-003": [8.072, 8.618], "c21-004": [8.968, 10.009], "c21-005": [10.359, 13.572], "c21-006": [14.422, 17.342], "c21-007": [17.692, 27.456], "c21-008": [28.306, 36.929], "c21-009": [37.279, 41.061], "c21-010": [41.911, 45.926], "c21-011": [46.276, 51.462], "c21-012": [51.812, 53.063], "c21-013": [53.913, 59.068], "c21-014": [59.418, 62.205], "c21-015": [63.055, 68.987], "c21-016": [69.337, 78.625], "c21-017": [79.475, 83.022], "c21-018": [83.372, 86.131], "c21-019": [86.481, 91.584], "c21-020": [92.434, 98.113], "c21-021": [98.463, 101.043], "c21-022": [101.393, 105.803]}, "blocks": [{"t": "p", "s": [["c21-001", "“你会打槌球吗？”"], ["c21-002", "王后大喊。"]]}, {"t": "p", "s": [["c21-003", "“会！”"], ["c21-004", "爱丽丝说。"], ["c21-005", "于是，她参加了王后的槌球比赛。"]]}, {"t": "img", "src": "images/39.webp?v=926006580e", "vid": "images/39.mp4?v=7a8de341b0", "cap": "最奇怪的槌球比赛", "n": 67}, {"t": "p", "s": [["c21-006", "这真是世界上最奇怪的槌球比赛。"], ["c21-007", "球是一只只活刺猬，球棒是一只只活的火烈鸟，扑克牌士兵弯下腰，手脚撑在地上，就是球门。"]]}, {"t": "img", "src": "images/40.webp?v=c9e06d006b", "vid": "images/40.mp4?v=4ddd3160c2", "cap": "火烈鸟扭过脖子看着她", "n": 68}, {"t": "p", "s": [["c21-008", "爱丽丝刚把火烈鸟夹在胳膊底下，准备击球，火烈鸟就扭过长脖子，一脸奇怪地看着她。"], ["c21-009", "刺猬也不老实，一会儿就慢慢地爬走了。"]]}, {"t": "img", "src": "images/41.webp?v=253518bfa2", "vid": "images/41.mp4?v=97e5ac41a5", "cap": "砍掉他的头！", "n": 69}, {"t": "p", "s": [["c21-010", "大家都不按顺序打，吵吵嚷嚷，乱成一团。"], ["c21-011", "王后气得直跺脚，每过一会儿就大叫一声：“砍掉他的头！"], ["c21-012", "砍掉她的头！”"]]}, {"t": "img", "src": "images/42.webp?v=c9b836061d", "vid": "images/42.mp4?v=9939ebddbc", "cap": "你们都被赦免了", "n": 70}, {"t": "p", "s": [["c21-013", "可是，国王总是悄悄地对大家说：“你们都被赦免了。”"], ["c21-014", "所以，其实一个人也没有被砍头。"]]}, {"t": "img", "src": "images/43.webp?v=aad5bc31ae", "vid": "images/43.mp4?v=9992472b26", "cap": "柴郡猫的大脑袋出现在半空中", "n": 71}, {"t": "p", "s": [["c21-015", "这时，柴郡猫的大脑袋忽然出现在半空中，笑嘻嘻地看着大家。"], ["c21-016", "国王和王后吵着要砍掉它的头，可是它只有一个脑袋，没有身子，刽子手怎么也想不出该从哪里下手。"]]}, {"t": "p", "s": [["c21-017", "刽子手说，没有身子的头，没法砍。"], ["c21-018", "国王说，只要有头，就能砍。"], ["c21-019", "王后说，谁要是再不想办法，就把所有人的头都砍掉。"]]}, {"t": "p", "s": [["c21-020", "爱丽丝想了想，说：“这只猫是公爵夫人的，你们最好去问问她。”"], ["c21-021", "刽子手马上跑去找公爵夫人。"], ["c21-022", "可是他还没回来，柴郡猫的大脑袋就慢慢地消失了。"]]}]}, {"title": "第二十二章　什么都有寓意", "head": "c22-h", "audio": "audio/ch22.m4a?v=4181b100bf", "duration": 81.446, "times": {"c22-h": [0.0, 2.735], "c22-001": [3.735, 5.059], "c22-002": [5.409, 8.799], "c22-003": [9.149, 13.665], "c22-004": [14.515, 19.041], "c22-005": [19.392, 22.71], "c22-006": [23.56, 32.295], "c22-007": [33.145, 35.104], "c22-008": [35.454, 36.495], "c22-009": [37.345, 38.953], "c22-010": [39.303, 43.371], "c22-011": [44.221, 50.099], "c22-012": [50.449, 55.165], "c22-013": [56.015, 60.165], "c22-014": [60.515, 67.88], "c22-015": [68.73, 77.339], "c22-016": [77.689, 79.946]}, "blocks": [{"t": "img", "src": "images/86.webp?v=560251871f", "vid": "images/86.mp4?v=9ccf4a4eeb", "cap": "公爵夫人挽着爱丽丝散步", "n": 72}, {"t": "p", "s": [["c22-001", "公爵夫人来了。"], ["c22-002", "她亲热地挽着爱丽丝的胳膊，一起散步。"], ["c22-003", "爱丽丝发现，她比在胡椒厨房里时快活多了。"]]}, {"t": "p", "s": [["c22-004", "爱丽丝想：“说不定，就是胡椒让人脾气变坏的。"], ["c22-005", "醋让人变酸，糖让小孩子变甜。”"]]}, {"t": "p", "s": [["c22-006", "“你在想事情，亲爱的，所以忘了说话，”公爵夫人说，“这件事的寓意是什么，我现在还说不上来，不过待会儿一定能想起来。”"]]}, {"t": "p", "s": [["c22-007", "“说不定它没有寓意呢。”"], ["c22-008", "爱丽丝说。"]]}, {"t": "p", "s": [["c22-009", "“胡说，孩子！”"], ["c22-010", "公爵夫人说，“什么事都有寓意，只要你能找得到。”"]]}, {"t": "p", "s": [["c22-011", "公爵夫人把尖尖的下巴靠在爱丽丝的肩膀上，硌得她好疼。"], ["c22-012", "她说一句话，就要讲一个寓意，说得爱丽丝头都晕了。"]]}, {"t": "img", "src": "images/87.webp?v=48a43b008d", "vid": "images/87.mp4?v=89291a6f5a", "cap": "王后抱着胳膊，脸色阴沉", "n": 73}, {"t": "p", "s": [["c22-013", "忽然，公爵夫人不说话了，浑身发抖。"], ["c22-014", "原来，红心王后抱着胳膊，站在她们面前，脸色像打雷前的天空一样阴沉。"]]}, {"t": "p", "s": [["c22-015", "“我警告你，”王后跺着脚对公爵夫人说，“要么你走开，要么你的头走开，马上选一个！”"], ["c22-016", "公爵夫人一溜烟地跑掉了。"]]}]}, {"title": "第二十三章　假海龟的故事", "head": "c23-h", "audio": "audio/ch23.m4a?v=46a80cc1de", "duration": 128.27, "times": {"c23-h": [0.0, 3.272], "c23-001": [4.272, 7.572], "c23-002": [8.422, 11.286], "c23-003": [11.636, 12.677], "c23-004": [13.527, 16.24], "c23-005": [16.59, 23.219], "c23-006": [23.569, 27.589], "c23-007": [28.439, 32.193], "c23-008": [32.543, 36.611], "c23-009": [37.461, 44.091], "c23-010": [44.441, 46.993], "c23-011": [47.843, 55.797], "c23-012": [56.647, 58.479], "c23-013": [58.829, 59.824], "c23-014": [60.174, 65.305], "c23-015": [66.155, 71.755], "c23-016": [72.105, 75.401], "c23-017": [76.251, 83.309], "c23-018": [84.159, 88.544], "c23-019": [88.894, 90.169], "c23-020": [91.019, 92.959], "c23-021": [93.309, 94.305], "c23-022": [95.155, 96.636], "c23-023": [96.986, 101.323], "c23-024": [101.673, 103.984], "c23-025": [104.334, 105.035], "c23-026": [105.885, 108.352], "c23-027": [108.702, 109.697], "c23-028": [110.547, 114.751], "c23-029": [115.101, 116.259], "c23-030": [117.109, 118.242], "c23-031": [118.592, 119.633], "c23-032": [120.483, 126.77]}, "blocks": [{"t": "p", "s": [["c23-001", "王后问爱丽丝：“你见过假海龟没有？”"]]}, {"t": "p", "s": [["c23-002", "“没有，我连假海龟是什么都不知道。”"], ["c23-003", "爱丽丝说。"]]}, {"t": "p", "s": [["c23-004", "“那就是用来做假海龟汤的东西。”"], ["c23-005", "王后说着，叫醒了一只躺在太阳底下睡觉的鹰头狮，“懒家伙，起来！"], ["c23-006", "带这位小姑娘去看假海龟，听听他的故事！”"]]}, {"t": "img", "src": "images/44.webp?v=96511683ce", "vid": "images/44.mp4?v=5cd0a7eb73", "cap": "鹰头狮", "n": 74}, {"t": "p", "s": [["c23-007", "王后让鹰头狮带爱丽丝去见假海龟。"], ["c23-008", "鹰头狮长着老鹰的头和翅膀，狮子的身子。"]]}, {"t": "p", "s": [["c23-009", "鹰头狮坐起来，揉揉眼睛，看着王后走远，才咯咯地笑着说：“真好笑！"], ["c23-010", "其实谁也没有被砍头，你知道吗？”"]]}, {"t": "img", "src": "images/45.webp?v=9cf4cc1e37", "vid": "images/45.mp4?v=6dbed44553", "cap": "眼泪汪汪的假海龟", "n": 75}, {"t": "p", "s": [["c23-011", "假海龟坐在海边的一块大石头上，长着一个小牛的脑袋，眼泪汪汪的，叹着长长的气。"]]}, {"t": "p", "s": [["c23-012", "“他为什么这么伤心呀？”"], ["c23-013", "爱丽丝问。"], ["c23-014", "鹰头狮说：“全是他自己想出来的，他其实一点儿也没有伤心的事。”"]]}, {"t": "p", "s": [["c23-015", "假海龟一边抽泣，一边说：“我小的时候，在海底的学校里上学。"], ["c23-016", "我们学的是读书、写字，还有慢吞吞地画画。”"]]}, {"t": "img", "src": "images/88.webp?v=ed9bdac3a5", "vid": "images/88.mp4?v=927e0009fb", "cap": "假海龟在海底学校上学", "n": 76}, {"t": "p", "s": [["c23-017", "“我们的老师是一只老海龟，”假海龟说，“他讲课讲得特别特别慢，一句话要讲好半天。”"]]}, {"t": "p", "s": [["c23-018", "“我们还学算术，有加法、减法，还有丑法和哭法。”"], ["c23-019", "假海龟说。"]]}, {"t": "p", "s": [["c23-020", "“丑法和哭法是什么呀？”"], ["c23-021", "爱丽丝问。"]]}, {"t": "p", "s": [["c23-022", "“你连丑法都没听说过？”"], ["c23-023", "鹰头狮惊讶地举起两只爪子，“那你总知道什么叫美吧？"], ["c23-024", "把美的东西变丑，就是丑法呀！"], ["c23-025", "你可真笨！”"]]}, {"t": "p", "s": [["c23-026", "“那你们一天上几个钟头的课呢？”"], ["c23-027", "爱丽丝问。"]]}, {"t": "p", "s": [["c23-028", "“第一天十个钟头，第二天九个钟头，一天比一天少。”"], ["c23-029", "假海龟说。"]]}, {"t": "p", "s": [["c23-030", "“真奇怪！”"], ["c23-031", "爱丽丝说。"]]}, {"t": "p", "s": [["c23-032", "“所以才叫上课呀，”鹰头狮解释说，“上一天，少一课，越上越少嘛！”"]]}]}, {"title": "第二十四章　龙虾方块舞", "head": "c24-h", "audio": "audio/ch24.m4a?v=345cc80d97", "duration": 277.229, "times": {"c24-h": [0.0, 2.838], "c24-001": [3.838, 7.946], "c24-002": [8.296, 9.352], "c24-003": [9.702, 12.657], "c24-004": [13.507, 19.173], "c24-005": [19.523, 25.941], "song-lobster-dance": [27.141, 33.141], "song-lobster-dance-01": [33.141, 35.361], "song-lobster-dance-02": [35.361, 37.581], "song-lobster-dance-03": [37.581, 39.681], "song-lobster-dance-04": [39.681, 41.801], "song-lobster-dance-05": [41.841, 43.881], "song-lobster-dance-06": [43.881, 46.101], "song-lobster-dance-07": [54.201, 56.861], "song-lobster-dance-08": [56.861, 58.941], "song-lobster-dance-09": [58.941, 61.121], "song-lobster-dance-10": [61.121, 63.381], "song-lobster-dance-11": [88.261, 91.201], "song-lobster-dance-12": [91.201, 93.001], "song-lobster-dance-13": [93.061, 95.421], "song-lobster-dance-14": [95.421, 97.001], "song-lobster-dance-15": [97.001, 99.721], "song-lobster-dance-16": [99.721, 101.781], "song-lobster-dance-17": [101.781, 103.981], "song-lobster-dance-18": [103.981, 106.201], "c24-006": [112.401, 122.728], "c24-007": [123.078, 127.095], "song-lobster-song": [128.295, 134.295], "song-lobster-song-01": [134.295, 136.475], "song-lobster-song-02": [136.475, 138.555], "song-lobster-song-03": [138.555, 140.675], "song-lobster-song-04": [140.675, 142.715], "song-lobster-song-05": [142.715, 146.615], "song-lobster-song-06": [146.615, 149.735], "song-lobster-song-07": [150.995, 154.675], "song-lobster-song-08": [154.795, 158.035], "c24-008": [164.235, 168.671], "c24-009": [169.021, 179.302], "c24-010": [180.152, 192.279], "c24-011": [192.629, 194.443], "song-beautiful-soup": [195.643, 201.643], "song-beautiful-soup-01": [201.643, 207.623], "song-beautiful-soup-02": [208.783, 214.903], "song-beautiful-soup-03": [214.903, 219.543], "song-beautiful-soup-04": [219.543, 226.243], "song-beautiful-soup-05": [231.263, 235.783], "song-beautiful-soup-06": [237.223, 242.583], "song-beautiful-soup-07": [245.883, 249.583], "song-beautiful-soup-08": [252.523, 256.863], "c24-012": [263.063, 267.456], "c24-013": [268.306, 268.752], "c24-014": [269.102, 275.729]}, "blocks": [{"t": "p", "s": [["c24-001", "假海龟长长地叹了一口气，问：“你大概没在海底住过吧？"], ["c24-002", "也没见过龙虾吧？"], ["c24-003", "那你一定不知道，龙虾方块舞有多好玩！”"]]}, {"t": "img", "src": "images/46.webp?v=c16f3295dd", "vid": "images/46.mp4?v=18c5fc53c0", "cap": "龙虾方块舞", "n": 77}, {"t": "p", "s": [["c24-004", "后来，鹰头狮和假海龟手拉着手，跳起了龙虾方块舞。"], ["c24-005", "他们一边转圈，一边唱着奇奇怪怪的歌，有时候还踩到了爱丽丝的脚趾头。"]]}, {"t": "song", "title": "你来不来跳个舞", "head": "song-lobster-dance", "lines": [["song-lobster-dance-01", "小鱼对蜗牛说"], ["song-lobster-dance-02", "你能不能走快点"], ["song-lobster-dance-03", "海豚跟在我身后"], ["song-lobster-dance-04", "踩着我的尾巴尖"], ["song-lobster-dance-05", "龙虾海龟都来了"], ["song-lobster-dance-06", "沙滩上面站一排"], ["song-lobster-dance-07", "你来不来，你来不来"], ["song-lobster-dance-08", "跟我们跳舞来"], ["song-lobster-dance-09", "你来不来，你来不来"], ["song-lobster-dance-10", "一起跳到海里来"], ["song-lobster-dance-11", "把龙虾扔向大海"], ["song-lobster-dance-12", "扔得远远的"], ["song-lobster-dance-13", "游过去翻个跟头"], ["song-lobster-dance-14", "再游回岸来"], ["song-lobster-dance-15", "你来不来，你来不来"], ["song-lobster-dance-16", "跟我们跳舞来"], ["song-lobster-dance-17", "你来不来，你来不来"], ["song-lobster-dance-18", "一起跳到海里来"]]}, {"t": "img", "src": "images/89.webp?v=6ff7581eda", "vid": "images/89.mp4?v=19ca3f9b9f", "cap": "把龙虾使劲儿扔进海里", "n": 78}, {"t": "p", "s": [["c24-006", "“先在海边排成一排，”假海龟说，“每个人都牵着一只龙虾，往前走两步，交换舞伴，再把龙虾使劲儿往海里扔，扔得越远越好！"], ["c24-007", "然后跟着游过去，在海里翻一个跟头，再游回岸上。”"]]}, {"t": "song", "title": "龙虾方块舞", "head": "song-lobster-song", "lines": [["song-lobster-song-01", "龙虾龙虾手拉手"], ["song-lobster-song-02", "转个圈圈向前走"], ["song-lobster-song-03", "一二三，跳进大海"], ["song-lobster-song-04", "扑通扑通翻跟头"], ["song-lobster-song-05", "你来不来，你来不来"], ["song-lobster-song-06", "跟我们跳个龙虾舞"], ["song-lobster-song-07", "海浪高高，海浪低低"], ["song-lobster-song-08", "跳到月亮出来不停步"]]}, {"t": "p", "s": [["c24-008", "跳完了舞，鹰头狮说：“现在，该你讲讲你的故事了。”"], ["c24-009", "爱丽丝就从早上看见白兔子讲起，讲她怎么掉进兔子洞，怎么变大变小，怎么给毛毛虫背诗，背得全都乱七八糟。"]]}, {"t": "img", "src": "images/90.webp?v=335d0f82f5", "vid": "images/90.mp4?v=c5bd92aa8f", "cap": "假海龟唱起《美味的汤》", "n": 79}, {"t": "p", "s": [["c24-010", "假海龟听完，深深地叹了口气，用哽咽的声音唱起了一首《美味的汤》：“美味的汤，绿绿的汤，热腾腾地盛在大碗里，谁不想尝一尝？"], ["c24-011", "晚上的汤，美味的汤！”"]]}, {"t": "song", "title": "美味的汤", "head": "song-beautiful-soup", "lines": [["song-beautiful-soup-01", "美味的汤，绿绿的汤"], ["song-beautiful-soup-02", "热腾腾地盛在大碗里"], ["song-beautiful-soup-03", "谁不想尝一尝"], ["song-beautiful-soup-04", "晚上的汤，美味的汤"], ["song-beautiful-soup-05", "美——味的汤"], ["song-beautiful-soup-06", "美——味的汤"], ["song-beautiful-soup-07", "晚——上的汤"], ["song-beautiful-soup-08", "美味，美味的汤"]]}, {"t": "p", "s": [["c24-012", "就在这时，远处传来一声大喊：“审判开始啦！”"]]}, {"t": "p", "s": [["c24-013", "“快走！”"], ["c24-014", "鹰头狮拉起爱丽丝的手就跑，假海龟悲伤的歌声，在海风里越飘越远。"]]}]}, {"title": "第二十五章　谁偷了馅饼", "head": "c25-h", "audio": "audio/ch25.m4a?v=e2b423af21", "duration": 144.432, "times": {"c25-h": [0.0, 3.317], "c25-001": [4.317, 9.3], "c25-002": [9.65, 14.766], "c25-003": [15.616, 20.312], "c25-004": [20.662, 27.799], "c25-005": [28.649, 30.293], "c25-006": [30.643, 32.67], "c25-007": [33.02, 38.276], "c25-008": [39.126, 45.559], "c25-009": [45.909, 51.407], "c25-010": [51.757, 57.024], "c25-011": [57.874, 71.785], "c25-012": [76.383, 80.072], "c25-013": [80.422, 86.23], "c25-014": [87.08, 88.339], "c25-015": [88.689, 89.487], "c25-016": [89.837, 95.301], "c25-017": [96.151, 101.158], "c25-018": [102.008, 107.762], "c25-019": [108.112, 112.468], "c25-020": [113.318, 124.726], "c25-021": [125.076, 126.868], "c25-022": [127.218, 131.65], "c25-023": [132.5, 138.244], "c25-024": [138.594, 142.932]}, "blocks": [{"t": "img", "src": "images/47.webp?v=e776b23e64", "vid": "images/47.mp4?v=051d5a207e", "cap": "热闹的法庭", "n": 80}, {"t": "p", "s": [["c25-001", "国王和王后坐在宝座上，法庭里挤满了动物和扑克牌。"], ["c25-002", "大厅中间的桌子上，放着一大盘馅饼，看起来香极了。"]]}, {"t": "img", "src": "images/48.webp?v=592e0c7a82", "vid": "images/48.mp4?v=41376a7707", "cap": "红心杰克被指控偷了馅饼", "n": 81}, {"t": "img", "src": "images/49.webp?v=0e392232dc", "vid": "images/49.mp4?v=cd159742c0", "cap": "陪审席上的小动物", "n": 82}, {"t": "p", "s": [["c25-003", "原来，红心杰克被指控偷了王后做的馅饼。"], ["c25-004", "国王戴着王冠当法官，十二只小动物坐在陪审席上，拿着石板认真地记录。"]]}, {"t": "p", "s": [["c25-005", "“他们在写什么呀？”"], ["c25-006", "爱丽丝小声问鹰头狮。"], ["c25-007", "“他们在写自己的名字，”鹰头狮说，“怕审判还没完，就把自己的名字忘了。”"]]}, {"t": "img", "src": "images/91.webp?v=b062d90675", "vid": "images/91.mp4?v=5a0b6ac4f8", "cap": "比尔的石笔吱吱响，爱丽丝把它拿走了", "n": 83}, {"t": "p", "s": [["c25-008", "陪审员里有一只就是小蜥蜴比尔，它的石笔写起字来吱吱地响。"], ["c25-009", "爱丽丝实在受不了，悄悄地绕到它背后，把石笔拿走了。"], ["c25-010", "可怜的比尔找不到笔，只好用一根手指头在石板上写。"]]}, {"t": "img", "src": "images/50.webp?v=0ea517e377", "vid": "images/50.mp4?v=528b76d746", "cap": "白兔子吹喇叭", "n": 84}, {"t": "p", "s": [["c25-011", "白兔子吹了三声喇叭，打开一卷长长的羊皮纸，大声念道：“红心王后做了馅饼，在一个夏天的日子里；红心杰克偷了馅饼，全部都拿走了！”"]]}, {"t": "img", "src": "images/51.webp?v=446780bf1a", "vid": "images/51.mp4?v=ceaf51b295", "cap": "疯帽子紧张得咬了茶杯", "n": 85}, {"t": "p", "s": [["c25-012", "接着，国王叫来了第一个证人：疯帽子。"], ["c25-013", "他一手拿着茶杯，一手拿着黄油面包，紧张得把茶杯咬掉了一大块。"]]}, {"t": "p", "s": [["c25-014", "“把你的帽子摘下来。”"], ["c25-015", "国王说。"], ["c25-016", "“这不是我的帽子，”疯帽子说，“我是做帽子的，这些帽子都是卖的。”"]]}, {"t": "p", "s": [["c25-017", "这时候，爱丽丝觉得自己的身子，又在慢慢地长大了。"]]}, {"t": "img", "src": "images/92.webp?v=93c1607588", "vid": "images/92.mp4?v=6e94acc2bb", "cap": "睡鼠被越长越大的爱丽丝挤得喘不过气", "n": 86}, {"t": "p", "s": [["c25-018", "坐在她旁边的睡鼠被挤得喘不过气来，抱怨说：“你没有权利在这儿长大！”"], ["c25-019", "爱丽丝说：“别胡说，你自己不也在长大吗？”"]]}, {"t": "p", "s": [["c25-020", "国王问疯帽子问题，疯帽子越答越糊涂，一会儿说茶，一会儿说黄油面包，还说三月兔说了什么，三月兔又说他什么也没说。"], ["c25-021", "国王说：“你可以下去了。”"], ["c25-022", "疯帽子连鞋都没穿好，就一溜烟跑出了法庭。"]]}, {"t": "p", "s": [["c25-023", "第二个证人是公爵夫人的厨娘，她一说话，大家就都打喷嚏。"], ["c25-024", "第三个证人，白兔子大声喊道：“爱丽丝！”"]]}]}, {"title": "第二十六章　爱丽丝的证词", "head": "c26-h", "audio": "audio/ch26.m4a?v=647f428ee8", "duration": 119.395, "times": {"c26-h": [0.0, 3.132], "c26-001": [4.132, 4.76], "c26-002": [5.11, 6.61], "c26-003": [6.96, 14.032], "c26-004": [14.882, 16.575], "c26-005": [16.925, 21.793], "c26-006": [22.143, 31.126], "c26-007": [31.976, 33.173], "c26-008": [33.523, 34.318], "c26-009": [35.168, 36.5], "c26-010": [36.85, 37.891], "c26-011": [38.741, 46.886], "c26-012": [47.736, 49.386], "c26-013": [49.736, 50.778], "c26-014": [51.628, 52.213], "c26-015": [52.563, 53.526], "c26-016": [53.876, 55.368], "c26-017": [55.718, 56.59], "c26-018": [57.44, 59.753], "c26-019": [60.103, 61.144], "c26-020": [61.994, 70.556], "c26-021": [70.906, 77.411], "c26-022": [78.261, 79.808], "c26-023": [80.158, 82.078], "c26-024": [82.928, 84.443], "c26-025": [84.793, 88.667], "c26-026": [89.517, 93.379], "c26-027": [93.729, 94.981], "c26-028": [95.831, 96.713], "c26-029": [97.063, 98.542], "c26-030": [98.892, 104.028], "c26-031": [104.378, 106.522], "c26-032": [107.372, 113.098], "c26-033": [114.931, 117.895]}, "blocks": [{"t": "img", "src": "images/52.webp?v=2fe0dcb86c", "vid": "images/52.mp4?v=f88706706a", "cap": "她一下子把陪审席碰翻了", "n": 87}, {"t": "p", "s": [["c26-001", "“到！”"], ["c26-002", "爱丽丝站了起来。"], ["c26-003", "可是她已经长得很大很大了，一下子把陪审席都碰翻了，小动物们滚了一地。"]]}, {"t": "img", "src": "images/93.webp?v=042ed97e5c", "vid": "images/93.mp4?v=d48733c395", "cap": "比尔被头朝下插进了陪审席", "n": 88}, {"t": "p", "s": [["c26-004", "“哎呀，真对不起！”"], ["c26-005", "爱丽丝连忙把小动物们一个一个捡起来，放回陪审席上。"], ["c26-006", "她慌慌张张的，把小蜥蜴比尔头朝下插了进去，可怜的比尔只能摇着尾巴，动也动不了。"]]}, {"t": "p", "s": [["c26-007", "“你知道这件事吗？”"], ["c26-008", "国王问。"]]}, {"t": "p", "s": [["c26-009", "“一点儿也不知道。”"], ["c26-010", "爱丽丝说。"]]}, {"t": "img", "src": "images/94.webp?v=ef15156b09", "vid": "images/94.mp4?v=d6298abc35", "cap": "第四十二条：身高超过一英里的人必须离开", "n": 89}, {"t": "p", "s": [["c26-011", "国王翻开他的本子，大声念道：“第四十二条：身高超过一英里的人，必须离开法庭。”"]]}, {"t": "p", "s": [["c26-012", "“我可没有一英里高。”"], ["c26-013", "爱丽丝说。"]]}, {"t": "p", "s": [["c26-014", "“你有。”"], ["c26-015", "国王说。"], ["c26-016", "“快两英里高了。”"], ["c26-017", "王后说。"]]}, {"t": "p", "s": [["c26-018", "“这一条是你刚刚编出来的！”"], ["c26-019", "爱丽丝说。"]]}, {"t": "img", "src": "images/95.webp?v=5b284908ce", "vid": "images/95.mp4?v=2f1c58e088", "cap": "白兔子找到了一封没有署名的信", "n": 90}, {"t": "p", "s": [["c26-020", "这时，白兔子急急忙忙地跳起来：“陛下，又找到了一张纸，是一封信，上面写着一首诗！”"], ["c26-021", "可是，那首诗写得糊里糊涂的，谁也看不懂，信上连名字都没有签。"]]}, {"t": "p", "s": [["c26-022", "“这正好证明他有罪！”"], ["c26-023", "国王高兴地拍着手说。"]]}, {"t": "p", "s": [["c26-024", "“它什么也证明不了！”"], ["c26-025", "爱丽丝说，“你们连诗里写的是什么都不知道！”"]]}, {"t": "p", "s": [["c26-026", "王后又大喊起来：“先判刑，后定罪！"], ["c26-027", "砍掉她的头！”"]]}, {"t": "img", "src": "images/53.webp?v=66ecb1b209", "vid": "images/53.mp4?v=00749d54ab", "cap": "你们不过是一副纸牌！", "n": 91}, {"t": "p", "s": [["c26-028", "“胡说八道！”"], ["c26-029", "爱丽丝大声说。"], ["c26-030", "她已经长回了原来的高矮，一点儿也不害怕了，“谁怕你们？"], ["c26-031", "你们不过是一副纸牌！”"]]}, {"t": "img", "src": "images/54.webp?v=f073bcf697", "vid": "images/54.mp4?v=d65a137014", "cap": "整副纸牌都飞上了天", "n": 92}, {"t": "p", "s": [["c26-032", "话音刚落，整副纸牌都飞上了天，又纷纷朝她落了下来。"], ["c26-033", "爱丽丝轻轻叫了一声，伸手去挡。"]]}]}, {"title": "第二十七章　原来是一场梦", "head": "c27-h", "audio": "audio/ch27.m4a?v=afd0f4271d", "duration": 235.157, "times": {"c27-h": [0.0, 3.186], "c27-001": [4.186, 10.588], "c27-002": [10.938, 16.326], "c27-003": [17.176, 21.709], "c27-004": [22.559, 25.216], "c27-005": [25.566, 26.608], "c27-006": [26.958, 39.668], "c27-007": [40.518, 43.654], "c27-008": [44.004, 48.759], "c27-009": [49.609, 52.992], "c27-010": [53.342, 56.848], "c27-011": [57.698, 76.321], "c27-012": [77.171, 87.836], "c27-013": [88.686, 95.139], "c27-014": [95.989, 97.027], "song-wonderland-heart": [98.227, 104.227], "song-wonderland-heart-01": [104.227, 110.087], "song-wonderland-heart-02": [110.087, 115.847], "song-wonderland-heart-03": [116.687, 121.967], "song-wonderland-heart-04": [122.687, 128.167], "song-wonderland-heart-05": [128.167, 134.147], "song-wonderland-heart-06": [134.147, 139.967], "song-wonderland-heart-07": [139.967, 145.607], "song-wonderland-heart-08": [146.687, 150.687], "song-wonderland-heart-09": [158.447, 163.947], "song-wonderland-heart-10": [164.087, 169.887], "song-wonderland-heart-11": [169.887, 176.747], "song-wonderland-heart-12": [176.747, 180.227], "song-wonderland-heart-13": [182.787, 187.787], "song-wonderland-heart-14": [188.407, 192.287], "song-wonderland-heart-15": [195.727, 200.867], "song-wonderland-heart-16": [206.647, 212.027], "song-wonderland-heart-17": [212.027, 217.767], "song-wonderland-heart-18": [218.367, 223.687], "song-wonderland-heart-19": [224.347, 228.307]}, "blocks": [{"t": "img", "src": "images/55.webp?v=cae23074b0", "vid": "images/55.mp4?v=88f95a2592", "cap": "原来是一场梦", "n": 93}, {"t": "p", "s": [["c27-001", "爱丽丝睁开眼睛，发现自己躺在河边的大树下，头靠在姐姐的腿上。"], ["c27-002", "姐姐正轻轻地帮她拂去从树上飘落到她脸上的几片树叶。"]]}, {"t": "p", "s": [["c27-003", "姐姐说：“醒醒，亲爱的爱丽丝，你睡得可真久呀！”"]]}, {"t": "img", "src": "images/56.webp?v=f7b941f8b5", "vid": "images/56.mp4?v=a356b5ae9e", "cap": "她把奇遇都讲给姐姐听", "n": 94}, {"t": "p", "s": [["c27-004", "“哎呀，我做了一个好奇怪的梦！”"], ["c27-005", "爱丽丝说。"], ["c27-006", "她把自己记得的奇遇，都讲给姐姐听：白兔子、眼泪池、毛毛虫、柴郡猫、疯狂的茶会，还有那位总是大喊大叫的红心王后。"]]}, {"t": "p", "s": [["c27-007", "姐姐笑着听完，让她快回家喝茶。"], ["c27-008", "爱丽丝一边跑，一边想，这真是一个多么奇妙的梦呀！"]]}, {"t": "img", "src": "images/57.webp?v=5e73b8355e", "vid": "images/57.mp4?v=655bba558a", "cap": "夕阳下，姐姐想着爱丽丝的奇遇", "n": 95}, {"t": "p", "s": [["c27-009", "姐姐坐在夕阳下，想着爱丽丝的奇遇。"], ["c27-010", "她闭上眼睛，好像自己也走进了奇境。"]]}, {"t": "img", "src": "images/96.webp?v=d4f68eb53e", "vid": "images/96.mp4?v=69af969cb1", "cap": "风吹过草地，姐姐好像也走进了奇境", "n": 96}, {"t": "p", "s": [["c27-011", "风吹过高高的草，她好像听见白兔子匆匆跑过；池塘里的水哗哗响，好像是老鼠在泪水池里扑腾；远处羊群的铃铛叮当响，好像是疯帽子他们在碰茶杯；牧童的吆喝声，好像是王后又在大喊“砍掉他的头”。"]]}, {"t": "p", "s": [["c27-012", "可是她知道，只要一睁开眼睛，这一切又会变回平常的样子：草还是草，池塘还是池塘，铃铛还是羊群的铃铛。"]]}, {"t": "p", "s": [["c27-013", "她想，等爱丽丝长大了，也一定会把这些奇妙的故事，讲给别的小朋友听。"]]}, {"t": "p", "s": [["c27-014", "（完）"]]}, {"t": "song", "title": "奇境就在我心里", "head": "song-wonderland-heart", "lines": [["song-wonderland-heart-01", "夏天的午后，河边的大树"], ["song-wonderland-heart-02", "白兔子跑过，带着怀表"], ["song-wonderland-heart-03", "跟着它跳进，深深的洞"], ["song-wonderland-heart-04", "小门后面，是美丽的花园"], ["song-wonderland-heart-05", "变大又变小，眼泪变成池塘"], ["song-wonderland-heart-06", "毛毛虫问我，你是谁"], ["song-wonderland-heart-07", "柴郡猫笑着，慢慢不见"], ["song-wonderland-heart-08", "茶会永远，停在六点"], ["song-wonderland-heart-09", "奇境奇境，你在哪里"], ["song-wonderland-heart-10", "在草丛里，在池塘里"], ["song-wonderland-heart-11", "铃铛叮当，茶杯碰碰"], ["song-wonderland-heart-12", "奇境就在我心里"], ["song-wonderland-heart-13", "等我长大了"], ["song-wonderland-heart-14", "我也要讲"], ["song-wonderland-heart-15", "讲给别的小朋友听"], ["song-wonderland-heart-16", "奇境奇境，你在哪里"], ["song-wonderland-heart-17", "在草丛里，在池塘里"], ["song-wonderland-heart-18", "铃铛叮当，茶杯碰碰"], ["song-wonderland-heart-19", "奇境就在我心里"]]}, {"t": "note", "text": "读完以后，可以和孩子聊一聊：爱丽丝一会儿变大，一会儿变小，如果是你，你想变成多大？奇境里你最喜欢哪个奇怪的朋友？疯帽子的谜语“乌鸦为什么像写字台”，你能想出一个答案吗？"}]}], "music": 3, "images": [{"from": "c01-h", "src": "images/01.webp?v=6a4b4cd33b", "vid": "images/01.mp4?v=fe2f68cd93", "cap": "河边大树下的夏日午后", "n": 1}, {"from": "c01-010", "src": "images/02.webp?v=a1be6d62c0", "vid": "images/02.mp4?v=a874efc059", "cap": "拿着怀表的白兔子", "n": 2}, {"from": "c01-013", "src": "images/03.webp?v=a7210c9aec", "vid": "images/03.mp4?v=13a8f0ae9f", "cap": "白兔子钻进了兔子洞", "n": 3}, {"from": "c02-003", "src": "images/04.webp?v=c0c4d68191", "vid": "images/04.mp4?v=eb530e980d", "cap": "掉进一口很深很深的井", "n": 4}, {"from": "c02-005", "src": "images/58.webp?v=954dad614e", "vid": "images/58.mp4?v=979fe6e6e8", "cap": "一边往下落，一边拿下一罐橘子酱", "n": 5}, {"from": "c02-011", "src": "images/59.webp?v=2091e09d25", "vid": "images/59.mp4?v=50080959fd", "cap": "她想起家里的小猫黛娜和蝙蝠", "n": 6}, {"from": "c03-002", "src": "images/60.webp?v=2dbb469b10", "vid": "images/60.mp4?v=1d19f6e1a3", "cap": "白兔子沿着长长的走廊飞跑", "n": 7}, {"from": "c03-005", "src": "images/05.webp?v=79d9a98b9d", "vid": "images/05.mp4?v=99e1d1529c", "cap": "四周全是门的大厅", "n": 8}, {"from": "c03-008", "src": "images/06.webp?v=2be4349614", "vid": "images/06.mp4?v=026bcfc3aa", "cap": "小门外是最美丽的花园", "n": 9}, {"from": "c03-011", "src": "images/07.webp?v=35a499349a", "vid": "images/07.mp4?v=182a9cc9ad", "cap": "瓶子上写着“喝我”", "n": 10}, {"from": "c03-018", "src": "images/08.webp?v=c1fc8d77b4", "vid": "images/08.mp4?v=dc531f6374", "cap": "她变得只有十寸高", "n": 11}, {"from": "c04-001", "src": "images/61.webp?v=0e486d6b24", "vid": "images/61.mp4?v=17df7d841b", "cap": "变小的爱丽丝爬不上滑溜溜的桌子腿", "n": 12}, {"from": "c04-006", "src": "images/09.webp?v=f9dbd8fbc3", "vid": "images/09.mp4?v=548794837a", "cap": "她的身子拉得老长老长", "n": 13}, {"from": "c04-010", "src": "images/62.webp?v=564356f7b4", "vid": "images/62.mp4?v=c70154bdad", "cap": "“再见啦，我的脚！”", "n": 14}, {"from": "c05-003", "src": "images/10.webp?v=014690f71e", "vid": "images/10.mp4?v=48d9f419a7", "cap": "她伤心地哭了起来", "n": 15}, {"from": "c05-004", "src": "images/63.webp?v=91edee58c3", "vid": "images/63.mp4?v=050d6cabf9", "cap": "白兔子念叨着公爵夫人，急急忙忙地跑来", "n": 16}, {"from": "c05-007", "src": "images/11.webp?v=1fba937735", "vid": "images/11.mp4?v=068bb44be2", "cap": "白兔子吓得扔下扇子和手套", "n": 17}, {"from": "c05-018", "src": "images/12.webp?v=e06888f710", "vid": "images/12.mp4?v=57c0142407", "cap": "掉进了自己的眼泪池", "n": 18}, {"from": "c06-002", "src": "images/64.webp?v=978eade3f0", "vid": "images/64.mp4?v=692735b5cb", "cap": "泪水池里，游来了一只小老鼠", "n": 19}, {"from": "c06-008", "src": "images/65.webp?v=af462cfbf6", "vid": "images/65.mp4?v=d4616dd860", "cap": "一听见“猫”，老鼠吓得跳出水面", "n": 20}, {"from": "c06-025", "src": "images/13.webp?v=136eb33e7e", "vid": "images/13.mp4?v=4d2f421da3", "cap": "池子里的小动物们", "n": 21}, {"from": "c07-002", "src": "images/66.webp?v=5d2636031b", "vid": "images/66.mp4?v=266bc904cf", "cap": "老鼠给大家讲最干巴巴的历史", "n": 22}, {"from": "c07-006", "src": "images/14.webp?v=e2e85ae2a3", "vid": "images/14.mp4?v=c9df44e67e", "cap": "渡渡鸟一本正经地说话", "n": 23}, {"from": "c07-008", "src": "images/15.webp?v=ea63d78d37", "vid": "images/15.mp4?v=cb4da53b79", "cap": "会议式赛跑", "n": 24}, {"from": "c07-013", "src": "images/16.webp?v=408009ed21", "vid": "images/16.mp4?v=4360846909", "cap": "每人一颗糖果", "n": 25}, {"from": "c07-017", "src": "images/67.webp?v=693be9a9cc", "vid": "images/67.mp4?v=dbf6978722", "cap": "渡渡鸟郑重地把顶针颁给爱丽丝", "n": 26}, {"from": "c08-004", "src": "images/68.webp?v=de80139bb1", "vid": "images/68.mp4?v=b3798cf98c", "cap": "老鼠又长又伤心的故事，像一条长尾巴", "n": 27}, {"from": "c08-016", "src": "images/69.webp?v=60543102dd", "vid": "images/69.mp4?v=1c172fdbc7", "cap": "一听说黛娜会抓小鸟，大家全都慌了", "n": 28}, {"from": "c09-003", "src": "images/17.webp?v=d4f5fdeae4", "vid": "images/17.mp4?v=f7102abd41", "cap": "快回家给我拿手套和扇子", "n": 29}, {"from": "c09-004", "src": "images/18.webp?v=64ee3a2fa9", "vid": "images/18.mp4?v=439792b5cd", "cap": "白兔子的小房子", "n": 30}, {"from": "c09-008", "src": "images/19.webp?v=d79a42048c", "vid": "images/19.mp4?v=41e8feb690", "cap": "整个小房子都被她塞满了", "n": 31}, {"from": "c10-005", "src": "images/70.webp?v=3e95bd9186", "vid": "images/70.mp4?v=58d9b23add", "cap": "白兔子摔进了黄瓜架", "n": 32}, {"from": "c10-016", "src": "images/20.webp?v=60dd408bb5", "vid": "images/20.mp4?v=c8ec5f476d", "cap": "比尔像火箭一样飞上了天", "n": 33}, {"from": "c10-017", "src": "images/71.webp?v=8b7c853598", "vid": "images/71.mp4?v=91820b55f5", "cap": "小动物们七手八脚地接住比尔", "n": 34}, {"from": "c10-020", "src": "images/21.webp?v=171b904334", "vid": "images/21.mp4?v=a710c2fb8d", "cap": "小石子变成了小蛋糕", "n": 35}, {"from": "c10-023", "src": "images/72.webp?v=8d20010be5", "vid": "images/72.mp4?v=5b4e13ea27", "cap": "树林里，一只巨大的小狗看着她", "n": 36}, {"from": "c11-001", "src": "images/22.webp?v=4f380cf62a", "vid": "images/22.mp4?v=c9d6bf7906", "cap": "树林里的大蘑菇", "n": 37}, {"from": "c11-002", "src": "images/23.webp?v=f12fe60110", "vid": "images/23.mp4?v=aed448d298", "cap": "你是谁？", "n": 38}, {"from": "c11-029", "src": "images/24.webp?v=1c5fa00fe2", "vid": "images/24.mp4?v=0737b551af", "cap": "一边让你长高，另一边让你变矮", "n": 39}, {"from": "c12-002", "src": "images/25.webp?v=5972d9c557", "vid": "images/25.mp4?v=661ca7ffe1", "cap": "脖子伸得老长老长", "n": 40}, {"from": "c12-003", "src": "images/73.webp?v=8fc1b79b32", "vid": "images/73.mp4?v=a731c684ee", "cap": "鸽子以为她是一条蛇", "n": 41}, {"from": "c13-004", "src": "images/74.webp?v=2f0b0f87d8", "vid": "images/74.mp4?v=36cc8d69af", "cap": "鱼脸仆人和青蛙脸仆人", "n": 42}, {"from": "c13-011", "src": "images/75.webp?v=f7134fa175", "vid": "images/75.mp4?v=3679a4f0b0", "cap": "烟雾腾腾的胡椒厨房", "n": 43}, {"from": "c13-023", "src": "images/76.webp?v=76fb06a34e", "vid": "images/76.mp4?v=121d85c458", "cap": "厨娘把锅碗瓢盆往外扔", "n": 44}, {"from": "c14-005", "src": "images/77.webp?v=dc5e32a276", "vid": "images/77.mp4?v=41dc25de29", "cap": "怀里的宝宝越看越像一只小猪", "n": 45}, {"from": "c14-007", "src": "images/78.webp?v=a2d7e98505", "vid": "images/78.mp4?v=94abe1e302", "cap": "小猪一溜小跑钻进了树林", "n": 46}, {"from": "c15-001", "src": "images/26.webp?v=66188890d3", "vid": "images/26.mp4?v=dfce5e4568", "cap": "树枝上笑嘻嘻的大猫", "n": 47}, {"from": "c15-008", "src": "images/27.webp?v=b38a09ccb5", "vid": "images/27.mp4?v=03c3f6fdec", "cap": "往这边走，往那边走", "n": 48}, {"from": "c15-031", "src": "images/28.webp?v=d0cec72e39", "vid": "images/28.mp4?v=6bcf065505", "cap": "只剩下一张笑嘴", "n": 49}, {"from": "c16-h", "src": "images/29.webp?v=28317b34f9", "vid": "images/29.mp4?v=240b026e25", "cap": "大树下的长桌子", "n": 50}, {"from": "c16-002", "src": "images/30.webp?v=5ddcb1aa79", "vid": "images/30.mp4?v=286b92f3e1", "cap": "疯帽子、三月兔和睡鼠", "n": 51}, {"from": "c16-007", "src": "images/31.webp?v=ed784e475f", "vid": "images/31.mp4?v=8e544ad908", "cap": "爱丽丝在大扶手椅上坐下", "n": 52}, {"from": "c16-008", "src": "images/32.webp?v=c8ce64e4cd", "vid": "images/32.mp4?v=ddc82c14cf", "cap": "乌鸦为什么像写字台？", "n": 53}, {"from": "c16-020", "src": "images/79.webp?v=c77e64cf3c", "vid": "images/79.mp4?v=419d23a50d", "cap": "疯帽子的怀表：黄油不能放进表里修", "n": 54}, {"from": "c17-008", "src": "images/80.webp?v=7d6a42661e", "vid": "images/80.mp4?v=cf0273f16e", "cap": "疯帽子在王后的音乐会上唱歌", "n": 55}, {"from": "c17-014", "src": "images/33.webp?v=3f7d8a88de", "vid": "images/33.mp4?v=8eba32720c", "cap": "永远都是下午六点", "n": 56}, {"from": "c17-023", "src": "images/81.webp?v=d23ce963c8", "vid": "images/81.mp4?v=4e112acad5", "cap": "“醒醒，睡鼠！”", "n": 57}, {"from": "c18-001", "src": "images/82.webp?v=e99e5634ab", "vid": "images/82.mp4?v=be1e519028", "cap": "睡鼠讲糖浆井里的三姐妹", "n": 58}, {"from": "c18-017", "src": "images/34.webp?v=15380e6fc5", "vid": "images/34.mp4?v=da34821e17", "cap": "把睡鼠塞进茶壶里", "n": 59}, {"from": "c19-001", "src": "images/35.webp?v=3cb81ec9a8", "vid": "images/35.mp4?v=06b8280dec", "cap": "树上的一扇门", "n": 60}, {"from": "c19-005", "src": "images/36.webp?v=2b17dec672", "vid": "images/36.mp4?v=627e921e05", "cap": "把白玫瑰涂成红色", "n": 61}, {"from": "c19-016", "src": "images/83.webp?v=f4db32fc3f", "vid": "images/83.mp4?v=1370efa149", "cap": "“王后来了！”园丁们赶紧趴下", "n": 62}, {"from": "c20-001", "src": "images/37.webp?v=eee38a1621", "vid": "images/37.mp4?v=04f6d6fd23", "cap": "国王和王后来了", "n": 63}, {"from": "c20-004", "src": "images/84.webp?v=ec66fbacb1", "vid": "images/84.mp4?v=b8d61b65af", "cap": "红心杰克托着王冠，走在队伍里", "n": 64}, {"from": "c20-007", "src": "images/38.webp?v=0264f9a60c", "vid": "images/38.mp4?v=f4337c0504", "cap": "你叫什么名字？", "n": 65}, {"from": "c20-022", "src": "images/85.webp?v=a0df613c0b", "vid": "images/85.mp4?v=c79bdfe9fb", "cap": "爱丽丝把园丁藏进大花盆", "n": 66}, {"from": "c21-007", "src": "images/39.webp?v=926006580e", "vid": "images/39.mp4?v=7a8de341b0", "cap": "最奇怪的槌球比赛", "n": 67}, {"from": "c21-008", "src": "images/40.webp?v=c9e06d006b", "vid": "images/40.mp4?v=4ddd3160c2", "cap": "火烈鸟扭过脖子看着她", "n": 68}, {"from": "c21-011", "src": "images/41.webp?v=253518bfa2", "vid": "images/41.mp4?v=97e5ac41a5", "cap": "砍掉他的头！", "n": 69}, {"from": "c21-013", "src": "images/42.webp?v=c9b836061d", "vid": "images/42.mp4?v=9939ebddbc", "cap": "你们都被赦免了", "n": 70}, {"from": "c21-015", "src": "images/43.webp?v=aad5bc31ae", "vid": "images/43.mp4?v=9992472b26", "cap": "柴郡猫的大脑袋出现在半空中", "n": 71}, {"from": "c22-002", "src": "images/86.webp?v=560251871f", "vid": "images/86.mp4?v=9ccf4a4eeb", "cap": "公爵夫人挽着爱丽丝散步", "n": 72}, {"from": "c22-014", "src": "images/87.webp?v=48a43b008d", "vid": "images/87.mp4?v=89291a6f5a", "cap": "王后抱着胳膊，脸色阴沉", "n": 73}, {"from": "c23-007", "src": "images/44.webp?v=96511683ce", "vid": "images/44.mp4?v=5cd0a7eb73", "cap": "鹰头狮", "n": 74}, {"from": "c23-011", "src": "images/45.webp?v=9cf4cc1e37", "vid": "images/45.mp4?v=6dbed44553", "cap": "眼泪汪汪的假海龟", "n": 75}, {"from": "c23-017", "src": "images/88.webp?v=ed9bdac3a5", "vid": "images/88.mp4?v=927e0009fb", "cap": "假海龟在海底学校上学", "n": 76}, {"from": "c24-004", "src": "images/46.webp?v=c16f3295dd", "vid": "images/46.mp4?v=18c5fc53c0", "cap": "龙虾方块舞", "n": 77}, {"from": "c24-006", "src": "images/89.webp?v=6ff7581eda", "vid": "images/89.mp4?v=19ca3f9b9f", "cap": "把龙虾使劲儿扔进海里", "n": 78}, {"from": "c24-010", "src": "images/90.webp?v=335d0f82f5", "vid": "images/90.mp4?v=c5bd92aa8f", "cap": "假海龟唱起《美味的汤》", "n": 79}, {"from": "c25-001", "src": "images/47.webp?v=e776b23e64", "vid": "images/47.mp4?v=051d5a207e", "cap": "热闹的法庭", "n": 80}, {"from": "c25-003", "src": "images/48.webp?v=592e0c7a82", "vid": "images/48.mp4?v=41376a7707", "cap": "红心杰克被指控偷了馅饼", "n": 81}, {"from": "c25-004", "src": "images/49.webp?v=0e392232dc", "vid": "images/49.mp4?v=cd159742c0", "cap": "陪审席上的小动物", "n": 82}, {"from": "c25-008", "src": "images/91.webp?v=b062d90675", "vid": "images/91.mp4?v=5a0b6ac4f8", "cap": "比尔的石笔吱吱响，爱丽丝把它拿走了", "n": 83}, {"from": "c25-011", "src": "images/50.webp?v=0ea517e377", "vid": "images/50.mp4?v=528b76d746", "cap": "白兔子吹喇叭", "n": 84}, {"from": "c25-012", "src": "images/51.webp?v=446780bf1a", "vid": "images/51.mp4?v=ceaf51b295", "cap": "疯帽子紧张得咬了茶杯", "n": 85}, {"from": "c25-018", "src": "images/92.webp?v=93c1607588", "vid": "images/92.mp4?v=6e94acc2bb", "cap": "睡鼠被越长越大的爱丽丝挤得喘不过气", "n": 86}, {"from": "c26-003", "src": "images/52.webp?v=2fe0dcb86c", "vid": "images/52.mp4?v=f88706706a", "cap": "她一下子把陪审席碰翻了", "n": 87}, {"from": "c26-006", "src": "images/93.webp?v=042ed97e5c", "vid": "images/93.mp4?v=d48733c395", "cap": "比尔被头朝下插进了陪审席", "n": 88}, {"from": "c26-011", "src": "images/94.webp?v=ef15156b09", "vid": "images/94.mp4?v=d6298abc35", "cap": "第四十二条：身高超过一英里的人必须离开", "n": 89}, {"from": "c26-020", "src": "images/95.webp?v=5b284908ce", "vid": "images/95.mp4?v=2f1c58e088", "cap": "白兔子找到了一封没有署名的信", "n": 90}, {"from": "c26-028", "src": "images/53.webp?v=66ecb1b209", "vid": "images/53.mp4?v=00749d54ab", "cap": "你们不过是一副纸牌！", "n": 91}, {"from": "c26-032", "src": "images/54.webp?v=f073bcf697", "vid": "images/54.mp4?v=d65a137014", "cap": "整副纸牌都飞上了天", "n": 92}, {"from": "c27-h", "src": "images/55.webp?v=cae23074b0", "vid": "images/55.mp4?v=88f95a2592", "cap": "原来是一场梦", "n": 93}, {"from": "c27-006", "src": "images/56.webp?v=f7b941f8b5", "vid": "images/56.mp4?v=a356b5ae9e", "cap": "她把奇遇都讲给姐姐听", "n": 94}, {"from": "c27-009", "src": "images/57.webp?v=5e73b8355e", "vid": "images/57.mp4?v=655bba558a", "cap": "夕阳下，姐姐想着爱丽丝的奇遇", "n": 95}, {"from": "c27-011", "src": "images/96.webp?v=d4f68eb53e", "vid": "images/96.mp4?v=69af969cb1", "cap": "风吹过草地，姐姐好像也走进了奇境", "n": 96}], "versions": [{"dir": "alice", "label": "精简版", "current": false}, {"dir": "alice-full", "label": "完整版", "current": true}]};
+const POS_KEY = BOOK.id + '-audiobook-pos';   // 听到哪里：每本书分开记
+// 网上运行时音频、插图都从 Cloudflare 加载（网页仓库里只放 HTML）；本机、局域网、file:// 用相对路径。
+// ?assets=remote / pages / local 强制（pages = 默认的 pages.dev 域名，自定义域名没配好时用）
+const ASSET_HOSTS = { remote: 'https://meler-stories-assets.melerpaine.com/', pages: 'https://meler-stories-assets.pages.dev/' };
+const ASSET_BASE = (() => {
+  const q = new URLSearchParams(location.search).get('assets');
+  const local = location.protocol === 'file:' || /^(localhost|127\.|10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.|\[::1\]$)|\.local$/.test(location.hostname);
+  const host = ASSET_HOSTS[q] || (q !== 'local' && !local ? ASSET_HOSTS.remote : '');
+  return host ? host + BOOK.id + '/' : '';
+})();
+const A = p => p && ASSET_BASE + p;
+BOOK.cover = A(BOOK.cover);
+BOOK.images.forEach(im => { im.src = A(im.src); im.vid = A(im.vid); });
+BOOK.chapters.forEach(ch => { ch.audio = A(ch.audio); ch.blocks.forEach(b => { if (b.t === 'img') { b.src = A(b.src); b.vid = A(b.vid); } }); });
+const PREF = 'story-audiobook-';               // 主题、动图、显示模式：所有书共用
+const NUM = ['零','一','二','三','四','五','六','七','八','九','十','十一','十二','十三','十四','十五'];
+const ICON_PLAY = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>';
+const ICON_PAUSE = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 5h3.5v14H7zm6.5 0H17v14h-3.5z"/></svg>';
+const $ = s => document.querySelector(s);
+const fmt = t => { t = Math.max(0, t | 0); return String(t / 60 | 0).padStart(2, '0') + ':' + String(t % 60).padStart(2, '0'); };
+
+// ---------- 渲染 ----------
+const story = $('#story');
+let anim = true;   // 插图用动图还是静态图
+try { anim = localStorage.getItem(PREF + 'anim') !== 'off'; } catch (e) {}
+const lines = [];          // 全书按顺序：{id, ch, start, end, el, img}
+const imgs = BOOK.images;  // 全书插图（故事顺序）：{from, src, vid, cap, n}，from = 从哪一句开始显示；vid 是动图短片
+// 正文里的动图：进入视野附近才加载、播放，离开就暂停（几十段短片同时播手机吃不消）
+const vio = new IntersectionObserver(es => es.forEach(e => {
+  const v = e.target;
+  if (e.isIntersecting && anim) { if (!v.src) v.src = v.dataset.src; v.play().catch(() => {}); }
+  else v.pause();
+}), { rootMargin: '300px 0px' });
+const byId = {};
+document.title = BOOK.title + ' · 有声绘本';
+$('#bookTitle').textContent = BOOK.title;
+$('#kicker').textContent = BOOK.kicker + ' · 有声绘本';
+$('#intro').textContent = BOOK.intro;
+$('#coverImg').src = BOOK.cover;
+const total = BOOK.chapters.reduce((a, c) => a + c.duration, 0);
+const nImg = BOOK.chapters.reduce((a, c) => a + c.blocks.filter(b => b.t === 'img').length, 0);
+const nSong = BOOK.chapters.reduce((a, c) => a + c.blocks.filter(b => b.t === 'song').length, 0);
+// 同一个故事的其他版本（精简版 / 完整版）
+if (BOOK.versions) {
+  const box = $('#versions'); box.hidden = false;
+  BOOK.versions.forEach(v => {
+    const el = document.createElement(v.current ? 'span' : 'a');
+    el.textContent = v.current ? v.label : v.label + ' ›';
+    if (v.current) el.className = 'on'; else el.href = `../${v.dir}/index.html`;
+    box.append(el);
+  });
+}
+$('#meta').textContent = `${BOOK.chapters.length} 章 · ${nImg} 幅插画${nSong ? ` · ${nSong} 首插曲` : ''}${BOOK.music ? ` · ${BOOK.music} 首配乐` : ''} · 全长约 ${Math.round(total / 60)} 分钟 · 朗读：${BOOK.voice}`;
+
+BOOK.chapters.forEach((ch, ci) => {
+  const sec = document.createElement('section');
+  sec.className = 'chapter'; sec.id = 'ch' + (ci + 1);
+  const [no, ...rest] = ch.title.split('　');
+  const h = document.createElement('h2');
+  h.innerHTML = `<small>${no}</small>${rest.join(' ')}`;
+  h.dataset.id = ch.head;
+  sec.appendChild(h);
+  const add = (id, el) => { const [s, e] = ch.times[id]; const L = { id, ch: ci, start: s, end: e, el }; lines.push(L); byId[id] = L; };
+  add(ch.head, h);
+  for (const b of ch.blocks) {
+    if (b.t === 'p') {
+      const p = document.createElement('p');
+      for (const [id, text] of b.s) {
+        const sp = document.createElement('span');
+        sp.className = 's'; sp.dataset.id = id; sp.textContent = text;
+        p.appendChild(sp); add(id, sp);
+      }
+      sec.appendChild(p);
+    } else if (b.t === 'song') {
+      // 插曲：歌名（前奏时高亮）+ 一行一句歌词，跟着演唱逐行高亮
+      const d = document.createElement('div'); d.className = 'song';
+      const h3 = document.createElement('h3'); h3.dataset.id = b.head; h3.textContent = b.title;
+      d.appendChild(h3); add(b.head, h3);
+      for (const [id, text] of b.lines) {
+        const sp = document.createElement('span');
+        sp.className = 's'; sp.dataset.id = id; sp.textContent = text;
+        d.appendChild(sp); add(id, sp);
+      }
+      sec.appendChild(d);
+    } else if (b.t === 'img') {
+      const f = document.createElement('figure');
+      f.innerHTML = `<div class="pic"><img loading="lazy" src="${b.src}" alt="${b.cap}"></div><figcaption><b>插图 ${b.n}</b>${b.cap}</figcaption>`;
+      if (b.vid) {
+        const v = document.createElement('video');
+        v.muted = v.loop = v.playsInline = true; v.preload = 'none'; v.dataset.src = b.vid;
+        v.setAttribute('muted', ''); v.setAttribute('playsinline', '');   // iOS 自动播放认属性
+        v.onplaying = () => v.classList.toggle('on', anim);
+        f.firstChild.appendChild(v); vio.observe(v);
+      }
+      sec.appendChild(f);
+    } else {
+      const d = document.createElement('div'); d.className = 'note'; d.textContent = b.text; sec.appendChild(d);
+    }
+  }
+  story.appendChild(sec);
+  const li = document.createElement('li');
+  li.innerHTML = `<button data-ch="${ci}"><span>${ch.title.replace('　', ' ')}</span><span class="dur">${fmt(ch.duration)}</span></button>`;
+  $('#toc').appendChild(li);
+});
+// 每幅插图从它的 from 那句开始显示，一直到下一幅开始
+imgs.forEach(im => { im.ch = byId[im.from].ch; im.at = lines.indexOf(byId[im.from]); });
+lines.forEach((L, k) => {
+  let i = 0;
+  while (i + 1 < imgs.length && imgs[i + 1].at <= k) i++;
+  L.img = i;
+});
+const endMark = document.createElement('div'); endMark.className = 'end-mark'; endMark.textContent = '— 全书完 —';
+story.appendChild(endMark);
+
+// ---------- 欣赏插曲：全书插曲排成播放列表，每首只放章节音频里歌的那一段，放完接着下一首 ----------
+const songs = [];
+BOOK.chapters.forEach((ch, ci) => ch.blocks.forEach(b => {
+  if (b.t !== 'song') return;
+  const i = lines.indexOf(byId[b.lines[b.lines.length - 1][0]]), next = lines[i + 1];
+  songs.push({ title: b.title, ch: ci, start: byId[b.head].start, end: next && next.ch === ci ? next.start : ch.duration });
+}));
+let plIdx = -1;   // 正在放播放列表里的第几首，-1 是平常听书
+if (songs.length) {
+  const box = document.createElement('section'); box.className = 'songlist'; box.id = 'songlist';
+  const mins = Math.max(1, Math.round(songs.reduce((a, s) => a + s.end - s.start, 0) / 60));
+  box.innerHTML = `<h3>♪ 本书插曲</h3><div class="sub">${songs.length} 首 · 约 ${mins} 分钟</div>
+    <button class="btn btn-song" id="songAll">${ICON_PLAY}欣赏插曲</button><ol></ol>`;
+  songs.forEach((s, i) => {
+    const li = document.createElement('li');
+    li.innerHTML = `<button data-song="${i}"><span></span><span class="dur">${BOOK.chapters[s.ch].title.split('　')[0]} · ${fmt(s.end - s.start)}</span></button>`;
+    li.querySelector('span').textContent = s.title;
+    box.querySelector('ol').appendChild(li);
+  });
+  box.querySelector('#songAll').onclick = () => playSong(0);
+  box.querySelector('ol').onclick = e => { const b = e.target.closest('button'); if (b) playSong(+b.dataset.song); };
+  story.appendChild(box);
+}
+function renderSongs() {
+  document.querySelectorAll('.songlist li button').forEach((b, i) => b.classList.toggle('now', i === plIdx));
+}
+function playSong(i) {
+  if (i >= songs.length) { plIdx = -1; renderSongs(); audio.pause(); toast('插曲都放完啦'); return; }
+  plIdx = Math.max(0, i); renderSongs();
+  const s = songs[plIdx];
+  playFrom(s.ch, s.start + 0.001).then(updateMedia);
+  toast(`♪ 插曲 ${plIdx + 1}/${songs.length}：${s.title}`);
+}
+const stopSongs = () => { if (plIdx >= 0) { plIdx = -1; renderSongs(); } };
+
+// ---------- 播放 ----------
+const audio = new Audio();
+audio.preload = 'auto';
+let cur = -1, active = null, playing = false;
+let follow = true, userScrollAt = 0, speedIdx = 1;
+const SPEEDS = [0.8, 1, 1.2, 1.5];
+
+function loadChapter(ci) {
+  if (ci === cur) return Promise.resolve();
+  cur = ci;
+  audio.src = BOOK.chapters[ci].audio;
+  setBuffering(true);   // 到能播放之前转圈（canplay / playing 时停）
+  audio.playbackRate = SPEEDS[speedIdx];
+  document.querySelectorAll('.toc button').forEach((b, i) => b.classList.toggle('now', i === ci));
+  $('#seek').max = BOOK.chapters[ci].duration;
+  updateMedia();
+  return new Promise(res => audio.addEventListener('loadedmetadata', res, { once: true }));
+}
+
+async function playFrom(ci, t, autoplay = true) {
+  await loadChapter(ci);
+  audio.currentTime = t;
+  sync(true);
+  if (autoplay) { try { await audio.play(); } catch (e) { toast('点击播放按钮开始朗读'); } }
+}
+const playLine = (L, autoplay = true) => playFrom(L.ch, L.start + 0.001, autoplay);
+
+function lineAt(ci, t) {
+  // 找本章里开始时间 ≤ t 的最后一句
+  let best = null;
+  for (const L of lines) {
+    if (L.ch !== ci) { if (best) break; continue; }
+    if (L.start <= t + 0.03) best = L; else break;
+  }
+  return best;
+}
+
+function setActive(L, force) {
+  if (L === active && !force) return;
+  if (active) active.el.classList.remove('on');
+  active = L;
+  if (!L) return;
+  L.el.classList.add('on');
+  const idx = lines.indexOf(L);
+  lines.forEach((x, i) => x.el.classList.toggle('past', i < idx));
+  const ch = BOOK.chapters[L.ch];
+  $('#nowTitle').textContent = plIdx >= 0 ? `♪ ${plIdx + 1}/${songs.length} ${songs[plIdx].title}` : ch.title.replace('　', ' ');
+  if (mode !== 'read') showStage(L.img);   // 阅读模式不用舞台，免得在后台加载动图
+  setSubtitle(L);
+  if (follow && mode !== 'picture' && (force || Date.now() - userScrollAt > 5000)) {
+    const r = L.el.getBoundingClientRect();
+    const vh = window.innerHeight;
+    if (r.top < vh * 0.18 || r.bottom > vh * 0.62) {
+      programmatic = Date.now();
+      window.scrollBy({ top: r.top - vh * 0.32, behavior: 'smooth' });
+    }
+  }
+}
+
+function sync(force) {
+  if (cur < 0) return;
+  const t = audio.currentTime;
+  const s = songs[plIdx];
+  if (s && playing && cur === s.ch && t >= s.end - 0.05) return playSong(plIdx + 1);   // 这首唱完了，接下一首
+  setActive(lineAt(cur, t), force);
+  if (!seeking) $('#seek').value = t;
+  $('#nowTime').textContent = `${buffering ? '加载中… ' : ''}${fmt(t)} / ${fmt(BOOK.chapters[cur].duration)}`;
+  paintSeek();
+}
+
+// ---------- 弱网：显示下载进度、缓冲提示、预先加载下一章、出错重试 ----------
+const SEEK_PLAYED = 'var(--sea)', SEEK_BUF = 'color-mix(in srgb, var(--sea) 50%, var(--line))';
+let buffering = false, retry = null, prefetched = new Set();
+function paintSeek() {
+  const seek = $('#seek');
+  const d = cur < 0 ? 0 : (audio.duration || BOOK.chapters[cur].duration);
+  if (!d) { seek.style.setProperty('--seek-bg', 'var(--line)'); return; }
+  const pc = x => (Math.min(1, Math.max(0, x / d)) * 100).toFixed(2) + '%';
+  const p = pc(+seek.value), stops = [];
+  for (let i = 0; i < audio.buffered.length; i++) {
+    const a = pc(audio.buffered.start(i)), b = pc(audio.buffered.end(i));
+    stops.push(`transparent ${a}`, `${SEEK_BUF} ${a}`, `${SEEK_BUF} ${b}`, `transparent ${b}`);
+  }
+  const buf = stops.length ? `linear-gradient(to right, ${stops.join(', ')}), ` : '';
+  seek.style.setProperty('--seek-bg', `linear-gradient(to right, ${SEEK_PLAYED} ${p}, transparent ${p}), ${buf}var(--line)`);
+}
+function setBuffering(on) {
+  if (buffering === on) return;
+  buffering = on;
+  document.body.classList.toggle('buffering', on);
+  if (cur >= 0) sync(false);
+}
+audio.addEventListener('waiting', () => setBuffering(true));
+['playing', 'canplay', 'pause'].forEach(ev => audio.addEventListener(ev, () => setBuffering(false)));
+audio.addEventListener('progress', () => {
+  paintSeek();
+  // 这一章下载完了而且正在听：提前把下一章拉进浏览器缓存（地址带内容指纹、长期缓存），换章时不用再等
+  const next = BOOK.chapters[cur + 1], b = audio.buffered, d = audio.duration;
+  if (!playing || !next || prefetched.has(next.audio) || !b.length || !(b.end(b.length - 1) >= d - 0.5)) return;
+  if (navigator.connection && navigator.connection.saveData) return;
+  prefetched.add(next.audio);
+  fetch(next.audio, { priority: 'low' }).then(r => r.blob()).catch(() => {});   // 只试一次，失败了到时照常边下边放
+});
+audio.addEventListener('error', () => {
+  if (cur < 0) return;
+  setBuffering(false);
+  retry = { ch: cur, t: audio.currentTime };   // 再点播放时从断开的地方重新加载
+  cur = -1;
+  toast('网络不太好，音频没加载出来，点播放键重试');
+});
+
+let raf = 0;
+function loop() { sync(false); raf = requestAnimationFrame(loop); }
+audio.addEventListener('play', () => { playing = true; document.body.classList.add('playing'); story.classList.add('reading'); renderPlay(); cancelAnimationFrame(raf); loop(); });
+audio.addEventListener('pause', () => { playing = false; document.body.classList.remove('playing'); renderPlay(); cancelAnimationFrame(raf); sync(false); savePos(); });
+audio.addEventListener('ended', () => {
+  if (plIdx >= 0) playSong(plIdx + 1);   // 插曲在章末：这章放完就是这首唱完了
+  else if (cur < BOOK.chapters.length - 1) playFrom(cur + 1, 0);
+  else { toast('故事讲完啦，晚安 🌙'); setActive(null); localStorage.removeItem(POS_KEY); }
+});
+
+function renderPlay() {
+  $('#playBtn').innerHTML = playing ? ICON_PAUSE : ICON_PLAY;
+  $('#playBtn').setAttribute('aria-label', playing ? '暂停' : '播放');
+}
+renderPlay();
+
+function toggle() {
+  if (cur < 0) { const p = retry || readPos(); retry = null; return p ? playFrom(p.ch, p.t) : playFrom(0, 0); }
+  playing ? audio.pause() : audio.play();
+}
+function step(d) {
+  const i = active ? lines.indexOf(active) : -1;
+  // 上一句：如果当前句已读了 1.5 秒以上，先回到本句开头
+  if (d < 0 && active && audio.currentTime - active.start > 1.5) return playLine(active, playing || cur < 0);
+  const L = lines[Math.min(lines.length - 1, Math.max(0, i + d))];
+  if (L) playLine(L, true);
+}
+function chapterJump(d) {
+  if (plIdx >= 0) return playSong(Math.min(songs.length - 1, plIdx + d));   // 欣赏插曲时，上一章 / 下一章换成上一首 / 下一首
+  const ci = Math.min(BOOK.chapters.length - 1, Math.max(0, (cur < 0 ? 0 : cur) + d));
+  playFrom(ci, 0);
+}
+
+// ---------- 交互 ----------
+$('#playBtn').onclick = toggle;
+$('#prevS').onclick = () => step(-1);
+$('#nextS').onclick = () => step(1);
+$('#prevCh').onclick = () => chapterJump(-1);
+$('#nextCh').onclick = () => chapterJump(1);
+$('#startBtn').onclick = () => { stopSongs(); playFrom(0, 0); };
+$('#tocBtn').onclick = () => {
+  if (mode === 'picture') setMode('read', true);   // 纯图模式没有目录，先回到阅读模式
+  $('.toc').scrollIntoView({ behavior: 'smooth' });
+};
+story.addEventListener('click', e => {
+  const el = e.target.closest('[data-id]');
+  if (el) { stopSongs(); playLine(byId[el.dataset.id], true); userScrollAt = 0; return; }
+  const pic = e.target.closest('figure .pic'), img = pic && pic.querySelector('img');
+  if (img) { const lb = $('#lightbox'); lb.querySelector('img').src = img.src; lb.querySelector('p').textContent = img.alt; lb.classList.add('open'); }
+});
+$('#lightbox').onclick = () => $('#lightbox').classList.remove('open');
+$('#toc').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  const ci = +b.dataset.ch;
+  stopSongs(); playFrom(ci, 0);
+  document.getElementById('ch' + (ci + 1)).scrollIntoView({ behavior: 'smooth' });
+});
+$('#speedBtn').onclick = () => {
+  speedIdx = (speedIdx + 1) % SPEEDS.length;
+  audio.playbackRate = SPEEDS[speedIdx];
+  $('#speedBtn').textContent = SPEEDS[speedIdx].toFixed(1) + '×';
+};
+$('#followBtn').onclick = () => {
+  follow = !follow;
+  $('#followBtn').setAttribute('aria-pressed', follow);
+  toast(follow ? '跟读：自动翻到正在读的地方' : '跟读已关闭，可以自由翻看');
+  if (follow && active) setActive(active, true);
+};
+// ---------- 显示模式：阅读 / 左图右文（宽屏才有）/ 纯图 ----------
+const MODES = { read: '阅读', split: '左图右文', picture: '纯图' };
+const wide = matchMedia('(min-width: 900px)');
+let mode = 'read', stageIdx = -1, stageLayer = 0;
+$('#stageVid').onplaying = () => $('#stageVid').classList.add('show');
+function showStage(i, force) {
+  if (i === stageIdx && !force) return;
+  stageIdx = i;
+  const im = imgs[i];
+  const layers = document.querySelectorAll('#stage img');
+  const next = layers[stageLayer ^= 1], prev = layers[stageLayer ^ 1];
+  next.onload = () => { next.classList.add('show'); prev.classList.remove('show'); };
+  next.src = im.src;
+  if (imgs[i + 1]) new Image().src = imgs[i + 1].src;   // 顺手预载下一张，念到时直接换上
+  next.alt = im.cap;
+  // 动图短片盖在静态图上，开始播放再淡入；阅读模式看不见舞台，不播
+  const v = $('#stageVid');
+  v.classList.remove('show');
+  if (anim && im.vid && mode !== 'read') { v.src = im.vid; v.play().catch(() => {}); }
+  else if (v.getAttribute('src')) { v.pause(); v.removeAttribute('src'); v.load(); }
+  $('#stageBg').style.backgroundImage = `url("${im.src}")`;
+  $('#stageCap').textContent = `插图 ${im.n} · ${im.cap}`;
+  $('#stageTop').textContent = BOOK.chapters[(active || {}).ch ?? im.ch].title.replace('　', ' ');
+}
+// 字幕换句时先淡出再换字，免得两句文字跳动
+let subT = 0;
+function setSubtitle(L) {
+  const sub = $('#stageSub');
+  const text = !L ? '' : L.el.tagName === 'H2' ? BOOK.chapters[L.ch].title.replace('　', ' ')
+    : L.el.tagName === 'H3' ? '♪ ' + L.el.textContent : L.el.closest('.song') ? '♪ ' + L.el.textContent + ' ♪' : L.el.textContent;
+  if (sub.dataset.text === text) return;
+  sub.dataset.text = text;
+  sub.classList.add('fade');
+  clearTimeout(subT);
+  subT = setTimeout(() => { sub.textContent = text; sub.classList.remove('fade'); }, 180);
+}
+function setMode(m, quiet) {
+  if (m === 'split' && !wide.matches) m = 'read';
+  mode = m;
+  document.body.dataset.mode = m;
+  $('#modeBtn').textContent = MODES[m];
+  try { localStorage.setItem(PREF + 'mode', m); } catch (e) {}
+  showStage(active ? active.img : Math.max(0, stageIdx), true);
+  if (m !== 'picture' && active) setTimeout(() => setActive(active, true), 30);
+  if (!quiet) toast('显示模式：' + MODES[m] + (m === 'picture' ? '（点画面播放 / 暂停）' : ''));
+}
+$('#modeBtn').onclick = () => {
+  const order = wide.matches ? ['read', 'split', 'picture'] : ['read', 'picture'];
+  setMode(order[(order.indexOf(mode) + 1) % order.length]);
+};
+wide.addEventListener('change', () => { if (mode === 'split' && !wide.matches) setMode('read', true); });
+$('#stage').onclick = () => { if (mode === 'picture') toggle(); };
+$('#stagePlay').onclick = e => { e.stopPropagation(); toggle(); };
+// 舞台的底边贴着播放条
+new ResizeObserver(() => document.documentElement.style.setProperty('--ph', $('#player').offsetHeight + 'px')).observe($('#player'));
+try { setMode(localStorage.getItem(PREF + 'mode') || 'read', true); } catch (e) { setMode('read', true); }
+
+function renderAnim() {
+  $('#animBtn').setAttribute('aria-pressed', anim);
+  document.querySelectorAll('figure video').forEach(v => {
+    if (anim) { vio.unobserve(v); vio.observe(v); }   // 重新观察会立即回调一次，看得见的接着播
+    else { v.pause(); v.classList.remove('on'); }
+  });
+  if (stageIdx >= 0) showStage(stageIdx, true);
+}
+$('#animBtn').onclick = () => {
+  anim = !anim;
+  try { localStorage.setItem(PREF + 'anim', anim ? 'on' : 'off'); } catch (e) {}
+  renderAnim();
+  toast(anim ? '插图：动图' : '插图：静态图');
+};
+renderAnim();
+$('#themeBtn').onclick = () => {
+  const root = document.documentElement;
+  const dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  root.dataset.theme = dark ? 'light' : 'dark';
+  try { localStorage.setItem(PREF + 'theme', root.dataset.theme); } catch (e) {}
+};
+try { const th = localStorage.getItem(PREF + 'theme'); if (th) document.documentElement.dataset.theme = th; } catch (e) {}
+
+let seeking = false;
+$('#seek').addEventListener('input', () => { seeking = true; if (cur < 0) return; audio.currentTime = +$('#seek').value; sync(true); });
+$('#seek').addEventListener('change', () => { seeking = false; });
+if (cur < 0) $('#seek').addEventListener('pointerdown', () => { if (cur < 0) loadChapter(0); }, { once: true });
+
+// 用户自己滚动页面时，暂停自动跟读 5 秒
+let programmatic = 0;
+['wheel', 'touchmove'].forEach(ev => addEventListener(ev, () => { userScrollAt = Date.now(); }, { passive: true }));
+addEventListener('keydown', e => {
+  if (e.target.matches('input, textarea')) return;
+  if (e.code === 'Space') { e.preventDefault(); toggle(); }
+  else if (e.key === 'ArrowLeft') step(-1);
+  else if (e.key === 'ArrowRight') step(1);
+  else if (e.key === 'Escape') $('#lightbox').classList.remove('open');
+});
+
+// ---------- 记住上次听到哪里 ----------
+function savePos() { if (cur < 0) return; try { localStorage.setItem(POS_KEY, JSON.stringify({ ch: cur, t: audio.currentTime, id: active && active.id })); } catch (e) {} }
+function readPos() { try { const p = JSON.parse(localStorage.getItem(POS_KEY)); return p && p.ch >= 0 && p.ch < BOOK.chapters.length ? p : null; } catch (e) { return null; } }
+setInterval(() => { if (playing) savePos(); }, 3000);
+const last = readPos();
+if (last && (last.ch > 0 || last.t > 5)) {
+  const rb = $('#resumeBtn');
+  rb.hidden = false;
+  rb.textContent = `继续听 · ${BOOK.chapters[last.ch].title.split('　')[0]} ${fmt(last.t)}`;
+  rb.onclick = () => {
+    stopSongs();
+    const L = last.id && byId[last.id];
+    L ? playLine(L) : playFrom(last.ch, last.t);
+    if (L) setTimeout(() => setActive(L, true), 50);
+  };
+}
+$('#nowTitle').textContent = '点击任意一句，就从那里开始听';
+
+// ---------- 锁屏 / 耳机控制 ----------
+function updateMedia() {
+  if (!('mediaSession' in navigator) || cur < 0) return;
+  navigator.mediaSession.metadata = new MediaMetadata({
+    title: plIdx >= 0 ? songs[plIdx].title : BOOK.chapters[cur].title.replace('　', ' '), artist: BOOK.voice, album: BOOK.title,
+    artwork: [{ src: BOOK.cover, sizes: '1152x768', type: 'image/webp' }]
+  });
+  navigator.mediaSession.setActionHandler('previoustrack', () => chapterJump(-1));
+  navigator.mediaSession.setActionHandler('nexttrack', () => chapterJump(1));
+}
+
+let toastT = 0;
+function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2200); }
+</script>
+</body>
+</html>
