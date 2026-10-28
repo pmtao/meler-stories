@@ -1,0 +1,784 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E📖%3C/text%3E%3C/svg%3E">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>海的女儿 · 有声绘本</title>
+<style>
+:root {
+  --paper: #f8f3e8;
+  --paper-2: #f1e9d8;
+  --ink: #2c2a33;
+  --ink-soft: #6b6672;
+  --sea: #1d6c88;
+  --sea-deep: #123f55;
+  --line: #e2d7c1;
+  --mark: #ffe39a;
+  --mark-ink: #2c2a33;
+  --done: #8d8792;
+  --bar: rgba(255, 252, 245, .94);
+  --shadow: 0 8px 30px rgba(30, 50, 70, .14);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0f1a23; --paper-2: #15232f; --ink: #e9e4d8; --ink-soft: #a29fa8;
+    --sea: #6cc3dd; --sea-deep: #9fdcef; --line: #263744; --mark: rgba(255, 210, 110, .26);
+    --mark-ink: #fff6dc; --done: #8b8a90; --bar: rgba(17, 29, 39, .94);
+    --shadow: 0 8px 30px rgba(0, 0, 0, .45); color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0f1a23; --paper-2: #15232f; --ink: #e9e4d8; --ink-soft: #a29fa8;
+  --sea: #6cc3dd; --sea-deep: #9fdcef; --line: #263744; --mark: rgba(255, 210, 110, .26);
+  --mark-ink: #fff6dc; --done: #8b8a90; --bar: rgba(17, 29, 39, .94);
+  --shadow: 0 8px 30px rgba(0, 0, 0, .45); color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-padding-top: 30vh; }
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font-family: -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+button { font: inherit; color: inherit; }
+
+/* 封面 */
+.cover { position: relative; min-height: 92vh; display: flex; align-items: flex-end; overflow: hidden; color: #fff; }
+.cover img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.cover::after { content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(8, 25, 40, 0) 30%, rgba(8, 25, 40, .55) 62%, rgba(8, 25, 40, .9)); }
+.cover-in { position: relative; z-index: 1; width: 100%; max-width: 760px; margin: 0 auto; padding: 0 20px 56px; }
+.kicker { letter-spacing: .3em; font-size: 13px; opacity: .85; }
+.home { position: absolute; top: 18px; left: 20px; z-index: 2; color: #fff; text-decoration: none; font-size: 14px;
+  padding: 7px 14px; border-radius: 999px; background: rgba(8, 25, 40, .35); backdrop-filter: blur(6px); }
+.home:hover { background: rgba(8, 25, 40, .55); }
+.cover h1 { font-family: "Kaiti SC", "STKaiti", "KaiTi", serif; font-size: clamp(48px, 11vw, 84px);
+  margin: 10px 0 6px; letter-spacing: .12em; font-weight: 700; text-shadow: 0 4px 24px rgba(0, 0, 0, .35); }
+.cover p { margin: 0 0 22px; max-width: 30em; line-height: 1.8; opacity: .92; font-size: 15px; }
+.cover .meta { font-size: 13px; opacity: .78; margin-bottom: 24px; }
+.versions { display: flex; flex-wrap: wrap; gap: 8px; margin: -10px 0 24px; }
+.versions a, .versions span { font-size: 13px; padding: 5px 14px; border-radius: 999px; color: #fff; text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, .5); background: rgba(8, 25, 40, .3); }
+.versions a:hover { background: rgba(8, 25, 40, .55); }
+.versions[hidden] { display: none; }
+.versions .on { background: #fff; color: #123f55; border-color: #fff; font-weight: 600; }
+.cta { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn { border: 0; border-radius: 999px; padding: 13px 26px; font-size: 16px; cursor: pointer; font-weight: 600;
+  display: inline-flex; align-items: center; gap: 8px; }
+.btn-main { background: #fff; color: #123f55; }
+.btn-ghost { background: rgba(255, 255, 255, .16); color: #fff; backdrop-filter: blur(6px);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .4); }
+.btn:hover { filter: brightness(1.05); }
+.btn[hidden] { display: none; }
+.btn svg { width: 18px; height: 18px; }
+
+/* 目录 */
+.toc { max-width: 760px; margin: 0 auto; padding: 40px 20px 8px; }
+.toc-home { float: right; letter-spacing: .05em; font-weight: 500; color: var(--sea); text-decoration: none; }
+.toc h2 { font-size: 15px; letter-spacing: .2em; color: var(--ink-soft); font-weight: 600; margin: 0 0 14px; }
+.toc ol { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 8px; }
+.toc li button { width: 100%; text-align: left; background: var(--paper-2); border: 0; border-radius: 12px;
+  padding: 11px 14px; cursor: pointer; display: flex; justify-content: space-between; gap: 10px; font-size: 15px; }
+.toc li button:hover { box-shadow: inset 0 0 0 1px var(--sea); }
+.toc li button.now { box-shadow: inset 0 0 0 2px var(--sea); }
+.toc .dur { color: var(--ink-soft); font-size: 13px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* 正文 */
+main { max-width: 760px; margin: 0 auto; padding: 8px 20px 160px; }
+.chapter { padding-top: 48px; }
+.chapter h2 { font-family: "Kaiti SC", "STKaiti", "KaiTi", serif; font-size: 30px; color: var(--sea-deep);
+  margin: 0 0 22px; padding: 4px 10px; margin-left: -10px; border-radius: 10px; cursor: pointer;
+  transition: background .3s; letter-spacing: .06em; }
+.chapter h2 small { display: block; font-family: -apple-system, "PingFang SC", sans-serif; font-size: 13px;
+  color: var(--ink-soft); letter-spacing: .2em; font-weight: 500; margin-bottom: 4px; }
+.story p { font-family: "Kaiti SC", "STKaiti", "KaiTi", "Songti SC", serif; font-size: 21px; line-height: 2.05;
+  margin: 0 0 1.1em; text-align: justify; text-indent: 2em; }
+.s { cursor: pointer; border-radius: 6px; padding: 2px 0; transition: background .35s, color .35s, box-shadow .35s;
+  -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.s:hover { background: color-mix(in srgb, var(--mark) 45%, transparent); }
+.s.on, h2.on { background: var(--mark); color: var(--mark-ink); box-shadow: 0 0 0 3px var(--mark); }
+.reading .s.past { color: var(--done); }
+figure { margin: 30px -20px 34px; }
+figure .pic { position: relative; }
+figure img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 0;
+  background: var(--paper-2); cursor: zoom-in; box-shadow: var(--shadow); }
+/* 动图是叠在静态图上的循环短片，开始播放才显出来 */
+figure video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 0;
+  cursor: zoom-in; opacity: 0; transition: opacity .4s; }
+figure video.on { opacity: 1; }
+figcaption { text-align: center; color: var(--ink-soft); font-size: 14px; margin-top: 12px; letter-spacing: .05em; padding: 0 20px; }
+figcaption b { color: var(--sea); font-weight: 600; margin-right: 6px; font-variant-numeric: tabular-nums; }
+@media (min-width: 800px) { figure { margin: 36px -40px 40px; } figure img, figure video { border-radius: 18px; } }
+.note { font-size: 15px; line-height: 1.9; color: var(--ink-soft); background: var(--paper-2); border-radius: 14px;
+  padding: 16px 20px; margin-top: 28px; }
+.song { margin: 6px 0 30px; padding: 20px 16px 22px; text-align: center; border-radius: 18px;
+  background: linear-gradient(var(--paper-2), transparent); }
+.song h3 { margin: 0 0 12px; font-family: "Kaiti SC", "STKaiti", "KaiTi", serif; font-size: 22px; font-weight: normal;
+  color: var(--sea-deep); letter-spacing: .1em; display: inline-block; padding: 2px 12px; border-radius: 8px; cursor: pointer;
+  transition: background .35s, box-shadow .35s; }
+.song h3::before { content: '♪ '; color: var(--sea); }
+.song h3.on { background: var(--mark); color: var(--mark-ink); box-shadow: 0 0 0 3px var(--mark); }
+.song .s { display: table; margin: 2px auto; padding: 1px 10px; font-family: "Kaiti SC", "STKaiti", "KaiTi", serif;
+  font-size: 19px; line-height: 1.9; font-style: italic; color: var(--ink-soft); }
+.song .s.on { color: var(--mark-ink); }
+.end-mark { text-align: center; color: var(--ink-soft); margin: 40px 0 0; font-size: 14px; letter-spacing: .3em; }
+/* 书末的「欣赏插曲」：全书插曲的播放列表 */
+.songlist { margin: 40px 0 0; padding: 24px 18px 22px; text-align: center; border-radius: 18px;
+  background: linear-gradient(var(--paper-2), transparent); }
+.songlist h3 { margin: 0 0 4px; font-family: "Kaiti SC", "STKaiti", "KaiTi", serif; font-size: 24px; font-weight: normal;
+  color: var(--sea-deep); letter-spacing: .1em; }
+.songlist .sub { margin: 0 0 16px; font-size: 14px; color: var(--ink-soft); }
+.btn-song { background: var(--sea); color: #fff; display: inline-flex; align-items: center; gap: 8px; }
+.songlist ol { list-style: none; padding: 0; margin: 18px 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 8px; text-align: left; counter-reset: song; }
+.songlist li button { width: 100%; display: grid; grid-template-columns: auto 1fr; column-gap: 10px; row-gap: 2px; align-items: baseline;
+  text-align: left; background: var(--paper); color: var(--ink); border: 0; border-radius: 12px; padding: 10px 14px; font-size: 15px; cursor: pointer; }
+.songlist li button::before { counter-increment: song; content: counter(song); grid-row: span 2; color: var(--sea); font-weight: 600;
+  font-variant-numeric: tabular-nums; }
+.songlist li button:hover { box-shadow: inset 0 0 0 1px var(--sea); }
+.songlist li button.now { box-shadow: inset 0 0 0 2px var(--sea); }
+.songlist .dur { color: var(--ink-soft); font-size: 13px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* 播放条 */
+.player { position: fixed; left: 0; right: 0; bottom: 0; z-index: 10; background: var(--bar);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-top: 1px solid var(--line);
+  padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); transform: translateY(0); transition: transform .3s; }
+.player-in { max-width: 760px; margin: 0 auto; }
+.now-line { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-size: 13px; color: var(--ink-soft); }
+.now-line .title { color: var(--ink); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: none; max-width: 60%; }
+.now-left { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
+/* 插图名称：纯图 / 左图右文模式下显示在章节标题右边 */
+.now-cap { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.now-cap:empty, body[data-mode="read"] .now-cap { display: none; }
+.time { font-variant-numeric: tabular-nums; white-space: nowrap; }
+/* 进度条：深色是已播放，浅色是已经下载好的部分（--seek-bg 由 paintSeek() 按 audio.buffered 算），网络慢时一眼看出还要等多久 */
+.seek { -webkit-appearance: none; appearance: none; display: block; width: 100%; margin: 8px 0 6px; height: 18px;
+  background: transparent; cursor: pointer; --seek-bg: var(--line); }
+.seek::-webkit-slider-runnable-track { height: 5px; border-radius: 3px; background: var(--seek-bg); }
+.seek::-moz-range-track { height: 5px; border-radius: 3px; background: var(--seek-bg); }
+.seek::-webkit-slider-thumb { -webkit-appearance: none; width: 15px; height: 15px; margin-top: -5px; border: 0;
+  border-radius: 50%; background: var(--sea); box-shadow: 0 1px 3px rgba(0, 0, 0, .25); }
+.seek::-moz-range-thumb { width: 15px; height: 15px; border: 0; border-radius: 50%; background: var(--sea);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .25); }
+/* 缓冲中：播放键外圈转圈 */
+.play { position: relative; }
+.play::after { content: ''; position: absolute; inset: -4px; border-radius: 50%; border: 2.5px solid transparent;
+  border-top-color: var(--sea); border-right-color: var(--sea); opacity: 0; transition: opacity .2s; pointer-events: none; }
+body.buffering .play::after { opacity: 1; animation: spin .9s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.ctrls { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+.ctrls .mid { display: flex; align-items: center; gap: 4px; }
+.ib { width: 42px; height: 42px; border-radius: 50%; border: 0; background: transparent; cursor: pointer;
+  display: grid; place-items: center; color: var(--ink); }
+.ib:hover { background: var(--paper-2); }
+.ib svg { width: 22px; height: 22px; }
+.play { width: 54px; height: 54px; background: var(--sea); color: #fff; }
+.play:hover { background: var(--sea); filter: brightness(1.08); }
+.play svg { width: 26px; height: 26px; }
+.pill { border: 0; background: var(--paper-2); border-radius: 999px; padding: 7px 12px; font-size: 13px;
+  cursor: pointer; min-width: 58px; font-variant-numeric: tabular-nums; }
+.pill[aria-pressed="false"] { opacity: .55; }
+.side { display: flex; gap: 6px; align-items: center; }
+
+/* 看大图 */
+.lightbox { position: fixed; inset: 0; z-index: 20; background: rgba(5, 12, 18, .92); display: none;
+  align-items: center; justify-content: center; padding: 16px; cursor: zoom-out; flex-direction: column; gap: 14px; }
+.lightbox.open { display: flex; }
+.lightbox img { max-width: 100%; max-height: 86vh; border-radius: 10px; }
+.lightbox p { color: #e8e4da; margin: 0; font-size: 15px; text-align: center; }
+
+.toast { position: fixed; left: 50%; bottom: 150px; transform: translateX(-50%); background: var(--sea-deep);
+  color: var(--paper); padding: 8px 16px; border-radius: 999px; font-size: 14px; opacity: 0; pointer-events: none;
+  transition: opacity .3s; z-index: 15; }
+.toast.show { opacity: .95; }
+
+/* 插图舞台：纯图模式铺满屏幕，左图右文模式占左半边 */
+.stage { display: none; position: fixed; left: 0; right: 0; top: 0; bottom: var(--ph, 120px); z-index: 5;
+  background: #07121b; overflow: hidden; cursor: pointer; }
+.stage-bg { position: absolute; inset: -40px; background-size: cover; background-position: center;
+  filter: blur(28px) brightness(.55) saturate(1.2); transition: background-image .8s; }
+.stage img, .stage video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0;
+  transition: opacity .9s ease; }
+.stage img.show, .stage video.show { opacity: 1; }
+.stage video { transition-duration: .4s; }
+.stage-top { position: absolute; left: 0; right: 0; top: 0; padding: 14px 18px 30px; color: #fff; display: flex;
+  justify-content: space-between; align-items: baseline; gap: 6px 16px; flex-wrap: wrap;
+  font-size: 14px; letter-spacing: .1em; background: linear-gradient(rgba(5, 15, 25, .6), transparent); pointer-events: none; }
+/* 纯图模式的字幕：当前朗读的句子 */
+.stage-sub { position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%); width: max-content;
+  max-width: min(92%, 960px); padding: 10px 20px; border-radius: 14px; background: rgba(4, 12, 20, .3);
+  color: #fff; text-align: center; pointer-events: none;
+  text-shadow: 0 0 2px rgba(0, 0, 0, .9), 0 1px 3px rgba(0, 0, 0, .8), 0 0 12px rgba(0, 0, 0, .55);
+  font-family: "Kaiti SC", "STKaiti", "KaiTi", serif; font-size: clamp(19px, 2.4vw, 30px); line-height: 1.55;
+  letter-spacing: .03em; transition: opacity .25s; }
+.stage-sub:empty, .stage-sub.fade { opacity: 0; }
+body:not([data-mode="picture"]) .stage-sub { display: none; }
+body[data-mode="picture"] .toast { bottom: auto; top: 64px; }
+@media (max-width: 520px) {
+  .stage-top { flex-direction: column; }
+  .stage-sub { bottom: 16px; padding: 8px 14px; }
+}
+.stage-play { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 84px; height: 84px;
+  border-radius: 50%; border: 0; background: rgba(255, 255, 255, .9); color: #123f55; display: grid; place-items: center;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, .35); cursor: pointer; transition: opacity .3s; }
+.stage-play svg { width: 38px; height: 38px; margin-left: 4px; }
+body.playing .stage-play { opacity: 0; pointer-events: none; }
+
+body[data-mode="picture"] .cover, body[data-mode="picture"] .toc, body[data-mode="picture"] main { display: none; }
+body[data-mode="picture"] .stage { display: block; }
+body[data-mode="picture"] #followBtn { display: none; }
+
+@media (min-width: 900px) {
+  body[data-mode="split"] .stage { display: block; right: 50%; }
+  body[data-mode="split"] .stage img, body[data-mode="split"] .stage video { object-fit: cover; }
+  body[data-mode="split"] .stage-bg, body[data-mode="split"] .stage-play { display: none; }
+  body[data-mode="split"] .cover { display: none; }
+  body[data-mode="split"] .toc, body[data-mode="split"] main { margin-left: 50%; max-width: none; padding-left: 48px; padding-right: 48px; }
+  body[data-mode="split"] main figure { display: none; }
+  body[data-mode="split"] .chapter:first-child { padding-top: 24px; }
+}
+
+/* 横屏手机：播放条收紧，把高度留给插图 */
+@media (max-height: 500px) {
+  .player { padding-top: 4px; padding-bottom: calc(4px + env(safe-area-inset-bottom)); }
+  .now-line { display: none; }
+  .seek { margin: 2px 0; }
+  .play { width: 44px; height: 44px; }
+  .ib { width: 36px; height: 36px; }
+}
+
+@media (max-width: 520px) {
+  .story p { font-size: 19px; line-height: 1.95; }
+  .chapter h2 { font-size: 26px; }
+  .side .pill.opt { display: none; }
+  .pill { padding: 6px 9px; min-width: 0; font-size: 12px; }
+  #prevCh, #nextCh { display: none; }
+  .side { gap: 4px; }
+  .ib { width: 38px; height: 38px; }
+}
+</style>
+</head>
+<body>
+
+<header class="cover" id="top">
+  <img id="coverImg" alt="">
+  <a class="home" href="../index.html">‹ 故事目录</a>
+  <div class="cover-in">
+    <div class="kicker" id="kicker"></div>
+    <h1 id="bookTitle"></h1>
+    <p id="intro"></p>
+    <div class="meta" id="meta"></div>
+    <div class="versions" id="versions" hidden></div>
+    <div class="cta">
+      <button class="btn btn-main" id="startBtn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>从头开始听</button>
+      <button class="btn btn-ghost" id="resumeBtn" hidden></button>
+    </div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="目录">
+  <h2>目　录<a class="toc-home" href="../index.html">更多故事 ›</a></h2>
+  <ol id="toc"></ol>
+</nav>
+
+<main class="story" id="story"></main>
+
+<div class="stage" id="stage" aria-label="插图">
+  <div class="stage-bg" id="stageBg"></div>
+  <img alt=""><img alt=""><video id="stageVid" muted loop playsinline></video>
+  <div class="stage-top"><span id="stageTop"></span></div>
+  <div class="stage-sub" id="stageSub" aria-live="polite"></div>
+  <button class="stage-play" id="stagePlay" aria-label="播放"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg></button>
+</div>
+
+<div class="player" id="player">
+  <div class="player-in">
+    <div class="now-line"><span class="now-left"><span class="title" id="nowTitle"></span><span class="now-cap" id="stageCap"></span></span><span class="time" id="nowTime">00:00 / 00:00</span></div>
+    <input class="seek" id="seek" type="range" min="0" max="100" step="0.1" value="0" aria-label="本章进度">
+    <div class="ctrls">
+      <div class="side">
+        <button class="pill" id="modeBtn" title="切换显示模式：阅读 / 左图右文 / 纯图">阅读</button>
+        <button class="pill" id="speedBtn" title="朗读速度">1.0×</button>
+        <button class="pill opt" id="followBtn" aria-pressed="true" title="朗读时自动翻到正在读的地方">跟读</button>
+      </div>
+      <div class="mid">
+        <button class="ib" id="prevCh" title="上一章"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg></button>
+        <button class="ib" id="prevS" title="上一句（←）"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+        <button class="ib play" id="playBtn" title="播放 / 暂停（空格）"></button>
+        <button class="ib" id="nextS" title="下一句（→）"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+        <button class="ib" id="nextCh" title="下一章"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 6h2v12h-2zM6 18l8.5-6L6 6z"/></svg></button>
+      </div>
+      <div class="side">
+        <button class="pill" id="animBtn" title="插图用动图还是静态图">动图</button>
+        <button class="pill opt" id="themeBtn" title="切换深浅色">主题</button>
+        <button class="pill" id="tocBtn" title="回到目录">目录</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="lightbox" id="lightbox"><img alt=""><p></p></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const BOOK = {"id": "shanhaijing", "title": "山海经", "intro": "《山海经》是中国最古老的奇书之一，里面记着高山、大海、奇怪的鸟兽和古老的神仙。这本书从中挑出十个故事：每个故事先读一段书里的原文，再用白话文说一遍，最后讲成一个完整的故事。适合 6 到 12 岁的小朋友和爸爸妈妈一起读、一起听。", "kicker": "中国古代神话", "cover": "images/36.webp?v=1f6c693d42", "voice": "Eldric Sage，本地 Qwen3-TTS 复刻音色", "chapters": [{"title": "第一章　精卫填海", "head": "c01-h", "audio": "audio/ch01.m4a?v=3bf124f248", "duration": 474.979, "times": {"c01-h": [0.0, 5.236], "c01-001": [6.236, 9.187], "c01-002": [10.037, 15.855], "c01-003": [16.205, 27.362], "c01-004": [27.712, 41.836], "c01-005": [42.186, 45.888], "c01-006": [46.738, 48.065], "c01-007": [48.915, 57.587], "c01-008": [57.937, 73.367], "c01-009": [73.717, 79.944], "c01-010": [80.294, 89.483], "c01-011": [89.833, 98.003], "c01-012": [98.353, 105.709], "c01-013": [106.559, 107.516], "c01-014": [108.366, 115.756], "c01-015": [116.106, 121.825], "c01-016": [122.175, 136.178], "c01-017": [137.028, 142.012], "c01-018": [142.362, 151.18], "c01-019": [151.53, 159.215], "c01-020": [159.565, 163.98], "c01-021": [164.33, 171.081], "c01-022": [171.931, 180.117], "c01-023": [180.467, 194.619], "c01-024": [194.969, 201.42], "c01-025": [201.77, 209.019], "c01-026": [209.869, 216.837], "c01-027": [217.187, 224.216], "c01-028": [225.066, 247.63], "c01-029": [247.98, 254.682], "c01-030": [255.532, 260.072], "c01-031": [260.422, 267.283], "c01-032": [267.633, 282.801], "c01-033": [283.651, 291.343], "c01-034": [291.693, 306.086], "c01-035": [306.436, 316.067], "c01-036": [316.917, 325.687], "c01-037": [326.037, 332.231], "c01-038": [333.081, 346.192], "c01-039": [346.542, 351.379], "c01-040": [352.229, 355.684], "c01-041": [356.034, 364.186], "c01-042": [364.536, 370.126], "c01-043": [370.976, 380.113], "c01-044": [380.463, 384.744], "c01-045": [385.094, 391.245], "c01-046": [391.595, 397.714], "c01-047": [398.564, 410.242], "c01-048": [410.592, 416.6], "c01-049": [417.45, 418.609], "song-jingwei": [419.809, 421.789], "song-jingwei-01": [421.789, 439.649], "song-jingwei-02": [440.189, 443.369], "song-jingwei-03": [445.229, 448.689], "song-jingwei-04": [448.809, 452.569], "song-jingwei-05": [454.369, 458.109], "song-jingwei-06": [458.109, 462.489], "song-jingwei-07": [462.489, 465.429], "song-jingwei-08": [465.749, 468.129]}, "blocks": [{"t": "img", "src": "images/01.webp?v=9f83ecfa3d", "vid": "images/01.mp4?v=32d07ab668", "cap": "发鸠山", "n": 1}, {"t": "p", "s": [["c01-001", "原文，出自《北山经》。"]]}, {"t": "p", "s": [["c01-002", "又北二百里，曰发鸠之山，其上多柘木。"], ["c01-003", "有鸟焉，其状如乌，文首、白喙、赤足，名曰精卫，其鸣自詨。"], ["c01-004", "是炎帝之少女，名曰女娃，女娃游于东海，溺而不返，故为精卫，常衔西山之木石，以堙于东海。"], ["c01-005", "漳水出焉，东流注于河。"]]}, {"t": "p", "s": [["c01-006", "白话文。"]]}, {"t": "p", "s": [["c01-007", "再往北走二百里，有一座山，叫发鸠山，山上长着很多柘树。"], ["c01-008", "山里有一种鸟，样子像乌鸦，头上有花纹，嘴巴是白色的，爪子是红色的，名字叫精卫，它的叫声，就像在喊自己的名字。"], ["c01-009", "精卫原来是炎帝最小的女儿，名字叫女娃。"], ["c01-010", "有一天，女娃到东海里去玩，被海水淹没，再也没有回来，所以变成了精卫鸟。"], ["c01-011", "她常常从西山衔来小树枝和小石子，丢进东海里，想把大海填平。"], ["c01-012", "漳水就是从发鸠山流出来的，向东流去，汇进黄河。"]]}, {"t": "p", "s": [["c01-013", "故事。"]]}, {"t": "p", "s": [["c01-014", "很久很久以前，在遥远的北方，有一位叫炎帝的天神。"], ["c01-015", "他管着太阳和田野，让五谷发芽，让庄稼长大。"], ["c01-016", "炎帝有许多儿女，最小的女儿叫女娃，她今年才七八岁，梳着两个小揪揪，一笑起来，眼睛弯得像两个小月牙。"]]}, {"t": "img", "src": "images/02.webp?v=c4bb11f47d", "vid": "images/02.mp4?v=1e2a0fca5d", "cap": "海边看日出", "n": 2}, {"t": "p", "s": [["c01-017", "女娃最喜欢的事，是跑去东边看大海。"], ["c01-018", "每天太阳一升起来，她就蹦蹦跳跳地跑到海边，看太阳从海面上一点一点地冒出来。"], ["c01-019", "红彤彤的光铺在水上，像一条金色的大路，一直铺到她的脚边。"], ["c01-020", "女娃拍着手说：“海呀海，你真好看！"], ["c01-021", "什么时候，我能坐着小船，到你的最远处去看一看呢？”"]]}, {"t": "img", "src": "images/03.webp?v=b40d311653", "vid": "images/03.mp4?v=3a2f869cb7", "cap": "大浪涌来", "n": 3}, {"t": "p", "s": [["c01-022", "这天，炎帝在山里忙着，女娃一个人悄悄地来到了东海。"], ["c01-023", "海上没有风，浪花一朵一朵，轻轻地涌上沙滩，女娃脱了鞋子，踩进水里，水凉凉的，痒痒的。"], ["c01-024", "她越走越远，越走越深，她想捡一只最漂亮的贝壳。"], ["c01-025", "忽然，一个大浪涌了过来，哗的一声，把小小的女娃卷了进去。"]]}, {"t": "p", "s": [["c01-026", "海水很深，也很大，女娃喊了又喊，可是没有人听见。"], ["c01-027", "天黑了，月亮升起来了，女娃再也没有回到父亲的身边。"]]}, {"t": "p", "s": [["c01-028", "女娃走了，可是她的心里，却还装着一股说不出的气，她气的不是海，也不是浪，她只是心疼，心疼那些以后还会来海边玩耍的孩子，心疼别的爸爸妈妈，也会像炎帝那样一遍一遍地等。"], ["c01-029", "她想：“如果这片海被填平了，就再也不会有人掉进去了。”"]]}, {"t": "img", "src": "images/04.webp?v=42cc519f27", "vid": "images/04.mp4?v=a5b72618fa", "cap": "变成精卫鸟", "n": 4}, {"t": "p", "s": [["c01-030", "于是，女娃变成了一只小小的鸟。"], ["c01-031", "她的头上有花花的纹路，嘴巴白白的，两只小爪子红红的。"], ["c01-032", "她从发鸠山飞起来，飞到西山，衔起一粒小石子，一根小树枝，又飞呀飞，飞到东海的上空，把石子和树枝，轻轻地丢进了大海。"]]}, {"t": "p", "s": [["c01-033", "东海那么大，那么深，一粒小石子丢下去，连一点水花也没有。"], ["c01-034", "可是精卫鸟不管，她飞回去，又衔一粒，又丢下，一趟，又一趟，她一边飞，一边叫着：“精卫，精卫，精卫！”"], ["c01-035", "那声音，就像在喊自己的名字，也像在对大海说：我来了，我还会再来。"]]}, {"t": "img", "src": "images/05.webp?v=155e8dfab0", "vid": "images/05.mp4?v=856e7d0ec0", "cap": "精卫和大海", "n": 5}, {"t": "p", "s": [["c01-036", "大海看见了她，哗啦哗啦地笑了起来：“小鸟，小鸟，你真傻呀！"], ["c01-037", "你就是飞上一千年，一万年，也填不平我呀！”"]]}, {"t": "p", "s": [["c01-038", "精卫鸟停在浪花上，歪着头，认真地回答：“一千年填不平，我就填一万年；一万年填不平，我就填到永远。"], ["c01-039", "只要我不停下来，东海总会有变浅的一天。”"]]}, {"t": "p", "s": [["c01-040", "大海听了，不再笑了。"], ["c01-041", "它静静地看着这只小小的鸟，从太阳升起，一直飞到太阳落下。"], ["c01-042", "海风吹过来，吹得她的羽毛乱乱的，她也不休息。"]]}, {"t": "p", "s": [["c01-043", "后来，有一只海燕飞过来，对精卫说：“你这么小，为什么要这样辛苦呢？”"], ["c01-044", "精卫说：“我不是为了我自己呀。"], ["c01-045", "我只是想，不要再让别的孩子，和我一样了。”"], ["c01-046", "海燕听了，也在她的身边停了一会儿，才慢慢地飞走了。"]]}, {"t": "p", "s": [["c01-047", "从那以后，不管是刮风还是下雨，人们总能看见一只小鸟，一次一次地从西山飞向东海。"], ["c01-048", "大家都说，那只小鸟的心，比大海还要大。"]]}, {"t": "p", "s": [["c01-049", "（完）"]]}, {"t": "song", "title": "小小的精卫鸟", "head": "song-jingwei", "lines": [["song-jingwei-01", "小小的鸟儿，红红的爪"], ["song-jingwei-02", "衔着石子，飞过东海"], ["song-jingwei-03", "风再大，浪再高"], ["song-jingwei-04", "一趟又一趟，从不回头"], ["song-jingwei-05", "精卫精卫，精卫精卫"], ["song-jingwei-06", "小小的翅膀，大大的心"], ["song-jingwei-07", "只要不停下来"], ["song-jingwei-08", "大海也会，慢慢变浅"]]}]}, {"title": "第二章　夸父追日", "head": "c02-h", "audio": "audio/ch02.m4a?v=cca28f4ca7", "duration": 404.607, "times": {"c02-h": [0.0, 3.338], "c02-001": [4.338, 9.621], "c02-002": [10.471, 14.575], "c02-003": [14.925, 23.257], "c02-004": [23.607, 26.989], "c02-005": [27.339, 30.603], "c02-006": [31.453, 38.157], "c02-007": [39.007, 40.361], "c02-008": [41.211, 47.472], "c02-009": [47.822, 54.444], "c02-010": [54.794, 66.867], "c02-011": [67.217, 72.183], "c02-012": [72.532, 78.783], "c02-013": [79.633, 88.536], "c02-014": [89.386, 90.201], "c02-015": [91.051, 100.891], "c02-016": [101.241, 117.589], "c02-017": [118.439, 126.154], "c02-018": [126.504, 136.586], "c02-019": [137.436, 147.846], "c02-020": [148.696, 164.094], "c02-021": [164.944, 169.413], "c02-022": [170.263, 177.439], "c02-023": [177.789, 186.447], "c02-024": [186.797, 196.465], "c02-025": [196.815, 205.969], "c02-026": [206.819, 215.979], "c02-027": [216.329, 222.647], "c02-028": [223.497, 229.38], "c02-029": [229.73, 237.295], "c02-030": [237.645, 244.775], "c02-031": [245.625, 247.051], "c02-032": [247.401, 250.415], "c02-033": [251.265, 262.985], "c02-034": [263.335, 269.809], "c02-035": [270.159, 275.809], "c02-036": [276.159, 283.478], "c02-037": [284.328, 289.607], "c02-038": [290.457, 293.499], "c02-039": [293.849, 302.12], "c02-040": [302.47, 316.606], "c02-041": [317.456, 318.861], "c02-042": [319.211, 324.089], "c02-043": [324.939, 327.721], "c02-044": [328.571, 335.533], "c02-045": [335.883, 348.961], "c02-046": [349.311, 353.399], "c02-047": [353.749, 356.501], "c02-048": [356.851, 373.559], "c02-049": [374.409, 379.739], "c02-050": [380.589, 385.424], "c02-051": [385.774, 401.101], "c02-052": [401.951, 403.107]}, "blocks": [{"t": "img", "src": "images/06.webp?v=bc829dec63", "vid": "images/06.mp4?v=45e202451f", "cap": "北方大山", "n": 6}, {"t": "p", "s": [["c02-001", "原文，出自《海外北经》和《大荒北经》。"]]}, {"t": "p", "s": [["c02-002", "夸父与日逐走，入日。"], ["c02-003", "渴，欲得饮，饮于河、渭，河、渭不足，北饮大泽。"], ["c02-004", "未至，道渴而死。"], ["c02-005", "弃其杖，化为邓林。"]]}, {"t": "p", "s": [["c02-006", "夸父不量力，欲追日景，逮之于禺谷。"]]}, {"t": "p", "s": [["c02-007", "白话文。"]]}, {"t": "p", "s": [["c02-008", "夸父和太阳比赛赛跑，一直追到了太阳落下的地方。"], ["c02-009", "他觉得口渴极了，想要喝水，就跑到黄河和渭水边去喝。"], ["c02-010", "黄河和渭水的水，都被他喝光了，还是不够，他又往北边去，想把大泽的水也喝掉。"], ["c02-011", "可是还没有走到，他就在半路上渴死了。"], ["c02-012", "他丢下的手杖，变成了一片桃树林，叫作邓林。"]]}, {"t": "p", "s": [["c02-013", "另一段话说：夸父不自量力，想要追上太阳的影子，在禺谷那个地方，追上了太阳。"]]}, {"t": "p", "s": [["c02-014", "故事。"]]}, {"t": "p", "s": [["c02-015", "很久很久以前，在北方遥远的大山里，住着一个巨人部落，他们的首领叫夸父。"], ["c02-016", "夸父的个子，比最高的大树还要高，两条腿一迈，就是一座山；他的耳朵上，挂着两条黄色的小蛇，手里还握着两条黄蛇，一抬手，蛇就沙沙地响。"]]}, {"t": "p", "s": [["c02-017", "那个时候，天上的太阳，每天从东边升起来，从西边落下去。"], ["c02-018", "人们都说：“太阳真好啊，可是它走得太快了，天一下子就黑了，我们的庄稼还没有晒够呢。”"]]}, {"t": "p", "s": [["c02-019", "夸父听了这些话，心里想：“要是我能追上太阳，把它请下来，让它慢一点儿，不是就好了吗？”"]]}, {"t": "img", "src": "images/07.webp?v=28338fe20e", "vid": "images/07.mp4?v=875d849db7", "cap": "追日出发", "n": 7}, {"t": "p", "s": [["c02-020", "有一天早上，太阳刚刚从东边的山上爬起来，夸父就站在山顶，对着太阳大声喊：“太阳，太阳，我来和你赛跑啦！”"]]}, {"t": "p", "s": [["c02-021", "话音刚落，他就迈开大步，追了出去。"]]}, {"t": "p", "s": [["c02-022", "他跑过了一座山，又一座山；他跨过了一条河，又一条河。"], ["c02-023", "风在他的耳边呼呼地响，树木在他的脚下一棵一棵地倒向后面。"], ["c02-024", "中午的时候，太阳升到了头顶，晒得他满头大汗，汗水滴在地上，变成了一条小河。"], ["c02-025", "夸父不停，他一边跑，一边笑：“太阳，太阳，你别跑得那么快，等等我呀！”"]]}, {"t": "p", "s": [["c02-026", "太阳在天上，看着地面上那个小小的、拼命奔跑的影子，也觉得很有意思。"], ["c02-027", "它走得更快了，它想：“看看你，能跑多远。”"]]}, {"t": "p", "s": [["c02-028", "下午的时候，夸父离太阳，越来越近了。"], ["c02-029", "他已经能看见太阳身上红色的光，像火一样，一圈一圈地转着。"], ["c02-030", "热浪扑在他的脸上，烤得他嘴唇发干，嗓子也冒起烟来。"]]}, {"t": "p", "s": [["c02-031", "“好渴呀！”"], ["c02-032", "夸父说，“我得先喝点水。”"]]}, {"t": "img", "src": "images/08.webp?v=89fb1df266", "vid": "images/08.mp4?v=d636c26c03", "cap": "喝黄河水", "n": 8}, {"t": "p", "s": [["c02-033", "他弯下腰，在黄河边，咕咚咕咚地喝了起来，一口，两口，三口，黄河的水就浅了一半。"], ["c02-034", "他又跑到渭水边，咕咚咕咚地喝了起来，渭水也见了底。"], ["c02-035", "可是夸父还是渴，他的喉咙里像有一团火在烧。"], ["c02-036", "他想：“北边有一个大泽，那里的水很多，我去那里喝！”"]]}, {"t": "p", "s": [["c02-037", "于是，他扭过身子，向着北方，又迈开了大步。"]]}, {"t": "p", "s": [["c02-038", "可是，他太累了。"], ["c02-039", "他跑了一整天，从日出跑到了日落，他的腿越来越沉，眼睛越来越花。"], ["c02-040", "就在太阳要沉到禺谷的那一刻，他看见了，太阳就在前面，那么大，那么红，那么近，他伸出手，好像就能摸到它了。"]]}, {"t": "img", "src": "images/09.webp?v=f4ce7ede40", "vid": "images/09.mp4?v=fddb1b0700", "cap": "追到太阳", "n": 9}, {"t": "p", "s": [["c02-041", "夸父笑了。"], ["c02-042", "他轻轻地说：“太阳，我追上你了……”"]]}, {"t": "p", "s": [["c02-043", "话没说完，他就倒下了。"]]}, {"t": "p", "s": [["c02-044", "大地轻轻地震了一下，山谷里传来一声很长很长的回声。"], ["c02-045", "夸父的身体，慢慢地变成了一座大山，他手里的那根手杖，落在地上，一下子长出了绿叶，开出了花朵。"], ["c02-046", "一棵，两棵，三棵……"], ["c02-047", "变成了一大片桃树林。"], ["c02-048", "春天的时候，花开得红红粉粉的，像天上落下的一片云霞；夏天的时候，树上结满了又大又甜的桃子，口渴的旅人，摘一个吃，就不渴了。"]]}, {"t": "img", "src": "images/10.webp?v=2ea7e50e85", "vid": "images/10.mp4?v=23320e9ade", "cap": "邓林", "n": 10}, {"t": "p", "s": [["c02-049", "人们给这片林子，取了个名字，叫“邓林”。"]]}, {"t": "p", "s": [["c02-050", "后来，每当有孩子问：“夸父有没有追上太阳？”"], ["c02-051", "大人们就会指着那片桃林说：“你看，他虽然倒下了，可是他的愿望，却变成了这么多的绿叶和桃花，一年一年地，长在大地上。”"]]}, {"t": "p", "s": [["c02-052", "（完）"]]}]}, {"title": "第三章　刑天舞干戚", "head": "c03-h", "audio": "audio/ch03.m4a?v=5441cef5e6", "duration": 332.43, "times": {"c03-h": [0.0, 4.568], "c03-001": [5.568, 9.363], "c03-002": [10.213, 22.024], "c03-003": [22.874, 24.057], "c03-004": [24.907, 32.217], "c03-005": [32.567, 45.957], "c03-006": [46.807, 47.887], "c03-007": [48.737, 54.909], "c03-008": [55.259, 60.177], "c03-009": [60.527, 75.859], "c03-010": [76.709, 83.172], "c03-011": [83.522, 91.781], "c03-012": [92.131, 100.853], "c03-013": [101.703, 105.741], "c03-014": [106.091, 114.493], "c03-015": [115.343, 125.345], "c03-016": [125.695, 137.097], "c03-017": [137.947, 144.512], "c03-018": [145.362, 154.894], "c03-019": [155.744, 164.277], "c03-020": [164.627, 168.928], "c03-021": [169.278, 178.119], "c03-022": [178.469, 190.295], "c03-023": [191.145, 198.232], "c03-024": [199.082, 207.084], "c03-025": [207.434, 208.175], "c03-026": [208.525, 209.274], "c03-027": [213.806, 216.589], "c03-028": [217.439, 223.24], "c03-029": [223.59, 239.686], "c03-030": [240.536, 246.309], "c03-031": [246.659, 252.095], "c03-032": [252.445, 253.67], "c03-033": [254.52, 261.539], "c03-034": [261.889, 271.063], "c03-035": [271.913, 279.512], "c03-036": [279.862, 283.728], "c03-037": [284.578, 290.524], "c03-038": [290.874, 301.282], "c03-039": [302.132, 305.143], "c03-040": [305.493, 310.394], "c03-041": [311.244, 319.517], "c03-042": [319.867, 329.032], "c03-043": [329.882, 330.93]}, "blocks": [{"t": "img", "src": "images/11.webp?v=20b5f2429a", "vid": "images/11.mp4?v=eec0fb7d83", "cap": "常羊山", "n": 11}, {"t": "p", "s": [["c03-001", "原文，出自《海外西经》。"]]}, {"t": "p", "s": [["c03-002", "刑天与帝争神，帝断其首，葬之常羊之山，乃以乳为目，以脐为口，操干戚以舞。"]]}, {"t": "p", "s": [["c03-003", "白话文。"]]}, {"t": "p", "s": [["c03-004", "刑天和天帝争夺神的位子，天帝砍断了他的脑袋，把它埋在常羊山。"], ["c03-005", "刑天没有倒下，他把胸前的两点当作眼睛，把肚脐当作嘴巴，一手拿着盾牌，一手拿着大斧，不停地挥舞着。"]]}, {"t": "p", "s": [["c03-006", "故事。"]]}, {"t": "p", "s": [["c03-007", "在遥远的南方，有一位很有名的天神，名叫炎帝。"], ["c03-008", "炎帝有一个好朋友，名字叫刑天。"], ["c03-009", "刑天长得高大，脾气直，说话的声音像打雷，可是他心地善良，最喜欢的事情，就是在清晨的露水里，一边打鼓，一边唱歌。"]]}, {"t": "p", "s": [["c03-010", "炎帝在的时候，大地上的人们，每年都能收到很多好庄稼。"], ["c03-011", "可是后来，天上的天帝，和炎帝打了一场大仗，炎帝的军队，输了。"], ["c03-012", "炎帝只好离开了，去了很远很远的南方，一个人，安安静静地待着。"]]}, {"t": "p", "s": [["c03-013", "刑天听说了这件事，心里很难过。"], ["c03-014", "他对自己说：“我的老朋友，一个人去了那么远的地方，我怎么能不去看一看呢？”"]]}, {"t": "img", "src": "images/12.webp?v=2b2fd8e647", "vid": "images/12.mp4?v=1673ea2326", "cap": "刑天上天宫", "n": 12}, {"t": "p", "s": [["c03-015", "于是，他背上自己的盾牌，扛起自己的大斧，一个人，走向了天帝住的天宫。"], ["c03-016", "他大声说：“天帝，我不是来打架的，我是来问你一句话：炎帝是个好神，你为什么要把他赶走呢？”"]]}, {"t": "p", "s": [["c03-017", "天帝皱着眉头，说：“天上只能有一个天帝。”"]]}, {"t": "p", "s": [["c03-018", "两个人越说越生气，越说越大声，最后，在一座叫作常羊山的山前，他们动起了手。"]]}, {"t": "p", "s": [["c03-019", "刑天的斧头，劈得山摇地动；刑天的盾牌，挡得风雨不透。"], ["c03-020", "可是天帝的本事，实在太大了。"], ["c03-021", "一阵白光闪过，刑天的头，被天帝砍了下来，滚落到了山坡的草丛里。"], ["c03-022", "天帝挥了挥手，山就裂开了一道缝，那个头，掉进了缝里，山合拢了，把它盖在了里面。"]]}, {"t": "p", "s": [["c03-023", "天帝转过身，想要回去了，他想：“这下总算没有事了。”"]]}, {"t": "p", "s": [["c03-024", "可是，他刚走了几步，身后忽然传来一阵响亮的鼓声：咚！"], ["c03-025", "咚！"], ["c03-026", "咚！"]]}, {"t": "p", "s": [["c03-027", "他回头一看，不由得愣住了。"]]}, {"t": "img", "src": "images/13.webp?v=2f28ffe631", "vid": "images/13.mp4?v=f49a1445b9", "cap": "刑天起舞", "n": 13}, {"t": "p", "s": [["c03-028", "只见刑天，那个没有头的刑天，竟然又站了起来！"], ["c03-029", "他没有眼睛，没有嘴巴，却用他的胸口当作眼睛，用他的肚脐当作嘴巴，左手握着盾牌，右手举着大斧，在常羊山的山坡上，一下一下地挥舞着。"]]}, {"t": "p", "s": [["c03-030", "他的胸口上的“眼睛”，亮亮的，直直地盯着天空。"], ["c03-031", "他的肚脐里的“嘴巴”，在大声地喊：“我不服！"], ["c03-032", "我不服！”"]]}, {"t": "p", "s": [["c03-033", "他的斧头，劈开了云；他的盾牌，挡住了风。"], ["c03-034", "他一边舞，一边唱，唱的是在清晨的露水里，他曾经最爱唱的那首歌。"]]}, {"t": "p", "s": [["c03-035", "天帝看了很久很久，终于，他慢慢地转过身，不再看了。"], ["c03-036", "他走进了云里，再也没有回过头。"]]}, {"t": "img", "src": "images/14.webp?v=466b3ca464", "vid": "images/14.mp4?v=8a973c61e6", "cap": "山上的鼓声", "n": 14}, {"t": "p", "s": [["c03-037", "后来，常羊山上的草，一年绿过一年。"], ["c03-038", "每到起风的日子，山里就会响起隐隐约约的鼓声，像是有一个大汉，正在山坡上，不停地跳着舞。"]]}, {"t": "p", "s": [["c03-039", "人们说，那就是刑天。"], ["c03-040", "他输了一场仗，却没有输掉自己的心。"]]}, {"t": "p", "s": [["c03-041", "诗人陶渊明也写过一句诗：“刑天舞干戚，猛志固常在。”"], ["c03-042", "意思是：刑天挥舞着盾牌和大斧，他那颗勇敢的心，永远也不会改变。"]]}, {"t": "p", "s": [["c03-043", "（完）"]]}]}, {"title": "第四章　鲧禹治水", "head": "c04-h", "audio": "audio/ch04.m4a?v=c7cd4dcccd", "duration": 446.526, "times": {"c04-h": [0.0, 3.579], "c04-001": [4.579, 8.015], "c04-002": [8.865, 10.905], "c04-003": [11.255, 17.241], "c04-004": [17.591, 21.391], "c04-005": [21.741, 24.285], "c04-006": [24.635, 28.941], "c04-007": [29.791, 30.788], "c04-008": [31.638, 36.005], "c04-009": [36.355, 44.417], "c04-010": [44.767, 50.672], "c04-011": [51.022, 55.163], "c04-012": [55.513, 61.982], "c04-013": [62.832, 63.702], "c04-014": [64.552, 72.355], "c04-015": [73.205, 77.591], "c04-016": [77.941, 87.685], "c04-017": [88.035, 97.732], "c04-018": [98.582, 102.018], "c04-019": [102.868, 107.104], "c04-020": [107.454, 113.252], "c04-021": [114.102, 116.721], "c04-022": [117.071, 120.44], "c04-023": [121.29, 125.431], "c04-024": [126.281, 136.363], "c04-025": [136.713, 144.311], "c04-026": [144.661, 152.194], "c04-027": [153.044, 155.313], "c04-028": [155.663, 162.837], "c04-029": [163.187, 175.386], "c04-030": [176.236, 180.894], "c04-031": [181.244, 182.205], "c04-032": [183.055, 188.188], "c04-033": [188.538, 197.645], "c04-034": [198.495, 203.076], "c04-035": [203.426, 204.952], "c04-036": [205.302, 216.586], "c04-037": [216.936, 225.446], "c04-038": [226.296, 231.092], "c04-039": [231.942, 242.083], "c04-040": [242.433, 252.115], "c04-041": [252.965, 258.448], "c04-042": [258.798, 266.344], "c04-043": [266.694, 272.289], "c04-044": [273.139, 279.692], "c04-045": [280.542, 284.424], "c04-046": [284.774, 296.114], "c04-047": [296.964, 300.333], "c04-048": [301.183, 312.078], "c04-049": [312.428, 320.03], "c04-050": [320.38, 325.212], "c04-051": [325.562, 328.953], "c04-052": [329.803, 335.021], "c04-053": [335.871, 339.8], "c04-054": [340.15, 350.999], "c04-055": [351.349, 365.847], "c04-056": [366.697, 369.04], "c04-057": [369.39, 378.709], "c04-058": [379.059, 386.937], "c04-059": [387.287, 395.48], "c04-060": [396.33, 400.999], "c04-061": [401.349, 412.783], "c04-062": [413.633, 420.262], "c04-063": [420.612, 430.204], "c04-064": [431.054, 434.888], "c04-065": [435.238, 443.014], "c04-066": [443.864, 445.026]}, "blocks": [{"t": "img", "src": "images/15.webp?v=1e8d59ece9", "vid": "images/15.mp4?v=9f5c3be6c3", "cap": "洪水滔天", "n": 15}, {"t": "p", "s": [["c04-001", "原文，出自《海内经》。"]]}, {"t": "p", "s": [["c04-002", "洪水滔天。"], ["c04-003", "鲧窃帝之息壤以堙洪水，不待帝命。"], ["c04-004", "帝令祝融杀鲧于羽郊。"], ["c04-005", "鲧复生禹。"], ["c04-006", "帝乃命禹卒布土以定九州。"]]}, {"t": "p", "s": [["c04-007", "白话文。"]]}, {"t": "p", "s": [["c04-008", "洪水涨得滔天，淹没了大地。"], ["c04-009", "鲧偷了天帝的宝贝“息壤”，用它去堵洪水，事先没有得到天帝的命令。"], ["c04-010", "天帝就派祝融，把鲧在羽山的郊外处死了。"], ["c04-011", "后来，鲧的身体里生出了禹。"], ["c04-012", "天帝于是命令禹，用土地把洪水平定，划分出九州。"]]}, {"t": "p", "s": [["c04-013", "故事。"]]}, {"t": "p", "s": [["c04-014", "很久很久以前，有一年夏天，天上的雨，下个不停。"]]}, {"t": "p", "s": [["c04-015", "雨下了一天又一天，一个月又一个月。"], ["c04-016", "河水漫出了河岸，湖水漫出了湖岸，大水一直涨到了山脚，又涨到了山腰。"], ["c04-017", "田地被淹了，房子被冲走了，人们只好爬到高高的山上，搭起小窝棚，盼着水退。"]]}, {"t": "p", "s": [["c04-018", "可是水，就是不退。"]]}, {"t": "p", "s": [["c04-019", "人们的头领，叫作尧。"], ["c04-020", "尧很着急，他问大家：“谁能把洪水治好呢？”"]]}, {"t": "p", "s": [["c04-021", "大家说：“鲧可以。"], ["c04-022", "他是天下最有本事的工匠。”"]]}, {"t": "p", "s": [["c04-023", "于是，尧就把治水的事，交给了鲧。"]]}, {"t": "img", "src": "images/16.webp?v=80a140f165", "vid": "images/16.mp4?v=6389491025", "cap": "鲧筑堤", "n": 16}, {"t": "p", "s": [["c04-024", "鲧带着人们，一担一担地挑土，一筐一筐地运石头，在河边筑起了高高的堤坝。"], ["c04-025", "可是，水一天比一天涨得高，堤坝筑得再高，也挡不住大水。"], ["c04-026", "夜里，洪水冲过来，轰隆一声，土堤就塌了，白干了一场。"]]}, {"t": "p", "s": [["c04-027", "鲧着急得睡不着觉。"], ["c04-028", "他听说，天上的天帝，有一件宝贝，叫作息壤。"], ["c04-029", "那是一团会自己长大的土，只要丢一小块在地上，它就会一直长，一直长，一眨眼，就能长成一座山。"]]}, {"t": "p", "s": [["c04-030", "“要是有了息壤，洪水就好办了！”"], ["c04-031", "鲧想。"]]}, {"t": "p", "s": [["c04-032", "可是，息壤是天帝的宝贝，不能随便动。"], ["c04-033", "鲧想了好几天，一咬牙，趁着天帝不在，悄悄地飞上了天，偷出了息壤。"]]}, {"t": "img", "src": "images/17.webp?v=7f2a57b133", "vid": "images/17.mp4?v=841c035154", "cap": "息壤", "n": 17}, {"t": "p", "s": [["c04-034", "他带着息壤回到地上，把它撒进洪水里。"], ["c04-035", "奇怪极了！"], ["c04-036", "只见那些泥土，一碰到水，就长了起来，哗啦哗啦，一座高高的土山，就把洪水挡住了。"], ["c04-037", "洪水慢慢退了下去，人们都欢呼起来：“鲧，鲧，你太了不起了！”"]]}, {"t": "p", "s": [["c04-038", "可是，鲧的高兴，没有持续多久。"]]}, {"t": "p", "s": [["c04-039", "天帝发现自己的宝贝不见了，很生气，派了火神祝融，到人间去，把息壤收了回去。"], ["c04-040", "息壤一被收走，那些刚刚堵住的洪水，又轰隆轰隆地冲了出来，比以前，更加汹涌了。"]]}, {"t": "p", "s": [["c04-041", "鲧没有办法，他被带到了一座叫羽山的山上。"], ["c04-042", "他望着洪水，心里难过极了：“我只想救大家，我没有错呀……"], ["c04-043", "可是，我没有等天帝同意，是我不对。”"]]}, {"t": "p", "s": [["c04-044", "他再也站不起来了，一直在山上，守着那片水。"]]}, {"t": "p", "s": [["c04-045", "可是，奇怪的事情发生了。"], ["c04-046", "三年过去了，鲧的身体，没有腐烂，他的肚子里，竟然慢慢地，长出了一个孩子。"]]}, {"t": "p", "s": [["c04-047", "那个孩子，被人叫作“禹”。"]]}, {"t": "img", "src": "images/18.webp?v=acadb837d4", "vid": "images/18.mp4?v=ef3a0aee11", "cap": "大禹长大", "n": 18}, {"t": "p", "s": [["c04-048", "禹慢慢地长大了，他长得高高的，黑黑的，脸上总是带着笑，手里，总是拿着一把石头做的铲子。"], ["c04-049", "他对大家说：“我的父亲，筑了那么多的堤坝，可是水一直在涨。"], ["c04-050", "他用的是‘堵’的办法，可是水是堵不住的。"], ["c04-051", "我要用另一种办法——‘疏’。”"]]}, {"t": "p", "s": [["c04-052", "“疏，就是给水开一条路，让它自己流到大海里去。”"]]}, {"t": "p", "s": [["c04-053", "禹带着大家，走遍了山山水水。"], ["c04-054", "他爬过高山，趟过大河，眼睛看着，耳朵听着，心里琢磨着，哪里高，哪里低，水往哪儿流。"], ["c04-055", "他在大山里凿出了一个又一个大口子，在平地里挖出了一条又一条大水渠，水顺着这些路，哗哗地，向东流去，一直流进了大海。"]]}, {"t": "img", "src": "images/19.webp?v=e5a63cb1ce", "vid": "images/19.mp4?v=a6e30e3d4c", "cap": "大禹过家门", "n": 19}, {"t": "p", "s": [["c04-056", "他整整忙了十三年。"], ["c04-057", "有一次，他路过自己家的门口，听见屋里传来孩子的哭声，那是他刚出生的小儿子在哭。"], ["c04-058", "可是，他想了想，洪水还没有退完，就抬起头，继续向前走了。"], ["c04-059", "又有一次，他再路过家门口，孩子已经会叫“爸爸”了，他还是没有进门。"]]}, {"t": "img", "src": "images/20.webp?v=92ff535060", "vid": "images/20.mp4?v=0057ff609e", "cap": "洪水退去", "n": 20}, {"t": "p", "s": [["c04-060", "十三年之后，洪水终于退了。"], ["c04-061", "大地上，露出了一片一片的田野，人们走下了山，重新盖起了房子，种下了庄稼。"]]}, {"t": "p", "s": [["c04-062", "天帝看见了，终于点了点头，说：“禹，你做得好。”"], ["c04-063", "于是，就把土地，分成了九块，也就是后来人们说的“九州”，交给禹来管理。"]]}, {"t": "p", "s": [["c04-064", "后来，人们都叫他大禹。"], ["c04-065", "他的名字，和那些河流、山川一起，永远留在了这片土地上。"]]}, {"t": "p", "s": [["c04-066", "（完）"]]}]}, {"title": "第五章　十个太阳和后羿", "head": "c05-h", "audio": "audio/ch05.m4a?v=21e217ca6c", "duration": 469.969, "times": {"c05-h": [0.0, 3.76], "c05-001": [4.76, 11.556], "c05-002": [12.406, 17.627], "c05-003": [17.977, 22.574], "c05-004": [23.424, 29.323], "c05-005": [29.673, 37.575], "c05-006": [38.425, 47.144], "c05-007": [47.994, 49.108], "c05-008": [49.958, 57.094], "c05-009": [57.444, 63.824], "c05-010": [64.674, 75.127], "c05-011": [75.477, 85.217], "c05-012": [86.067, 96.023], "c05-013": [96.373, 103.14], "c05-014": [103.99, 105.056], "c05-015": [105.906, 112.33], "c05-016": [112.68, 118.656], "c05-017": [119.006, 125.52], "c05-018": [125.87, 135.051], "c05-019": [135.901, 144.801], "c05-020": [145.651, 150.98], "c05-021": [151.33, 166.515], "c05-022": [166.865, 177.656], "c05-023": [178.006, 186.594], "c05-024": [187.444, 191.09], "c05-025": [191.44, 205.3], "c05-026": [206.15, 210.509], "c05-027": [211.359, 217.401], "c05-028": [217.751, 222.924], "c05-029": [223.274, 225.596], "c05-030": [226.446, 229.22], "c05-031": [229.57, 234.605], "c05-032": [235.455, 240.383], "c05-033": [240.733, 250.116], "c05-034": [250.966, 253.674], "c05-035": [254.024, 256.375], "c05-036": [257.225, 267.811], "c05-037": [268.161, 285.541], "c05-038": [286.391, 295.121], "c05-039": [295.971, 302.778], "c05-040": [303.628, 308.471], "c05-041": [308.821, 314.596], "c05-042": [314.946, 324.561], "c05-043": [324.911, 333.469], "c05-044": [334.319, 337.93], "c05-045": [338.28, 349.115], "c05-046": [349.965, 351.542], "c05-047": [352.392, 363.062], "c05-048": [363.912, 373.079], "c05-049": [373.929, 378.335], "c05-050": [378.685, 385.896], "c05-051": [386.746, 395.856], "c05-052": [396.206, 399.088], "c05-053": [399.438, 407.146], "c05-054": [407.996, 418.419], "c05-055": [418.769, 423.415], "c05-056": [424.265, 431.145], "c05-057": [431.995, 448.814], "c05-058": [449.164, 457.054], "c05-059": [457.404, 466.508], "c05-060": [467.358, 468.469]}, "blocks": [{"t": "img", "src": "images/21.webp?v=b32b9f4dbb", "vid": "images/21.mp4?v=b0eabf06f2", "cap": "汤谷扶桑", "n": 21}, {"t": "p", "s": [["c05-001", "原文，出自《大荒南经》《海外东经》和《海内经》。"]]}, {"t": "p", "s": [["c05-002", "有女子名曰羲和，方浴日于甘渊。"], ["c05-003", "羲和者，帝俊之妻，生十日。"]]}, {"t": "p", "s": [["c05-004", "汤谷上有扶桑，十日所浴，在黑齿北。"], ["c05-005", "居水中，有大木，九日居下枝，一日居上枝。"]]}, {"t": "p", "s": [["c05-006", "帝俊赐羿彤弓素矰，以扶下国，羿是始去恤下地之百艰。"]]}, {"t": "p", "s": [["c05-007", "白话文。"]]}, {"t": "p", "s": [["c05-008", "有一位女子，名字叫羲和，她正在甘渊里，给太阳洗澡。"], ["c05-009", "羲和是天帝帝俊的妻子，一共生下了十个太阳。"]]}, {"t": "p", "s": [["c05-010", "汤谷里，长着一棵很大的扶桑树，十个太阳，都是在这里洗澡的，它在黑齿国的北边。"], ["c05-011", "扶桑树长在水里，有九个太阳住在下面的树枝上，一个太阳住在最上面的树枝上。"]]}, {"t": "p", "s": [["c05-012", "天帝帝俊，赐给羿一张红色的弓，和一袋白色羽毛的箭，让他去帮助人间的国家。"], ["c05-013", "羿从这个时候开始，去关心、救助人间的各种困难。"]]}, {"t": "p", "s": [["c05-014", "故事。"]]}, {"t": "p", "s": [["c05-015", "在很远很远的东方的海上，有一个叫汤谷的地方。"], ["c05-016", "那里的海水，是暖暖的，冒着白色的热气。"], ["c05-017", "海里，长着一棵高高大大的树，叫作扶桑。"], ["c05-018", "扶桑树，有几千丈高，树叶像红色的云朵，树枝向四面八方伸展着。"]]}, {"t": "p", "s": [["c05-019", "扶桑树上，住着十个孩子，他们不是普通的孩子，他们是十个太阳。"]]}, {"t": "img", "src": "images/22.webp?v=d3101e3847", "vid": "images/22.mp4?v=6b3f2063a8", "cap": "羲和驾车", "n": 22}, {"t": "p", "s": [["c05-020", "十个太阳，是天帝帝俊和羲和生的。"], ["c05-021", "羲和是一位温柔的母亲，每天早上，她都要赶着一辆由六条龙拉着的车，载着一个太阳，从扶桑树上出发，沿着天空，慢慢地走。"], ["c05-022", "从东走到西，把光和暖，洒向大地，让花儿开，让庄稼长，让孩子们可以出来玩。"], ["c05-023", "傍晚，羲和再把太阳带回到甘渊里，给他洗个澡，让他睡一个好觉。"]]}, {"t": "p", "s": [["c05-024", "第二天，轮到另一个太阳出门。"], ["c05-025", "十个孩子，就这样，一个轮一个，每天只有一个出去工作，其余九个，就在扶桑树的下枝，玩着、闹着，等着自己的日子。"]]}, {"t": "p", "s": [["c05-026", "这样的日子，过了很久很久。"]]}, {"t": "p", "s": [["c05-027", "有一天，十个太阳，在树枝上，玩得闷了。"], ["c05-028", "最小的那个，说：“为什么每次都只能一个人出去呀？"], ["c05-029", "一个人，多没意思！”"]]}, {"t": "p", "s": [["c05-030", "老二说：“就是！"], ["c05-031", "我们十个，一起出去，岂不是更热闹？”"]]}, {"t": "img", "src": "images/23.webp?v=290eddf119", "vid": "images/23.mp4?v=6ebb638c4e", "cap": "十日同出", "n": 23}, {"t": "p", "s": [["c05-032", "十个太阳一商量，都觉得这个主意好。"], ["c05-033", "第二天一早，趁着母亲还没有起床，他们一起，从扶桑树上跳了下来，跑到了天上。"]]}, {"t": "p", "s": [["c05-034", "“哈哈，天上真大呀！”"], ["c05-035", "“你追我，我追你！”"]]}, {"t": "p", "s": [["c05-036", "可是，他们没有想到，十个太阳一起出现在天空，大地上，就热得受不了了。"], ["c05-037", "河水很快就干了，土地裂开了一道一道的口子，禾苗全部枯黄了，树叶变得卷卷的，人们热得睡不着觉，躲进山洞里，也躲不开那火一样的光。"]]}, {"t": "p", "s": [["c05-038", "人们抬着头，对着天空，大声地喊：“太阳啊，太阳啊，请你们回去吧！”"]]}, {"t": "p", "s": [["c05-039", "可是，十个太阳，玩得正高兴，哪里听得见呢？"]]}, {"t": "p", "s": [["c05-040", "这时候，天上的天帝帝俊，终于知道了。"], ["c05-041", "他想了想，叫来了一位射箭的好手，名字叫后羿。"], ["c05-042", "他把一张红色的弓，和一袋白色羽毛的箭，交给了后羿，说：“你去人间，帮帮他们吧。"], ["c05-043", "不过，他们都是我的孩子，你只要吓吓他们，让他们回家就好。”"]]}, {"t": "img", "src": "images/24.webp?v=2a7bfe58d9", "vid": "images/24.mp4?v=9c9770aaf1", "cap": "后羿射日", "n": 24}, {"t": "p", "s": [["c05-044", "后羿带着弓箭，来到了人间。"], ["c05-045", "他爬到了一座最高的山上，抬起头，看见天空中，十个太阳，热热闹闹地，在嬉戏。"]]}, {"t": "p", "s": [["c05-046", "他拉开了弓。"]]}, {"t": "p", "s": [["c05-047", "第一支箭，嗖地一下，射了出去，一个太阳被击中，变成一团金色的羽毛，轻轻地飘了下来。"]]}, {"t": "p", "s": [["c05-048", "第二支箭，射了出去，第二个太阳，也变成金色的羽毛，落进了海里。"]]}, {"t": "p", "s": [["c05-049", "一支，两支，三支，四支……"], ["c05-050", "天空中，太阳，越来越少，大地，终于慢慢地凉了下来。"]]}, {"t": "p", "s": [["c05-051", "最后，天上只剩下一个太阳，小小的，红红的，怯生生的。"], ["c05-052", "后羿的手，停住了。"], ["c05-053", "他想起天帝的话，也想起了人们需要太阳的光，他把弓放了下来。"]]}, {"t": "p", "s": [["c05-054", "最后的太阳，从此，一下一下，认认真真地，每天从东边出来，从西边落下。"], ["c05-055", "它再也不敢和哥哥们一样，贪玩了。"]]}, {"t": "p", "s": [["c05-056", "大地上的人们，抬起头，对着那个太阳，笑了。"]]}, {"t": "img", "src": "images/25.webp?v=7cff4cb541", "vid": "images/25.mp4?v=5ccad2c83f", "cap": "金乌回扶桑", "n": 25}, {"t": "p", "s": [["c05-057", "后来，人们知道，那九个落下来的太阳，其实，并没有真的消失，他们变成了九只金色的鸟，飞回了扶桑树上，替弟弟，在树上，守着。"], ["c05-058", "每天傍晚，当太阳落山的时候，天边，总会出现一片红红的霞光。"], ["c05-059", "人们说，那是羲和妈妈，在甘渊边，给她最后的那个孩子，洗澡。"]]}, {"t": "p", "s": [["c05-060", "（完）"]]}]}, {"title": "第六章　烛龙", "head": "c06-h", "audio": "audio/ch06.m4a?v=48804651f0", "duration": 541.464, "times": {"c06-h": [0.0, 2.696], "c06-001": [3.696, 8.896], "c06-002": [9.746, 15.433], "c06-003": [15.783, 29.762], "c06-004": [30.112, 34.029], "c06-005": [34.879, 51.559], "c06-006": [52.41, 53.626], "c06-007": [54.476, 63.928], "c06-008": [64.278, 73.933], "c06-009": [74.283, 83.325], "c06-010": [83.675, 90.675], "c06-011": [91.025, 96.442], "c06-012": [97.292, 100.669], "c06-013": [101.019, 114.776], "c06-014": [115.126, 122.084], "c06-015": [122.434, 126.024], "c06-016": [126.874, 127.899], "c06-017": [128.749, 138.132], "c06-018": [138.982, 143.144], "c06-019": [143.494, 156.959], "c06-020": [157.809, 162.688], "c06-021": [163.038, 173.15], "c06-022": [173.5, 176.597], "c06-023": [177.447, 183.652], "c06-024": [184.002, 195.894], "c06-025": [196.244, 205.535], "c06-026": [206.385, 213.861], "c06-027": [214.711, 237.326], "c06-028": [238.176, 247.638], "c06-029": [247.988, 255.388], "c06-030": [256.238, 262.818], "c06-031": [263.168, 269.369], "c06-032": [269.719, 273.665], "c06-033": [274.015, 275.64], "c06-034": [276.49, 285.252], "c06-035": [286.102, 291.107], "c06-036": [291.457, 296.911], "c06-037": [297.261, 311.547], "c06-038": [312.397, 322.803], "c06-039": [323.653, 330.746], "c06-040": [331.096, 332.613], "c06-041": [332.963, 337.001], "c06-042": [337.851, 346.231], "c06-043": [347.081, 353.77], "c06-044": [354.12, 374.451], "c06-045": [375.301, 376.604], "c06-046": [376.954, 377.935], "c06-047": [378.785, 383.393], "c06-048": [383.743, 389.169], "c06-049": [390.019, 396.601], "c06-050": [397.451, 407.803], "c06-051": [408.653, 410.409], "c06-052": [410.759, 416.347], "c06-053": [416.697, 420.348], "c06-054": [420.698, 437.093], "c06-055": [437.943, 442.275], "c06-056": [442.625, 444.365], "c06-057": [445.215, 448.902], "c06-058": [449.252, 453.687], "c06-059": [454.037, 464.166], "c06-060": [465.016, 473.464], "c06-061": [473.814, 481.573], "c06-062": [482.423, 487.349], "c06-063": [487.699, 491.096], "c06-064": [491.946, 502.517], "c06-065": [503.367, 508.873], "c06-066": [509.723, 514.459], "c06-067": [514.809, 523.131], "c06-068": [523.981, 537.89], "c06-069": [538.74, 539.964]}, "blocks": [{"t": "img", "src": "images/26.webp?v=5e462f5503", "vid": "images/26.mp4?v=8816c71123", "cap": "章尾山", "n": 26}, {"t": "p", "s": [["c06-001", "原文，出自《大荒北经》和《海外北经》。"]]}, {"t": "p", "s": [["c06-002", "西北海外，赤水之北，有章尾山。"], ["c06-003", "有神，人面蛇身而赤，直目正乘，其暝乃晦，其视乃明，不食不寝不息，风雨是谒。"], ["c06-004", "是烛九阴，是谓烛龙。"]]}, {"t": "p", "s": [["c06-005", "钟山之神，名曰烛阴，视为昼，暝为夜，吹为冬，呼为夏，不饮，不食，不息，息为风，身长千里。"]]}, {"t": "p", "s": [["c06-006", "白话文。"]]}, {"t": "p", "s": [["c06-007", "在西北方的大海之外，赤水的北边，有一座山，叫章尾山。"], ["c06-008", "山上住着一位神，长着人的脸，蛇的身子，全身红色，眼睛是直直地竖着的。"], ["c06-009", "他闭上眼睛，天下就变得一片黑暗；他睁开眼睛，天下就明亮起来。"], ["c06-010", "他不吃东西，不睡觉，不休息，却能呼风唤雨。"], ["c06-011", "他照亮了九重的黑暗，所以叫作烛龙。"]]}, {"t": "p", "s": [["c06-012", "钟山的神，名字叫烛阴。"], ["c06-013", "他睁开眼睛，就是白天；他闭上眼睛，就是夜晚；他吹一口气，天下就变成冬天；他呼一口气，天下就变成夏天。"], ["c06-014", "他不喝水，不吃饭，也不休息，他一呼吸，就会刮起风来。"], ["c06-015", "他的身体，有一千里那么长。"]]}, {"t": "p", "s": [["c06-016", "故事。"]]}, {"t": "p", "s": [["c06-017", "很久很久以前，天地刚刚分开的时候，北方有一座很高很高的山，叫章尾山。"]]}, {"t": "p", "s": [["c06-018", "那里，是世界的最北边。"], ["c06-019", "太阳从来不曾照到那里，月亮也不曾去过，山里山外，永远是黑沉沉的，连风，都是冷冷的。"]]}, {"t": "p", "s": [["c06-020", "可是，山里却住着一位大神。"], ["c06-021", "他长着一张人的脸，红红的，一条长长的蛇的身体，盘在山上，有一千里那么长。"], ["c06-022", "他的名字，叫烛龙。"]]}, {"t": "img", "src": "images/27.webp?v=b20aa5f4f8", "vid": "images/27.mp4?v=19cfb596ee", "cap": "烛龙睁眼", "n": 27}, {"t": "p", "s": [["c06-023", "烛龙的眼睛，非常奇怪，是一条直直的竖线。"], ["c06-024", "他一睁开眼睛，两道光，就从眼睛里射出来，把整片天空，照得亮亮的，那就是白天。"], ["c06-025", "他一闭上眼睛，光就收回去了，天地间，一片漆黑，那就是夜晚。"]]}, {"t": "p", "s": [["c06-026", "在很久很久以前，世界上的白天和黑夜，就是这样来的。"]]}, {"t": "p", "s": [["c06-027", "烛龙还有一个本事，他嘴巴里，含着一团火，所以，只要他张嘴，吹一口气，天地间就会刮起冷冷的北风，下起大雪，那就是冬天；他再呼出一口气，温暖的风，就会吹遍山川，那就是夏天。"]]}, {"t": "p", "s": [["c06-028", "烛龙一直这样，站在北方的山上，不吃东西，不喝水，不睡觉，也不休息。"], ["c06-029", "他的一呼一吸，就是风；他的一睁一闭，就是昼夜。"]]}, {"t": "p", "s": [["c06-030", "有一年，山下的村子里，有一个小男孩，叫小石头。"], ["c06-031", "他听爷爷讲过，北方有一位神，一睁眼，天就亮了。"], ["c06-032", "小石头想：“真有这样的神吗？"], ["c06-033", "我要去看一看。”"]]}, {"t": "p", "s": [["c06-034", "他背着一个小包袱，里面装着两个饼，一小壶水，向着北方，走了很久很久。"]]}, {"t": "img", "src": "images/28.webp?v=3184e7eda2", "vid": "images/28.mp4?v=de1e4e18f2", "cap": "小石头赶路", "n": 28}, {"t": "p", "s": [["c06-035", "越往北走，天就越冷，天也越暗。"], ["c06-036", "后来，周围一点点的光亮，都没有了。"], ["c06-037", "小石头摸着黑，一步一步地向前爬，他的手，冻得红红的，他的肚子，也饿得咕咕叫，他有点害怕，轻轻地哭了起来。"]]}, {"t": "p", "s": [["c06-038", "就在这个时候，他听见前面，有一个声音，低低的，像远处的雷：“是谁，来到了我的山上？”"]]}, {"t": "img", "src": "images/29.webp?v=1c24b3cfb8", "vid": "images/29.mp4?v=74957bd4f5", "cap": "遇见烛龙", "n": 29}, {"t": "p", "s": [["c06-039", "小石头抬起头，看不见人，他大着胆子，说：“我……"], ["c06-040", "我叫小石头。"], ["c06-041", "我想来看看，天是怎么亮起来的。”"]]}, {"t": "p", "s": [["c06-042", "那个声音笑了，笑声像风一样，从山谷里吹过来：“你这个孩子，倒是胆子不小。”"]]}, {"t": "p", "s": [["c06-043", "接着，黑暗里，慢慢地，亮起了两道金色的光。"], ["c06-044", "那光，越来越亮，越来越大，小石头眯起了眼睛，终于看见了，山上，盘着一条一眼望不到头的红色大蛇，蛇的前面，是一张人的脸，温和极了，正低头看着他。"]]}, {"t": "p", "s": [["c06-045", "“你不怕我吗？”"], ["c06-046", "烛龙问。"]]}, {"t": "p", "s": [["c06-047", "小石头摇摇头：“一开始怕，现在不怕啦。"], ["c06-048", "你的眼睛，就像两盏大灯笼，可暖和啦。”"]]}, {"t": "p", "s": [["c06-049", "烛龙笑了，说：“你走了这么远的路，是不是饿了？”"]]}, {"t": "p", "s": [["c06-050", "小石头点点头，从包袱里，拿出了一个饼，掰成两半，一半递给烛龙，说：“你也吃一点吧。”"]]}, {"t": "p", "s": [["c06-051", "烛龙愣了一下。"], ["c06-052", "很久很久，没有人，问过他，饿不饿了。"], ["c06-053", "他轻轻地说：“谢谢你，孩子。"], ["c06-054", "可是我不吃东西，也不睡觉，我不能休息，因为，只要我一闭上眼睛，天下，就会变成黑夜；只要我一睡着，风雨，就没有人来管了。”"]]}, {"t": "p", "s": [["c06-055", "小石头听了，想了想，问：“那……"], ["c06-056", "你累不累呢？”"]]}, {"t": "p", "s": [["c06-057", "烛龙望着远方，没有说话。"], ["c06-058", "过了很久，他才说：“有一点点累。"], ["c06-059", "可是，只要我一想到，太阳底下，有那么多的孩子，在田野里奔跑，我就不累了。”"]]}, {"t": "img", "src": "images/30.webp?v=d1832a4310", "vid": "images/30.mp4?v=ace0043563", "cap": "睡在烛龙身边", "n": 30}, {"t": "p", "s": [["c06-060", "那天晚上，小石头靠着烛龙那暖暖的、软软的身体，睡着了。"], ["c06-061", "烛龙睁着眼睛，用金色的光，照着他，一直照到了天亮。"]]}, {"t": "p", "s": [["c06-062", "第二天，烛龙对小石头说：“回家去吧。"], ["c06-063", "你的爷爷，一定很担心你。”"]]}, {"t": "p", "s": [["c06-064", "他让小石头，趴在自己的尾巴上，轻轻一送，送过了千山万水，一直送到了村子口。"]]}, {"t": "p", "s": [["c06-065", "小石头回到了家里，爷爷问他：“你见到烛龙了吗？”"]]}, {"t": "p", "s": [["c06-066", "小石头点点头，笑着说：“见到啦！"], ["c06-067", "爷爷，他可好啦，他是一位一直亮着灯，守着我们的大神。”"]]}, {"t": "p", "s": [["c06-068", "从那天起，每当夜晚，小石头抬头看着星空的时候，他都会轻轻地，对着北方，说一声：“烛龙爷爷，晚安。”"]]}, {"t": "p", "s": [["c06-069", "（完）"]]}]}, {"title": "第七章　青丘的九尾狐", "head": "c07-h", "audio": "audio/ch07.m4a?v=77c5c062bc", "duration": 505.603, "times": {"c07-h": [0.0, 3.709], "c07-001": [4.709, 7.536], "c07-002": [8.386, 16.35], "c07-003": [16.7, 25.632], "c07-004": [25.982, 35.134], "c07-005": [35.484, 40.467], "c07-006": [40.817, 49.429], "c07-007": [50.279, 51.541], "c07-008": [52.391, 58.46], "c07-009": [58.81, 66.641], "c07-010": [66.991, 75.838], "c07-011": [76.188, 80.897], "c07-012": [81.247, 94.171], "c07-013": [94.521, 100.238], "c07-014": [100.588, 112.293], "c07-015": [113.143, 113.999], "c07-016": [114.849, 119.643], "c07-017": [120.493, 123.489], "c07-018": [123.839, 137.926], "c07-019": [138.276, 145.716], "c07-020": [146.566, 150.765], "c07-021": [151.615, 161.478], "c07-022": [161.828, 162.566], "c07-023": [162.916, 163.446], "c07-024": [163.796, 167.465], "c07-025": [167.815, 175.579], "c07-026": [176.429, 191.693], "c07-027": [192.043, 195.124], "c07-028": [195.474, 200.11], "c07-029": [200.96, 208.254], "c07-030": [209.104, 216.32], "c07-031": [216.67, 225.282], "c07-032": [225.632, 232.835], "c07-033": [233.685, 240.031], "c07-034": [240.381, 246.035], "c07-035": [246.385, 251.957], "c07-036": [252.307, 257.583], "c07-037": [257.933, 264.569], "c07-038": [265.419, 270.449], "c07-039": [271.299, 273.873], "c07-040": [274.223, 286.515], "c07-041": [287.365, 294.008], "c07-042": [294.358, 295.845], "c07-043": [296.695, 299.408], "c07-044": [299.758, 303.286], "c07-045": [304.136, 311.255], "c07-046": [311.605, 315.412], "c07-047": [316.262, 323.946], "c07-048": [324.296, 325.339], "c07-049": [325.689, 326.387], "c07-050": [327.237, 337.282], "c07-051": [337.632, 338.215], "c07-052": [338.565, 340.012], "c07-053": [340.362, 341.308], "c07-054": [342.158, 344.409], "c07-055": [345.259, 348.57], "c07-056": [348.92, 362.342], "c07-057": [362.692, 365.272], "c07-058": [366.122, 377.197], "c07-059": [378.047, 386.037], "c07-060": [386.887, 394.106], "c07-061": [394.456, 402.067], "c07-062": [402.417, 410.54], "c07-063": [411.39, 418.848], "c07-064": [419.198, 425.494], "c07-065": [426.344, 433.792], "c07-066": [434.142, 448.653], "c07-067": [449.503, 455.083], "c07-068": [455.933, 472.302], "c07-069": [473.152, 478.539], "c07-070": [478.889, 483.099], "c07-071": [483.949, 491.487], "c07-072": [491.837, 502.238], "c07-073": [503.088, 504.103]}, "blocks": [{"t": "img", "src": "images/31.webp?v=fe0d0276ea", "vid": "images/31.mp4?v=5ccc7d97cb", "cap": "青丘山", "n": 31}, {"t": "p", "s": [["c07-001", "原文，出自《南山经》。"]]}, {"t": "p", "s": [["c07-002", "又东三百里，曰青丘之山，其阳多玉，其阴多青雘。"], ["c07-003", "有兽焉，其状如狐而九尾，其音如婴儿，能食人；食者不蛊。"], ["c07-004", "有鸟焉，其状如鸠，其音若呵，名曰灌灌，佩之不惑。"], ["c07-005", "英水出焉，南流注于即翼之泽。"], ["c07-006", "其中多赤鱬，其状如鱼而人面，其音如鸳鸯，食之不疥。"]]}, {"t": "p", "s": [["c07-007", "白话文。"]]}, {"t": "p", "s": [["c07-008", "再往东走三百里，有一座山，叫青丘山。"], ["c07-009", "山的南面，有很多美玉，山的北面，有很多青色的矿石。"], ["c07-010", "山里有一种野兽，样子像狐狸，却长着九条尾巴，叫声像婴儿啼哭，会吃人。"], ["c07-011", "人要是吃了它的肉，就不会中邪气。"], ["c07-012", "山里还有一种鸟，样子像斑鸠，叫声像在呵斥人，名字叫灌灌，把它的羽毛佩戴在身上，就不会迷惑。"], ["c07-013", "英水从这座山流出来，向南注入即翼泽。"], ["c07-014", "水里有很多赤鱬，样子像鱼，却长着人的脸，叫声像鸳鸯，吃了它，就不会生疥疮。"]]}, {"t": "p", "s": [["c07-015", "故事。"]]}, {"t": "p", "s": [["c07-016", "在很远很远的东方，有一座青丘山。"]]}, {"t": "p", "s": [["c07-017", "青丘山，美极了。"], ["c07-018", "南边的山坡上，到处闪着玉石的光，像撒了一地的小星星；北边的山坡上，青青的石头，泛着蓝蓝的光，像一片安静的湖。"], ["c07-019", "山里的树，都是绿得发亮的，风一吹，就沙沙地唱歌。"]]}, {"t": "p", "s": [["c07-020", "山里，住着很多奇怪的动物。"]]}, {"t": "p", "s": [["c07-021", "有一种小鸟，样子像斑鸠，却一开口，就像是在生气地呵斥人：“喝！"], ["c07-022", "喝！"], ["c07-023", "喝！”"], ["c07-024", "它的名字，叫作灌灌。"], ["c07-025", "听说，谁要是带着一根灌灌的羽毛，就不会被人骗，也不会迷路。"]]}, {"t": "p", "s": [["c07-026", "山脚下，有一条清清的英水，水里游着一种小鱼，长着人的脸，叫起来，像一对鸳鸯：“嘎嘎，嘎嘎。”"], ["c07-027", "那种鱼，叫赤鱬。"], ["c07-028", "山里人说，吃了它，身上就不长疥疮。"]]}, {"t": "p", "s": [["c07-029", "不过，青丘山上，最有名的，是一种长着九条尾巴的狐狸。"]]}, {"t": "img", "src": "images/32.webp?v=4daafb1f0b", "vid": "images/32.mp4?v=6b9171d6d7", "cap": "九尾狐", "n": 32}, {"t": "p", "s": [["c07-030", "九尾狐，全身雪白，只有九条尾巴的尾巴尖，是红色的。"], ["c07-031", "它们走起路来，九条尾巴，轻轻地摇着，像九朵盛开的红花。"], ["c07-032", "它们的叫声，又细又软，很像一个小宝宝，在哭。"]]}, {"t": "p", "s": [["c07-033", "有一天，山下的村子里，来了一个小姑娘，名叫阿青。"], ["c07-034", "阿青的爷爷病了，要用山上的一种草药来治。"], ["c07-035", "村里的人，都说：“青丘山，可去不得！"], ["c07-036", "山里，有一种九尾狐，会学小孩子哭。"], ["c07-037", "你要是听到娃娃的哭声，千万别过去，那是它在骗人。”"]]}, {"t": "p", "s": [["c07-038", "阿青点点头，把这句话，牢牢地记在了心里。"]]}, {"t": "img", "src": "images/33.webp?v=a465844796", "vid": "images/33.mp4?v=e561ae9c6a", "cap": "迷雾中", "n": 33}, {"t": "p", "s": [["c07-039", "阿青走进了青丘山。"], ["c07-040", "她走啊走啊，到了一片大雾里，白白的雾，像牛奶一样，把周围的一切，都盖住了，什么也看不见。"]]}, {"t": "p", "s": [["c07-041", "忽然，雾里，传来一阵声音：“呜哇……"], ["c07-042", "呜哇……”"]]}, {"t": "p", "s": [["c07-043", "那是一个婴儿，在哭。"], ["c07-044", "哭得好伤心，好可怜。"]]}, {"t": "p", "s": [["c07-045", "阿青的心，一下子，揪紧了：“这里，怎么会有小宝宝呢？"], ["c07-046", "是谁家的孩子，丢在了这里？”"]]}, {"t": "p", "s": [["c07-047", "她刚想循着哭声，走过去，忽然，头顶上，传来了一声：“喝！"], ["c07-048", "喝！"], ["c07-049", "喝！”"]]}, {"t": "p", "s": [["c07-050", "阿青抬起头，只见一只灰色的小鸟，停在树枝上，正瞪着圆圆的眼睛，对她大声叫：“喝！"], ["c07-051", "喝！"], ["c07-052", "别去！"], ["c07-053", "别去！”"]]}, {"t": "p", "s": [["c07-054", "那是灌灌鸟。"]]}, {"t": "p", "s": [["c07-055", "阿青一下子，明白了。"], ["c07-056", "她想：“这里，离村子，有好几十里，山里，一户人家都没有，小宝宝，怎么会一个人，在这里呢？"], ["c07-057", "这一定是九尾狐！”"]]}, {"t": "p", "s": [["c07-058", "于是，她停下了脚步，从包袱里，掏出一把小铃铛，轻轻地摇了起来：叮铃，叮铃，叮铃。"]]}, {"t": "p", "s": [["c07-059", "铃声，清清脆脆的，一下子，把雾，也拨开了一点。"]]}, {"t": "p", "s": [["c07-060", "只见前面的一块大石头后面，一只雪白的狐狸，探出了脑袋。"], ["c07-061", "它有九条尾巴，尾巴尖，红红的，在雾里，一晃一晃的。"], ["c07-062", "它也看见了阿青，愣住了，没有想到，这个小姑娘，一点也没有被骗。"]]}, {"t": "p", "s": [["c07-063", "阿青看着它，笑着说：“九尾狐呀，你的哭声，学得真像呀。"], ["c07-064", "可是，我不会上当的，我要去找药草，救我的爷爷。”"]]}, {"t": "img", "src": "images/34.webp?v=724fd7c440", "vid": "images/34.mp4?v=15b5444698", "cap": "九尾狐指路", "n": 34}, {"t": "p", "s": [["c07-065", "九尾狐歪着头，想了想，竟然，不好意思地，低下了脑袋。"], ["c07-066", "它转过身，用九条尾巴，轻轻地，在前面，扫出了一条小路，那条路，通向一片长着紫色小花的草坡。"]]}, {"t": "p", "s": [["c07-067", "阿青往前一看，高兴极了，那就是她要找的药草！"]]}, {"t": "p", "s": [["c07-068", "她采了满满一大把，回头想谢谢九尾狐，可是，雾散了，那里，已经没有狐狸的影子，只有九根红色的毛，轻轻地，落在草地上。"]]}, {"t": "p", "s": [["c07-069", "阿青把那九根毛，小心地收起来，带回了家。"], ["c07-070", "爷爷喝了药，慢慢地好起来了。"]]}, {"t": "p", "s": [["c07-071", "后来，人们都说，青丘山的九尾狐，其实并不总是坏的。"], ["c07-072", "只要你心里不慌，不贪，不上当，遇见它，也许，它还会帮你一个小小的忙呢。"]]}, {"t": "p", "s": [["c07-073", "（完）"]]}]}, {"title": "第八章　丹穴山的凤凰", "head": "c08-h", "audio": "audio/ch08.m4a?v=aa55e3d85c", "duration": 521.508, "times": {"c08-h": [0.0, 3.769], "c08-001": [4.769, 8.188], "c08-002": [9.038, 15.293], "c08-003": [15.643, 19.985], "c08-004": [20.335, 34.984], "c08-005": [35.334, 43.221], "c08-006": [44.071, 45.373], "c08-007": [46.223, 55.065], "c08-008": [55.415, 60.984], "c08-009": [61.334, 70.221], "c08-010": [70.571, 88.686], "c08-011": [89.036, 101.025], "c08-012": [101.875, 103.197], "c08-013": [104.047, 115.961], "c08-014": [116.811, 120.556], "c08-015": [120.906, 132.92], "c08-016": [133.77, 139.118], "c08-017": [139.968, 147.209], "c08-018": [147.559, 163.206], "c08-019": [163.556, 175.431], "c08-020": [176.281, 178.686], "c08-021": [179.536, 196.167], "c08-022": [196.517, 209.414], "c08-023": [210.264, 224.764], "c08-024": [225.114, 239.237], "c08-025": [240.087, 245.166], "c08-026": [246.016, 252.26], "c08-027": [253.11, 256.888], "c08-028": [257.238, 266.202], "c08-029": [266.552, 272.481], "c08-030": [273.331, 286.859], "c08-031": [287.709, 294.818], "c08-032": [295.668, 302.386], "c08-033": [303.236, 311.71], "c08-034": [312.06, 320.136], "c08-035": [320.486, 330.843], "c08-036": [331.693, 336.66], "c08-037": [337.51, 352.07], "c08-038": [352.92, 356.881], "c08-039": [357.231, 358.371], "c08-040": [359.221, 366.882], "c08-041": [367.232, 372.239], "c08-042": [373.089, 388.34], "c08-043": [389.19, 392.009], "c08-044": [392.359, 393.752], "c08-045": [394.602, 403.994], "c08-046": [404.344, 410.579], "c08-047": [410.929, 416.988], "c08-048": [417.338, 424.971], "c08-049": [425.821, 432.296], "c08-050": [433.146, 434.561], "c08-051": [434.911, 443.493], "c08-052": [443.843, 450.482], "c08-053": [451.332, 457.285], "c08-054": [457.635, 461.482], "c08-055": [461.832, 474.885], "c08-056": [475.735, 479.968], "c08-057": [480.318, 483.946], "c08-058": [484.296, 492.841], "c08-059": [493.691, 500.866], "c08-060": [501.216, 514.363], "c08-061": [515.213, 518.113], "c08-062": [518.963, 520.008]}, "blocks": [{"t": "img", "src": "images/35.webp?v=1a0ae10c94", "vid": "images/35.mp4?v=7d34f18703", "cap": "丹穴山", "n": 35}, {"t": "p", "s": [["c08-001", "原文，出自《南次三经》。"]]}, {"t": "p", "s": [["c08-002", "又东五百里，曰丹穴之山，其上多金玉。"], ["c08-003", "丹水出焉，而南流注于渤海。"], ["c08-004", "有鸟焉，其状如鸡，五采而文，名曰凤皇，首文曰德，翼文曰义，背文曰礼，膺文曰仁，腹文曰信。"], ["c08-005", "是鸟也，饮食自然，自歌自舞，见则天下安宁。"]]}, {"t": "p", "s": [["c08-006", "白话文。"]]}, {"t": "p", "s": [["c08-007", "再往东走五百里，有一座山，叫丹穴山，山上有很多金子和美玉。"], ["c08-008", "丹水从这里流出来，向南流进渤海。"], ["c08-009", "山里有一种鸟，样子像鸡，身上有五种颜色的花纹，名字叫凤凰。"], ["c08-010", "它头上的花纹，是一个“德”字；翅膀上的花纹，是一个“义”字；背上的花纹，是一个“礼”字；胸前的花纹，是一个“仁”字；肚子上的花纹，是一个“信”字。"], ["c08-011", "这种鸟，吃的喝的，都顺着自然，自己唱歌，自己跳舞，它一出现，天下就太平安宁。"]]}, {"t": "p", "s": [["c08-012", "故事。"]]}, {"t": "p", "s": [["c08-013", "很久很久以前，东方有一座山，山石都是红色的，像燃烧的火焰，所以叫作丹穴山。"]]}, {"t": "p", "s": [["c08-014", "山上到处是闪亮的金子和美玉。"], ["c08-015", "山脚下，一条红色的河水，哗哗地向南流去，一直流进了大海，河的名字，叫丹水。"]]}, {"t": "p", "s": [["c08-016", "丹穴山里，住着一只很美很美的鸟。"]]}, {"t": "p", "s": [["c08-017", "它的样子，有一点点像鸡，可是比鸡大得多，也美得多。"], ["c08-018", "它的羽毛，有五种颜色：红的像朝霞，黄的像金子，青的像春天的草，白的像天上的云，黑的像夜里的湖水。"], ["c08-019", "它的尾巴，长长的，像一条会飞的彩带；它的头顶，有一簇小小的羽冠，像一朵小小的火焰。"]]}, {"t": "img", "src": "images/36.webp?v=1f6c693d42", "vid": "images/36.mp4?v=132e64207d", "cap": "凤凰", "n": 36}, {"t": "p", "s": [["c08-020", "它的名字叫凤凰。"]]}, {"t": "p", "s": [["c08-021", "凤凰身上的花纹，更奇妙：头上的花纹，像“德”字，翅膀上，像“义”字，背上，像“礼”字，胸前，像“仁”字，肚子上，像“信”字。"], ["c08-022", "这五个字，是做人最重要的五件事：要有好品德，要讲道义，要懂礼貌，要有仁爱的心，要说话算数。"]]}, {"t": "p", "s": [["c08-023", "凤凰，从来不吃田里的庄稼，也不抢别人的虫子，它喝的是山里的清泉，吃的是树上落下来的果子，一切都是顺其自然。"], ["c08-024", "它高兴的时候，就自己唱歌，歌声清清亮亮的，像许多小铃铛，一起响；唱着唱着，就张开翅膀，转着圈地跳起舞来。"]]}, {"t": "p", "s": [["c08-025", "可是，凤凰，不是每天都能看见的。"]]}, {"t": "p", "s": [["c08-026", "只有在天下太平的时候，凤凰，才会飞到人间。"]]}, {"t": "p", "s": [["c08-027", "有一年，山外面，在打仗。"], ["c08-028", "人们互相抢田地，互相夺粮食，没有人，再有心思，抬头看天。"], ["c08-029", "凤凰，一直待在丹穴山里，不出来。"]]}, {"t": "p", "s": [["c08-030", "那个时候，山下的小村子里，有一个叫小禾的孩子，他的爸爸，被抓去打仗了，他和妈妈，守着一小块地，过着很苦的日子。"]]}, {"t": "p", "s": [["c08-031", "有一天，小禾听老奶奶说：“要是凤凰出现了，天下就太平了。”"]]}, {"t": "p", "s": [["c08-032", "小禾想：“我要去丹穴山，请凤凰，飞到我们这里来！”"]]}, {"t": "p", "s": [["c08-033", "他背着一个小布袋，里面装着几块干粮，沿着红色的丹水，往上走。"], ["c08-034", "走啊走啊，走了好多天，鞋子都磨破了，脚上全是泡。"], ["c08-035", "他走到了丹穴山脚下，天已经黑了，他实在走不动了，靠在一块红色的石头上，睡着了。"]]}, {"t": "img", "src": "images/37.webp?v=eb97a32c41", "vid": "images/37.mp4?v=5e089fc501", "cap": "小禾遇凤凰", "n": 37}, {"t": "p", "s": [["c08-036", "半夜里，他被一阵好听的歌声，唤醒了。"]]}, {"t": "p", "s": [["c08-037", "睁开眼睛一看，月光下，一只五彩的大鸟，站在石头上，正低着头，看着他，眼睛亮亮的，像两颗黑色的珍珠。"]]}, {"t": "p", "s": [["c08-038", "“孩子，你为什么，来这里？”"], ["c08-039", "凤凰问。"]]}, {"t": "p", "s": [["c08-040", "小禾揉了揉眼睛，说：“凤凰，凤凰，我想请你，去我们那里。"], ["c08-041", "老奶奶说，只要你飞来，天下就太平了。”"]]}, {"t": "p", "s": [["c08-042", "凤凰听了，轻轻地叹了一口气，说：“孩子，不是我飞去了，天下才太平；而是，天下太平了，我才会飞去呀。”"]]}, {"t": "p", "s": [["c08-043", "小禾愣住了：“那……"], ["c08-044", "那要怎么办呢？”"]]}, {"t": "p", "s": [["c08-045", "凤凰看着他，微笑着说：“你看我身上的字，德，义，礼，仁，信。"], ["c08-046", "如果每个人，都做到了这五件事，那不就太平了吗？"], ["c08-047", "你回去，把它们，一件一件，告诉你认识的人。"], ["c08-048", "有一天，当人人都这样做的时候，我，一定会飞来看你们的。”"]]}, {"t": "p", "s": [["c08-049", "小禾点点头，把那五个字，牢牢地记在了心里。"]]}, {"t": "p", "s": [["c08-050", "天亮了。"], ["c08-051", "凤凰展开了翅膀，一声长鸣，飞上了天空，像一团五彩的云。"], ["c08-052", "小禾望着它，一直到看不见了，才转过身，往回走。"]]}, {"t": "p", "s": [["c08-053", "回到村子里，他把那五个字，教给了村里每一个人。"], ["c08-054", "德，义，礼，仁，信。"], ["c08-055", "他一遍一遍地，教着，念着，村子里的人，听着，学着，也慢慢地，在生活里，一点一点地，去做。"]]}, {"t": "p", "s": [["c08-056", "后来，战争，终于结束了。"], ["c08-057", "小禾的爸爸，回到了家。"], ["c08-058", "村里的人，不再争吵，大家一起，种田，一起，收粮食。"]]}, {"t": "img", "src": "images/38.webp?v=2ad0966407", "vid": "images/38.mp4?v=db0d609667", "cap": "凤凰来了", "n": 38}, {"t": "p", "s": [["c08-059", "有一天，天还没亮，小禾被一阵好听的歌声，吵醒了。"], ["c08-060", "他跑到门外，抬起头，看见一只五色的大鸟，在天空中，一边唱着歌，一边跳着舞，盘旋着，盘旋着。"]]}, {"t": "p", "s": [["c08-061", "那，就是凤凰。"]]}, {"t": "p", "s": [["c08-062", "（完）"]]}]}, {"title": "第九章　西王母和三青鸟", "head": "c09-h", "audio": "audio/ch09.m4a?v=06bf08ab68", "duration": 529.803, "times": {"c09-h": [0.0, 4.993], "c09-001": [5.993, 12.889], "c09-002": [13.739, 20.242], "c09-003": [20.592, 31.355], "c09-004": [32.205, 42.922], "c09-005": [43.272, 51.225], "c09-006": [51.575, 59.682], "c09-007": [60.032, 62.573], "c09-008": [63.423, 72.369], "c09-009": [72.719, 74.351], "c09-010": [75.201, 76.948], "c09-011": [77.798, 86.476], "c09-012": [86.826, 103.969], "c09-013": [104.319, 108.259], "c09-014": [109.109, 121.154], "c09-015": [121.504, 134.96], "c09-016": [135.31, 147.512], "c09-017": [147.862, 153.482], "c09-018": [154.332, 165.248], "c09-019": [165.598, 168.387], "c09-020": [169.237, 169.916], "c09-021": [170.766, 178.497], "c09-022": [179.347, 191.92], "c09-023": [192.27, 198.987], "c09-024": [199.337, 207.923], "c09-025": [208.273, 219.912], "c09-026": [220.762, 224.191], "c09-027": [225.041, 232.933], "c09-028": [233.783, 254.315], "c09-029": [254.665, 264.254], "c09-030": [265.104, 275.844], "c09-031": [276.694, 282.711], "c09-032": [283.061, 296.639], "c09-033": [297.489, 309.169], "c09-034": [310.019, 319.0], "c09-035": [319.35, 327.202], "c09-036": [327.552, 333.187], "c09-037": [334.037, 350.116], "c09-038": [350.966, 357.174], "c09-039": [358.024, 367.652], "c09-040": [368.502, 382.731], "c09-041": [383.581, 394.249], "c09-042": [395.099, 397.53], "c09-043": [397.88, 413.672], "c09-044": [414.522, 428.167], "c09-045": [428.517, 443.48], "c09-046": [444.33, 456.109], "c09-047": [456.959, 462.185], "c09-048": [462.535, 471.729], "c09-049": [472.079, 483.684], "c09-050": [484.534, 495.136], "c09-051": [495.986, 502.799], "c09-052": [503.649, 510.755], "c09-053": [511.105, 526.379], "c09-054": [527.229, 528.303]}, "blocks": [{"t": "img", "src": "images/39.webp?v=1220c01446", "vid": "images/39.mp4?v=ffdfa5cdf7", "cap": "昆仑山", "n": 39}, {"t": "p", "s": [["c09-001", "原文，出自《西山经》《大荒西经》和《海内北经》。"]]}, {"t": "p", "s": [["c09-002", "又西三百五十里，曰玉山，是西王母所居也。"], ["c09-003", "西王母其状如人，豹尾虎齿而善啸，蓬发戴胜，是司天之厉及五残。"]]}, {"t": "p", "s": [["c09-004", "西海之南，流沙之滨，赤水之后，黑水之前，有大山，名曰昆仑之丘。"], ["c09-005", "其下有弱水之渊环之，其外有炎火之山，投物辄然。"], ["c09-006", "有人，戴胜，虎齿，有豹尾，穴处，名曰西王母。"], ["c09-007", "此山万物尽有。"]]}, {"t": "p", "s": [["c09-008", "西王母梯几而戴胜，其南有三青鸟，为西王母取食。"], ["c09-009", "在昆仑虚北。"]]}, {"t": "p", "s": [["c09-010", "白话文。"]]}, {"t": "p", "s": [["c09-011", "再往西走三百五十里，有一座山，叫玉山，是西王母住的地方。"], ["c09-012", "西王母的样子，像人，却有豹子的尾巴、老虎的牙齿，很会长啸，也就是吹长长的口哨，她的头发蓬松散乱，头上戴着一种叫“胜”的首饰。"], ["c09-013", "她掌管着天上的灾祸和刑罚。"]]}, {"t": "p", "s": [["c09-014", "在西边大海的南边，流沙的岸边，赤水的后面，黑水的前面，有一座大山，名字叫昆仑山。"], ["c09-015", "山的下面，有一条叫弱水的深水围着它，山的外面，有一座炎火山，丢进去的东西，都会立刻烧起来。"], ["c09-016", "山里，住着一个人，头上戴着“胜”，有老虎一样的牙齿，豹子一样的尾巴，住在山洞里，她的名字叫西王母。"], ["c09-017", "这座山上，世间的万物，没有一样不具备。"]]}, {"t": "p", "s": [["c09-018", "西王母靠着小桌子，头上戴着“胜”，她的南边，有三只青色的鸟，专门为西王母取食物。"], ["c09-019", "它们住在昆仑山的北边。"]]}, {"t": "p", "s": [["c09-020", "故事。"]]}, {"t": "p", "s": [["c09-021", "在世界的最西边，有一座很大很大的山，叫作昆仑山。"]]}, {"t": "p", "s": [["c09-022", "昆仑山，高得，一眼看不到顶，山顶上的云，是金色的；山腰里的泉水，是银色的。"], ["c09-023", "山的四周，围着一条很深的河，叫作弱水。"], ["c09-024", "水很奇怪，连一根羽毛，也托不起来，一落到水里，就沉下去了。"], ["c09-025", "山的外面，还有一圈熊熊燃烧的大火，叫炎火山，不管什么东西丢进去，都会烧起来。"]]}, {"t": "p", "s": [["c09-026", "没有人，能走到那里。"]]}, {"t": "img", "src": "images/40.webp?v=a298f76231", "vid": "images/40.mp4?v=7439966691", "cap": "西王母", "n": 40}, {"t": "p", "s": [["c09-027", "可是，山上，住着一位很了不起的神仙，名字叫西王母。"]]}, {"t": "p", "s": [["c09-028", "人们传说，西王母，长得有一点点吓人：她有一条花豹一样的尾巴，一口老虎一样的牙齿，披着蓬蓬松松的长头发，头顶上，戴着一个“胜”，那是一种像小小花朵一样的玉做的首饰。"], ["c09-029", "她笑的时候，会发出一声长长的、响亮的口哨，山谷里，就会有一阵阵回声。"]]}, {"t": "p", "s": [["c09-030", "可是，只要你真的见到了她，你就会发现，她其实，是一位很温柔的、很爱护孩子的老奶奶。"]]}, {"t": "p", "s": [["c09-031", "她，管着天上的灾祸和疾病，也管着一种神奇的桃子。"], ["c09-032", "那是一种在昆仑山上才有的桃，每三千年才开一次花，每三千年才结一次果，吃了它，人就会长生不老。"]]}, {"t": "p", "s": [["c09-033", "西王母住在山上，没有朋友，也没有邻居，可是，她并不孤单，因为她有三只青色的小鸟，做她的伙伴。"]]}, {"t": "img", "src": "images/41.webp?v=e2b42aff55", "vid": "images/41.mp4?v=c74b88d5f2", "cap": "三青鸟", "n": 41}, {"t": "p", "s": [["c09-034", "这三只鸟，是三姐妹，一只叫大鵹，一只叫少鵹，一只叫青鸟。"], ["c09-035", "它们的羽毛，青青的，亮亮的，像春天里的第一片叶子。"], ["c09-036", "它们的眼睛，圆圆的，像三颗黑葡萄。"]]}, {"t": "p", "s": [["c09-037", "每天早上，三只青鸟，叽叽喳喳地飞出去，从山的南边，飞到山的北边，给西王母，找来最新鲜的果子，最甜的野花，还有最干净的露水。"]]}, {"t": "p", "s": [["c09-038", "有时候，它们还会，替西王母，传送消息。"]]}, {"t": "p", "s": [["c09-039", "有一年，人间的国王，非常想见一见西王母，却不知道该怎么才能找到昆仑山。"]]}, {"t": "p", "s": [["c09-040", "有一天，国王正坐在宫殿里叹气，忽然，窗外，飞来了三只青色的小鸟，落在窗台上，叽叽叽地叫个不停。"]]}, {"t": "p", "s": [["c09-041", "国王，吓了一跳，他听了半天，好像听明白了：“西王母，让我们来告诉你，她要见你了！”"]]}, {"t": "img", "src": "images/42.webp?v=52de6d653e", "vid": "images/42.mp4?v=77f4a6afed", "cap": "国王上昆仑", "n": 42}, {"t": "p", "s": [["c09-042", "国王，高兴极了。"], ["c09-043", "他赶着马车，跟着青鸟，过了流沙，渡过了赤水，一直向西，走啊走啊，终于，望见了那座高高的、云雾缭绕的昆仑山。"]]}, {"t": "p", "s": [["c09-044", "那时候，弱水，正好变得浅了，火焰，也慢慢熄了，三只青鸟，在空中，一边飞，一边为他领路。"], ["c09-045", "他走进了山里，只见满山的花，全都开了，各种各样的鸟，在树上，唱着歌，山路的尽头，是一座玉做的宫殿。"]]}, {"t": "p", "s": [["c09-046", "西王母，坐在宫殿门口的小桌子旁，对着他笑，招了招手：“远方的客人，欢迎，欢迎。”"]]}, {"t": "p", "s": [["c09-047", "国王，向西王母，行了一个大礼。"], ["c09-048", "西王母，请他喝了一杯，昆仑山上的泉水，又请他吃了一个，桃子。"], ["c09-049", "国王吃着吃着，觉得，自己身上，一点一点地，有了力气，心里，也变得很安静。"]]}, {"t": "p", "s": [["c09-050", "临走的时候，西王母，对他说：“你回去，要做一个好国王，要记得，好好地对待你的百姓。”"]]}, {"t": "p", "s": [["c09-051", "国王点点头，带着三只青鸟的祝福，回到了自己的国家。"]]}, {"t": "p", "s": [["c09-052", "后来，在人们的传说里，青鸟，就成了送信的小使者。"], ["c09-053", "每当有人想念远方的朋友，就会抬起头，看着天空，轻轻地说：“青鸟，青鸟，请你，替我，带去一声问候吧。”"]]}, {"t": "p", "s": [["c09-054", "（完）"]]}]}, {"title": "第十章　应龙和女魃", "head": "c10-h", "audio": "audio/ch10.m4a?v=f70df12899", "duration": 506.21, "times": {"c10-h": [0.0, 3.455], "c10-001": [4.455, 8.673], "c10-002": [9.523, 16.636], "c10-003": [16.986, 19.108], "c10-004": [19.458, 24.236], "c10-005": [24.586, 30.952], "c10-006": [31.802, 40.394], "c10-007": [41.244, 42.679], "c10-008": [43.529, 47.97], "c10-009": [48.32, 53.299], "c10-010": [53.649, 58.87], "c10-011": [59.22, 66.875], "c10-012": [67.225, 72.793], "c10-013": [73.143, 79.502], "c10-014": [80.352, 90.953], "c10-015": [91.803, 92.534], "c10-016": [93.384, 99.4], "c10-017": [99.75, 127.478], "c10-018": [128.328, 137.272], "c10-019": [138.122, 145.916], "c10-020": [146.766, 158.744], "c10-021": [159.594, 172.403], "c10-022": [173.253, 186.43], "c10-023": [186.78, 195.581], "c10-024": [196.431, 203.911], "c10-025": [204.761, 210.445], "c10-026": [211.295, 217.081], "c10-027": [217.431, 223.336], "c10-028": [223.686, 242.348], "c10-029": [243.198, 252.018], "c10-030": [252.368, 265.42], "c10-031": [265.77, 279.321], "c10-032": [280.171, 281.099], "c10-033": [281.949, 289.328], "c10-034": [290.178, 305.4], "c10-035": [306.25, 311.9], "c10-036": [312.25, 320.721], "c10-037": [321.571, 328.659], "c10-038": [329.009, 336.29], "c10-039": [337.14, 343.097], "c10-040": [343.447, 350.477], "c10-041": [351.327, 354.026], "c10-042": [354.376, 362.946], "c10-043": [363.796, 374.934], "c10-044": [375.284, 389.192], "c10-045": [390.042, 406.251], "c10-046": [407.101, 415.459], "c10-047": [415.809, 424.441], "c10-048": [425.291, 433.863], "c10-049": [434.713, 451.077], "c10-050": [451.927, 453.12], "song-theme": [454.32, 460.32], "song-theme-01": [460.32, 462.84], "song-theme-02": [462.84, 465.84], "song-theme-03": [465.84, 468.9], "song-theme-04": [468.9, 471.04], "song-theme-05": [472.36, 474.82], "song-theme-06": [475.06, 477.98], "song-theme-07": [477.98, 480.9], "song-theme-08": [480.9, 483.54], "song-theme-09": [485.38, 488.38], "song-theme-10": [488.38, 490.56], "song-theme-11": [491.42, 494.44], "song-theme-12": [494.56, 499.36]}, "blocks": [{"t": "img", "src": "images/43.webp?v=3763e65256", "vid": "images/43.mp4?v=8690f39c9a", "cap": "冀州原野", "n": 43}, {"t": "p", "s": [["c10-001", "原文，出自《大荒北经》。"]]}, {"t": "p", "s": [["c10-002", "蚩尤作兵伐黄帝，黄帝乃令应龙攻之冀州之野。"], ["c10-003", "应龙畜水。"], ["c10-004", "蚩尤请风伯雨师，纵大风雨。"], ["c10-005", "黄帝乃下天女曰魃，雨止，遂杀蚩尤。"]]}, {"t": "p", "s": [["c10-006", "应龙已杀蚩尤，又杀夸父，乃去南方处之，故南方多雨。"]]}, {"t": "p", "s": [["c10-007", "白话文。"]]}, {"t": "p", "s": [["c10-008", "蚩尤造了很多兵器，来攻打黄帝。"], ["c10-009", "黄帝就命令应龙，到冀州的原野上去迎战。"], ["c10-010", "应龙把水蓄积起来，准备放水冲击敌人。"], ["c10-011", "蚩尤却请来了风伯和雨师，让他们刮起了大风，下起了暴雨。"], ["c10-012", "黄帝于是派下了一位天上的女神，叫作魃。"], ["c10-013", "魃一来，雨就停了，黄帝就战胜了蚩尤。"]]}, {"t": "p", "s": [["c10-014", "应龙战胜了蚩尤之后，没有办法再回到天上，就搬到了南方去住，所以，南方的雨水，总是很多。"]]}, {"t": "p", "s": [["c10-015", "故事。"]]}, {"t": "p", "s": [["c10-016", "在很久很久以前，天底下，有两位大首领。"], ["c10-017", "一位是黄帝，住在北方，他爱护百姓，教大家种庄稼，盖房子，做衣裳，大家都很喜欢他；另一位叫蚩尤，住在南方，他有八十一个兄弟，个个本事很大，会打铁，会做兵器，身上披着铜做的盔甲，头上，长着像牛角一样的头盔。"]]}, {"t": "p", "s": [["c10-018", "蚩尤，很有本事，却有一点不好，他不满足，总想把天下，都变成自己的。"]]}, {"t": "p", "s": [["c10-019", "有一天，蚩尤带着他的兄弟们，举着各式各样的兵器，向北方打来了。"]]}, {"t": "p", "s": [["c10-020", "黄帝听说了，叹了口气，说：“我不想打仗，可是，如果让他们占领了这里，大家，就没有好日子过了。”"]]}, {"t": "p", "s": [["c10-021", "于是，他召集了自己的大将，其中，有一位，最特别，他是一条有翅膀的龙，名字叫作应龙。"]]}, {"t": "img", "src": "images/44.webp?v=14eb395160", "vid": "images/44.mp4?v=924b666884", "cap": "应龙", "n": 44}, {"t": "p", "s": [["c10-022", "应龙，浑身金黄，鳞片，在阳光下，闪着光，他背上，长着一对大翅膀，一拍，天空就掀起一阵风。"], ["c10-023", "他还有一个本事，他能把天上的水，一口气，吸进肚子里，再放出来。"]]}, {"t": "p", "s": [["c10-024", "黄帝，对应龙说：“你去冀州的原野上，挡住蚩尤吧。”"]]}, {"t": "p", "s": [["c10-025", "应龙，点点头，展开翅膀，飞上了天空。"]]}, {"t": "p", "s": [["c10-026", "两支军队，在冀州的原野上，相遇了。"], ["c10-027", "蚩尤的兄弟们，举着刀和斧头，一边喊，一边冲过来。"], ["c10-028", "应龙，张开大口，把天上所有的水，一口一口地吸进了肚子里，然后，对着蚩尤的队伍，哗的一声，放出一条大水龙，把冲在前面的人，冲得东倒西歪。"]]}, {"t": "p", "s": [["c10-029", "蚩尤，眼看自己要输了，赶紧请来了两个朋友，一个叫风伯，一个叫雨师。"], ["c10-030", "风伯，鼓起腮帮子，呼地一吹，刮起了一场大风；雨师，抖一抖袖子，哗啦啦，下起了一场大雨。"], ["c10-031", "顿时，天昏地暗，大雨倾盆，应龙的水，被冲散了，黄帝的军队，也被打得睁不开眼睛。"]]}, {"t": "p", "s": [["c10-032", "怎么办呢？"]]}, {"t": "p", "s": [["c10-033", "黄帝，想了想，对天上说：“请天上的魃，下来帮帮忙吧！”"]]}, {"t": "img", "src": "images/45.webp?v=2c626b0af0", "vid": "images/45.mp4?v=16bacb95bd", "cap": "魃止雨", "n": 45}, {"t": "p", "s": [["c10-034", "魃，是一位穿着青衣的姑娘，是黄帝的女儿，身体里，藏着一团热热的光，她一走到哪里，哪里的雨，就会停下来。"]]}, {"t": "p", "s": [["c10-035", "魃，轻轻地从云端落下，走到了战场上。"], ["c10-036", "她张开两只手，手心里，那团光，一下子亮了起来，像一轮小小的太阳。"]]}, {"t": "p", "s": [["c10-037", "大风，慢慢地小了，大雨，也一点一点地停了。"], ["c10-038", "阳光，重新照在大地上，天空，变得又高又蓝。"]]}, {"t": "p", "s": [["c10-039", "蚩尤，和风伯、雨师，一下子，没有了依靠。"], ["c10-040", "应龙趁着这个机会，一下子飞上前去，最后，蚩尤被打败了。"]]}, {"t": "p", "s": [["c10-041", "战争，结束了。"], ["c10-042", "冀州的原野上，重新安静了下来，天上，挂着一道长长的彩虹。"]]}, {"t": "p", "s": [["c10-043", "应龙，立了大功，可是，他很累很累，翅膀，也受了伤，再也飞不回高高的天上了。"], ["c10-044", "魃，也一样，她身上的光，用得太多，再也回不去了，只好留在人间，哪里有她，哪里就不下雨。"]]}, {"t": "p", "s": [["c10-045", "应龙，看着魃，轻轻地说：“我听说，南边，常常下雨，那里的田地，一定很潮湿，我去那里，替那里的人们，管着雨水吧。”"]]}, {"t": "img", "src": "images/46.webp?v=1921ab438e", "vid": "images/46.mp4?v=7d78b8b7b6", "cap": "应龙去南方", "n": 46}, {"t": "p", "s": [["c10-046", "于是，应龙，拍着翅膀，飞向了南方，在一座山里，住了下来。"], ["c10-047", "他一生气，就吐出水雾，一高兴，就让天空，下起了细细的雨。"]]}, {"t": "p", "s": [["c10-048", "所以，人们都说，南方多雨，是因为，在那里，住着一条善良的龙。"]]}, {"t": "p", "s": [["c10-049", "每当下雨的时候，孩子们，抬起头，看着天空中的云，会不会觉得，云里面，有一条金色的龙，正在对着大地，轻轻地笑呢？"]]}, {"t": "p", "s": [["c10-050", "（完）"]]}, {"t": "song", "title": "山海的歌", "head": "song-theme", "lines": [["song-theme-01", "翻过山，渡过海"], ["song-theme-02", "山海经里，藏着多少梦"], ["song-theme-03", "小鸟衔石填平大海"], ["song-theme-04", "巨人追着太阳奔跑"], ["song-theme-05", "凤凰唱歌，九尾狐的雾"], ["song-theme-06", "烛龙睁眼，天就亮了"], ["song-theme-07", "水来了，有人去开路"], ["song-theme-08", "勇敢的心，从来不会老"], ["song-theme-09", "山海山海，山海的故事"], ["song-theme-10", "一代一代，传到今天"], ["song-theme-11", "愿每个孩子，都有一颗"], ["song-theme-12", "不怕远，不怕难的心"]]}]}], "music": 3, "images": [{"from": "c01-h", "src": "images/01.webp?v=9f83ecfa3d", "vid": "images/01.mp4?v=32d07ab668", "cap": "发鸠山", "n": 1}, {"from": "c01-017", "src": "images/02.webp?v=c4bb11f47d", "vid": "images/02.mp4?v=1e2a0fca5d", "cap": "海边看日出", "n": 2}, {"from": "c01-025", "src": "images/03.webp?v=b40d311653", "vid": "images/03.mp4?v=3a2f869cb7", "cap": "大浪涌来", "n": 3}, {"from": "c01-030", "src": "images/04.webp?v=42cc519f27", "vid": "images/04.mp4?v=a5b72618fa", "cap": "变成精卫鸟", "n": 4}, {"from": "c01-036", "src": "images/05.webp?v=155e8dfab0", "vid": "images/05.mp4?v=856e7d0ec0", "cap": "精卫和大海", "n": 5}, {"from": "c02-h", "src": "images/06.webp?v=bc829dec63", "vid": "images/06.mp4?v=45e202451f", "cap": "北方大山", "n": 6}, {"from": "c02-020", "src": "images/07.webp?v=28338fe20e", "vid": "images/07.mp4?v=875d849db7", "cap": "追日出发", "n": 7}, {"from": "c02-033", "src": "images/08.webp?v=89fb1df266", "vid": "images/08.mp4?v=d636c26c03", "cap": "喝黄河水", "n": 8}, {"from": "c02-041", "src": "images/09.webp?v=f4ce7ede40", "vid": "images/09.mp4?v=fddb1b0700", "cap": "追到太阳", "n": 9}, {"from": "c02-049", "src": "images/10.webp?v=2ea7e50e85", "vid": "images/10.mp4?v=23320e9ade", "cap": "邓林", "n": 10}, {"from": "c03-h", "src": "images/11.webp?v=20b5f2429a", "vid": "images/11.mp4?v=eec0fb7d83", "cap": "常羊山", "n": 11}, {"from": "c03-015", "src": "images/12.webp?v=2b2fd8e647", "vid": "images/12.mp4?v=1673ea2326", "cap": "刑天上天宫", "n": 12}, {"from": "c03-028", "src": "images/13.webp?v=2f28ffe631", "vid": "images/13.mp4?v=f49a1445b9", "cap": "刑天起舞", "n": 13}, {"from": "c03-037", "src": "images/14.webp?v=466b3ca464", "vid": "images/14.mp4?v=8a973c61e6", "cap": "山上的鼓声", "n": 14}, {"from": "c04-h", "src": "images/15.webp?v=1e8d59ece9", "vid": "images/15.mp4?v=9f5c3be6c3", "cap": "洪水滔天", "n": 15}, {"from": "c04-024", "src": "images/16.webp?v=80a140f165", "vid": "images/16.mp4?v=6389491025", "cap": "鲧筑堤", "n": 16}, {"from": "c04-034", "src": "images/17.webp?v=7f2a57b133", "vid": "images/17.mp4?v=841c035154", "cap": "息壤", "n": 17}, {"from": "c04-048", "src": "images/18.webp?v=acadb837d4", "vid": "images/18.mp4?v=ef3a0aee11", "cap": "大禹长大", "n": 18}, {"from": "c04-056", "src": "images/19.webp?v=e5a63cb1ce", "vid": "images/19.mp4?v=a6e30e3d4c", "cap": "大禹过家门", "n": 19}, {"from": "c04-060", "src": "images/20.webp?v=92ff535060", "vid": "images/20.mp4?v=0057ff609e", "cap": "洪水退去", "n": 20}, {"from": "c05-h", "src": "images/21.webp?v=b32b9f4dbb", "vid": "images/21.mp4?v=b0eabf06f2", "cap": "汤谷扶桑", "n": 21}, {"from": "c05-021", "src": "images/22.webp?v=d3101e3847", "vid": "images/22.mp4?v=6b3f2063a8", "cap": "羲和驾车", "n": 22}, {"from": "c05-033", "src": "images/23.webp?v=290eddf119", "vid": "images/23.mp4?v=6ebb638c4e", "cap": "十日同出", "n": 23}, {"from": "c05-044", "src": "images/24.webp?v=2a7bfe58d9", "vid": "images/24.mp4?v=9c9770aaf1", "cap": "后羿射日", "n": 24}, {"from": "c05-057", "src": "images/25.webp?v=7cff4cb541", "vid": "images/25.mp4?v=5ccad2c83f", "cap": "金乌回扶桑", "n": 25}, {"from": "c06-h", "src": "images/26.webp?v=5e462f5503", "vid": "images/26.mp4?v=8816c71123", "cap": "章尾山", "n": 26}, {"from": "c06-023", "src": "images/27.webp?v=b20aa5f4f8", "vid": "images/27.mp4?v=19cfb596ee", "cap": "烛龙睁眼", "n": 27}, {"from": "c06-037", "src": "images/28.webp?v=3184e7eda2", "vid": "images/28.mp4?v=de1e4e18f2", "cap": "小石头赶路", "n": 28}, {"from": "c06-039", "src": "images/29.webp?v=1c24b3cfb8", "vid": "images/29.mp4?v=74957bd4f5", "cap": "遇见烛龙", "n": 29}, {"from": "c06-060", "src": "images/30.webp?v=d1832a4310", "vid": "images/30.mp4?v=ace0043563", "cap": "睡在烛龙身边", "n": 30}, {"from": "c07-h", "src": "images/31.webp?v=fe0d0276ea", "vid": "images/31.mp4?v=5ccc7d97cb", "cap": "青丘山", "n": 31}, {"from": "c07-030", "src": "images/32.webp?v=4daafb1f0b", "vid": "images/32.mp4?v=6b9171d6d7", "cap": "九尾狐", "n": 32}, {"from": "c07-039", "src": "images/33.webp?v=a465844796", "vid": "images/33.mp4?v=e561ae9c6a", "cap": "迷雾中", "n": 33}, {"from": "c07-066", "src": "images/34.webp?v=724fd7c440", "vid": "images/34.mp4?v=15b5444698", "cap": "九尾狐指路", "n": 34}, {"from": "c08-h", "src": "images/35.webp?v=1a0ae10c94", "vid": "images/35.mp4?v=7d34f18703", "cap": "丹穴山", "n": 35}, {"from": "c08-020", "src": "images/36.webp?v=1f6c693d42", "vid": "images/36.mp4?v=132e64207d", "cap": "凤凰", "n": 36}, {"from": "c08-036", "src": "images/37.webp?v=eb97a32c41", "vid": "images/37.mp4?v=5e089fc501", "cap": "小禾遇凤凰", "n": 37}, {"from": "c08-059", "src": "images/38.webp?v=2ad0966407", "vid": "images/38.mp4?v=db0d609667", "cap": "凤凰来了", "n": 38}, {"from": "c09-h", "src": "images/39.webp?v=1220c01446", "vid": "images/39.mp4?v=ffdfa5cdf7", "cap": "昆仑山", "n": 39}, {"from": "c09-027", "src": "images/40.webp?v=a298f76231", "vid": "images/40.mp4?v=7439966691", "cap": "西王母", "n": 40}, {"from": "c09-034", "src": "images/41.webp?v=e2b42aff55", "vid": "images/41.mp4?v=c74b88d5f2", "cap": "三青鸟", "n": 41}, {"from": "c09-043", "src": "images/42.webp?v=52de6d653e", "vid": "images/42.mp4?v=77f4a6afed", "cap": "国王上昆仑", "n": 42}, {"from": "c10-h", "src": "images/43.webp?v=3763e65256", "vid": "images/43.mp4?v=8690f39c9a", "cap": "冀州原野", "n": 43}, {"from": "c10-022", "src": "images/44.webp?v=14eb395160", "vid": "images/44.mp4?v=924b666884", "cap": "应龙", "n": 44}, {"from": "c10-034", "src": "images/45.webp?v=2c626b0af0", "vid": "images/45.mp4?v=16bacb95bd", "cap": "魃止雨", "n": 45}, {"from": "c10-046", "src": "images/46.webp?v=1921ab438e", "vid": "images/46.mp4?v=7d78b8b7b6", "cap": "应龙去南方", "n": 46}]};
+const POS_KEY = BOOK.id + '-audiobook-pos';   // 听到哪里：每本书分开记
+// 网上运行时音频、插图都从 Cloudflare 加载（网页仓库里只放 HTML）；本机、局域网、file:// 用相对路径。
+// ?assets=remote / pages / local 强制（pages = 默认的 pages.dev 域名，自定义域名没配好时用）
+const ASSET_HOSTS = { remote: 'https://meler-stories-assets.melerpaine.com/', pages: 'https://meler-stories-assets.pages.dev/' };
+const ASSET_BASE = (() => {
+  const q = new URLSearchParams(location.search).get('assets');
+  const local = location.protocol === 'file:' || /^(localhost|127\.|10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.|\[::1\]$)|\.local$/.test(location.hostname);
+  const host = ASSET_HOSTS[q] || (q !== 'local' && !local ? ASSET_HOSTS.remote : '');
+  return host ? host + BOOK.id + '/' : '';
+})();
+const A = p => p && ASSET_BASE + p;
+BOOK.cover = A(BOOK.cover);
+BOOK.images.forEach(im => { im.src = A(im.src); im.vid = A(im.vid); });
+BOOK.chapters.forEach(ch => { ch.audio = A(ch.audio); ch.blocks.forEach(b => { if (b.t === 'img') { b.src = A(b.src); b.vid = A(b.vid); } }); });
+const PREF = 'story-audiobook-';               // 主题、动图、显示模式：所有书共用
+const NUM = ['零','一','二','三','四','五','六','七','八','九','十','十一','十二','十三','十四','十五'];
+const ICON_PLAY = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>';
+const ICON_PAUSE = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 5h3.5v14H7zm6.5 0H17v14h-3.5z"/></svg>';
+const $ = s => document.querySelector(s);
+const fmt = t => { t = Math.max(0, t | 0); return String(t / 60 | 0).padStart(2, '0') + ':' + String(t % 60).padStart(2, '0'); };
+
+// ---------- 渲染 ----------
+const story = $('#story');
+let anim = true;   // 插图用动图还是静态图
+try { anim = localStorage.getItem(PREF + 'anim') !== 'off'; } catch (e) {}
+const lines = [];          // 全书按顺序：{id, ch, start, end, el, img}
+const imgs = BOOK.images;  // 全书插图（故事顺序）：{from, src, vid, cap, n}，from = 从哪一句开始显示；vid 是动图短片
+// 正文里的动图：进入视野附近才加载、播放，离开就暂停（几十段短片同时播手机吃不消）
+const vio = new IntersectionObserver(es => es.forEach(e => {
+  const v = e.target;
+  if (e.isIntersecting && anim) { if (!v.src) v.src = v.dataset.src; v.play().catch(() => {}); }
+  else v.pause();
+}), { rootMargin: '300px 0px' });
+const byId = {};
+document.title = BOOK.title + ' · 有声绘本';
+$('#bookTitle').textContent = BOOK.title;
+$('#kicker').textContent = BOOK.kicker + ' · 有声绘本';
+$('#intro').textContent = BOOK.intro;
+$('#coverImg').src = BOOK.cover;
+const total = BOOK.chapters.reduce((a, c) => a + c.duration, 0);
+const nImg = BOOK.chapters.reduce((a, c) => a + c.blocks.filter(b => b.t === 'img').length, 0);
+const nSong = BOOK.chapters.reduce((a, c) => a + c.blocks.filter(b => b.t === 'song').length, 0);
+// 同一个故事的其他版本（精简版 / 完整版）
+if (BOOK.versions) {
+  const box = $('#versions'); box.hidden = false;
+  BOOK.versions.forEach(v => {
+    const el = document.createElement(v.current ? 'span' : 'a');
+    el.textContent = v.current ? v.label : v.label + ' ›';
+    if (v.current) el.className = 'on'; else el.href = `../${v.dir}/index.html`;
+    box.append(el);
+  });
+}
+$('#meta').textContent = `${BOOK.chapters.length} 章 · ${nImg} 幅插画${nSong ? ` · ${nSong} 首插曲` : ''}${BOOK.music ? ` · ${BOOK.music} 首配乐` : ''} · 全长约 ${Math.round(total / 60)} 分钟 · 朗读：${BOOK.voice}`;
+
+BOOK.chapters.forEach((ch, ci) => {
+  const sec = document.createElement('section');
+  sec.className = 'chapter'; sec.id = 'ch' + (ci + 1);
+  const [no, ...rest] = ch.title.split('　');
+  const h = document.createElement('h2');
+  h.innerHTML = `<small>${no}</small>${rest.join(' ')}`;
+  h.dataset.id = ch.head;
+  sec.appendChild(h);
+  const add = (id, el) => { const [s, e] = ch.times[id]; const L = { id, ch: ci, start: s, end: e, el }; lines.push(L); byId[id] = L; };
+  add(ch.head, h);
+  for (const b of ch.blocks) {
+    if (b.t === 'p') {
+      const p = document.createElement('p');
+      for (const [id, text] of b.s) {
+        const sp = document.createElement('span');
+        sp.className = 's'; sp.dataset.id = id; sp.textContent = text;
+        p.appendChild(sp); add(id, sp);
+      }
+      sec.appendChild(p);
+    } else if (b.t === 'song') {
+      // 插曲：歌名（前奏时高亮）+ 一行一句歌词，跟着演唱逐行高亮
+      const d = document.createElement('div'); d.className = 'song';
+      const h3 = document.createElement('h3'); h3.dataset.id = b.head; h3.textContent = b.title;
+      d.appendChild(h3); add(b.head, h3);
+      for (const [id, text] of b.lines) {
+        const sp = document.createElement('span');
+        sp.className = 's'; sp.dataset.id = id; sp.textContent = text;
+        d.appendChild(sp); add(id, sp);
+      }
+      sec.appendChild(d);
+    } else if (b.t === 'img') {
+      const f = document.createElement('figure');
+      f.innerHTML = `<div class="pic"><img loading="lazy" src="${b.src}" alt="${b.cap}"></div><figcaption><b>插图 ${b.n}</b>${b.cap}</figcaption>`;
+      if (b.vid) {
+        const v = document.createElement('video');
+        v.muted = v.loop = v.playsInline = true; v.preload = 'none'; v.dataset.src = b.vid;
+        v.setAttribute('muted', ''); v.setAttribute('playsinline', '');   // iOS 自动播放认属性
+        v.onplaying = () => v.classList.toggle('on', anim);
+        f.firstChild.appendChild(v); vio.observe(v);
+      }
+      sec.appendChild(f);
+    } else {
+      const d = document.createElement('div'); d.className = 'note'; d.textContent = b.text; sec.appendChild(d);
+    }
+  }
+  story.appendChild(sec);
+  const li = document.createElement('li');
+  li.innerHTML = `<button data-ch="${ci}"><span>${ch.title.replace('　', ' ')}</span><span class="dur">${fmt(ch.duration)}</span></button>`;
+  $('#toc').appendChild(li);
+});
+// 每幅插图从它的 from 那句开始显示，一直到下一幅开始
+imgs.forEach(im => { im.ch = byId[im.from].ch; im.at = lines.indexOf(byId[im.from]); });
+lines.forEach((L, k) => {
+  let i = 0;
+  while (i + 1 < imgs.length && imgs[i + 1].at <= k) i++;
+  L.img = i;
+});
+const endMark = document.createElement('div'); endMark.className = 'end-mark'; endMark.textContent = '— 全书完 —';
+story.appendChild(endMark);
+
+// ---------- 欣赏插曲：全书插曲排成播放列表，每首只放章节音频里歌的那一段，放完接着下一首 ----------
+const songs = [];
+BOOK.chapters.forEach((ch, ci) => ch.blocks.forEach(b => {
+  if (b.t !== 'song') return;
+  const i = lines.indexOf(byId[b.lines[b.lines.length - 1][0]]), next = lines[i + 1];
+  songs.push({ title: b.title, ch: ci, start: byId[b.head].start, end: next && next.ch === ci ? next.start : ch.duration });
+}));
+let plIdx = -1;   // 正在放播放列表里的第几首，-1 是平常听书
+if (songs.length) {
+  const box = document.createElement('section'); box.className = 'songlist'; box.id = 'songlist';
+  const mins = Math.max(1, Math.round(songs.reduce((a, s) => a + s.end - s.start, 0) / 60));
+  box.innerHTML = `<h3>♪ 本书插曲</h3><div class="sub">${songs.length} 首 · 约 ${mins} 分钟</div>
+    <button class="btn btn-song" id="songAll">${ICON_PLAY}欣赏插曲</button><ol></ol>`;
+  songs.forEach((s, i) => {
+    const li = document.createElement('li');
+    li.innerHTML = `<button data-song="${i}"><span></span><span class="dur">${BOOK.chapters[s.ch].title.split('　')[0]} · ${fmt(s.end - s.start)}</span></button>`;
+    li.querySelector('span').textContent = s.title;
+    box.querySelector('ol').appendChild(li);
+  });
+  box.querySelector('#songAll').onclick = () => playSong(0);
+  box.querySelector('ol').onclick = e => { const b = e.target.closest('button'); if (b) playSong(+b.dataset.song); };
+  story.appendChild(box);
+}
+function renderSongs() {
+  document.querySelectorAll('.songlist li button').forEach((b, i) => b.classList.toggle('now', i === plIdx));
+}
+function playSong(i) {
+  if (i >= songs.length) { plIdx = -1; renderSongs(); audio.pause(); toast('插曲都放完啦'); return; }
+  plIdx = Math.max(0, i); renderSongs();
+  const s = songs[plIdx];
+  playFrom(s.ch, s.start + 0.001).then(updateMedia);
+  toast(`♪ 插曲 ${plIdx + 1}/${songs.length}：${s.title}`);
+}
+const stopSongs = () => { if (plIdx >= 0) { plIdx = -1; renderSongs(); } };
+
+// ---------- 播放 ----------
+const audio = new Audio();
+audio.preload = 'auto';
+let cur = -1, active = null, playing = false;
+let follow = true, userScrollAt = 0, speedIdx = 1;
+const SPEEDS = [0.8, 1, 1.2, 1.5];
+
+function loadChapter(ci) {
+  if (ci === cur) return Promise.resolve();
+  cur = ci;
+  audio.src = BOOK.chapters[ci].audio;
+  setBuffering(true);   // 到能播放之前转圈（canplay / playing 时停）
+  audio.playbackRate = SPEEDS[speedIdx];
+  document.querySelectorAll('.toc button').forEach((b, i) => b.classList.toggle('now', i === ci));
+  $('#seek').max = BOOK.chapters[ci].duration;
+  updateMedia();
+  return new Promise(res => audio.addEventListener('loadedmetadata', res, { once: true }));
+}
+
+async function playFrom(ci, t, autoplay = true) {
+  await loadChapter(ci);
+  audio.currentTime = t;
+  sync(true);
+  if (autoplay) { try { await audio.play(); } catch (e) { toast('点击播放按钮开始朗读'); } }
+}
+const playLine = (L, autoplay = true) => playFrom(L.ch, L.start + 0.001, autoplay);
+
+function lineAt(ci, t) {
+  // 找本章里开始时间 ≤ t 的最后一句
+  let best = null;
+  for (const L of lines) {
+    if (L.ch !== ci) { if (best) break; continue; }
+    if (L.start <= t + 0.03) best = L; else break;
+  }
+  return best;
+}
+
+function setActive(L, force) {
+  if (L === active && !force) return;
+  if (active) active.el.classList.remove('on');
+  active = L;
+  if (!L) return;
+  L.el.classList.add('on');
+  const idx = lines.indexOf(L);
+  lines.forEach((x, i) => x.el.classList.toggle('past', i < idx));
+  const ch = BOOK.chapters[L.ch];
+  $('#nowTitle').textContent = plIdx >= 0 ? `♪ ${plIdx + 1}/${songs.length} ${songs[plIdx].title}` : ch.title.replace('　', ' ');
+  if (mode !== 'read') showStage(L.img);   // 阅读模式不用舞台，免得在后台加载动图
+  setSubtitle(L);
+  if (follow && mode !== 'picture' && (force || Date.now() - userScrollAt > 5000)) {
+    const r = L.el.getBoundingClientRect();
+    const vh = window.innerHeight;
+    if (r.top < vh * 0.18 || r.bottom > vh * 0.62) {
+      programmatic = Date.now();
+      window.scrollBy({ top: r.top - vh * 0.32, behavior: 'smooth' });
+    }
+  }
+}
+
+function sync(force) {
+  if (cur < 0) return;
+  const t = audio.currentTime;
+  const s = songs[plIdx];
+  if (s && playing && cur === s.ch && t >= s.end - 0.05) return playSong(plIdx + 1);   // 这首唱完了，接下一首
+  setActive(lineAt(cur, t), force);
+  if (!seeking) $('#seek').value = t;
+  $('#nowTime').textContent = `${buffering ? '加载中… ' : ''}${fmt(t)} / ${fmt(BOOK.chapters[cur].duration)}`;
+  paintSeek();
+}
+
+// ---------- 弱网：显示下载进度、缓冲提示、预先加载下一章、出错重试 ----------
+const SEEK_PLAYED = 'var(--sea)', SEEK_BUF = 'color-mix(in srgb, var(--sea) 50%, var(--line))';
+let buffering = false, retry = null, prefetched = new Set();
+function paintSeek() {
+  const seek = $('#seek');
+  const d = cur < 0 ? 0 : (audio.duration || BOOK.chapters[cur].duration);
+  if (!d) { seek.style.setProperty('--seek-bg', 'var(--line)'); return; }
+  const pc = x => (Math.min(1, Math.max(0, x / d)) * 100).toFixed(2) + '%';
+  const p = pc(+seek.value), stops = [];
+  for (let i = 0; i < audio.buffered.length; i++) {
+    const a = pc(audio.buffered.start(i)), b = pc(audio.buffered.end(i));
+    stops.push(`transparent ${a}`, `${SEEK_BUF} ${a}`, `${SEEK_BUF} ${b}`, `transparent ${b}`);
+  }
+  const buf = stops.length ? `linear-gradient(to right, ${stops.join(', ')}), ` : '';
+  seek.style.setProperty('--seek-bg', `linear-gradient(to right, ${SEEK_PLAYED} ${p}, transparent ${p}), ${buf}var(--line)`);
+}
+function setBuffering(on) {
+  if (buffering === on) return;
+  buffering = on;
+  document.body.classList.toggle('buffering', on);
+  if (cur >= 0) sync(false);
+}
+audio.addEventListener('waiting', () => setBuffering(true));
+['playing', 'canplay', 'pause'].forEach(ev => audio.addEventListener(ev, () => setBuffering(false)));
+audio.addEventListener('progress', () => {
+  paintSeek();
+  // 这一章下载完了而且正在听：提前把下一章拉进浏览器缓存（地址带内容指纹、长期缓存），换章时不用再等
+  const next = BOOK.chapters[cur + 1], b = audio.buffered, d = audio.duration;
+  if (!playing || !next || prefetched.has(next.audio) || !b.length || !(b.end(b.length - 1) >= d - 0.5)) return;
+  if (navigator.connection && navigator.connection.saveData) return;
+  prefetched.add(next.audio);
+  fetch(next.audio, { priority: 'low' }).then(r => r.blob()).catch(() => {});   // 只试一次，失败了到时照常边下边放
+});
+audio.addEventListener('error', () => {
+  if (cur < 0) return;
+  setBuffering(false);
+  retry = { ch: cur, t: audio.currentTime };   // 再点播放时从断开的地方重新加载
+  cur = -1;
+  toast('网络不太好，音频没加载出来，点播放键重试');
+});
+
+let raf = 0;
+function loop() { sync(false); raf = requestAnimationFrame(loop); }
+audio.addEventListener('play', () => { playing = true; document.body.classList.add('playing'); story.classList.add('reading'); renderPlay(); cancelAnimationFrame(raf); loop(); });
+audio.addEventListener('pause', () => { playing = false; document.body.classList.remove('playing'); renderPlay(); cancelAnimationFrame(raf); sync(false); savePos(); });
+audio.addEventListener('ended', () => {
+  if (plIdx >= 0) playSong(plIdx + 1);   // 插曲在章末：这章放完就是这首唱完了
+  else if (cur < BOOK.chapters.length - 1) playFrom(cur + 1, 0);
+  else { toast('故事讲完啦，晚安 🌙'); setActive(null); localStorage.removeItem(POS_KEY); }
+});
+
+function renderPlay() {
+  $('#playBtn').innerHTML = playing ? ICON_PAUSE : ICON_PLAY;
+  $('#playBtn').setAttribute('aria-label', playing ? '暂停' : '播放');
+}
+renderPlay();
+
+function toggle() {
+  if (cur < 0) { const p = retry || readPos(); retry = null; return p ? playFrom(p.ch, p.t) : playFrom(0, 0); }
+  playing ? audio.pause() : audio.play();
+}
+function step(d) {
+  const i = active ? lines.indexOf(active) : -1;
+  // 上一句：如果当前句已读了 1.5 秒以上，先回到本句开头
+  if (d < 0 && active && audio.currentTime - active.start > 1.5) return playLine(active, playing || cur < 0);
+  const L = lines[Math.min(lines.length - 1, Math.max(0, i + d))];
+  if (L) playLine(L, true);
+}
+function chapterJump(d) {
+  if (plIdx >= 0) return playSong(Math.min(songs.length - 1, plIdx + d));   // 欣赏插曲时，上一章 / 下一章换成上一首 / 下一首
+  const ci = Math.min(BOOK.chapters.length - 1, Math.max(0, (cur < 0 ? 0 : cur) + d));
+  playFrom(ci, 0);
+}
+
+// ---------- 交互 ----------
+$('#playBtn').onclick = toggle;
+$('#prevS').onclick = () => step(-1);
+$('#nextS').onclick = () => step(1);
+$('#prevCh').onclick = () => chapterJump(-1);
+$('#nextCh').onclick = () => chapterJump(1);
+$('#startBtn').onclick = () => { stopSongs(); playFrom(0, 0); };
+$('#tocBtn').onclick = () => {
+  if (mode === 'picture') setMode('read', true);   // 纯图模式没有目录，先回到阅读模式
+  $('.toc').scrollIntoView({ behavior: 'smooth' });
+};
+story.addEventListener('click', e => {
+  const el = e.target.closest('[data-id]');
+  if (el) { stopSongs(); playLine(byId[el.dataset.id], true); userScrollAt = 0; return; }
+  const pic = e.target.closest('figure .pic'), img = pic && pic.querySelector('img');
+  if (img) { const lb = $('#lightbox'); lb.querySelector('img').src = img.src; lb.querySelector('p').textContent = img.alt; lb.classList.add('open'); }
+});
+$('#lightbox').onclick = () => $('#lightbox').classList.remove('open');
+$('#toc').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  const ci = +b.dataset.ch;
+  stopSongs(); playFrom(ci, 0);
+  document.getElementById('ch' + (ci + 1)).scrollIntoView({ behavior: 'smooth' });
+});
+$('#speedBtn').onclick = () => {
+  speedIdx = (speedIdx + 1) % SPEEDS.length;
+  audio.playbackRate = SPEEDS[speedIdx];
+  $('#speedBtn').textContent = SPEEDS[speedIdx].toFixed(1) + '×';
+};
+$('#followBtn').onclick = () => {
+  follow = !follow;
+  $('#followBtn').setAttribute('aria-pressed', follow);
+  toast(follow ? '跟读：自动翻到正在读的地方' : '跟读已关闭，可以自由翻看');
+  if (follow && active) setActive(active, true);
+};
+// ---------- 显示模式：阅读 / 左图右文（宽屏才有）/ 纯图 ----------
+const MODES = { read: '阅读', split: '左图右文', picture: '纯图' };
+const wide = matchMedia('(min-width: 900px)');
+let mode = 'read', stageIdx = -1, stageLayer = 0;
+$('#stageVid').onplaying = () => $('#stageVid').classList.add('show');
+function showStage(i, force) {
+  if (i === stageIdx && !force) return;
+  stageIdx = i;
+  const im = imgs[i];
+  const layers = document.querySelectorAll('#stage img');
+  const next = layers[stageLayer ^= 1], prev = layers[stageLayer ^ 1];
+  next.onload = () => { next.classList.add('show'); prev.classList.remove('show'); };
+  next.src = im.src;
+  if (imgs[i + 1]) new Image().src = imgs[i + 1].src;   // 顺手预载下一张，念到时直接换上
+  next.alt = im.cap;
+  // 动图短片盖在静态图上，开始播放再淡入；阅读模式看不见舞台，不播
+  const v = $('#stageVid');
+  v.classList.remove('show');
+  if (anim && im.vid && mode !== 'read') { v.src = im.vid; v.play().catch(() => {}); }
+  else if (v.getAttribute('src')) { v.pause(); v.removeAttribute('src'); v.load(); }
+  $('#stageBg').style.backgroundImage = `url("${im.src}")`;
+  $('#stageCap').textContent = `插图 ${im.n} · ${im.cap}`;
+  $('#stageTop').textContent = BOOK.chapters[(active || {}).ch ?? im.ch].title.replace('　', ' ');
+}
+// 字幕换句时先淡出再换字，免得两句文字跳动
+let subT = 0;
+function setSubtitle(L) {
+  const sub = $('#stageSub');
+  const text = !L ? '' : L.el.tagName === 'H2' ? BOOK.chapters[L.ch].title.replace('　', ' ')
+    : L.el.tagName === 'H3' ? '♪ ' + L.el.textContent : L.el.closest('.song') ? '♪ ' + L.el.textContent + ' ♪' : L.el.textContent;
+  if (sub.dataset.text === text) return;
+  sub.dataset.text = text;
+  sub.classList.add('fade');
+  clearTimeout(subT);
+  subT = setTimeout(() => { sub.textContent = text; sub.classList.remove('fade'); }, 180);
+}
+function setMode(m, quiet) {
+  if (m === 'split' && !wide.matches) m = 'read';
+  mode = m;
+  document.body.dataset.mode = m;
+  $('#modeBtn').textContent = MODES[m];
+  try { localStorage.setItem(PREF + 'mode', m); } catch (e) {}
+  showStage(active ? active.img : Math.max(0, stageIdx), true);
+  if (m !== 'picture' && active) setTimeout(() => setActive(active, true), 30);
+  if (!quiet) toast('显示模式：' + MODES[m] + (m === 'picture' ? '（点画面播放 / 暂停）' : ''));
+}
+$('#modeBtn').onclick = () => {
+  const order = wide.matches ? ['read', 'split', 'picture'] : ['read', 'picture'];
+  setMode(order[(order.indexOf(mode) + 1) % order.length]);
+};
+wide.addEventListener('change', () => { if (mode === 'split' && !wide.matches) setMode('read', true); });
+$('#stage').onclick = () => { if (mode === 'picture') toggle(); };
+$('#stagePlay').onclick = e => { e.stopPropagation(); toggle(); };
+// 舞台的底边贴着播放条
+new ResizeObserver(() => document.documentElement.style.setProperty('--ph', $('#player').offsetHeight + 'px')).observe($('#player'));
+try { setMode(localStorage.getItem(PREF + 'mode') || 'read', true); } catch (e) { setMode('read', true); }
+
+function renderAnim() {
+  $('#animBtn').setAttribute('aria-pressed', anim);
+  document.querySelectorAll('figure video').forEach(v => {
+    if (anim) { vio.unobserve(v); vio.observe(v); }   // 重新观察会立即回调一次，看得见的接着播
+    else { v.pause(); v.classList.remove('on'); }
+  });
+  if (stageIdx >= 0) showStage(stageIdx, true);
+}
+$('#animBtn').onclick = () => {
+  anim = !anim;
+  try { localStorage.setItem(PREF + 'anim', anim ? 'on' : 'off'); } catch (e) {}
+  renderAnim();
+  toast(anim ? '插图：动图' : '插图：静态图');
+};
+renderAnim();
+$('#themeBtn').onclick = () => {
+  const root = document.documentElement;
+  const dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  root.dataset.theme = dark ? 'light' : 'dark';
+  try { localStorage.setItem(PREF + 'theme', root.dataset.theme); } catch (e) {}
+};
+try { const th = localStorage.getItem(PREF + 'theme'); if (th) document.documentElement.dataset.theme = th; } catch (e) {}
+
+let seeking = false;
+$('#seek').addEventListener('input', () => { seeking = true; if (cur < 0) return; audio.currentTime = +$('#seek').value; sync(true); });
+$('#seek').addEventListener('change', () => { seeking = false; });
+if (cur < 0) $('#seek').addEventListener('pointerdown', () => { if (cur < 0) loadChapter(0); }, { once: true });
+
+// 用户自己滚动页面时，暂停自动跟读 5 秒
+let programmatic = 0;
+['wheel', 'touchmove'].forEach(ev => addEventListener(ev, () => { userScrollAt = Date.now(); }, { passive: true }));
+addEventListener('keydown', e => {
+  if (e.target.matches('input, textarea')) return;
+  if (e.code === 'Space') { e.preventDefault(); toggle(); }
+  else if (e.key === 'ArrowLeft') step(-1);
+  else if (e.key === 'ArrowRight') step(1);
+  else if (e.key === 'Escape') $('#lightbox').classList.remove('open');
+});
+
+// ---------- 记住上次听到哪里 ----------
+function savePos() { if (cur < 0) return; try { localStorage.setItem(POS_KEY, JSON.stringify({ ch: cur, t: audio.currentTime, id: active && active.id })); } catch (e) {} }
+function readPos() { try { const p = JSON.parse(localStorage.getItem(POS_KEY)); return p && p.ch >= 0 && p.ch < BOOK.chapters.length ? p : null; } catch (e) { return null; } }
+setInterval(() => { if (playing) savePos(); }, 3000);
+const last = readPos();
+if (last && (last.ch > 0 || last.t > 5)) {
+  const rb = $('#resumeBtn');
+  rb.hidden = false;
+  rb.textContent = `继续听 · ${BOOK.chapters[last.ch].title.split('　')[0]} ${fmt(last.t)}`;
+  rb.onclick = () => {
+    stopSongs();
+    const L = last.id && byId[last.id];
+    L ? playLine(L) : playFrom(last.ch, last.t);
+    if (L) setTimeout(() => setActive(L, true), 50);
+  };
+}
+$('#nowTitle').textContent = '点击任意一句，就从那里开始听';
+
+// ---------- 锁屏 / 耳机控制 ----------
+function updateMedia() {
+  if (!('mediaSession' in navigator) || cur < 0) return;
+  navigator.mediaSession.metadata = new MediaMetadata({
+    title: plIdx >= 0 ? songs[plIdx].title : BOOK.chapters[cur].title.replace('　', ' '), artist: BOOK.voice, album: BOOK.title,
+    artwork: [{ src: BOOK.cover, sizes: '1152x768', type: 'image/webp' }]
+  });
+  navigator.mediaSession.setActionHandler('previoustrack', () => chapterJump(-1));
+  navigator.mediaSession.setActionHandler('nexttrack', () => chapterJump(1));
+}
+
+let toastT = 0;
+function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2200); }
+</script>
+</body>
+</html>
