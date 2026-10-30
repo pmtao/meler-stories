@@ -1,0 +1,784 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E📖%3C/text%3E%3C/svg%3E">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>海的女儿 · 有声绘本</title>
+<style>
+:root {
+  --paper: #f8f3e8;
+  --paper-2: #f1e9d8;
+  --ink: #2c2a33;
+  --ink-soft: #6b6672;
+  --sea: #1d6c88;
+  --sea-deep: #123f55;
+  --line: #e2d7c1;
+  --mark: #ffe39a;
+  --mark-ink: #2c2a33;
+  --done: #8d8792;
+  --bar: rgba(255, 252, 245, .94);
+  --shadow: 0 8px 30px rgba(30, 50, 70, .14);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0f1a23; --paper-2: #15232f; --ink: #e9e4d8; --ink-soft: #a29fa8;
+    --sea: #6cc3dd; --sea-deep: #9fdcef; --line: #263744; --mark: rgba(255, 210, 110, .26);
+    --mark-ink: #fff6dc; --done: #8b8a90; --bar: rgba(17, 29, 39, .94);
+    --shadow: 0 8px 30px rgba(0, 0, 0, .45); color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0f1a23; --paper-2: #15232f; --ink: #e9e4d8; --ink-soft: #a29fa8;
+  --sea: #6cc3dd; --sea-deep: #9fdcef; --line: #263744; --mark: rgba(255, 210, 110, .26);
+  --mark-ink: #fff6dc; --done: #8b8a90; --bar: rgba(17, 29, 39, .94);
+  --shadow: 0 8px 30px rgba(0, 0, 0, .45); color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-padding-top: 30vh; }
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font-family: -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+button { font: inherit; color: inherit; }
+
+/* 封面 */
+.cover { position: relative; min-height: 92vh; display: flex; align-items: flex-end; overflow: hidden; color: #fff; }
+.cover img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.cover::after { content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(8, 25, 40, 0) 30%, rgba(8, 25, 40, .55) 62%, rgba(8, 25, 40, .9)); }
+.cover-in { position: relative; z-index: 1; width: 100%; max-width: 760px; margin: 0 auto; padding: 0 20px 56px; }
+.kicker { letter-spacing: .3em; font-size: 13px; opacity: .85; }
+.home { position: absolute; top: 18px; left: 20px; z-index: 2; color: #fff; text-decoration: none; font-size: 14px;
+  padding: 7px 14px; border-radius: 999px; background: rgba(8, 25, 40, .35); backdrop-filter: blur(6px); }
+.home:hover { background: rgba(8, 25, 40, .55); }
+.cover h1 { font-family: "Kaiti SC", "STKaiti", "KaiTi", serif; font-size: clamp(48px, 11vw, 84px);
+  margin: 10px 0 6px; letter-spacing: .12em; font-weight: 700; text-shadow: 0 4px 24px rgba(0, 0, 0, .35); }
+.cover p { margin: 0 0 22px; max-width: 30em; line-height: 1.8; opacity: .92; font-size: 15px; }
+.cover .meta { font-size: 13px; opacity: .78; margin-bottom: 24px; }
+.versions { display: flex; flex-wrap: wrap; gap: 8px; margin: -10px 0 24px; }
+.versions a, .versions span { font-size: 13px; padding: 5px 14px; border-radius: 999px; color: #fff; text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, .5); background: rgba(8, 25, 40, .3); }
+.versions a:hover { background: rgba(8, 25, 40, .55); }
+.versions[hidden] { display: none; }
+.versions .on { background: #fff; color: #123f55; border-color: #fff; font-weight: 600; }
+.cta { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn { border: 0; border-radius: 999px; padding: 13px 26px; font-size: 16px; cursor: pointer; font-weight: 600;
+  display: inline-flex; align-items: center; gap: 8px; }
+.btn-main { background: #fff; color: #123f55; }
+.btn-ghost { background: rgba(255, 255, 255, .16); color: #fff; backdrop-filter: blur(6px);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .4); }
+.btn:hover { filter: brightness(1.05); }
+.btn[hidden] { display: none; }
+.btn svg { width: 18px; height: 18px; }
+
+/* 目录 */
+.toc { max-width: 760px; margin: 0 auto; padding: 40px 20px 8px; }
+.toc-home { float: right; letter-spacing: .05em; font-weight: 500; color: var(--sea); text-decoration: none; }
+.toc h2 { font-size: 15px; letter-spacing: .2em; color: var(--ink-soft); font-weight: 600; margin: 0 0 14px; }
+.toc ol { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 8px; }
+.toc li button { width: 100%; text-align: left; background: var(--paper-2); border: 0; border-radius: 12px;
+  padding: 11px 14px; cursor: pointer; display: flex; justify-content: space-between; gap: 10px; font-size: 15px; }
+.toc li button:hover { box-shadow: inset 0 0 0 1px var(--sea); }
+.toc li button.now { box-shadow: inset 0 0 0 2px var(--sea); }
+.toc .dur { color: var(--ink-soft); font-size: 13px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* 正文 */
+main { max-width: 760px; margin: 0 auto; padding: 8px 20px 160px; }
+.chapter { padding-top: 48px; }
+.chapter h2 { font-family: "Kaiti SC", "STKaiti", "KaiTi", serif; font-size: 30px; color: var(--sea-deep);
+  margin: 0 0 22px; padding: 4px 10px; margin-left: -10px; border-radius: 10px; cursor: pointer;
+  transition: background .3s; letter-spacing: .06em; }
+.chapter h2 small { display: block; font-family: -apple-system, "PingFang SC", sans-serif; font-size: 13px;
+  color: var(--ink-soft); letter-spacing: .2em; font-weight: 500; margin-bottom: 4px; }
+.story p { font-family: "Kaiti SC", "STKaiti", "KaiTi", "Songti SC", serif; font-size: 21px; line-height: 2.05;
+  margin: 0 0 1.1em; text-align: justify; text-indent: 2em; }
+.s { cursor: pointer; border-radius: 6px; padding: 2px 0; transition: background .35s, color .35s, box-shadow .35s;
+  -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.s:hover { background: color-mix(in srgb, var(--mark) 45%, transparent); }
+.s.on, h2.on { background: var(--mark); color: var(--mark-ink); box-shadow: 0 0 0 3px var(--mark); }
+.reading .s.past { color: var(--done); }
+figure { margin: 30px -20px 34px; }
+figure .pic { position: relative; }
+figure img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 0;
+  background: var(--paper-2); cursor: zoom-in; box-shadow: var(--shadow); }
+/* 动图是叠在静态图上的循环短片，开始播放才显出来 */
+figure video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 0;
+  cursor: zoom-in; opacity: 0; transition: opacity .4s; }
+figure video.on { opacity: 1; }
+figcaption { text-align: center; color: var(--ink-soft); font-size: 14px; margin-top: 12px; letter-spacing: .05em; padding: 0 20px; }
+figcaption b { color: var(--sea); font-weight: 600; margin-right: 6px; font-variant-numeric: tabular-nums; }
+@media (min-width: 800px) { figure { margin: 36px -40px 40px; } figure img, figure video { border-radius: 18px; } }
+.note { font-size: 15px; line-height: 1.9; color: var(--ink-soft); background: var(--paper-2); border-radius: 14px;
+  padding: 16px 20px; margin-top: 28px; }
+.song { margin: 6px 0 30px; padding: 20px 16px 22px; text-align: center; border-radius: 18px;
+  background: linear-gradient(var(--paper-2), transparent); }
+.song h3 { margin: 0 0 12px; font-family: "Kaiti SC", "STKaiti", "KaiTi", serif; font-size: 22px; font-weight: normal;
+  color: var(--sea-deep); letter-spacing: .1em; display: inline-block; padding: 2px 12px; border-radius: 8px; cursor: pointer;
+  transition: background .35s, box-shadow .35s; }
+.song h3::before { content: '♪ '; color: var(--sea); }
+.song h3.on { background: var(--mark); color: var(--mark-ink); box-shadow: 0 0 0 3px var(--mark); }
+.song .s { display: table; margin: 2px auto; padding: 1px 10px; font-family: "Kaiti SC", "STKaiti", "KaiTi", serif;
+  font-size: 19px; line-height: 1.9; font-style: italic; color: var(--ink-soft); }
+.song .s.on { color: var(--mark-ink); }
+.end-mark { text-align: center; color: var(--ink-soft); margin: 40px 0 0; font-size: 14px; letter-spacing: .3em; }
+/* 书末的「欣赏插曲」：全书插曲的播放列表 */
+.songlist { margin: 40px 0 0; padding: 24px 18px 22px; text-align: center; border-radius: 18px;
+  background: linear-gradient(var(--paper-2), transparent); }
+.songlist h3 { margin: 0 0 4px; font-family: "Kaiti SC", "STKaiti", "KaiTi", serif; font-size: 24px; font-weight: normal;
+  color: var(--sea-deep); letter-spacing: .1em; }
+.songlist .sub { margin: 0 0 16px; font-size: 14px; color: var(--ink-soft); }
+.btn-song { background: var(--sea); color: #fff; display: inline-flex; align-items: center; gap: 8px; }
+.songlist ol { list-style: none; padding: 0; margin: 18px 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 8px; text-align: left; counter-reset: song; }
+.songlist li button { width: 100%; display: grid; grid-template-columns: auto 1fr; column-gap: 10px; row-gap: 2px; align-items: baseline;
+  text-align: left; background: var(--paper); color: var(--ink); border: 0; border-radius: 12px; padding: 10px 14px; font-size: 15px; cursor: pointer; }
+.songlist li button::before { counter-increment: song; content: counter(song); grid-row: span 2; color: var(--sea); font-weight: 600;
+  font-variant-numeric: tabular-nums; }
+.songlist li button:hover { box-shadow: inset 0 0 0 1px var(--sea); }
+.songlist li button.now { box-shadow: inset 0 0 0 2px var(--sea); }
+.songlist .dur { color: var(--ink-soft); font-size: 13px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* 播放条 */
+.player { position: fixed; left: 0; right: 0; bottom: 0; z-index: 10; background: var(--bar);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-top: 1px solid var(--line);
+  padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); transform: translateY(0); transition: transform .3s; }
+.player-in { max-width: 760px; margin: 0 auto; }
+.now-line { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-size: 13px; color: var(--ink-soft); }
+.now-line .title { color: var(--ink); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: none; max-width: 60%; }
+.now-left { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
+/* 插图名称：纯图 / 左图右文模式下显示在章节标题右边 */
+.now-cap { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.now-cap:empty, body[data-mode="read"] .now-cap { display: none; }
+.time { font-variant-numeric: tabular-nums; white-space: nowrap; }
+/* 进度条：深色是已播放，浅色是已经下载好的部分（--seek-bg 由 paintSeek() 按 audio.buffered 算），网络慢时一眼看出还要等多久 */
+.seek { -webkit-appearance: none; appearance: none; display: block; width: 100%; margin: 8px 0 6px; height: 18px;
+  background: transparent; cursor: pointer; --seek-bg: var(--line); }
+.seek::-webkit-slider-runnable-track { height: 5px; border-radius: 3px; background: var(--seek-bg); }
+.seek::-moz-range-track { height: 5px; border-radius: 3px; background: var(--seek-bg); }
+.seek::-webkit-slider-thumb { -webkit-appearance: none; width: 15px; height: 15px; margin-top: -5px; border: 0;
+  border-radius: 50%; background: var(--sea); box-shadow: 0 1px 3px rgba(0, 0, 0, .25); }
+.seek::-moz-range-thumb { width: 15px; height: 15px; border: 0; border-radius: 50%; background: var(--sea);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .25); }
+/* 缓冲中：播放键外圈转圈 */
+.play { position: relative; }
+.play::after { content: ''; position: absolute; inset: -4px; border-radius: 50%; border: 2.5px solid transparent;
+  border-top-color: var(--sea); border-right-color: var(--sea); opacity: 0; transition: opacity .2s; pointer-events: none; }
+body.buffering .play::after { opacity: 1; animation: spin .9s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.ctrls { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+.ctrls .mid { display: flex; align-items: center; gap: 4px; }
+.ib { width: 42px; height: 42px; border-radius: 50%; border: 0; background: transparent; cursor: pointer;
+  display: grid; place-items: center; color: var(--ink); }
+.ib:hover { background: var(--paper-2); }
+.ib svg { width: 22px; height: 22px; }
+.play { width: 54px; height: 54px; background: var(--sea); color: #fff; }
+.play:hover { background: var(--sea); filter: brightness(1.08); }
+.play svg { width: 26px; height: 26px; }
+.pill { border: 0; background: var(--paper-2); border-radius: 999px; padding: 7px 12px; font-size: 13px;
+  cursor: pointer; min-width: 58px; font-variant-numeric: tabular-nums; }
+.pill[aria-pressed="false"] { opacity: .55; }
+.side { display: flex; gap: 6px; align-items: center; }
+
+/* 看大图 */
+.lightbox { position: fixed; inset: 0; z-index: 20; background: rgba(5, 12, 18, .92); display: none;
+  align-items: center; justify-content: center; padding: 16px; cursor: zoom-out; flex-direction: column; gap: 14px; }
+.lightbox.open { display: flex; }
+.lightbox img { max-width: 100%; max-height: 86vh; border-radius: 10px; }
+.lightbox p { color: #e8e4da; margin: 0; font-size: 15px; text-align: center; }
+
+.toast { position: fixed; left: 50%; bottom: 150px; transform: translateX(-50%); background: var(--sea-deep);
+  color: var(--paper); padding: 8px 16px; border-radius: 999px; font-size: 14px; opacity: 0; pointer-events: none;
+  transition: opacity .3s; z-index: 15; }
+.toast.show { opacity: .95; }
+
+/* 插图舞台：纯图模式铺满屏幕，左图右文模式占左半边 */
+.stage { display: none; position: fixed; left: 0; right: 0; top: 0; bottom: var(--ph, 120px); z-index: 5;
+  background: #07121b; overflow: hidden; cursor: pointer; }
+.stage-bg { position: absolute; inset: -40px; background-size: cover; background-position: center;
+  filter: blur(28px) brightness(.55) saturate(1.2); transition: background-image .8s; }
+.stage img, .stage video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0;
+  transition: opacity .9s ease; }
+.stage img.show, .stage video.show { opacity: 1; }
+.stage video { transition-duration: .4s; }
+.stage-top { position: absolute; left: 0; right: 0; top: 0; padding: 14px 18px 30px; color: #fff; display: flex;
+  justify-content: space-between; align-items: baseline; gap: 6px 16px; flex-wrap: wrap;
+  font-size: 14px; letter-spacing: .1em; background: linear-gradient(rgba(5, 15, 25, .6), transparent); pointer-events: none; }
+/* 纯图模式的字幕：当前朗读的句子 */
+.stage-sub { position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%); width: max-content;
+  max-width: min(92%, 960px); padding: 10px 20px; border-radius: 14px; background: rgba(4, 12, 20, .3);
+  color: #fff; text-align: center; pointer-events: none;
+  text-shadow: 0 0 2px rgba(0, 0, 0, .9), 0 1px 3px rgba(0, 0, 0, .8), 0 0 12px rgba(0, 0, 0, .55);
+  font-family: "Kaiti SC", "STKaiti", "KaiTi", serif; font-size: clamp(19px, 2.4vw, 30px); line-height: 1.55;
+  letter-spacing: .03em; transition: opacity .25s; }
+.stage-sub:empty, .stage-sub.fade { opacity: 0; }
+body:not([data-mode="picture"]) .stage-sub { display: none; }
+body[data-mode="picture"] .toast { bottom: auto; top: 64px; }
+@media (max-width: 520px) {
+  .stage-top { flex-direction: column; }
+  .stage-sub { bottom: 16px; padding: 8px 14px; }
+}
+.stage-play { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 84px; height: 84px;
+  border-radius: 50%; border: 0; background: rgba(255, 255, 255, .9); color: #123f55; display: grid; place-items: center;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, .35); cursor: pointer; transition: opacity .3s; }
+.stage-play svg { width: 38px; height: 38px; margin-left: 4px; }
+body.playing .stage-play { opacity: 0; pointer-events: none; }
+
+body[data-mode="picture"] .cover, body[data-mode="picture"] .toc, body[data-mode="picture"] main { display: none; }
+body[data-mode="picture"] .stage { display: block; }
+body[data-mode="picture"] #followBtn { display: none; }
+
+@media (min-width: 900px) {
+  body[data-mode="split"] .stage { display: block; right: 50%; }
+  body[data-mode="split"] .stage img, body[data-mode="split"] .stage video { object-fit: cover; }
+  body[data-mode="split"] .stage-bg, body[data-mode="split"] .stage-play { display: none; }
+  body[data-mode="split"] .cover { display: none; }
+  body[data-mode="split"] .toc, body[data-mode="split"] main { margin-left: 50%; max-width: none; padding-left: 48px; padding-right: 48px; }
+  body[data-mode="split"] main figure { display: none; }
+  body[data-mode="split"] .chapter:first-child { padding-top: 24px; }
+}
+
+/* 横屏手机：播放条收紧，把高度留给插图 */
+@media (max-height: 500px) {
+  .player { padding-top: 4px; padding-bottom: calc(4px + env(safe-area-inset-bottom)); }
+  .now-line { display: none; }
+  .seek { margin: 2px 0; }
+  .play { width: 44px; height: 44px; }
+  .ib { width: 36px; height: 36px; }
+}
+
+@media (max-width: 520px) {
+  .story p { font-size: 19px; line-height: 1.95; }
+  .chapter h2 { font-size: 26px; }
+  .side .pill.opt { display: none; }
+  .pill { padding: 6px 9px; min-width: 0; font-size: 12px; }
+  #prevCh, #nextCh { display: none; }
+  .side { gap: 4px; }
+  .ib { width: 38px; height: 38px; }
+}
+</style>
+</head>
+<body>
+
+<header class="cover" id="top">
+  <img id="coverImg" alt="">
+  <a class="home" href="../index.html">‹ 故事目录</a>
+  <div class="cover-in">
+    <div class="kicker" id="kicker"></div>
+    <h1 id="bookTitle"></h1>
+    <p id="intro"></p>
+    <div class="meta" id="meta"></div>
+    <div class="versions" id="versions" hidden></div>
+    <div class="cta">
+      <button class="btn btn-main" id="startBtn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>从头开始听</button>
+      <button class="btn btn-ghost" id="resumeBtn" hidden></button>
+    </div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="目录">
+  <h2>目　录<a class="toc-home" href="../index.html">更多故事 ›</a></h2>
+  <ol id="toc"></ol>
+</nav>
+
+<main class="story" id="story"></main>
+
+<div class="stage" id="stage" aria-label="插图">
+  <div class="stage-bg" id="stageBg"></div>
+  <img alt=""><img alt=""><video id="stageVid" muted loop playsinline></video>
+  <div class="stage-top"><span id="stageTop"></span></div>
+  <div class="stage-sub" id="stageSub" aria-live="polite"></div>
+  <button class="stage-play" id="stagePlay" aria-label="播放"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg></button>
+</div>
+
+<div class="player" id="player">
+  <div class="player-in">
+    <div class="now-line"><span class="now-left"><span class="title" id="nowTitle"></span><span class="now-cap" id="stageCap"></span></span><span class="time" id="nowTime">00:00 / 00:00</span></div>
+    <input class="seek" id="seek" type="range" min="0" max="100" step="0.1" value="0" aria-label="本章进度">
+    <div class="ctrls">
+      <div class="side">
+        <button class="pill" id="modeBtn" title="切换显示模式：阅读 / 左图右文 / 纯图">阅读</button>
+        <button class="pill" id="speedBtn" title="朗读速度">1.0×</button>
+        <button class="pill opt" id="followBtn" aria-pressed="true" title="朗读时自动翻到正在读的地方">跟读</button>
+      </div>
+      <div class="mid">
+        <button class="ib" id="prevCh" title="上一章"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg></button>
+        <button class="ib" id="prevS" title="上一句（←）"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+        <button class="ib play" id="playBtn" title="播放 / 暂停（空格）"></button>
+        <button class="ib" id="nextS" title="下一句（→）"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+        <button class="ib" id="nextCh" title="下一章"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 6h2v12h-2zM6 18l8.5-6L6 6z"/></svg></button>
+      </div>
+      <div class="side">
+        <button class="pill" id="animBtn" title="插图用动图还是静态图">动图</button>
+        <button class="pill opt" id="themeBtn" title="切换深浅色">主题</button>
+        <button class="pill" id="tocBtn" title="回到目录">目录</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="lightbox" id="lightbox"><img alt=""><p></p></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const BOOK = {"id": "soushenji", "title": "搜神记", "intro": "《搜神记》是晋代的干宝写的一部志怪故事集，里面记着神仙、异人、会报恩的动物和许许多多古老的传说。这本书从中挑出十个故事：每个故事先读一段书里的原文，再用白话文说一遍，最后讲成一个完整的故事。适合 6 到 12 岁的小朋友和爸爸妈妈一起读、一起听。", "kicker": "中国古代志怪", "cover": "images/24.webp?v=ce63895921", "voice": "Elias，本地 Qwen3-TTS 复刻音色", "chapters": [{"title": "第一章　神农鞭百草", "head": "c01-h", "audio": "audio/ch01.m4a?v=6208341fcf", "duration": 290.702, "times": {"c01-h": [0.0, 3.884], "c01-001": [4.884, 7.961], "c01-002": [8.811, 19.232], "c01-003": [20.082, 21.206], "c01-004": [22.056, 36.28], "c01-005": [36.63, 43.109], "c01-006": [43.959, 44.724], "c01-007": [45.575, 49.439], "c01-008": [49.789, 56.079], "c01-009": [56.429, 65.016], "c01-010": [65.866, 70.111], "c01-011": [70.461, 79.281], "c01-012": [80.131, 83.879], "c01-013": [84.229, 90.56], "c01-014": [90.91, 93.518], "c01-015": [94.368, 101.108], "c01-016": [101.458, 106.714], "c01-017": [107.564, 115.119], "c01-018": [115.469, 120.914], "c01-019": [121.264, 129.02], "c01-020": [129.87, 134.674], "c01-021": [135.024, 145.316], "c01-022": [146.166, 150.215], "c01-023": [150.565, 166.041], "c01-024": [166.391, 168.265], "c01-025": [169.115, 174.076], "c01-026": [174.426, 177.773], "c01-027": [178.123, 186.396], "c01-028": [186.746, 193.812], "c01-029": [194.162, 200.339], "c01-030": [201.189, 205.3], "c01-031": [206.15, 209.022], "c01-032": [209.372, 218.987], "c01-033": [219.337, 223.706], "c01-034": [224.556, 227.006], "c01-035": [227.356, 239.324], "c01-036": [240.174, 251.113], "c01-037": [251.463, 255.927], "c01-038": [256.777, 267.934], "c01-039": [268.784, 272.195], "c01-040": [272.545, 275.193], "c01-041": [275.543, 279.423], "c01-042": [280.273, 287.451], "c01-043": [288.301, 289.202]}, "blocks": [{"t": "img", "src": "images/01.webp?v=2b6f61d03e", "vid": "images/01.mp4?v=e2c2c4c9b1", "cap": "神农在山中", "n": 1}, {"t": "p", "s": [["c01-001", "原文，出自《搜神记》第一卷。"]]}, {"t": "p", "s": [["c01-002", "神农以赭鞭鞭百草，尽知其平毒寒温之性，臭味所主，以播百谷，故天下号神农也。"]]}, {"t": "p", "s": [["c01-003", "白话文。"]]}, {"t": "p", "s": [["c01-004", "神农用一根红色的鞭子抽打各种草木，这样就能知道每一种草是有毒还是无毒，是寒凉还是温热，闻起来、尝起来是什么味道，能治什么病。"], ["c01-005", "他又用这些知识教人们播种各种谷物，所以天下的人都称他为“神农”。"]]}, {"t": "p", "s": [["c01-006", "故事。"]]}, {"t": "p", "s": [["c01-007", "很久很久以前，人们还不知道怎样种庄稼。"], ["c01-008", "他们靠打猎和采野果过日子，打不到猎物的时候，就只好饿着肚子。"], ["c01-009", "有时候，人们吃了不认识的草和果子，就会肚子疼、头发晕，严重的时候，还会倒在地上起不来。"]]}, {"t": "p", "s": [["c01-010", "那时候，有一位首领，大家叫他神农。"], ["c01-011", "他长得很特别，肚子是透明的，像一块晶莹的玻璃，吃下去的东西，在肚子里看得清清楚楚。"]]}, {"t": "p", "s": [["c01-012", "神农看着大家受苦，心里很着急。"], ["c01-013", "他说：“草木那么多，一定有能吃的，有能治病的，也有不能碰的。"], ["c01-014", "我要把它们一样一样地弄清楚。”"]]}, {"t": "p", "s": [["c01-015", "于是，他背上一个小竹筐，拿着一根红色的鞭子，走进了大山。"], ["c01-016", "那根鞭子是用赭石的颜色染红的，人们叫它“赭鞭”。"]]}, {"t": "img", "src": "images/02.webp?v=28c88a7d54", "vid": "images/02.mp4?v=f2fc03320f", "cap": "鞭草辨性", "n": 2}, {"t": "p", "s": [["c01-017", "他走到一片草地上，看见一棵绿油油的小草，就用赭鞭轻轻地一抽。"], ["c01-018", "说也奇怪，那棵草的叶子上，立刻浮起一层淡淡的光。"], ["c01-019", "神农点点头，说：“这一种是平和的，没有毒，煮汤给大家喝，可以清清火。”"]]}, {"t": "p", "s": [["c01-020", "他走到一丛开着紫花的灌木前，又用赭鞭一抽。"], ["c01-021", "这一次，叶子上冒出了一缕黑黑的烟，神农赶紧往后退了一步，说：“这一种有毒，千万不能乱吃。”"]]}, {"t": "p", "s": [["c01-022", "他就这样一棵一棵地试，一片一片地认。"], ["c01-023", "哪些草性子寒凉，吃了能退热；哪些草性子温暖，吃了能驱寒；哪些草闻起来香香的，能让人精神；哪些草尝起来苦苦的，却能治肚子疼。"], ["c01-024", "他都一一记在心里。"]]}, {"t": "img", "src": "images/03.webp?v=4df5499321", "vid": "images/03.mp4?v=2e9d458c27", "cap": "神农尝草", "n": 3}, {"t": "p", "s": [["c01-025", "有时候，鞭子也看不出来的东西，神农就亲口去尝。"], ["c01-026", "他尝了一口，肚子里的颜色立刻变了。"], ["c01-027", "如果变成了红色，说明这东西有些辣；变成黑色，说明有毒；变成金色，说明是好东西。"], ["c01-028", "有一天，他吃到了一种很毒的草，肚子一下子变得乌黑，他疼得直冒冷汗。"], ["c01-029", "他赶紧找来一种茶叶一样的嫩叶，嚼了几口，黑色才慢慢退下去。"]]}, {"t": "p", "s": [["c01-030", "后来，人们说，那种嫩叶，就是最早的茶。"]]}, {"t": "p", "s": [["c01-031", "神农走遍了高山和河谷。"], ["c01-032", "回到村子里，他把所有的草药都画了下来，教人们：哪些可以煮汤，哪些可以治病，哪些要离得远远的。"], ["c01-033", "生病的人，喝了他配的药，很快就好起来了。"]]}, {"t": "p", "s": [["c01-034", "可是，光有药还不够。"], ["c01-035", "神农又想：“大家总是靠打猎吃饭，遇到下雨下雪，就要挨饿，要是能把种子种在地里，让它自己长出粮食来，那该多好啊。”"]]}, {"t": "p", "s": [["c01-036", "于是，他把山里的野稻子、野小米一粒一粒收集起来，挑出最饱满的，教大家松土、播种、浇水、除草。"], ["c01-037", "他还削了一把木头做的犁，让人们用它翻土。"]]}, {"t": "img", "src": "images/04.webp?v=dc9a74f59f", "vid": "images/04.mp4?v=20106ebaf9", "cap": "五谷丰收", "n": 4}, {"t": "p", "s": [["c01-038", "春天的时候，田野里冒出一片嫩绿；夏天的时候，绿色越长越高；到了秋天，金黄的谷穗沉甸甸地弯下了腰。"]]}, {"t": "p", "s": [["c01-039", "人们捧着第一碗新米饭，眼睛都亮了。"], ["c01-040", "有人说：“这是神农教我们的呀！”"], ["c01-041", "大家都叫他“神农氏”，一代一代地传了下来。"]]}, {"t": "p", "s": [["c01-042", "今天，我们吃的粮食，用的草药，很多都是从那时候一点一点摸索出来的。"]]}, {"t": "p", "s": [["c01-043", "（完）"]]}]}, {"title": "第二章　董永和织女", "head": "c02-h", "audio": "audio/ch02.m4a?v=e516484679", "duration": 519.613, "times": {"c02-h": [0.0, 3.092], "c02-001": [4.092, 6.946], "c02-002": [7.796, 10.843], "c02-003": [11.193, 17.351], "c02-004": [17.701, 23.104], "c02-005": [23.454, 27.767], "c02-006": [28.117, 33.362], "c02-007": [33.712, 37.35], "c02-008": [37.7, 39.17], "c02-009": [39.52, 43.66], "c02-010": [44.01, 53.208], "c02-011": [53.558, 56.032], "c02-012": [56.382, 58.358], "c02-013": [58.708, 64.55], "c02-014": [64.9, 68.747], "c02-015": [69.097, 74.31], "c02-016": [74.66, 79.118], "c02-017": [79.468, 82.887], "c02-018": [83.737, 84.857], "c02-019": [85.707, 89.721], "c02-020": [90.071, 99.044], "c02-021": [99.394, 107.732], "c02-022": [108.082, 112.776], "c02-023": [113.126, 118.634], "c02-024": [118.984, 124.582], "c02-025": [124.932, 126.341], "c02-026": [126.691, 129.832], "c02-027": [130.182, 135.686], "c02-028": [136.036, 141.195], "c02-029": [141.545, 143.939], "c02-030": [144.289, 146.432], "c02-031": [146.782, 152.681], "c02-032": [153.031, 157.837], "c02-033": [158.187, 162.908], "c02-034": [163.258, 166.843], "c02-035": [167.193, 170.773], "c02-036": [171.623, 172.431], "c02-037": [173.281, 179.749], "c02-038": [180.599, 183.118], "c02-039": [183.468, 191.765], "c02-040": [192.115, 205.89], "c02-041": [206.74, 211.554], "c02-042": [212.404, 216.298], "c02-043": [216.648, 221.332], "c02-044": [221.682, 235.309], "c02-045": [236.159, 241.981], "c02-046": [242.331, 246.011], "c02-047": [246.361, 251.311], "c02-048": [252.161, 255.79], "c02-049": [256.64, 261.113], "c02-050": [261.463, 267.283], "c02-051": [267.633, 270.561], "c02-052": [271.411, 275.066], "c02-053": [275.416, 280.134], "c02-054": [280.484, 285.059], "c02-055": [285.409, 291.479], "c02-056": [292.329, 297.05], "c02-057": [297.9, 306.811], "c02-058": [307.661, 310.623], "c02-059": [311.473, 314.964], "c02-060": [315.814, 321.323], "c02-061": [321.673, 322.748], "c02-062": [323.598, 327.239], "c02-063": [327.589, 332.675], "c02-064": [333.525, 338.004], "c02-065": [338.854, 340.894], "c02-066": [341.744, 348.893], "c02-067": [349.743, 350.735], "c02-068": [351.085, 353.853], "c02-069": [354.203, 360.338], "c02-070": [361.188, 362.92], "c02-071": [363.27, 374.414], "c02-072": [374.764, 382.787], "c02-073": [383.637, 386.845], "c02-074": [387.195, 394.784], "c02-075": [395.634, 399.73], "c02-076": [400.58, 408.26], "c02-077": [408.61, 416.136], "c02-078": [416.486, 419.266], "c02-079": [420.116, 422.384], "c02-080": [422.734, 423.762], "c02-081": [424.612, 431.625], "c02-082": [432.475, 447.325], "c02-083": [448.175, 453.158], "c02-084": [454.008, 463.007], "song-weave": [464.207, 470.207], "song-weave-01": [470.207, 475.307], "song-weave-02": [476.847, 481.987], "song-weave-03": [483.407, 488.627], "song-weave-04": [490.447, 495.047], "song-weave-05": [495.047, 501.627], "song-weave-06": [501.627, 508.467], "song-weave-07": [509.967, 514.807], "c02-085": [517.207, 518.113]}, "blocks": [{"t": "img", "src": "images/05.webp?v=6eddf1229d", "vid": "images/05.mp4?v=9e9a399623", "cap": "董永推车", "n": 5}, {"t": "p", "s": [["c02-001", "原文，出自《搜神记》第一卷。"]]}, {"t": "p", "s": [["c02-002", "汉，董永，千乘人。"], ["c02-003", "少偏孤，与父居肆，力田亩，鹿车载自随。"], ["c02-004", "父亡，无以葬，乃自卖为奴，以供丧事。"], ["c02-005", "主人知其贤，与钱一万，遣之。"], ["c02-006", "永行，三年丧毕，欲还主人，供其奴职。"], ["c02-007", "道逢一妇人曰：“愿为子妻。”"], ["c02-008", "遂与之俱。"], ["c02-009", "主人谓永曰：“以钱与君矣。”"], ["c02-010", "永曰：“蒙君之惠，父丧收藏，永虽小人，必欲服勤致力，以报厚德。”"], ["c02-011", "主曰：“妇人何能？”"], ["c02-012", "永曰：“能织。”"], ["c02-013", "主曰：“必尔者，但令君妇为我织缣百疋。”"], ["c02-014", "于是永妻为主人家织，十日而毕。"], ["c02-015", "女出门，谓永曰：“我，天之织女也。"], ["c02-016", "缘君至孝，天帝令我助君偿债耳。”"], ["c02-017", "语毕，凌空而去，不知所在。"]]}, {"t": "p", "s": [["c02-018", "白话文。"]]}, {"t": "p", "s": [["c02-019", "汉朝的时候，有一个人叫董永，是千乘人。"], ["c02-020", "他很小就失去了母亲，和父亲住在一起，靠种田过日子，出门的时候，就用一辆小鹿车拉着父亲。"], ["c02-021", "后来父亲去世了，他连安葬的钱都没有，就把自己卖给别人做奴仆，用换来的钱办了丧事。"], ["c02-022", "主人知道他是个贤德的人，给了他一万钱，让他回家去。"], ["c02-023", "董永守孝三年之后，想回到主人家，去做完自己该做的活。"], ["c02-024", "半路上，他遇见了一位妇人，对他说：“我愿意做你的妻子。”"], ["c02-025", "于是两个人一起走。"], ["c02-026", "主人对董永说：“钱已经给你了。”"], ["c02-027", "董永说：“承蒙您的恩惠，我的父亲才得以安葬。"], ["c02-028", "我虽然是个小人物，也一定要努力干活，来报答您的深恩。”"], ["c02-029", "主人问：“你的妻子会做什么？”"], ["c02-030", "董永说：“她会织布。”"], ["c02-031", "主人说：“如果真是这样，就请你的妻子替我织一百匹细绢吧。”"], ["c02-032", "于是董永的妻子在主人家织布，只用了十天就织完了。"], ["c02-033", "她走出门，对董永说：“我是天上的织女。"], ["c02-034", "因为你特别孝顺，天帝让我来帮你还债。”"], ["c02-035", "说完，她就腾空飞走了，不知去了哪里。"]]}, {"t": "p", "s": [["c02-036", "故事。"]]}, {"t": "p", "s": [["c02-037", "在很久以前的汉朝，千乘这个地方，有一个年轻人，名叫董永。"]]}, {"t": "p", "s": [["c02-038", "董永很小的时候，妈妈就去世了。"], ["c02-039", "他和爸爸相依为命，爸爸年纪大了，走不动路，董永就用一辆小鹿车，推着爸爸去田里。"], ["c02-040", "春天，他在田埂上给爸爸铺一块软软的草垫，让爸爸坐着晒太阳；夏天，他把自己的草帽戴在爸爸的头上，自己光着头在太阳下干活。"]]}, {"t": "p", "s": [["c02-041", "可是有一年冬天，爸爸病倒了，再也没有好起来。"]]}, {"t": "p", "s": [["c02-042", "董永守在爸爸的床边，哭得眼睛都肿了。"], ["c02-043", "爸爸去世后，家里穷得连一口像样的棺木也买不起。"], ["c02-044", "董永想了又想，最后一咬牙，走到村里最有钱的一位老爷家门口，说：“老爷，我想把自己卖给您做工，您给我一些钱，让我把父亲好好地安葬。”"]]}, {"t": "p", "s": [["c02-045", "老爷看着这个瘦瘦的年轻人，见他又老实又孝顺，心里很感动。"], ["c02-046", "他说：“你是个好孩子，我不要你卖身。"], ["c02-047", "这一万钱，你拿去安葬父亲，剩下的，你自己留着。”"]]}, {"t": "p", "s": [["c02-048", "董永深深地鞠了一躬，眼泪掉了下来。"]]}, {"t": "p", "s": [["c02-049", "他用钱安葬了爸爸，在坟前守了整整三年。"], ["c02-050", "三年过去了，他想：“老爷帮了我这么大的忙，我不能赖账。"], ["c02-051", "我要回去做工，把这笔钱还上。”"]]}, {"t": "img", "src": "images/06.webp?v=d5aa9c32fa", "vid": "images/06.mp4?v=d4106b5b63", "cap": "路遇仙女", "n": 6}, {"t": "p", "s": [["c02-052", "他背着小包袱，走在去老爷家的路上。"], ["c02-053", "路边的柳树刚刚发出新芽，风吹过来，软软的。"], ["c02-054", "走着走着，前面的小路上，站着一位年轻的姑娘。"], ["c02-055", "她穿着浅色的衣裳，眉眼温柔，像天上的月亮一样干净。"]]}, {"t": "p", "s": [["c02-056", "姑娘对他说：“我愿意做你的妻子，陪你一起去。”"]]}, {"t": "p", "s": [["c02-057", "董永吓了一跳，连忙摆手：“姑娘，我是个穷人，要去给人做工还债，哪能让你跟着受苦呢？”"]]}, {"t": "p", "s": [["c02-058", "姑娘笑了笑，说：“我不怕。”"]]}, {"t": "p", "s": [["c02-059", "于是，两个人一起，来到了老爷家。"]]}, {"t": "p", "s": [["c02-060", "老爷看见董永来了，吃了一惊：“我不是已经把钱给你了吗？"], ["c02-061", "你怎么还来？”"]]}, {"t": "p", "s": [["c02-062", "董永说：“您的恩情，我一辈子都记得。"], ["c02-063", "我虽然是个小人物，但也想努力干活，来报答您。”"]]}, {"t": "p", "s": [["c02-064", "老爷看了看他身旁的姑娘，问：“你的妻子会做什么？”"]]}, {"t": "p", "s": [["c02-065", "董永说：“她会织布。”"]]}, {"t": "p", "s": [["c02-066", "老爷想了想，说：“那好，请你的妻子替我织一百匹细绢，就算两清了。”"]]}, {"t": "p", "s": [["c02-067", "一百匹！"], ["c02-068", "这可是要织好几个月的活儿。"], ["c02-069", "董永担心地看着妻子，可妻子只是轻轻地点点头，走进了织房。"]]}, {"t": "img", "src": "images/07.webp?v=fe7852c856", "vid": "images/07.mp4?v=db9505189a", "cap": "织房织绢", "n": 7}, {"t": "p", "s": [["c02-070", "奇怪的事情发生了。"], ["c02-071", "织房里的织机，从早到晚，一刻也不停，“咔嗒，咔嗒，咔嗒”，像有好几双手同时在忙碌。"], ["c02-072", "窗户里透出淡淡的光，那光芒有时是金色的，有时是粉色的，像天上的云霞。"]]}, {"t": "p", "s": [["c02-073", "第十天的傍晚，织房的门打开了。"], ["c02-074", "一百匹光滑柔软的细绢，整整齐齐地堆在屋子里，在夕阳下闪着光。"]]}, {"t": "p", "s": [["c02-075", "老爷和家人看得目瞪口呆，连连称赞。"]]}, {"t": "p", "s": [["c02-076", "姑娘走出屋子，来到董永的身边，轻轻地说：“董永，我是天上的织女。"], ["c02-077", "你对父亲那么孝顺，感动了天帝，天帝才让我下来，帮你把债还清。"], ["c02-078", "现在债还完了，我也该回去了。”"]]}, {"t": "p", "s": [["c02-079", "董永愣住了：“你……"], ["c02-080", "你要走了吗？”"]]}, {"t": "p", "s": [["c02-081", "织女点点头，眼睛里闪着泪光，说：“你是一个好人，要好好过日子。”"]]}, {"t": "img", "src": "images/08.webp?v=04940c3e70", "vid": "images/08.mp4?v=5fbd535f39", "cap": "织女飞天", "n": 8}, {"t": "p", "s": [["c02-082", "话音刚落，她的衣袖轻轻一挥，一片祥云托着她，慢慢地升上了天空，越飞越高，越飞越远，最后变成了天边的一缕霞光，消失不见了。"]]}, {"t": "p", "s": [["c02-083", "董永站在原地，望着天空，很久很久没有动。"]]}, {"t": "p", "s": [["c02-084", "后来，人们一代一代地讲起这个故事，大家都说：一个人对亲人的爱，是可以感动天地的。"]]}, {"t": "song", "title": "织女的歌", "head": "song-weave", "lines": [["song-weave-01", "织机在唱歌，一根一根丝"], ["song-weave-02", "织出天上的，一片片云霞"], ["song-weave-03", "十天十夜，织成一百匹"], ["song-weave-04", "只为帮你，把债还清"], ["song-weave-05", "天上的织女，地上的孝心"], ["song-weave-06", "云彩飘走了，爱还留下"], ["song-weave-07", "你要好好地，过好每一天"]]}, {"t": "p", "s": [["c02-085", "（完）"]]}]}, {"title": "第三章　骑木羊的葛由", "head": "c03-h", "audio": "audio/ch03.m4a?v=53be074db6", "duration": 317.523, "times": {"c03-h": [0.0, 2.922], "c03-001": [3.922, 7.483], "c03-002": [8.333, 11.171], "c03-003": [11.521, 15.683], "c03-004": [16.033, 22.923], "c03-005": [23.273, 28.439], "c03-006": [28.789, 32.444], "c03-007": [32.794, 38.612], "c03-008": [38.962, 41.505], "c03-009": [42.355, 43.477], "c03-010": [44.327, 49.343], "c03-011": [49.693, 54.636], "c03-012": [54.986, 59.521], "c03-013": [59.871, 64.72], "c03-014": [65.07, 71.195], "c03-015": [71.545, 77.041], "c03-016": [77.391, 85.106], "c03-017": [85.456, 89.117], "c03-018": [89.967, 90.752], "c03-019": [91.602, 98.011], "c03-020": [98.361, 113.774], "c03-021": [114.624, 120.199], "c03-022": [120.549, 134.626], "c03-023": [135.476, 140.549], "c03-024": [141.399, 144.52], "c03-025": [145.37, 150.246], "c03-026": [151.096, 157.1], "c03-027": [157.45, 165.911], "c03-028": [166.261, 172.792], "c03-029": [173.642, 177.561], "c03-030": [179.508, 189.172], "c03-031": [190.022, 192.686], "c03-032": [193.036, 196.399], "c03-033": [196.749, 199.323], "c03-034": [200.173, 205.897], "c03-035": [206.247, 208.817], "c03-036": [209.167, 210.08], "c03-037": [210.43, 211.782], "c03-038": [212.632, 221.336], "c03-039": [221.686, 224.393], "c03-040": [225.243, 229.757], "c03-041": [230.107, 241.492], "c03-042": [242.342, 254.328], "c03-043": [255.178, 260.08], "c03-044": [260.43, 263.443], "c03-045": [264.293, 268.45], "c03-046": [269.3, 282.01], "c03-047": [282.86, 294.182], "c03-048": [295.032, 301.981], "c03-049": [302.831, 314.277], "c03-050": [315.127, 316.023]}, "blocks": [{"t": "img", "src": "images/09.webp?v=9a1b40ddee", "vid": "images/09.mp4?v=dee449b36d", "cap": "葛由雕羊", "n": 9}, {"t": "p", "s": [["c03-001", "原文，出自《搜神记》第一卷。"]]}, {"t": "p", "s": [["c03-002", "前周葛由，蜀羌人也。"], ["c03-003", "周成王时，好刻木作羊卖之。"], ["c03-004", "一旦，乘木羊入蜀中，蜀中王侯贵人追之，上绥山。"], ["c03-005", "绥山多桃，在峨眉山西南，高无极也。"], ["c03-006", "随之者不复还，皆得仙道。"], ["c03-007", "故里谚曰：“得绥山一桃，虽不能仙，亦足以豪。”"], ["c03-008", "山下立祠数十处。"]]}, {"t": "p", "s": [["c03-009", "白话文。"]]}, {"t": "p", "s": [["c03-010", "周朝以前，有一个叫葛由的人，是蜀地的羌人。"], ["c03-011", "周成王的时候，他喜欢雕刻木头，做成小羊拿去卖。"], ["c03-012", "有一天早上，他骑着一只木头做的羊，走进了蜀地。"], ["c03-013", "蜀地的王侯和有钱人都去追他，一直追到了绥山。"], ["c03-014", "绥山上有很多桃树，在峨眉山的西南边，高得望不到头。"], ["c03-015", "跟着他上山的人，都没有再回来，据说都成了仙。"], ["c03-016", "所以当地有一句谚语：“能得到绥山的一个桃子，就算不能成仙，也足以让人感到豪迈了。”"], ["c03-017", "山下还建起了几十座祠堂来纪念他。"]]}, {"t": "p", "s": [["c03-018", "故事。"]]}, {"t": "p", "s": [["c03-019", "很久很久以前，在蜀地的一座小村子里，住着一位手艺人，名叫葛由。"], ["c03-020", "他的手特别巧，一块普普通通的木头，到了他的手里，削一削，磨一磨，就变成了一只可爱的小羊：圆圆的眼睛，卷卷的羊毛，小小的蹄子，就像是真的一样。"]]}, {"t": "p", "s": [["c03-021", "葛由每天都坐在树荫底下，一边哼着歌，一边雕羊。"], ["c03-022", "他把做好的小羊摆在集市上卖，孩子们最喜欢来看，一个个蹲在摊子前，伸出小手摸摸羊角，捏捏羊耳朵：“葛叔叔，这只羊会叫吗？”"]]}, {"t": "p", "s": [["c03-023", "葛由笑着说：“它呀，只在月亮好的晚上才会叫。”"]]}, {"t": "p", "s": [["c03-024", "孩子们哈哈大笑，没有人当真。"]]}, {"t": "p", "s": [["c03-025", "可是，有一天早上，村子里发生了一件奇怪的事。"]]}, {"t": "p", "s": [["c03-026", "那天，天刚蒙蒙亮，葛由牵出了他做的最大的一只木羊。"], ["c03-027", "这只羊足有一匹小马那么大，羊角弯弯的，羊毛像云朵一样一圈一圈地卷着。"], ["c03-028", "葛由拍了拍羊背，笑着说：“伙计，今天，咱们去远一点的地方看看吧。”"]]}, {"t": "img", "src": "images/10.webp?v=1a94b6ea10", "vid": "images/10.mp4?v=9ffab5be6d", "cap": "骑羊出发", "n": 10}, {"t": "p", "s": [["c03-029", "话音刚落，他就轻轻地跨上羊背。"], ["c03-030", "那只木头羊，忽然“咩”的一声，抖了抖身子，四只蹄子迈了起来，就像活了一样，一路向着蜀中跑去。"]]}, {"t": "p", "s": [["c03-031", "集市上的人们全都看呆了。"], ["c03-032", "有人揉着眼睛说：“我是不是还没睡醒？"], ["c03-033", "那只木羊，怎么自己跑起来了？”"]]}, {"t": "p", "s": [["c03-034", "蜀中的王侯们，听说有人骑着木羊在街上走，纷纷赶来看热闹。"], ["c03-035", "有人叫喊着追上去：“等一等！"], ["c03-036", "你是什么人？"], ["c03-037", "这羊是怎么回事？”"]]}, {"t": "p", "s": [["c03-038", "可是，那只羊越跑越快，穿过了田野，越过了小河，一直跑到了一座高高的山上。"], ["c03-039", "那座山，就是绥山。"]]}, {"t": "p", "s": [["c03-040", "绥山，又高又秀，山上长满了桃树。"], ["c03-041", "春天的时候，漫山遍野都是粉红色的桃花，像一片云；到了夏天，树上结满了又大又红的桃子，香味飘出老远。"]]}, {"t": "img", "src": "images/11.webp?v=6d534ed6c8", "vid": "images/11.mp4?v=4c79119e3b", "cap": "上绥山", "n": 11}, {"t": "p", "s": [["c03-042", "葛由骑着木羊，一步一步地往山上走，越走越高，越走越高，最后，他和那只羊一起，走进了山顶的白云里，再也看不见了。"]]}, {"t": "p", "s": [["c03-043", "追来的人们，站在山脚下，一个个仰着头张望。"], ["c03-044", "有的人不甘心，也跟着爬上山去。"]]}, {"t": "p", "s": [["c03-045", "可是，跟着他们上山的人，一个也没有再回来。"]]}, {"t": "img", "src": "images/12.webp?v=23205ac1ee", "vid": "images/12.mp4?v=56ab62aadf", "cap": "桃园仙境", "n": 12}, {"t": "p", "s": [["c03-046", "后来，有人在山下听到了这样的传说：那些人遇见了葛由，葛由请他们吃了山上的桃子，他们就都留在山里，变成了逍遥自在的神仙。"]]}, {"t": "p", "s": [["c03-047", "从那以后，山下的人们家家都念叨着一句话：“要是能吃到绥山的一个桃子，就算不能成仙，也足够让人觉得痛快了！”"]]}, {"t": "p", "s": [["c03-048", "人们在山脚下盖起了几十座小小的祠堂，纪念那个骑着木羊的手艺人。"]]}, {"t": "p", "s": [["c03-049", "直到今天，很多孩子还爱听这个故事：只要你的手够巧，心够诚，就算只是一块木头，也能带着你飞向很远的地方。"]]}, {"t": "p", "s": [["c03-050", "（完）"]]}]}, {"title": "第四章　李寄斩蛇", "head": "c04-h", "audio": "audio/ch04.m4a?v=7dc9a7e743", "duration": 659.466, "times": {"c04-h": [0.0, 2.807], "c04-001": [3.807, 7.503], "c04-002": [8.353, 20.318], "c04-003": [20.668, 24.474], "c04-004": [24.824, 33.738], "c04-005": [34.088, 47.035], "c04-006": [47.385, 50.244], "c04-007": [50.594, 54.138], "c04-008": [54.488, 61.674], "c04-009": [62.024, 62.931], "c04-010": [63.281, 71.008], "c04-011": [71.358, 84.536], "c04-012": [84.886, 87.393], "c04-013": [87.743, 90.098], "c04-014": [90.448, 110.046], "c04-015": [110.396, 120.802], "c04-016": [121.151, 132.278], "c04-017": [132.628, 134.892], "c04-018": [135.242, 143.148], "c04-019": [143.498, 146.31], "c04-020": [146.66, 149.564], "c04-021": [150.414, 151.434], "c04-022": [152.284, 157.385], "c04-023": [157.735, 167.92], "c04-024": [168.27, 173.246], "c04-025": [173.596, 177.839], "c04-026": [178.189, 185.559], "c04-027": [185.909, 191.425], "c04-028": [191.775, 202.595], "c04-029": [202.945, 206.714], "c04-030": [207.064, 212.226], "c04-031": [212.576, 219.325], "c04-032": [219.675, 220.653], "c04-033": [221.003, 229.01], "c04-034": [229.36, 241.617], "c04-035": [241.967, 247.269], "c04-036": [247.619, 250.716], "c04-037": [251.066, 254.521], "c04-038": [254.871, 259.441], "c04-039": [259.791, 271.159], "c04-040": [271.509, 281.506], "c04-041": [281.856, 287.76], "c04-042": [288.11, 293.526], "c04-043": [293.876, 306.412], "c04-044": [306.762, 309.712], "c04-045": [310.062, 320.571], "c04-046": [320.921, 324.647], "c04-047": [324.997, 328.193], "c04-048": [329.043, 329.87], "c04-049": [330.72, 338.403], "c04-050": [338.753, 345.683], "c04-051": [346.033, 352.49], "c04-052": [352.84, 357.447], "c04-053": [358.297, 362.2], "c04-054": [362.55, 366.893], "c04-055": [367.243, 373.413], "c04-056": [373.763, 379.359], "c04-057": [380.209, 382.149], "c04-058": [382.499, 392.813], "c04-059": [393.163, 396.78], "c04-060": [397.63, 401.566], "c04-061": [401.916, 407.91], "c04-062": [408.26, 413.45], "c04-063": [414.3, 418.444], "c04-064": [419.294, 422.096], "c04-065": [422.446, 423.617], "c04-066": [424.467, 434.494], "c04-067": [434.844, 438.36], "c04-068": [439.21, 443.941], "c04-069": [444.291, 449.695], "c04-070": [450.545, 453.779], "c04-071": [454.129, 458.692], "c04-072": [459.542, 464.773], "c04-073": [465.123, 472.186], "c04-074": [472.536, 479.489], "c04-075": [480.339, 486.162], "c04-076": [486.512, 495.776], "c04-077": [496.626, 499.773], "c04-078": [500.123, 506.317], "c04-079": [506.667, 512.15], "c04-080": [513.0, 516.844], "c04-081": [517.694, 521.978], "c04-082": [522.328, 526.842], "c04-083": [527.192, 533.04], "c04-084": [533.39, 541.081], "c04-085": [541.931, 545.771], "c04-086": [550.369, 554.576], "c04-087": [554.926, 563.069], "c04-088": [563.419, 573.283], "c04-089": [574.133, 576.045], "c04-090": [576.895, 580.244], "c04-091": [580.594, 588.345], "c04-092": [588.695, 592.118], "c04-093": [592.468, 602.208], "c04-094": [603.058, 608.252], "c04-095": [609.102, 612.92], "c04-096": [613.27, 621.656], "c04-097": [622.506, 630.246], "c04-098": [630.596, 637.513], "c04-099": [638.363, 641.84], "c04-100": [642.19, 648.399], "c04-101": [648.749, 656.109], "c04-102": [656.959, 657.966]}, "blocks": [{"t": "img", "src": "images/13.webp?v=9bc74555ff", "vid": "images/13.mp4?v=56518b6f1d", "cap": "庸岭", "n": 13}, {"t": "p", "s": [["c04-001", "原文，出自《搜神记》第十九卷。"]]}, {"t": "p", "s": [["c04-002", "东越闽中，有庸岭，高数十里，其西北隙中，有大蛇，长七八丈大十余围，土俗常惧。"], ["c04-003", "东治都尉及属城长吏，多有死者。"], ["c04-004", "祭以牛羊，故不得福，或与人梦，或下谕巫祝，欲得啖童女年十二三者。"], ["c04-005", "都尉令长并共患之，然气厉不息，共请求人家生婢子，兼有罪家女养之，至八月朝，祭送蛇穴口，蛇出吞啮之。"], ["c04-006", "累年如此，已用九女。"], ["c04-007", "尔时预复募索，未得其女。"], ["c04-008", "将乐县李诞家有六女，无男，其小女名寄，应募欲行。"], ["c04-009", "父母不听。"], ["c04-010", "寄曰：“父母无相，惟生六女，无有一男，虽有如无。"], ["c04-011", "女无缇萦济父母之功，既不能供养，徒费衣食，生无所益，不如早死；卖寄之身，可得少钱，以供父母，岂不善耶！”"], ["c04-012", "父母慈怜，终不听去。"], ["c04-013", "寄自潜行，不可禁止。"], ["c04-014", "寄乃告请好剑及咋蛇犬，至八月朝，便诣庙中坐，怀剑，将犬，先将数石米餈，用蜜麨灌之，以置穴口，蛇便出，头大如囷，目如二尺镜，闻餈香气，先啖食之。"], ["c04-015", "寄便放犬，犬就啮咋，寄从后斫得数创，疮痛急，蛇因踊出，至庭而死。"], ["c04-016", "寄入视穴，得其九女髑髅，悉举出，咤言曰：“汝曹怯弱，为蛇所食，甚可哀愍。”"], ["c04-017", "于是寄女缓步而归。"], ["c04-018", "越王闻之，聘寄女为后，指其父为将乐令，母及姊皆有赏赐。"], ["c04-019", "自是东治无复妖邪之物。"], ["c04-020", "其歌谣至今存焉。"]]}, {"t": "p", "s": [["c04-021", "白话文。"]]}, {"t": "p", "s": [["c04-022", "在东越的闽中，有一座庸岭，高达几十里。"], ["c04-023", "岭的西北边有一道山缝，缝里住着一条大蛇，长七八丈，身子有十几围那么粗，当地人一直很害怕它。"], ["c04-024", "东冶的都尉和附近县城的官员，有好几位因为它而丧命。"], ["c04-025", "人们用牛羊去祭祀它，却没有得到平安。"], ["c04-026", "这条蛇有时托梦给人，有时借巫师传话，说它想吃十二三岁的女孩。"], ["c04-027", "都尉和县令们都很发愁，可是蛇带来的灾祸总不停止。"], ["c04-028", "大家只好从人家买来女婢，还有犯了罪的人家的女儿，养在一起，到了八月初一，就把她们送到蛇洞口，让蛇出来吃掉。"], ["c04-029", "年复一年，已经送去了九个女孩。"], ["c04-030", "这一年，官府又在悬赏寻找女孩，却没有找到。"], ["c04-031", "将乐县李诞家有六个女儿，没有儿子，最小的女儿名叫寄，想要报名去。"], ["c04-032", "父母不答应。"], ["c04-033", "李寄说：“爹娘没有福气，只生了六个女儿，没有一个儿子，有跟没有也差不多。"], ["c04-034", "我们这些女儿，又没有像缇萦那样救父亲的本事，既不能奉养你们，还白白花费衣食，活着没什么用处，不如早点死掉。"], ["c04-035", "把我卖了，还能换些钱，来供养爹娘，这不是很好吗？”"], ["c04-036", "父母疼爱她，始终不让她去。"], ["c04-037", "李寄就自己悄悄地走了，谁也拦不住。"], ["c04-038", "她请人给她一把好剑和一条会咬蛇的狗。"], ["c04-039", "到了八月初一，她就到庙里坐着，怀里藏着剑，带着狗，先准备好几石米糕，用蜜和炒面浇在上面，放在蛇洞口。"], ["c04-040", "蛇果然出来了，头大得像谷仓，眼睛像两面二尺大的镜子，闻到米糕的香气，就先低头去吃。"], ["c04-041", "李寄就放出狗，狗扑上去咬，李寄又在后面砍了它好几刀。"], ["c04-042", "蛇受了重伤，疼得猛地蹿出洞口，到了庭院里就死了。"], ["c04-043", "李寄走进洞里查看，找到了九位女孩的骷髅，把它们都搬了出来，惋惜地说：“你们太胆小软弱了，才被蛇吃掉，真是可怜。”"], ["c04-044", "于是李寄不慌不忙地走回家去。"], ["c04-045", "越王听说了这件事，聘李寄做了王后，又任命她的父亲做将乐县令，她的母亲和姐姐们也都得到了赏赐。"], ["c04-046", "从此，东冶一带再也没有出现妖怪。"], ["c04-047", "当地还有歌谣，至今仍然流传着。"]]}, {"t": "p", "s": [["c04-048", "故事。"]]}, {"t": "p", "s": [["c04-049", "在很久以前，东越的闽中，有一座很高很高的山岭，叫庸岭。"], ["c04-050", "岭的西北边，山壁裂开了一道又黑又深的缝，缝里住着一条大蛇。"], ["c04-051", "它有七八丈长，身子比水缸还粗，一抬头，能把屋顶也碰到。"], ["c04-052", "它的眼睛又圆又大，像两面亮闪闪的镜子。"]]}, {"t": "p", "s": [["c04-053", "这条大蛇，让山下的人们非常害怕。"], ["c04-054", "每到夜里，没有人敢出门，连小狗也不敢叫。"], ["c04-055", "官府想了许多办法，用牛羊去祭它，可是大蛇并不满意。"], ["c04-056", "有一天，它托梦给巫师，说：“我要吃十二三岁的小姑娘。”"]]}, {"t": "p", "s": [["c04-057", "官员们愁得睡不着觉。"], ["c04-058", "他们不忍心，却又怕蛇继续害人，只好每年从别的人家买来一些女孩，到了八月初一，送到蛇洞口。"], ["c04-059", "一年又一年，大蛇已经吃了九个女孩。"]]}, {"t": "p", "s": [["c04-060", "这一年，官府又在到处寻找合适的女孩。"], ["c04-061", "将乐县有一户姓李的人家，生了六个女儿，没有儿子。"], ["c04-062", "最小的女儿，名字叫李寄，她那一年才十二三岁。"]]}, {"t": "img", "src": "images/14.webp?v=bc3485213d", "vid": "images/14.mp4?v=2bc01434fa", "cap": "李寄请行", "n": 14}, {"t": "p", "s": [["c04-063", "李寄听说了这件事，对父母说：“我要去。”"]]}, {"t": "p", "s": [["c04-064", "父母吓得脸都白了：“不行！"], ["c04-065", "你怎么能去呢？”"]]}, {"t": "p", "s": [["c04-066", "李寄却很冷静，说：“爹，娘，家里有六个女儿，我又没有哥哥弟弟，我留在家里，也帮不上太多忙。"], ["c04-067", "如果我去了，还能换些钱来养活你们。”"]]}, {"t": "p", "s": [["c04-068", "她的话刚说完，妈妈就哭了，抱着她，怎么也不放手。"], ["c04-069", "爸爸摇着头说：“就算家里再穷，我们也不能把你送去。”"]]}, {"t": "p", "s": [["c04-070", "可是，李寄心里早就有了主意。"], ["c04-071", "她想：“我不是去送死的，我是去除掉那条蛇的。”"]]}, {"t": "p", "s": [["c04-072", "一天夜里，趁着父母睡着，李寄悄悄地走出了家门。"], ["c04-073", "她去找一位老猎人，请他借给她一把锋利的宝剑，还有一条专门咬蛇的猎犬。"], ["c04-074", "老猎人看着这个小姑娘，又吃惊又佩服，说：“孩子，你一定要小心。”"]]}, {"t": "p", "s": [["c04-075", "李寄点点头，把剑藏在怀里，牵着狗，回到家里。"], ["c04-076", "她又悄悄地准备了好几石米糕，用蜜和炒面浇在上面，香喷喷的，老远就能闻到甜味。"]]}, {"t": "p", "s": [["c04-077", "八月初一那天，天气晴朗。"], ["c04-078", "李寄一个人，坐在庙里，怀里抱着剑，身边卧着猎犬。"], ["c04-079", "她把那一大堆米糕放在蛇洞口，自己躲到旁边的树后面。"]]}, {"t": "img", "src": "images/15.webp?v=d2b8a19e73", "vid": "images/15.mp4?v=451072e412", "cap": "大蛇出洞", "n": 15}, {"t": "p", "s": [["c04-080", "等了很久很久，洞里终于有了动静。"]]}, {"t": "p", "s": [["c04-081", "先是一阵“沙沙沙”的响声，像风吹过树叶。"], ["c04-082", "接着，一个巨大的脑袋，从黑洞里伸了出来。"], ["c04-083", "它的头像一个大谷仓，眼睛像两面大镜子，亮得吓人。"], ["c04-084", "蛇的舌头一伸一缩，闻到了米糕的香味，先低下头，大口大口地吃了起来。"]]}, {"t": "p", "s": [["c04-085", "就在这个时候，李寄大喊一声：“上！”"]]}, {"t": "p", "s": [["c04-086", "那条猎犬立刻冲了上去，一口咬住了蛇的脖子。"], ["c04-087", "李寄也冲了出来，举起宝剑，朝着蛇的身上用力砍去，一下，两下，三下。"], ["c04-088", "大蛇疼得翻来滚去，猛地从洞口蹿了出来，一直冲到庙前的院子里，再也没有力气了，重重地倒在了地上。"]]}, {"t": "p", "s": [["c04-089", "山谷里一下子安静了。"]]}, {"t": "p", "s": [["c04-090", "李寄喘着气，走进蛇洞里去查看。"], ["c04-091", "洞里很暗，地上散落着许多白色的东西，她仔细一看，是九个女孩留下的遗骨。"], ["c04-092", "李寄的心里一阵难过，眼睛红了。"], ["c04-093", "她把遗骨一件一件地搬出了洞外，轻轻地说：“你们太胆小了，才被这条蛇害了，我真替你们难过。”"]]}, {"t": "p", "s": [["c04-094", "然后，她牵着猎犬，一步一步，慢慢地走回了家。"]]}, {"t": "img", "src": "images/16.webp?v=649c5b212e", "vid": "images/16.mp4?v=5087cf1f72", "cap": "欢庆", "n": 16}, {"t": "p", "s": [["c04-095", "消息传开以后，整个闽中都沸腾了。"], ["c04-096", "人们敲锣打鼓，涌上街头，大家都说：“那条害人的大蛇，被一个小姑娘打死了！”"]]}, {"t": "p", "s": [["c04-097", "越王听说了这件事，大为感动，他说：“这样勇敢又聪明的女孩，我要请她做我的王后！”"], ["c04-098", "他还任命李寄的父亲做将乐县的县令，对她的母亲和姐姐们也给了许多赏赐。"]]}, {"t": "p", "s": [["c04-099", "从那以后，东冶一带再也没有出现过妖怪。"], ["c04-100", "孩子们开开心心地在山脚下玩耍，大人们在田里安心地种庄稼。"], ["c04-101", "人们还编了一首歌谣，歌里唱着李寄的名字，一代一代，一直传到了今天。"]]}, {"t": "p", "s": [["c04-102", "（完）"]]}]}, {"title": "第五章　宋定伯捉鬼", "head": "c05-h", "audio": "audio/ch05.m4a?v=ab0d370241", "duration": 517.518, "times": {"c05-h": [0.0, 3.029], "c05-001": [4.029, 7.683], "c05-002": [8.533, 14.955], "c05-003": [15.305, 17.844], "c05-004": [18.194, 20.702], "c05-005": [21.052, 24.084], "c05-006": [24.434, 26.977], "c05-007": [27.327, 29.965], "c05-008": [30.315, 33.955], "c05-009": [34.305, 35.182], "c05-010": [35.532, 42.443], "c05-011": [42.793, 44.686], "c05-012": [45.036, 47.555], "c05-013": [47.905, 52.125], "c05-014": [52.475, 56.669], "c05-015": [57.019, 60.513], "c05-016": [60.863, 67.459], "c05-017": [67.809, 70.386], "c05-018": [70.736, 72.324], "c05-019": [72.674, 78.249], "c05-020": [78.599, 81.189], "c05-021": [81.539, 83.87], "c05-022": [84.22, 88.686], "c05-023": [89.036, 90.227], "c05-024": [90.577, 97.388], "c05-025": [97.738, 103.273], "c05-026": [103.623, 113.733], "c05-027": [114.083, 118.821], "c05-028": [119.671, 120.754], "c05-029": [121.604, 129.257], "c05-030": [129.607, 131.874], "c05-031": [132.224, 135.082], "c05-032": [135.432, 138.213], "c05-033": [138.563, 140.559], "c05-034": [140.909, 144.026], "c05-035": [144.376, 146.42], "c05-036": [146.77, 148.035], "c05-037": [148.385, 155.706], "c05-038": [156.056, 158.114], "c05-039": [158.464, 161.136], "c05-040": [161.486, 164.946], "c05-041": [165.296, 170.501], "c05-042": [170.851, 174.794], "c05-043": [175.144, 182.158], "c05-044": [182.508, 185.618], "c05-045": [185.968, 187.706], "c05-046": [188.056, 195.207], "c05-047": [195.557, 199.646], "c05-048": [199.996, 202.529], "c05-049": [202.879, 208.209], "c05-050": [208.559, 214.458], "c05-051": [214.808, 220.877], "c05-052": [221.227, 227.471], "c05-053": [227.821, 236.195], "c05-054": [236.545, 242.004], "c05-055": [242.854, 243.53], "c05-056": [244.38, 250.165], "c05-057": [250.515, 256.454], "c05-058": [257.304, 263.728], "c05-059": [264.078, 269.406], "c05-060": [269.756, 275.346], "c05-061": [276.196, 280.946], "c05-062": [281.796, 289.362], "c05-063": [289.712, 290.616], "c05-064": [291.466, 294.798], "c05-065": [295.148, 299.065], "c05-066": [299.415, 302.367], "c05-067": [303.217, 307.605], "c05-068": [308.455, 311.182], "c05-069": [312.032, 315.69], "c05-070": [316.04, 316.979], "c05-071": [317.829, 321.875], "c05-072": [322.225, 329.584], "c05-073": [330.434, 333.543], "c05-074": [334.393, 338.212], "c05-075": [338.562, 345.923], "c05-076": [346.273, 348.025], "c05-077": [348.875, 355.574], "c05-078": [356.424, 358.446], "c05-079": [358.796, 364.55], "c05-080": [364.9, 368.252], "c05-081": [369.102, 372.251], "c05-082": [372.601, 381.28], "c05-083": [382.13, 387.763], "c05-084": [388.613, 392.919], "c05-085": [393.769, 396.835], "c05-086": [397.185, 399.72], "c05-087": [400.07, 404.758], "c05-088": [405.108, 410.25], "c05-089": [414.829, 419.184], "c05-090": [420.034, 426.622], "c05-091": [427.472, 430.134], "c05-092": [430.984, 434.456], "c05-093": [434.806, 440.444], "c05-094": [440.794, 444.559], "c05-095": [444.909, 446.286], "c05-096": [446.636, 449.853], "c05-097": [450.703, 453.288], "c05-098": [453.638, 458.074], "c05-099": [458.424, 467.362], "c05-100": [468.212, 474.208], "c05-101": [474.558, 477.782], "c05-102": [478.632, 485.604], "c05-103": [485.954, 488.923], "c05-104": [489.773, 502.303], "c05-105": [503.153, 505.828], "c05-106": [506.178, 514.115], "c05-107": [514.965, 516.018]}, "blocks": [{"t": "img", "src": "images/17.webp?v=f25f3c5fd1", "vid": "images/17.mp4?v=2283b1b6b8", "cap": "夜路逢鬼", "n": 17}, {"t": "p", "s": [["c05-001", "原文，出自《搜神记》第十六卷。"]]}, {"t": "p", "s": [["c05-002", "南阳宋定伯，年少时，夜行，逢鬼，问之。"], ["c05-003", "鬼言：“我是鬼。”"], ["c05-004", "鬼问：“汝复谁？”"], ["c05-005", "定伯诳之，言：“我亦鬼。”"], ["c05-006", "鬼问：“欲至何所？”"], ["c05-007", "答曰：“欲至宛市。”"], ["c05-008", "鬼言：“我亦欲至宛市。”"], ["c05-009", "遂行。"], ["c05-010", "数里，鬼言：“步行太迟，可共递相担，何如？”"], ["c05-011", "定伯曰：“大善。”"], ["c05-012", "鬼便先担定伯数里。"], ["c05-013", "鬼言：“卿太重，将非鬼也。”"], ["c05-014", "定伯言：“我新鬼，故身重耳。”"], ["c05-015", "定伯因复担鬼，鬼略无重。"], ["c05-016", "如是再三，定伯复言：“我新鬼，不知有何所畏忌？”"], ["c05-017", "鬼答言：“惟不喜人唾。”"], ["c05-018", "于是共行。"], ["c05-019", "道遇水，定伯令鬼先渡，听之，了然无声音。"], ["c05-020", "定伯自渡，漕漼作声。"], ["c05-021", "鬼复言：“何以有声？”"], ["c05-022", "定伯曰：“新死，不习渡水故耳。"], ["c05-023", "勿怪吾也。”"], ["c05-024", "行欲至宛市，定伯便担鬼，着肩上，急执之。"], ["c05-025", "鬼大呼，声咋咋然，索下，不复听之。"], ["c05-026", "径至宛市中下着地，化为一羊，便卖之，恐其变化，唾之，得钱千五百，乃去。"], ["c05-027", "当时石崇有言：“定伯卖鬼，得钱千五。”"]]}, {"t": "p", "s": [["c05-028", "白话文。"]]}, {"t": "p", "s": [["c05-029", "南阳有一个叫宋定伯的人，年轻的时候，有一天夜里赶路，遇见了一个鬼，就问他是谁。"], ["c05-030", "鬼说：“我是鬼。”"], ["c05-031", "鬼又问：“你又是谁？”"], ["c05-032", "宋定伯骗他说：“我也是鬼。”"], ["c05-033", "鬼问：“你要到哪里去？”"], ["c05-034", "宋定伯回答：“我要去宛市。”"], ["c05-035", "鬼说：“我也要去宛市。”"], ["c05-036", "于是两个人一起走。"], ["c05-037", "走了几里路，鬼说：“走路太慢了，我们可以轮流背着对方走，怎么样？”"], ["c05-038", "宋定伯说：“太好了。”"], ["c05-039", "鬼就先背着宋定伯走了几里。"], ["c05-040", "鬼说：“你太重了，该不会不是鬼吧？”"], ["c05-041", "宋定伯说：“我是刚死的新鬼，所以身子重一些。”"], ["c05-042", "宋定伯又背起鬼，发现鬼几乎没有重量。"], ["c05-043", "这样轮流了好几回，宋定伯又说：“我是新鬼，不知道有什么忌讳和害怕的东西？”"], ["c05-044", "鬼回答说：“只是不喜欢人的唾沫。”"], ["c05-045", "于是他们接着一起赶路。"], ["c05-046", "路上遇到一条河，宋定伯让鬼先过去，仔细听着，一点水声也没有。"], ["c05-047", "宋定伯自己过河时，哗啦哗啦地响。"], ["c05-048", "鬼又问：“为什么会有声音？”"], ["c05-049", "宋定伯说：“我刚死不久，还不习惯过水，你别见怪。”"], ["c05-050", "快到宛市的时候，宋定伯就把鬼扛到肩上，用力地抓住他。"], ["c05-051", "鬼大声叫喊，声音“咋咋”的，要求放他下来，宋定伯不再理他。"], ["c05-052", "一直走到宛市的街上，才把他放在地上，鬼变成了一只羊。"], ["c05-053", "宋定伯就把它卖了，又怕它变化，就往它身上吐唾沫，卖得一千五百钱，才离开。"], ["c05-054", "当时石崇有一句话：“宋定伯卖鬼，得钱一千五。”"]]}, {"t": "p", "s": [["c05-055", "故事。"]]}, {"t": "p", "s": [["c05-056", "很久以前，在南阳那个地方，有一个年轻人，名叫宋定伯。"], ["c05-057", "他胆子大，脑子又灵活，村里的人都说他“一肚子的鬼主意”。"]]}, {"t": "p", "s": [["c05-058", "有一天晚上，宋定伯要去很远的地方办事，一个人走在黑黑的小路上。"], ["c05-059", "月亮被云遮住了，风吹着路边的草，沙沙地响。"], ["c05-060", "走着走着，他忽然发现前面有一个模模糊糊的影子，在慢慢地飘。"]]}, {"t": "p", "s": [["c05-061", "宋定伯停下来，小声问：“前面是谁呀？”"]]}, {"t": "p", "s": [["c05-062", "那个影子转过身来，脸白白的，没有一点血色，轻飘飘地说：“我是鬼。"], ["c05-063", "你又是谁？”"]]}, {"t": "p", "s": [["c05-064", "要是换成别人，早就吓得转身就跑了。"], ["c05-065", "可是宋定伯眼珠一转，心里有了主意。"], ["c05-066", "他镇定地回答：“我也是鬼。”"]]}, {"t": "p", "s": [["c05-067", "那个鬼“咦”了一声，问：“你要去哪里？”"]]}, {"t": "p", "s": [["c05-068", "宋定伯说：“我要去宛市。”"]]}, {"t": "p", "s": [["c05-069", "鬼高兴地说：“真巧，我也去宛市！"], ["c05-070", "那我们一起走吧。”"]]}, {"t": "p", "s": [["c05-071", "于是，一人一鬼，并肩走在夜路上。"], ["c05-072", "走了几里路，鬼说：“用脚走路太慢了，不如我们轮流背着对方走，好不好？”"]]}, {"t": "p", "s": [["c05-073", "宋定伯想了想，说：“好极了！”"]]}, {"t": "img", "src": "images/18.webp?v=d3e6127791", "vid": "images/18.mp4?v=62c1eaf174", "cap": "鬼背人", "n": 18}, {"t": "p", "s": [["c05-074", "鬼就先蹲下来，让宋定伯趴到自己的背上。"], ["c05-075", "鬼背着他，走了几里路，一边走一边嘀咕：“咦，你怎么这么重？"], ["c05-076", "你该不会不是鬼吧？”"]]}, {"t": "p", "s": [["c05-077", "宋定伯心里“咯噔”一下，赶紧说：“我是刚刚死的新鬼，身子重一些。”"]]}, {"t": "p", "s": [["c05-078", "轮到宋定伯背鬼了。"], ["c05-079", "他把鬼背起来，感觉背上轻飘飘的，像背着一团棉花。"], ["c05-080", "他心想：“原来鬼是没有什么分量的。”"]]}, {"t": "p", "s": [["c05-081", "两个人就这样轮流背着，走了好几回。"], ["c05-082", "宋定伯故意叹了口气，问：“我刚死不久，还不太懂规矩，不知道我们鬼最害怕什么？”"]]}, {"t": "p", "s": [["c05-083", "鬼想了想，老老实实地回答：“我们呀，最不喜欢人的唾沫。”"]]}, {"t": "p", "s": [["c05-084", "宋定伯点点头，把这句话牢牢地记在了心里。"]]}, {"t": "img", "src": "images/19.webp?v=f969dece49", "vid": "images/19.mp4?v=c2ad24dc63", "cap": "过河", "n": 19}, {"t": "p", "s": [["c05-085", "走着走着，前面出现了一条小河。"], ["c05-086", "宋定伯对鬼说：“你先过去吧。”"], ["c05-087", "鬼就轻飘飘地走了过去，水面上一点声音也没有。"], ["c05-088", "宋定伯下水的时候，故意哗啦哗啦地踩出很大的水声。"]]}, {"t": "p", "s": [["c05-089", "鬼回头问：“咦，为什么你过河会有声音？”"]]}, {"t": "p", "s": [["c05-090", "宋定伯不慌不忙地说：“我刚死不久，还不习惯过水，你别见怪啊。”"]]}, {"t": "p", "s": [["c05-091", "鬼点点头，没有再怀疑。"]]}, {"t": "p", "s": [["c05-092", "天快亮的时候，宛市已经在眼前了。"], ["c05-093", "宋定伯忽然一把把鬼扛到了肩上，两只手使劲地抓住他。"], ["c05-094", "鬼吓坏了，大叫起来：“放我下来！"], ["c05-095", "放我下来！”"], ["c05-096", "那声音“咋咋咋”的，又尖又细。"]]}, {"t": "p", "s": [["c05-097", "可是宋定伯一点儿也不理他。"], ["c05-098", "他一路扛着鬼，走进了热热闹闹的宛市。"], ["c05-099", "一到集市中央，他把鬼往地上一放，那个鬼“嗖”的一下，变成了一只白白胖胖的小羊。"]]}, {"t": "p", "s": [["c05-100", "宋定伯怕它又变回去，赶紧对着羊身上“呸呸呸”地吐了好几口唾沫。"], ["c05-101", "这一下，小羊再也变不了啦。"]]}, {"t": "img", "src": "images/20.webp?v=794372589c", "vid": "images/20.mp4?v=c37a4a29fd", "cap": "卖羊", "n": 20}, {"t": "p", "s": [["c05-102", "他牵着这只羊，在集市上吆喝起来，很快就有人出一千五百个钱买了下来。"], ["c05-103", "宋定伯数着钱，高高兴兴地回了家。"]]}, {"t": "p", "s": [["c05-104", "后来，这件事越传越远，大家都在说：“南阳有个宋定伯，夜里遇见一个鬼，不但没有被吓着，还把鬼卖了，换了一千五百个钱！”"]]}, {"t": "p", "s": [["c05-105", "孩子们听了，都哈哈大笑。"], ["c05-106", "不过，大人们总会笑着补上一句：“胆子大，还要脑子灵，才能遇事不慌呀！”"]]}, {"t": "p", "s": [["c05-107", "（完）"]]}]}, {"title": "第六章　隋侯和明月珠", "head": "c06-h", "audio": "audio/ch06.m4a?v=22fe857620", "duration": 361.91, "times": {"c06-h": [0.0, 3.507], "c06-001": [4.507, 7.461], "c06-002": [8.311, 11.712], "c06-003": [12.062, 22.671], "c06-004": [23.021, 27.021], "c06-005": [27.371, 35.373], "c06-006": [35.723, 41.798], "c06-007": [42.148, 45.028], "c06-008": [45.878, 46.967], "c06-009": [47.817, 52.208], "c06-010": [52.558, 58.651], "c06-011": [59.001, 69.276], "c06-012": [69.626, 75.901], "c06-013": [76.251, 84.758], "c06-014": [85.108, 92.336], "c06-015": [92.686, 97.022], "c06-016": [97.872, 98.721], "c06-017": [99.571, 107.636], "c06-018": [107.986, 116.867], "c06-019": [117.717, 121.131], "c06-020": [121.481, 128.508], "c06-021": [128.858, 133.781], "c06-022": [134.631, 142.35], "c06-023": [142.7, 155.68], "c06-024": [156.53, 161.791], "c06-025": [162.641, 164.386], "c06-026": [164.736, 168.097], "c06-027": [168.447, 175.463], "c06-028": [176.313, 181.521], "c06-029": [182.371, 187.665], "c06-030": [188.015, 195.918], "c06-031": [196.768, 204.445], "c06-032": [204.795, 212.039], "c06-033": [212.889, 215.029], "c06-034": [215.379, 219.802], "c06-035": [220.652, 227.135], "c06-036": [227.985, 233.092], "c06-037": [233.942, 237.494], "c06-038": [237.844, 243.206], "c06-039": [243.556, 249.855], "c06-040": [250.205, 254.809], "c06-041": [255.659, 260.218], "c06-042": [261.068, 271.797], "c06-043": [272.647, 276.987], "c06-044": [277.837, 284.264], "c06-045": [284.614, 290.253], "c06-046": [290.603, 299.947], "c06-047": [300.797, 303.539], "c06-048": [303.889, 306.944], "c06-049": [307.294, 310.848], "c06-050": [311.698, 315.221], "c06-051": [315.571, 321.207], "c06-052": [322.057, 326.274], "c06-053": [326.624, 338.379], "c06-054": [339.229, 341.896], "c06-055": [342.246, 349.582], "c06-056": [350.432, 358.586], "c06-057": [359.436, 360.41]}, "blocks": [{"t": "img", "src": "images/21.webp?v=ff14beff3d", "vid": "images/21.mp4?v=b63af38daf", "cap": "溠水之畔", "n": 21}, {"t": "p", "s": [["c06-001", "原文，出自《搜神记》第二十卷。"]]}, {"t": "p", "s": [["c06-002", "隋县溠水侧，有断蛇邱。"], ["c06-003", "隋侯出行，见大蛇被伤，中断，疑其灵异，使人以药封之，蛇乃能走，因号其处断蛇邱。"], ["c06-004", "岁余，蛇衔明珠以报之。"], ["c06-005", "珠盈径寸，纯白，而夜有光，明如月之照，可以烛室。"], ["c06-006", "故谓之“隋侯珠”，亦曰“灵蛇珠”，又曰“明月珠”。"], ["c06-007", "邱南有隋季良大夫池。"]]}, {"t": "p", "s": [["c06-008", "白话文。"]]}, {"t": "p", "s": [["c06-009", "在隋县的溠水边上，有一座“断蛇邱”。"], ["c06-010", "隋侯出门的时候，看见一条大蛇受了伤，身子断成了两截。"], ["c06-011", "他觉得这条蛇大概是有灵性的，就叫人用药替它敷好伤口，蛇就能够爬走了，所以人们把这个地方叫作“断蛇邱”。"], ["c06-012", "过了一年多，这条蛇嘴里衔着一颗明珠，来报答隋侯。"], ["c06-013", "那颗珠子有一寸多粗，纯白色，夜里会发光，像月亮一样明亮，能把整间屋子都照亮。"], ["c06-014", "所以人们把它叫作“隋侯珠”，也叫“灵蛇珠”，又叫“明月珠”。"], ["c06-015", "邱的南边，还有一个隋季良大夫的池塘。"]]}, {"t": "p", "s": [["c06-016", "故事。"]]}, {"t": "p", "s": [["c06-017", "很久很久以前，在隋县那个地方，有一位善良的诸侯，人们叫他隋侯。"], ["c06-018", "他不喜欢整天待在宫殿里，常常带着几个随从，到田野和河边走一走，看看百姓们的日子过得好不好。"]]}, {"t": "p", "s": [["c06-019", "有一年春天，隋侯来到了溠水的岸边。"], ["c06-020", "河边的柳树刚刚发了芽，水里的小鱼游来游去，一切都那么安静。"], ["c06-021", "忽然，一个随从大叫了一声：“大人，你看那边！”"]]}, {"t": "img", "src": "images/22.webp?v=7a55d1c97f", "vid": "images/22.mp4?v=8d2d301533", "cap": "发现伤蛇", "n": 22}, {"t": "p", "s": [["c06-022", "隋侯顺着他指的方向看过去，只见路边的草丛里，躺着一条又粗又长的大蛇。"], ["c06-023", "可是这条蛇不对劲：它的身子被什么东西斩成了两段，伤口上还流着血，无力地扭动着，眼睛里水汪汪的，好像在哭。"]]}, {"t": "p", "s": [["c06-024", "随从们吓得往后退：“大人，这蛇太大了，快走吧！”"]]}, {"t": "p", "s": [["c06-025", "隋侯却站着没动。"], ["c06-026", "他看着这条受伤的蛇，心里很不忍。"], ["c06-027", "他想：“这条蛇长得这么特别，说不定是一条有灵性的蛇，它一定很疼吧。”"]]}, {"t": "p", "s": [["c06-028", "他对随从们说：“去，拿药来，把它的伤口包起来。”"]]}, {"t": "p", "s": [["c06-029", "随从们面面相觑，可是主人发了话，谁也不敢违抗。"], ["c06-030", "他们拿来了最好的药，小心翼翼地敷在大蛇的伤口上，又用干净的布条轻轻地裹好。"]]}, {"t": "img", "src": "images/23.webp?v=93d8aed05a", "vid": "images/23.mp4?v=3100bfdd70", "cap": "灵蛇离去", "n": 23}, {"t": "p", "s": [["c06-031", "说也奇怪，没过多久，大蛇的身子慢慢地合拢了，一动一动地，竟然能爬了起来。"], ["c06-032", "它抬起头，深深地看了隋侯一眼，然后慢慢地钻进了草丛，消失不见。"]]}, {"t": "p", "s": [["c06-033", "随从们啧啧称奇。"], ["c06-034", "隋侯笑了笑，说：“能帮上它，就好。”"]]}, {"t": "p", "s": [["c06-035", "后来，人们把这个地方叫作“断蛇邱”，一代一代地记了下来。"]]}, {"t": "p", "s": [["c06-036", "时间一天一天过去，转眼，一年多就过去了。"]]}, {"t": "p", "s": [["c06-037", "有一天晚上，隋侯在院子里乘凉。"], ["c06-038", "月光洒了一地，院子里的石榴树被风吹得沙沙作响。"], ["c06-039", "忽然，他看见墙边游过来一条长长的影子，是一条大蛇！"], ["c06-040", "它的嘴里，好像衔着一个什么东西，闪闪发光。"]]}, {"t": "p", "s": [["c06-041", "隋侯吓了一跳，随即认出了它：“是你呀！”"]]}, {"t": "p", "s": [["c06-042", "那条蛇爬到他的脚边，轻轻地把嘴里的东西放在地上，然后，低下头，朝着隋侯点了三下，像是在鞠躬。"]]}, {"t": "img", "src": "images/24.webp?v=ce63895921", "vid": "images/24.mp4?v=565f4741a7", "cap": "明月珠", "n": 24}, {"t": "p", "s": [["c06-043", "隋侯弯下腰，捡起那个东西一看，惊呆了。"]]}, {"t": "p", "s": [["c06-044", "那是一颗圆圆的珠子，比一寸还大，通体雪白，晶莹透亮。"], ["c06-045", "最神奇的是，它在黑夜里发着柔和的光，像一轮小小的月亮。"], ["c06-046", "光芒一照，整个院子都亮了起来，连地上的小草，叶子上的露珠，都看得清清楚楚。"]]}, {"t": "p", "s": [["c06-047", "隋侯捧着珠子，感动极了。"], ["c06-048", "他说：“原来你是特意来谢谢我的。"], ["c06-049", "这么贵重的东西，我怎么好意思收呢？”"]]}, {"t": "p", "s": [["c06-050", "可是蛇只是看着他，不肯拿回去。"], ["c06-051", "过了一会儿，它又对着隋侯点了点头，悄悄地钻进了黑夜里。"]]}, {"t": "p", "s": [["c06-052", "从此，隋侯把这颗珠子好好地收藏了起来。"], ["c06-053", "人们都说，这颗珠子是灵蛇送来的，叫它“灵蛇珠”，又因为它像明亮的月亮，也叫它“明月珠”，还有人叫它“隋侯珠”。"]]}, {"t": "p", "s": [["c06-054", "这件事很快就传遍了天下。"], ["c06-055", "大家都说：“救了别人，不一定要别人回报，可是好心的人，总会遇上好事。”"]]}, {"t": "p", "s": [["c06-056", "后来，人们每次路过那座“断蛇邱”，都会想起那个善良的隋侯，和那条懂得感恩的蛇。"]]}, {"t": "p", "s": [["c06-057", "（完）"]]}]}, {"title": "第七章　董昭之和蚂蚁王", "head": "c07-h", "audio": "audio/ch07.m4a?v=b7e4894b46", "duration": 515.807, "times": {"c07-h": [0.0, 3.849], "c07-001": [4.849, 8.231], "c07-002": [9.081, 19.776], "c07-003": [20.126, 23.203], "c07-004": [23.553, 24.914], "c07-005": [25.264, 32.161], "c07-006": [32.511, 39.913], "c07-007": [40.263, 48.454], "c07-008": [48.804, 52.464], "c07-009": [52.814, 55.529], "c07-010": [55.879, 63.958], "c07-011": [64.308, 70.333], "c07-012": [70.683, 74.13], "c07-013": [74.48, 76.803], "c07-014": [77.153, 80.367], "c07-015": [80.717, 83.298], "c07-016": [83.648, 85.373], "c07-017": [85.723, 94.417], "c07-018": [94.767, 95.993], "c07-019": [96.343, 98.366], "c07-020": [98.716, 101.954], "c07-021": [102.304, 104.467], "c07-022": [105.317, 106.329], "c07-023": [107.179, 123.107], "c07-024": [123.457, 126.01], "c07-025": [126.36, 128.187], "c07-026": [128.537, 134.533], "c07-027": [134.883, 143.226], "c07-028": [143.576, 153.172], "c07-029": [153.522, 158.376], "c07-030": [158.726, 161.793], "c07-031": [162.143, 171.539], "c07-032": [171.889, 177.72], "c07-033": [178.07, 182.073], "c07-034": [182.423, 184.633], "c07-035": [184.983, 190.434], "c07-036": [190.784, 193.26], "c07-037": [193.61, 203.763], "c07-038": [204.113, 209.02], "c07-039": [209.37, 213.564], "c07-040": [213.914, 216.627], "c07-041": [217.477, 218.155], "c07-042": [219.005, 225.9], "c07-043": [226.25, 232.326], "c07-044": [233.176, 237.02], "c07-045": [237.37, 243.105], "c07-046": [243.455, 246.59], "c07-047": [246.94, 256.395], "c07-048": [257.245, 260.627], "c07-049": [260.977, 273.433], "c07-050": [274.283, 278.083], "c07-051": [278.433, 279.584], "c07-052": [280.434, 286.79], "c07-053": [287.14, 289.572], "c07-054": [289.922, 292.803], "c07-055": [293.653, 299.948], "c07-056": [300.798, 308.261], "c07-057": [308.611, 314.651], "c07-058": [315.501, 319.005], "c07-059": [319.855, 330.912], "c07-060": [331.262, 332.693], "c07-061": [333.043, 339.114], "c07-062": [339.464, 344.792], "c07-063": [345.642, 350.972], "c07-064": [351.822, 353.269], "c07-065": [354.119, 370.021], "c07-066": [370.871, 382.236], "c07-067": [383.086, 391.44], "c07-068": [392.29, 396.359], "c07-069": [397.209, 404.95], "c07-070": [405.8, 410.502], "c07-071": [411.352, 416.038], "c07-072": [416.388, 422.543], "c07-073": [423.393, 428.308], "c07-074": [429.158, 441.837], "c07-075": [442.687, 446.379], "c07-076": [447.229, 450.668], "c07-077": [451.018, 455.983], "c07-078": [456.333, 461.22], "c07-079": [462.07, 464.29], "c07-080": [464.64, 473.509], "c07-081": [473.859, 480.038], "c07-082": [480.888, 488.984], "c07-083": [489.834, 496.561], "c07-084": [496.911, 499.271], "c07-085": [500.121, 504.999], "c07-086": [505.349, 512.451], "c07-087": [513.301, 514.307]}, "blocks": [{"t": "img", "src": "images/25.webp?v=50b9eec539", "vid": "images/25.mp4?v=e373a68738", "cap": "渡钱塘江", "n": 25}, {"t": "p", "s": [["c07-001", "原文，出自《搜神记》第二十卷。"]]}, {"t": "p", "s": [["c07-002", "吴富阳县董昭之，尝乘船过钱塘江，中央，见有一蚁，着一短芦，走一头，回复向一头，甚惶遽。"], ["c07-003", "昭之曰：“此畏死也。”"], ["c07-004", "欲取着船。"], ["c07-005", "船中人骂：“此是毒螫物，不可长，我当蹋杀之。”"], ["c07-006", "昭意甚怜此蚁，因以绳系芦，着船，船至岸，蚁得出。"], ["c07-007", "其夜梦一人，乌衣，从百许人来，谢云：“仆是蚁中之王。"], ["c07-008", "不慎，堕江，惭君济活。"], ["c07-009", "若有急难，当见告语。”"], ["c07-010", "历十余年，时所在劫盗，昭之被横录为劫主，系狱余杭。"], ["c07-011", "昭之忽思蚁王梦，缓急当告，今何处告之。"], ["c07-012", "结念之际，同被禁者问之。"], ["c07-013", "昭之具以实告。"], ["c07-014", "其人曰：“但取两三蚁。"], ["c07-015", "着掌中，语之。”"], ["c07-016", "昭之如其言。"], ["c07-017", "夜，果梦乌衣人云：“可急投余杭山中，天下既乱，赦令不久也。”"], ["c07-018", "于是便觉。"], ["c07-019", "蚁啮械已尽。"], ["c07-020", "因得出狱，过江，投余杭山。"], ["c07-021", "旋遇赦，得免。"]]}, {"t": "p", "s": [["c07-022", "白话文。"]]}, {"t": "p", "s": [["c07-023", "吴地富阳县有一个叫董昭之的人，有一次坐船渡过钱塘江，在江中间，看见一只蚂蚁趴在一根短短的芦苇上，一会儿跑到这头，一会儿又转回那头，显得非常惊慌。"], ["c07-024", "董昭之说：“它这是怕死啊。”"], ["c07-025", "就想把它救到船上。"], ["c07-026", "船上的人骂道：“这是有毒会蜇人的东西，不能留着，我要踩死它。”"], ["c07-027", "董昭之非常可怜这只蚂蚁，就用绳子把芦苇系在船上，船靠了岸，蚂蚁才得以爬出来。"], ["c07-028", "当天夜里，他梦见一个穿黑衣服的人，带着一百来个随从，来向他道谢，说：“我是蚂蚁的王。"], ["c07-029", "一不小心掉进了江里，多亏你救了我，十分感激。"], ["c07-030", "以后如果你遇到危难，就来告诉我。”"], ["c07-031", "过了十几年，那一带到处有强盗抢劫，董昭之被冤枉成了强盗的头目，关在余杭的监狱里。"], ["c07-032", "董昭之忽然想起了蚂蚁王的梦，可是现在该到哪里去告诉它呢？"], ["c07-033", "他正在苦想，同被关押的人问他怎么了。"], ["c07-034", "董昭之把实情告诉了他。"], ["c07-035", "那个人说：“你只要抓两三只蚂蚁，放在手心，对它们说就行了。”"], ["c07-036", "董昭之照着他的话做了。"], ["c07-037", "夜里，果然梦见那个穿黑衣的人对他说：“你赶快逃到余杭山里去，现在天下大乱，不久就会有赦免的命令。”"], ["c07-038", "董昭之一下子醒了，发现手铐脚镣已经被蚂蚁咬断了。"], ["c07-039", "他就这样出了监狱，渡过江，躲进余杭山里。"], ["c07-040", "不久，遇上了大赦，他就得救了。"]]}, {"t": "p", "s": [["c07-041", "故事。"]]}, {"t": "p", "s": [["c07-042", "很久以前，在吴地的富阳县，有一位年轻人，名叫董昭之。"], ["c07-043", "他心肠软，看见蚂蚁搬家，也会轻轻绕开，生怕踩着它们。"]]}, {"t": "p", "s": [["c07-044", "有一天，董昭之坐船渡过钱塘江。"], ["c07-045", "江面很宽，水波荡漾，风吹得船帆鼓鼓的。"], ["c07-046", "他坐在船头，看着远处的青山。"], ["c07-047", "忽然，他在水面上看到了一样奇怪的东西：一根小小的芦苇，在水里漂着，上面好像还趴着什么。"]]}, {"t": "p", "s": [["c07-048", "他仔细一看，原来是一只小蚂蚁。"], ["c07-049", "它爬在那根短短的芦苇上，一会儿跑到这一头，一会儿又转回那一头，急得团团转，一边爬，一边抖动着细细的触角，好像在大声喊救命。"]]}, {"t": "p", "s": [["c07-050", "董昭之说：“这只蚂蚁，是怕死啊。"], ["c07-051", "我去救救它吧。”"]]}, {"t": "p", "s": [["c07-052", "他刚想伸手，船上有个船夫粗声粗气地叫了起来：“哎呀！"], ["c07-053", "那是毒虫，会咬人的！"], ["c07-054", "快用脚把它踩死，别留着！”"]]}, {"t": "p", "s": [["c07-055", "董昭之摇了摇头，说：“它只是一只小小的蚂蚁，也想活下去呀。”"]]}, {"t": "img", "src": "images/26.webp?v=56e8fce26f", "vid": "images/26.mp4?v=2045495933", "cap": "救蚂蚁", "n": 26}, {"t": "p", "s": [["c07-056", "他找来一根细绳，一头系在芦苇上，慢慢地把芦苇拉到船边，一直拖到岸上。"], ["c07-057", "船靠岸的时候，那只蚂蚁“嗖”的一下，爬上了岸，钻进草丛里去了。"]]}, {"t": "p", "s": [["c07-058", "那天夜里，董昭之做了一个奇怪的梦。"]]}, {"t": "img", "src": "images/27.webp?v=cd597e1fda", "vid": "images/27.mp4?v=11fcf65256", "cap": "蚁王道谢", "n": 27}, {"t": "p", "s": [["c07-059", "他梦见一位穿着黑衣服的人，带着一百多个随从，整整齐齐地走到他的面前，深深地鞠了一躬，说：“谢谢你救了我。"], ["c07-060", "我是蚂蚁的王。"], ["c07-061", "今天，我不小心掉进了江里，多亏了你，我才活了下来。"], ["c07-062", "以后，要是你遇到了什么难处，就来告诉我，我一定来帮你。”"]]}, {"t": "p", "s": [["c07-063", "董昭之醒来，觉得这个梦很有趣，笑了笑，就把它忘了。"]]}, {"t": "p", "s": [["c07-064", "十几年过去了。"]]}, {"t": "p", "s": [["c07-065", "有一年，社会很乱，到处都有强盗，有一伙强盗抢了许多东西，官府捉不到真正的头目，竟然错抓了董昭之，说他是强盗的首领，把他关进了余杭的监狱。"]]}, {"t": "p", "s": [["c07-066", "董昭之蹲在黑漆漆的牢房里，手脚被沉重的枷锁锁着，心里又委屈又着急：“我明明什么坏事都没做，怎么办呢？”"]]}, {"t": "p", "s": [["c07-067", "他忽然想起了十多年前做过的那个梦，想起蚂蚁王说过的话：“你要是有急难，就来告诉我。”"]]}, {"t": "p", "s": [["c07-068", "可是，现在，该到哪里去告诉它呢？"]]}, {"t": "p", "s": [["c07-069", "同一间牢房里，有一个老头儿，看他愁眉苦脸，就问：“年轻人，你在想什么？”"]]}, {"t": "p", "s": [["c07-070", "董昭之就把蚂蚁王的事，原原本本地告诉了他。"]]}, {"t": "p", "s": [["c07-071", "老头儿听完，眼睛一亮，说：“这有什么难的？"], ["c07-072", "你去抓两三只蚂蚁，放在手心里，对着它们把话说清楚就是了。”"]]}, {"t": "p", "s": [["c07-073", "董昭之半信半疑，但他想：“试一试，也没有什么坏处。”"]]}, {"t": "p", "s": [["c07-074", "他在墙角找到了两三只蚂蚁，小心地放在手心里，轻轻地说：“蚂蚁王，我是董昭之，我被冤枉了，被关在这里，请你帮帮我吧。”"]]}, {"t": "p", "s": [["c07-075", "说完，他靠着墙，慢慢地睡着了。"]]}, {"t": "p", "s": [["c07-076", "在梦里，那位穿黑衣服的人又来了。"], ["c07-077", "他对董昭之说：“你别怕，赶紧逃到余杭山里去躲起来。"], ["c07-078", "现在天下很乱，不久，朝廷就会大赦天下了。”"]]}, {"t": "img", "src": "images/28.webp?v=5d23e836da", "vid": "images/28.mp4?v=4b7691ab1f", "cap": "蚂蚁咬断枷锁", "n": 28}, {"t": "p", "s": [["c07-079", "董昭之一下子醒了过来。"], ["c07-080", "他低头一看，不由得愣住了：手上、脚上的枷锁，竟然已经被一排蚂蚁咬断了！"], ["c07-081", "那些小小的蚂蚁，成群结队地排着队，正沿着墙缝慢慢爬走。"]]}, {"t": "p", "s": [["c07-082", "董昭之又惊又喜，悄悄地溜出监狱，渡过了江，一口气跑进了余杭山里，躲了起来。"]]}, {"t": "p", "s": [["c07-083", "没过多久，朝廷果然下了大赦令，所有被冤枉的人，都被放了出来。"], ["c07-084", "董昭之终于回到了家乡。"]]}, {"t": "p", "s": [["c07-085", "后来，他常常对孩子们说：“千万不要小看任何一个小生命。"], ["c07-086", "你随手帮的一个小忙，也许，会在最需要的时候，变成最大的帮助。”"]]}, {"t": "p", "s": [["c07-087", "（完）"]]}]}, {"title": "第八章　孔愉放龟", "head": "c08-h", "audio": "audio/ch08.m4a?v=d3c86d8cc2", "duration": 368.736, "times": {"c08-h": [0.0, 2.426], "c08-001": [3.426, 6.997], "c08-002": [7.847, 22.466], "c08-003": [22.816, 25.405], "c08-004": [25.755, 39.374], "c08-005": [39.724, 43.926], "c08-006": [44.776, 45.903], "c08-007": [46.753, 55.681], "c08-008": [56.031, 66.598], "c08-009": [66.948, 72.299], "c08-010": [72.649, 82.906], "c08-011": [83.256, 85.924], "c08-012": [86.274, 94.65], "c08-013": [95.0, 103.35], "c08-014": [104.2, 105.005], "c08-015": [105.855, 113.528], "c08-016": [113.878, 119.18], "c08-017": [120.03, 124.988], "c08-018": [125.338, 129.824], "c08-019": [130.174, 134.614], "c08-020": [135.464, 140.727], "c08-021": [141.077, 149.265], "c08-022": [150.115, 153.916], "c08-023": [154.766, 157.757], "c08-024": [158.107, 160.048], "c08-025": [160.898, 163.559], "c08-026": [163.909, 175.055], "c08-027": [175.905, 177.628], "c08-028": [177.978, 181.046], "c08-029": [181.896, 185.942], "c08-030": [186.292, 194.16], "c08-031": [194.51, 203.449], "c08-032": [204.299, 211.934], "c08-033": [212.284, 222.012], "c08-034": [222.862, 225.706], "c08-035": [226.056, 227.904], "c08-036": [228.754, 236.456], "c08-037": [236.806, 241.157], "c08-038": [241.507, 247.574], "c08-039": [248.424, 253.846], "c08-040": [254.196, 262.273], "c08-041": [262.623, 269.284], "c08-042": [270.134, 281.817], "c08-043": [282.667, 287.828], "c08-044": [288.678, 291.473], "c08-045": [291.823, 296.456], "c08-046": [297.306, 302.754], "c08-047": [303.104, 307.159], "c08-048": [308.009, 311.185], "c08-049": [312.036, 314.334], "c08-050": [314.684, 321.209], "c08-051": [321.559, 327.691], "c08-052": [328.541, 332.836], "c08-053": [333.686, 339.435], "c08-054": [340.285, 347.79], "c08-055": [348.14, 354.637], "c08-056": [354.987, 358.97], "c08-057": [359.82, 365.491], "c08-058": [366.341, 367.236]}, "blocks": [{"t": "img", "src": "images/29.webp?v=24e67611ec", "vid": "images/29.mp4?v=bdbe45889d", "cap": "少年孔愉", "n": 29}, {"t": "p", "s": [["c08-001", "原文，出自《搜神记》第二十卷。"]]}, {"t": "p", "s": [["c08-002", "孔愉，字敬康，会稽山阴人，元帝时以讨华轶功，封侯，愉少时尝经行余不亭，见笼龟于路者，愉买之，放于饮不溪中。"], ["c08-003", "龟中流左顾者数过。"], ["c08-004", "及后，以功封余不亭侯，铸印，而龟钮左顾，三铸，如初，印工以闻，愉乃悟其为龟之报，遂取佩焉。"], ["c08-005", "累迁尚书左仆射，赠车骑将军。"]]}, {"t": "p", "s": [["c08-006", "白话文。"]]}, {"t": "p", "s": [["c08-007", "孔愉，字敬康，是会稽山阴人，晋元帝的时候，因为讨伐华轶有功，被封为侯。"], ["c08-008", "孔愉年轻的时候，有一次经过余不亭，看见路上有人用笼子装着一只乌龟，孔愉就把它买了下来，放到饮不溪里。"], ["c08-009", "那只乌龟游到河中央，回过头来向左边看了好几次。"], ["c08-010", "后来，孔愉因为立功被封为余不亭侯，要铸造官印，可是印上的龟形印钮，竟然向左边回头看。"], ["c08-011", "工匠铸了三次，都是这样。"], ["c08-012", "印匠把这件事报告给他，孔愉这才明白，这是那只龟的报答，于是就把印收下，佩戴在身上。"], ["c08-013", "后来，他一路升官，做到尚书左仆射，去世之后，又被追赠为车骑将军。"]]}, {"t": "p", "s": [["c08-014", "故事。"]]}, {"t": "p", "s": [["c08-015", "很久以前，在会稽的山阴，有一个读书的少年，名字叫孔愉，字敬康。"], ["c08-016", "他喜欢读书，也喜欢到处走一走，看一看山和水。"]]}, {"t": "p", "s": [["c08-017", "有一天，孔愉背着书箱，经过一个叫余不亭的小地方。"], ["c08-018", "那天的太阳很好，路边的野花开得红红黄黄。"], ["c08-019", "他走着走着，看见前面的路边，围着几个人。"]]}, {"t": "img", "src": "images/30.webp?v=332d6ef97b", "vid": "images/30.mp4?v=b172c9b7ce", "cap": "笼中龟", "n": 30}, {"t": "p", "s": [["c08-020", "孔愉走过去一看，只见一个小贩，手里提着一只竹笼子。"], ["c08-021", "笼子里面，是一只大乌龟，缩着脖子，把四只小脚也收了起来，一动不动。"]]}, {"t": "p", "s": [["c08-022", "孔愉问：“这只龟，是要拿去做什么？”"]]}, {"t": "p", "s": [["c08-023", "小贩笑嘻嘻地说：“当然是卖了呀！"], ["c08-024", "有人要买去炖汤呢。”"]]}, {"t": "p", "s": [["c08-025", "孔愉听了，心里一紧。"], ["c08-026", "他看着笼子里的乌龟，那只乌龟忽然慢慢地探出头来，圆圆的小眼睛，看着孔愉，好像在说：“救救我吧。”"]]}, {"t": "p", "s": [["c08-027", "孔愉的心软了。"], ["c08-028", "他对小贩说：“这只龟，我买了。”"]]}, {"t": "p", "s": [["c08-029", "小贩一听，乐开了花，赶紧收了钱。"], ["c08-030", "孔愉提着笼子，一路走到了河边，那条河叫饮不溪，水清清的，闪着阳光。"], ["c08-031", "他轻轻地打开笼子，把乌龟捧了出来，放进水里，说：“去吧，回到你自己的家里去吧。”"]]}, {"t": "img", "src": "images/31.webp?v=cb260e1102", "vid": "images/31.mp4?v=e2b0998ef6", "cap": "放龟", "n": 31}, {"t": "p", "s": [["c08-032", "乌龟落进水里，扑通一声，沉了下去，又慢慢地浮了上来，游到了河中央。"], ["c08-033", "它停下来，头往左边转了过来，看着岸上的孔愉，看了好几次，才慢慢地游走了。"]]}, {"t": "p", "s": [["c08-034", "孔愉笑着挥了挥手，继续赶路。"], ["c08-035", "他很快就把这件事忘了。"]]}, {"t": "p", "s": [["c08-036", "时间一年一年地过去，孔愉慢慢长大，读了很多书，又在战场上立下了功劳。"], ["c08-037", "晋元帝非常赏识他，封他做了“余不亭侯”。"], ["c08-038", "巧的是，那个封号里，恰好有当年他放龟的那个地方的名字。"]]}, {"t": "p", "s": [["c08-039", "按照规矩，被封为侯的人，要铸造一枚自己的官印。"], ["c08-040", "印钮是印章上面用来系带子的把手，当时的印钮，喜欢做成龟的样子。"], ["c08-041", "工匠们把铜熔化了，倒进模子里，一枚漂亮的官印很快就铸好了。"]]}, {"t": "p", "s": [["c08-042", "可是，孔愉拿来一看，发现了一件怪事：印上面的那只龟，头竟然不是向前的，而是回过头来，朝着左边看。"]]}, {"t": "p", "s": [["c08-043", "工匠说：“大人，这是我们手艺不好，我们重新铸一枚。”"]]}, {"t": "p", "s": [["c08-044", "于是，他们又重新铸了一次。"], ["c08-045", "可是铸好以后，龟的头，仍然是向左边回头看。"]]}, {"t": "p", "s": [["c08-046", "第三次，工匠格外小心，每一个细节都检查了好几遍。"], ["c08-047", "可是，印做出来，龟还是回头向左。"]]}, {"t": "p", "s": [["c08-048", "工匠们吓坏了，赶紧去告诉孔愉。"]]}, {"t": "img", "src": "images/32.webp?v=30b93db806", "vid": "images/32.mp4?v=dc0cbfe8e5", "cap": "龟钮回首", "n": 32}, {"t": "p", "s": [["c08-049", "孔愉听了，愣了好一会儿。"], ["c08-050", "他忽然想起了很多年前，在饮不溪边，那只回过头来看他的小乌龟。"], ["c08-051", "他一下子明白了，轻轻地笑了：“原来，这是那只龟的报答呀。”"]]}, {"t": "p", "s": [["c08-052", "他说：“既然龟儿回头看我，那我就收下它吧。”"]]}, {"t": "p", "s": [["c08-053", "他把这枚特别的官印，郑重地系在腰间，一直佩戴着。"]]}, {"t": "p", "s": [["c08-054", "后来，孔愉一路升官，做到了尚书左仆射，是朝廷里很重要的大官。"], ["c08-055", "他在位的时候，处理事情总是很公正，对待百姓，也很温和。"], ["c08-056", "他去世之后，朝廷又追封他做了车骑将军。"]]}, {"t": "p", "s": [["c08-057", "人们常常说：“你对一只小小的龟都这样好，对人又怎么会不好呢？”"]]}, {"t": "p", "s": [["c08-058", "（完）"]]}]}, {"title": "第九章　黑龙救主", "head": "c09-h", "audio": "audio/ch09.m4a?v=7c1f1a50f6", "duration": 508.13, "times": {"c09-h": [0.0, 2.612], "c09-001": [3.612, 7.595], "c09-002": [8.445, 21.859], "c09-003": [22.209, 25.941], "c09-004": [26.291, 28.704], "c09-005": [29.054, 34.287], "c09-006": [34.637, 43.322], "c09-007": [43.672, 55.095], "c09-008": [55.445, 58.984], "c09-009": [59.334, 65.374], "c09-010": [65.724, 68.528], "c09-011": [68.878, 70.388], "c09-012": [70.738, 77.818], "c09-013": [78.168, 85.413], "c09-014": [86.263, 87.523], "c09-015": [88.373, 94.575], "c09-016": [94.925, 106.16], "c09-017": [106.51, 114.589], "c09-018": [114.939, 122.039], "c09-019": [122.389, 126.41], "c09-020": [126.76, 133.747], "c09-021": [134.097, 149.291], "c09-022": [149.641, 155.878], "c09-023": [156.228, 163.782], "c09-024": [164.132, 170.499], "c09-025": [170.849, 181.807], "c09-026": [182.157, 186.709], "c09-027": [187.059, 192.125], "c09-028": [192.975, 193.773], "c09-029": [194.623, 203.08], "c09-030": [203.43, 212.852], "c09-031": [213.702, 215.679], "c09-032": [216.029, 222.381], "c09-033": [222.731, 227.941], "c09-034": [228.291, 234.089], "c09-035": [234.939, 240.254], "c09-036": [241.104, 244.261], "c09-037": [244.611, 246.855], "c09-038": [247.205, 250.3], "c09-039": [250.65, 256.722], "c09-040": [257.572, 260.445], "c09-041": [260.795, 270.8], "c09-042": [271.15, 277.129], "c09-043": [277.979, 282.43], "c09-044": [282.78, 287.953], "c09-045": [288.303, 293.097], "c09-046": [293.447, 296.079], "c09-047": [296.929, 300.258], "c09-048": [301.108, 305.994], "c09-049": [306.344, 314.332], "c09-050": [315.182, 318.568], "c09-051": [318.918, 327.397], "c09-052": [327.747, 328.666], "c09-053": [329.516, 335.441], "c09-054": [336.291, 340.587], "c09-055": [340.937, 345.475], "c09-056": [346.325, 350.734], "c09-057": [351.584, 356.827], "c09-058": [357.177, 360.6], "c09-059": [360.95, 369.738], "c09-060": [370.588, 376.524], "c09-061": [377.374, 380.311], "c09-062": [380.661, 384.527], "c09-063": [384.877, 393.545], "c09-064": [394.395, 407.396], "c09-065": [408.246, 410.625], "c09-066": [410.975, 421.378], "c09-067": [422.228, 425.546], "c09-068": [425.896, 435.053], "c09-069": [435.403, 439.903], "c09-070": [440.753, 442.33], "c09-071": [442.68, 446.584], "c09-072": [447.434, 448.618], "c09-073": [448.968, 457.808], "c09-074": [458.158, 466.879], "c09-075": [467.729, 471.861], "c09-076": [472.211, 480.347], "c09-077": [480.697, 485.373], "c09-078": [486.223, 491.267], "c09-079": [492.117, 499.49], "c09-080": [499.84, 504.936], "c09-081": [505.786, 506.63]}, "blocks": [{"t": "img", "src": "images/33.webp?v=b611d32ca9", "vid": "images/33.mp4?v=030743c081", "cap": "形影不离", "n": 33}, {"t": "p", "s": [["c09-001", "原文，出自《搜神记》第二十卷。"]]}, {"t": "p", "s": [["c09-002", "孙权时李信纯，襄阳纪南人也，家养一狗，字曰黑龙，爱之尤甚，行坐相随，饮馔之间，皆分与食。"], ["c09-003", "忽一日，于城外饮酒，大醉。"], ["c09-004", "归家不及，卧于草中。"], ["c09-005", "遇太守郑瑕出猎，见田草深，遣人纵火爇之。"], ["c09-006", "信纯卧处，恰当顺风，犬见火来，乃以口拽纯衣，纯亦不动。"], ["c09-007", "卧处比有一溪，相去三五十步，犬即奔往入水，湿身走来卧处，周回以身洒之，获免主人大难。"], ["c09-008", "犬运水困乏，致毙于侧。"], ["c09-009", "俄尔信纯醒来，见犬已死，遍身毛湿，甚讶其事。"], ["c09-010", "睹火踪迹，因尔恸哭。"], ["c09-011", "闻于太守。"], ["c09-012", "太守悯之曰：“犬之报恩，甚于人，人不知恩，岂如犬乎！”"], ["c09-013", "即命具棺椁衣衾葬之，今纪南有义犬葬，高十余丈。"]]}, {"t": "p", "s": [["c09-014", "白话文。"]]}, {"t": "p", "s": [["c09-015", "三国时代孙权在位的时候，有一个叫李信纯的人，是襄阳纪南人。"], ["c09-016", "他家里养了一条狗，名字叫黑龙，他特别喜爱，不论走路还是坐着，都带着它，吃饭喝水的时候，也把自己的食物分给它吃。"], ["c09-017", "有一天，李信纯在城外喝酒，喝得大醉，来不及回家，就躺在草地里睡着了。"], ["c09-018", "碰上太守郑瑕出来打猎，看见田里的草长得很深，就派人放火烧草。"], ["c09-019", "李信纯躺的地方，正好处在顺风的方向。"], ["c09-020", "黑龙看见大火烧过来，就用嘴去拉李信纯的衣服，可是李信纯一动也不动。"], ["c09-021", "离他睡觉的地方三五十步远，有一条小溪，黑龙就跑到溪里，把身子弄湿，再跑回来，围着主人的四周，用身上的水去洒，这样，主人才免于一场大难。"], ["c09-022", "可是黑龙因为运水太多，累得精疲力尽，死在了主人的身边。"], ["c09-023", "一会儿，李信纯醒了，看见狗已经死了，浑身的毛都是湿的，感到非常惊讶。"], ["c09-024", "他看了看火烧过的痕迹，一下子明白了过来，就伤心地大哭起来。"], ["c09-025", "这件事传到了太守的耳朵里，太守也很感动，说：“狗报答恩情，比人还强，人不知道感恩，难道还不如一条狗吗！”"], ["c09-026", "就命人准备了棺材和衣被，把黑龙安葬了。"], ["c09-027", "如今在纪南，还有一座义犬冢，高十多丈。"]]}, {"t": "p", "s": [["c09-028", "故事。"]]}, {"t": "p", "s": [["c09-029", "三国的时候，吴国孙权做国君，襄阳的纪南有一个年轻人，名叫李信纯。"], ["c09-030", "他家里养了一条黑色的大狗，毛亮亮的，眼睛圆圆的，李信纯给它起了一个威风的名字：黑龙。"]]}, {"t": "p", "s": [["c09-031", "李信纯特别喜爱黑龙。"], ["c09-032", "他走到哪里，黑龙就跟到哪里；他坐下来，黑龙就趴在他的脚边。"], ["c09-033", "吃饭的时候，李信纯自己吃一口，也要分给黑龙一口。"], ["c09-034", "邻居们笑着说：“李信纯，你对狗，比对自己还好呀！”"]]}, {"t": "p", "s": [["c09-035", "李信纯总是笑着摸摸黑龙的头，说：“它是我最好的朋友。”"]]}, {"t": "p", "s": [["c09-036", "有一天，城外有一个朋友请客吃饭。"], ["c09-037", "李信纯带着黑龙一起去了。"], ["c09-038", "朋友们说说笑笑，喝了很多酒。"], ["c09-039", "李信纯高兴，一杯接一杯地喝，渐渐地，脚步也踉跄了。"]]}, {"t": "img", "src": "images/34.webp?v=0c158c568f", "vid": "images/34.mp4?v=a78e879798", "cap": "醉卧草丛", "n": 34}, {"t": "p", "s": [["c09-040", "回家的路上，天色已经晚了。"], ["c09-041", "李信纯走到城外的一片草地，再也走不动了，一屁股坐了下来，倒在厚厚的草丛里，呼呼地睡着了。"], ["c09-042", "黑龙守在他的身边，一动也不动，圆圆的眼睛，看着四周。"]]}, {"t": "p", "s": [["c09-043", "那天，太守郑瑕正好带着人马在这一带打猎。"], ["c09-044", "他们骑着马，在原野上跑来跑去，惊起了许多飞鸟。"], ["c09-045", "有人说：“这片草长得这么深，野兽一定躲在里面。"], ["c09-046", "不如放一把火，把它们赶出来。”"]]}, {"t": "p", "s": [["c09-047", "太守点点头：“好，放火！”"]]}, {"t": "p", "s": [["c09-048", "几个士兵拿着火把，在草地的边缘点燃了干草。"], ["c09-049", "风一吹，火苗“呼”的一声蹿了起来，顺着风，朝着李信纯睡觉的方向猛扑过来。"]]}, {"t": "p", "s": [["c09-050", "黑龙闻到了烟味，一下子站了起来。"], ["c09-051", "它看到了火，一边“汪汪”地大叫，一边用嘴咬住李信纯的衣服，拼命地拉他：“主人，醒醒！"], ["c09-052", "快醒醒！”"]]}, {"t": "p", "s": [["c09-053", "可是，李信纯喝得太醉了，睡得像一块石头，怎么也拉不醒。"]]}, {"t": "p", "s": [["c09-054", "火越烧越近，热气已经烤到了黑龙的鼻子。"], ["c09-055", "它着急极了，在原地转了两圈，忽然想起了什么。"]]}, {"t": "p", "s": [["c09-056", "不远的地方，有一条小溪，离这里有三五十步。"]]}, {"t": "img", "src": "images/35.webp?v=5d89c4b803", "vid": "images/35.mp4?v=83e495be3d", "cap": "黑龙运水", "n": 35}, {"t": "p", "s": [["c09-057", "黑龙转过身，像箭一样冲了出去，一下子跳进了小溪里。"], ["c09-058", "清凉的溪水，打湿了它全身的毛。"], ["c09-059", "它从水里爬出来，一路飞奔，跑回主人的身边，抖一抖身子，把水洒在主人周围的草地上。"]]}, {"t": "p", "s": [["c09-060", "然后，它又跑去溪边，又湿了一身毛，再跑回来，再洒水……"]]}, {"t": "p", "s": [["c09-061", "一趟，两趟，三趟……"], ["c09-062", "黑龙来来回回地跑，一直跑，一直跑。"], ["c09-063", "它的腿越来越沉，舌头越伸越长，喘气的声音越来越大，可它一点也不敢停。"]]}, {"t": "p", "s": [["c09-064", "火越来越近，一圈一圈地烧了过来，可是在李信纯躺着的地方，周围的草都被黑龙洒湿了，大火烧到那里，竟然被挡住了，慢慢地熄灭了。"]]}, {"t": "p", "s": [["c09-065", "黑龙终于松了一口气。"], ["c09-066", "它走到李信纯的身边，轻轻地舔了舔他的手，然后，趴在他的身旁，闭上了眼睛，再也没有睁开。"]]}, {"t": "p", "s": [["c09-067", "过了很久，李信纯才慢慢醒过来。"], ["c09-068", "他睁开眼睛，发现天已经黑了，四周是一片烧焦的草地，空气里全是烟味。"], ["c09-069", "他想站起来，却看见身边躺着一个黑黑的身影。"]]}, {"t": "p", "s": [["c09-070", "是黑龙！"], ["c09-071", "它全身的毛都是湿的，一动不动。"]]}, {"t": "p", "s": [["c09-072", "李信纯愣住了。"], ["c09-073", "他抱起黑龙，摸着它冰冷的身体，看着地上一圈圈湿湿的痕迹，又看了看远处的小溪。"], ["c09-074", "他一下子全明白了，抱着黑龙，放声大哭：“黑龙，黑龙，是你救了我，是你救了我呀！”"]]}, {"t": "p", "s": [["c09-075", "太守郑瑕听说了这件事，沉默了很久。"], ["c09-076", "他叹了一口气，说：“一条狗，报答主人的恩情，竟然比人还要强。"], ["c09-077", "要是人不知道感恩，难道还比不上一条狗吗？”"]]}, {"t": "p", "s": [["c09-078", "他命人准备好了棺材和衣被，把黑龙隆重地安葬了。"]]}, {"t": "img", "src": "images/36.webp?v=3a26c9b8dd", "vid": "images/36.mp4?v=4d0623053e", "cap": "义犬冢", "n": 36}, {"t": "p", "s": [["c09-079", "后来，人们在纪南修起了一座高高的坟，叫作“义犬冢”，高达十多丈。"], ["c09-080", "每当有人路过，都会停下来，向那座坟鞠一个躬。"]]}, {"t": "p", "s": [["c09-081", "（完）"]]}]}, {"title": "第十章　古巢老婆婆和石龟", "head": "c10-h", "audio": "audio/ch10.m4a?v=e0205994db", "duration": 594.105, "times": {"c10-h": [0.0, 2.977], "c10-001": [3.977, 7.519], "c10-002": [8.369, 18.211], "c10-003": [18.561, 20.492], "c10-004": [20.842, 24.605], "c10-005": [24.955, 30.104], "c10-006": [30.454, 34.019], "c10-007": [34.369, 35.776], "c10-008": [36.126, 39.545], "c10-009": [39.895, 45.793], "c10-010": [46.143, 49.24], "c10-011": [49.59, 53.192], "c10-012": [54.042, 55.121], "c10-013": [55.971, 62.027], "c10-014": [62.377, 70.343], "c10-015": [70.693, 72.771], "c10-016": [73.121, 76.633], "c10-017": [76.983, 83.327], "c10-018": [83.677, 88.863], "c10-019": [89.213, 91.465], "c10-020": [91.815, 96.51], "c10-021": [96.86, 100.917], "c10-022": [101.267, 103.979], "c10-023": [104.329, 109.534], "c10-024": [109.884, 116.271], "c10-025": [117.121, 117.849], "c10-026": [118.699, 126.093], "c10-027": [126.443, 132.632], "c10-028": [133.482, 141.331], "c10-029": [141.681, 147.784], "c10-030": [148.634, 155.616], "c10-031": [155.966, 162.921], "c10-032": [163.771, 170.387], "c10-033": [171.237, 174.014], "c10-034": [174.364, 177.305], "c10-035": [177.655, 189.52], "c10-036": [190.37, 194.076], "c10-037": [194.426, 199.192], "c10-038": [199.542, 207.216], "c10-039": [207.566, 210.86], "c10-040": [211.71, 214.73], "c10-041": [215.08, 218.168], "c10-042": [218.518, 226.155], "c10-043": [227.005, 230.226], "c10-044": [230.576, 232.905], "c10-045": [233.255, 236.824], "c10-046": [237.174, 241.391], "c10-047": [241.741, 244.712], "c10-048": [245.562, 251.291], "c10-049": [252.141, 261.096], "c10-050": [261.446, 269.794], "c10-051": [270.644, 277.532], "c10-052": [278.382, 285.17], "c10-053": [286.02, 289.55], "c10-054": [289.9, 298.838], "c10-055": [299.188, 302.666], "c10-056": [303.516, 307.847], "c10-057": [308.197, 323.929], "c10-058": [324.779, 336.872], "c10-059": [337.722, 347.518], "c10-060": [348.368, 353.435], "c10-061": [353.785, 355.017], "c10-062": [355.867, 362.962], "c10-063": [363.812, 374.011], "c10-064": [374.861, 379.1], "c10-065": [379.45, 386.539], "c10-066": [387.389, 391.569], "c10-067": [391.919, 395.1], "c10-068": [395.45, 398.595], "c10-069": [398.945, 399.669], "c10-070": [400.019, 401.534], "c10-071": [402.384, 411.308], "c10-072": [412.158, 416.212], "c10-073": [416.562, 427.556], "c10-074": [427.906, 429.337], "c10-075": [430.187, 433.659], "c10-076": [434.009, 441.045], "c10-077": [441.395, 446.479], "c10-078": [447.329, 451.849], "c10-079": [457.435, 474.128], "c10-080": [474.978, 481.523], "c10-081": [481.873, 488.018], "c10-082": [488.868, 492.95], "c10-083": [493.3, 502.377], "c10-084": [502.727, 507.172], "c10-085": [508.022, 512.521], "c10-086": [513.371, 517.357], "c10-087": [517.707, 530.285], "c10-088": [531.135, 532.195], "song-theme": [533.395, 539.395], "song-theme-01": [539.395, 543.095], "song-theme-02": [544.735, 547.295], "song-theme-03": [549.935, 554.255], "song-theme-04": [554.255, 557.835], "song-theme-05": [560.335, 562.655], "song-theme-06": [562.655, 565.295], "song-theme-07": [565.575, 568.475], "song-theme-08": [570.415, 573.875], "song-theme-09": [575.975, 578.295], "song-theme-10": [578.295, 580.855], "song-theme-11": [580.855, 583.415], "song-theme-12": [583.415, 587.255]}, "blocks": [{"t": "img", "src": "images/37.webp?v=9f1fcb54ff", "vid": "images/37.mp4?v=1898908190", "cap": "古巢城", "n": 37}, {"t": "p", "s": [["c10-001", "原文，出自《搜神记》第二十卷。"]]}, {"t": "p", "s": [["c10-002", "古巢，一日江水暴涨，寻复故道，港有巨鱼，重万斤，三日乃死，合郡皆食之。"], ["c10-003", "一老姥独不食。"], ["c10-004", "忽有老叟曰：“此吾子也。"], ["c10-005", "不幸罹此祸，汝独不食，吾厚报汝。"], ["c10-006", "若东门石龟目赤，城当陷。”"], ["c10-007", "姥日往视。"], ["c10-008", "有稚子讶之，姥以实告。"], ["c10-009", "稚子欺之，以朱傅龟目；姥见，急出城。"], ["c10-010", "有青衣童子曰：“吾龙之子。”"], ["c10-011", "乃引姥登山，而城陷为湖。"]]}, {"t": "p", "s": [["c10-012", "白话文。"]]}, {"t": "p", "s": [["c10-013", "古巢这个地方，有一天江水暴涨，不久又退回了原来的河道。"], ["c10-014", "港口里留下一条巨大的鱼，重达一万斤，过了三天才死去，全郡的人都分着吃了它。"], ["c10-015", "只有一位老婆婆没有吃。"], ["c10-016", "忽然有一位老人对她说：“这是我的儿子。"], ["c10-017", "它不幸遭了这场灾祸，只有你没有吃它，我要重重地报答你。"], ["c10-018", "如果东门的石龟眼睛变红了，这座城就要沉下去了。”"], ["c10-019", "老婆婆每天都去看一看。"], ["c10-020", "有个小孩觉得很奇怪，老婆婆就把实情告诉了他。"], ["c10-021", "小孩欺骗她，用红颜料涂在石龟的眼睛上。"], ["c10-022", "老婆婆看见了，赶紧跑出城去。"], ["c10-023", "这时，有一个穿青衣的少年对她说：“我是龙的儿子。”"], ["c10-024", "就带着老婆婆登上了山，而整座城都陷了下去，变成了一片湖。"]]}, {"t": "p", "s": [["c10-025", "故事。"]]}, {"t": "p", "s": [["c10-026", "很久很久以前，在长江边上，有一座古老的城，名字叫古巢。"], ["c10-027", "城里的人们，靠着江水种田、打鱼，日子过得平平静静。"]]}, {"t": "p", "s": [["c10-028", "有一年夏天，天上下了好几天大雨，江水涨得很高，哗哗地漫上了岸。"], ["c10-029", "可是没过多久，水又慢慢地退了下去，回到了原来的河道里。"]]}, {"t": "p", "s": [["c10-030", "退水之后，人们惊奇地发现，在港口的泥滩上，躺着一条巨大的鱼。"], ["c10-031", "它有一座小山那么大，鳞片像一面一面金色的盾牌，足足有一万斤重。"]]}, {"t": "p", "s": [["c10-032", "大家围着看热闹，指指点点，七嘴八舌：“这么大的鱼，真是少见！”"]]}, {"t": "p", "s": [["c10-033", "过了三天，那条鱼死了。"], ["c10-034", "城里的人们说：“不吃白不吃！”"], ["c10-035", "于是，大家拿着刀，拿着盆，把大鱼切成了一块一块，家家户户都分了一份，煮的煮，烤的烤，闻起来香极了。"]]}, {"t": "img", "src": "images/38.webp?v=a4d01c35a0", "vid": "images/38.mp4?v=7c8e13c420", "cap": "不食巨鱼", "n": 38}, {"t": "p", "s": [["c10-036", "只有城里的一位老婆婆，没有去分鱼。"], ["c10-037", "她住在一间小小的房子里，一个人过日子，心地特别善良。"], ["c10-038", "她看着那条巨大的鱼，心里很难过，说：“这样的大鱼，一定有灵性。"], ["c10-039", "它也是一条命呀，我不忍心吃它。”"]]}, {"t": "img", "src": "images/39.webp?v=ab7dcb5d26", "vid": "images/39.mp4?v=e8bdea0c23", "cap": "老叟托梦", "n": 39}, {"t": "p", "s": [["c10-040", "那天夜里，老婆婆睡得很香。"], ["c10-041", "忽然，她听到有人轻轻地敲门。"], ["c10-042", "她起身开门，只见门口站着一位白胡子的老爷爷，眼睛红红的，好像刚刚哭过。"]]}, {"t": "p", "s": [["c10-043", "老爷爷说：“老婆婆，你知道吗？"], ["c10-044", "那条鱼，是我的儿子。"], ["c10-045", "它不幸被困在这里，遇上了这场灾祸。"], ["c10-046", "城里的人都吃了它，只有你，没有吃。"], ["c10-047", "我非常感激你，我要好好地报答你。”"]]}, {"t": "p", "s": [["c10-048", "老婆婆吓了一跳，连忙说：“我什么也没有做，怎么好意思要你的报答呢？”"]]}, {"t": "p", "s": [["c10-049", "老爷爷摇摇头，认真地说：“你记住，从今天起，你每天去城东门看一看那座石龟。"], ["c10-050", "要是有一天，石龟的眼睛变红了，这座城就要沉下去了，那时候，你一定要赶快逃出去！”"]]}, {"t": "p", "s": [["c10-051", "说完，老爷爷的身影，像一阵雾一样，慢慢地散开，不见了。"]]}, {"t": "p", "s": [["c10-052", "老婆婆揉了揉眼睛，心里怦怦直跳，却不知道，这是梦还是真的。"]]}, {"t": "p", "s": [["c10-053", "第二天一早，她就来到了东城门。"], ["c10-054", "城门口蹲着一座大大的石龟，灰灰的，圆圆的，眼睛也是灰色的，看起来和从前没有两样。"], ["c10-055", "老婆婆仔细看了一会儿，才慢慢地回家。"]]}, {"t": "p", "s": [["c10-056", "从那以后，她每天都去，风雨无阻。"], ["c10-057", "有时候，她带着一小把米，撒在石龟旁边的地上，喂喂麻雀；有时候，她就静静地站着，看着石龟，心里默默地想：“眼睛，千万别变红呀。”"]]}, {"t": "p", "s": [["c10-058", "城里有一个顽皮的孩子，叫阿虎，看见老婆婆天天来看石龟，觉得奇怪，问：“老婆婆，你每天来看这只石头乌龟，是为什么呀？”"]]}, {"t": "p", "s": [["c10-059", "老婆婆想了想，就把梦里的事告诉了他：“有一位老爷爷说，要是这只石龟的眼睛变红，城就要沉下去了。”"]]}, {"t": "img", "src": "images/40.webp?v=4808a0a70e", "vid": "images/40.mp4?v=9d5aec1680", "cap": "顽童涂龟", "n": 40}, {"t": "p", "s": [["c10-060", "阿虎听了，哈哈大笑：“石龟的眼睛怎么会变红呢？"], ["c10-061", "我才不信呢！”"]]}, {"t": "p", "s": [["c10-062", "他眼珠一转，心里冒出一个坏主意：“我倒要吓一吓她，看看她是不是真的会逃跑。”"]]}, {"t": "p", "s": [["c10-063", "第二天一早，阿虎偷偷地拿了一盒红颜料，趁着没人看见，跑到东门，把石龟的两只眼睛，涂得红红的。"]]}, {"t": "p", "s": [["c10-064", "老婆婆像往常一样，慢慢地走到了城门口。"], ["c10-065", "她抬头一看，一下子愣住了：石龟的眼睛，竟然红得像两团火！"]]}, {"t": "p", "s": [["c10-066", "老婆婆的心，“咚”的一下，沉到了底。"], ["c10-067", "她没有再多想，转身就往城外跑。"], ["c10-068", "她一边跑，一边回头喊：“快走！"], ["c10-069", "快走啊！"], ["c10-070", "城要沉了！”"]]}, {"t": "p", "s": [["c10-071", "可是，街上的人们都在忙着自己的事，没有人理她，有人还笑她：“这位老婆婆，是不是糊涂了？”"]]}, {"t": "p", "s": [["c10-072", "老婆婆跑出了城门，还在拼命地往前跑。"], ["c10-073", "忽然，路边闪出一个穿着青衣的少年，笑眯眯地拦在她的面前，说：“老婆婆，别怕，我是龙的儿子。"], ["c10-074", "我来带你上山。”"]]}, {"t": "img", "src": "images/41.webp?v=625164f2ed", "vid": "images/41.mp4?v=8b0955cd77", "cap": "登山避水", "n": 41}, {"t": "p", "s": [["c10-075", "他伸出手，轻轻地牵起了老婆婆。"], ["c10-076", "说也奇怪，老婆婆觉得自己的脚下，一下子轻飘飘的，像踩在云朵上。"], ["c10-077", "少年带着她，一步一步，登上了旁边的一座高山。"]]}, {"t": "p", "s": [["c10-078", "就在这个时候，山下的大地忽然“轰隆隆”地响了起来。"], ["c10-079", "那座古老的古巢城，一点一点地向下陷落，水从地底下涌了出来，越涨越高，越涨越宽，转眼之间，整座城，都沉到了水底，变成了一片宽阔的大湖。"]]}, {"t": "p", "s": [["c10-080", "站在山顶上的老婆婆，看着那一片碧蓝的湖水，眼泪流了下来。"], ["c10-081", "她想起了城里的孩子，想起那些熟悉的街道和邻居，心里难过极了。"]]}, {"t": "p", "s": [["c10-082", "青衣少年轻轻地说：“老婆婆，你不要太难过。"], ["c10-083", "我的爸爸告诉我，那一天，大鱼没有活下来，是因为城里的人不知道感恩，也不知道爱惜生命。"], ["c10-084", "只有你，是心地善良的人，我们才救了你。”"]]}, {"t": "p", "s": [["c10-085", "老婆婆点点头，擦干了眼泪，说：“谢谢你们。”"]]}, {"t": "img", "src": "images/42.webp?v=bc722d994f", "vid": "images/42.mp4?v=3144891de7", "cap": "巢湖", "n": 42}, {"t": "p", "s": [["c10-086", "后来，人们把那片湖叫作巢湖。"], ["c10-087", "传说中，在平静的夜晚，还能听见湖底传来的钟声，好像是那座古老的城市，在深深的水下，轻轻地讲着从前的故事。"]]}, {"t": "p", "s": [["c10-088", "（完）"]]}, {"t": "song", "title": "搜神的歌", "head": "song-theme", "lines": [["song-theme-01", "神农的鞭子，认出百草"], ["song-theme-02", "织女的织机，织出云霞"], ["song-theme-03", "木羊驮着人，走上桃花山"], ["song-theme-04", "小小的李寄，不怕大蛇"], ["song-theme-05", "灵蛇衔来，明月的珠"], ["song-theme-06", "蚂蚁咬断，冤屈的锁"], ["song-theme-07", "乌龟回头，黑狗湿了毛"], ["song-theme-08", "善良的心，总有回报"], ["song-theme-09", "搜神记里，古老的故事"], ["song-theme-10", "一个一个，讲到今天"], ["song-theme-11", "做个善良，勇敢的孩子"], ["song-theme-12", "天地都会，记得你"]]}]}], "music": 3, "images": [{"from": "c01-h", "src": "images/01.webp?v=2b6f61d03e", "vid": "images/01.mp4?v=e2c2c4c9b1", "cap": "神农在山中", "n": 1}, {"from": "c01-017", "src": "images/02.webp?v=28c88a7d54", "vid": "images/02.mp4?v=f2fc03320f", "cap": "鞭草辨性", "n": 2}, {"from": "c01-025", "src": "images/03.webp?v=4df5499321", "vid": "images/03.mp4?v=2e9d458c27", "cap": "神农尝草", "n": 3}, {"from": "c01-038", "src": "images/04.webp?v=dc9a74f59f", "vid": "images/04.mp4?v=20106ebaf9", "cap": "五谷丰收", "n": 4}, {"from": "c02-h", "src": "images/05.webp?v=6eddf1229d", "vid": "images/05.mp4?v=9e9a399623", "cap": "董永推车", "n": 5}, {"from": "c02-052", "src": "images/06.webp?v=d5aa9c32fa", "vid": "images/06.mp4?v=d4106b5b63", "cap": "路遇仙女", "n": 6}, {"from": "c02-070", "src": "images/07.webp?v=fe7852c856", "vid": "images/07.mp4?v=db9505189a", "cap": "织房织绢", "n": 7}, {"from": "c02-082", "src": "images/08.webp?v=04940c3e70", "vid": "images/08.mp4?v=5fbd535f39", "cap": "织女飞天", "n": 8}, {"from": "c03-h", "src": "images/09.webp?v=9a1b40ddee", "vid": "images/09.mp4?v=dee449b36d", "cap": "葛由雕羊", "n": 9}, {"from": "c03-029", "src": "images/10.webp?v=1a94b6ea10", "vid": "images/10.mp4?v=9ffab5be6d", "cap": "骑羊出发", "n": 10}, {"from": "c03-042", "src": "images/11.webp?v=6d534ed6c8", "vid": "images/11.mp4?v=4c79119e3b", "cap": "上绥山", "n": 11}, {"from": "c03-046", "src": "images/12.webp?v=23205ac1ee", "vid": "images/12.mp4?v=56ab62aadf", "cap": "桃园仙境", "n": 12}, {"from": "c04-h", "src": "images/13.webp?v=9bc74555ff", "vid": "images/13.mp4?v=56518b6f1d", "cap": "庸岭", "n": 13}, {"from": "c04-063", "src": "images/14.webp?v=bc3485213d", "vid": "images/14.mp4?v=2bc01434fa", "cap": "李寄请行", "n": 14}, {"from": "c04-080", "src": "images/15.webp?v=d2b8a19e73", "vid": "images/15.mp4?v=451072e412", "cap": "大蛇出洞", "n": 15}, {"from": "c04-095", "src": "images/16.webp?v=649c5b212e", "vid": "images/16.mp4?v=5087cf1f72", "cap": "欢庆", "n": 16}, {"from": "c05-h", "src": "images/17.webp?v=f25f3c5fd1", "vid": "images/17.mp4?v=2283b1b6b8", "cap": "夜路逢鬼", "n": 17}, {"from": "c05-074", "src": "images/18.webp?v=d3e6127791", "vid": "images/18.mp4?v=62c1eaf174", "cap": "鬼背人", "n": 18}, {"from": "c05-085", "src": "images/19.webp?v=f969dece49", "vid": "images/19.mp4?v=c2ad24dc63", "cap": "过河", "n": 19}, {"from": "c05-102", "src": "images/20.webp?v=794372589c", "vid": "images/20.mp4?v=c37a4a29fd", "cap": "卖羊", "n": 20}, {"from": "c06-h", "src": "images/21.webp?v=ff14beff3d", "vid": "images/21.mp4?v=b63af38daf", "cap": "溠水之畔", "n": 21}, {"from": "c06-022", "src": "images/22.webp?v=7a55d1c97f", "vid": "images/22.mp4?v=8d2d301533", "cap": "发现伤蛇", "n": 22}, {"from": "c06-031", "src": "images/23.webp?v=93d8aed05a", "vid": "images/23.mp4?v=3100bfdd70", "cap": "灵蛇离去", "n": 23}, {"from": "c06-043", "src": "images/24.webp?v=ce63895921", "vid": "images/24.mp4?v=565f4741a7", "cap": "明月珠", "n": 24}, {"from": "c07-h", "src": "images/25.webp?v=50b9eec539", "vid": "images/25.mp4?v=e373a68738", "cap": "渡钱塘江", "n": 25}, {"from": "c07-056", "src": "images/26.webp?v=56e8fce26f", "vid": "images/26.mp4?v=2045495933", "cap": "救蚂蚁", "n": 26}, {"from": "c07-059", "src": "images/27.webp?v=cd597e1fda", "vid": "images/27.mp4?v=11fcf65256", "cap": "蚁王道谢", "n": 27}, {"from": "c07-079", "src": "images/28.webp?v=5d23e836da", "vid": "images/28.mp4?v=4b7691ab1f", "cap": "蚂蚁咬断枷锁", "n": 28}, {"from": "c08-h", "src": "images/29.webp?v=24e67611ec", "vid": "images/29.mp4?v=bdbe45889d", "cap": "少年孔愉", "n": 29}, {"from": "c08-020", "src": "images/30.webp?v=332d6ef97b", "vid": "images/30.mp4?v=b172c9b7ce", "cap": "笼中龟", "n": 30}, {"from": "c08-032", "src": "images/31.webp?v=cb260e1102", "vid": "images/31.mp4?v=e2b0998ef6", "cap": "放龟", "n": 31}, {"from": "c08-049", "src": "images/32.webp?v=30b93db806", "vid": "images/32.mp4?v=dc0cbfe8e5", "cap": "龟钮回首", "n": 32}, {"from": "c09-h", "src": "images/33.webp?v=b611d32ca9", "vid": "images/33.mp4?v=030743c081", "cap": "形影不离", "n": 33}, {"from": "c09-040", "src": "images/34.webp?v=0c158c568f", "vid": "images/34.mp4?v=a78e879798", "cap": "醉卧草丛", "n": 34}, {"from": "c09-057", "src": "images/35.webp?v=5d89c4b803", "vid": "images/35.mp4?v=83e495be3d", "cap": "黑龙运水", "n": 35}, {"from": "c09-079", "src": "images/36.webp?v=3a26c9b8dd", "vid": "images/36.mp4?v=4d0623053e", "cap": "义犬冢", "n": 36}, {"from": "c10-h", "src": "images/37.webp?v=9f1fcb54ff", "vid": "images/37.mp4?v=1898908190", "cap": "古巢城", "n": 37}, {"from": "c10-036", "src": "images/38.webp?v=a4d01c35a0", "vid": "images/38.mp4?v=7c8e13c420", "cap": "不食巨鱼", "n": 38}, {"from": "c10-040", "src": "images/39.webp?v=ab7dcb5d26", "vid": "images/39.mp4?v=e8bdea0c23", "cap": "老叟托梦", "n": 39}, {"from": "c10-060", "src": "images/40.webp?v=4808a0a70e", "vid": "images/40.mp4?v=9d5aec1680", "cap": "顽童涂龟", "n": 40}, {"from": "c10-075", "src": "images/41.webp?v=625164f2ed", "vid": "images/41.mp4?v=8b0955cd77", "cap": "登山避水", "n": 41}, {"from": "c10-086", "src": "images/42.webp?v=bc722d994f", "vid": "images/42.mp4?v=3144891de7", "cap": "巢湖", "n": 42}]};
+const POS_KEY = BOOK.id + '-audiobook-pos';   // 听到哪里：每本书分开记
+// 网上运行时音频、插图都从 Cloudflare 加载（网页仓库里只放 HTML）；本机、局域网、file:// 用相对路径。
+// ?assets=remote / pages / local 强制（pages = 默认的 pages.dev 域名，自定义域名没配好时用）
+const ASSET_HOSTS = { remote: 'https://meler-stories-assets.melerpaine.com/', pages: 'https://meler-stories-assets.pages.dev/' };
+const ASSET_BASE = (() => {
+  const q = new URLSearchParams(location.search).get('assets');
+  const local = location.protocol === 'file:' || /^(localhost|127\.|10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.|\[::1\]$)|\.local$/.test(location.hostname);
+  const host = ASSET_HOSTS[q] || (q !== 'local' && !local ? ASSET_HOSTS.remote : '');
+  return host ? host + BOOK.id + '/' : '';
+})();
+const A = p => p && ASSET_BASE + p;
+BOOK.cover = A(BOOK.cover);
+BOOK.images.forEach(im => { im.src = A(im.src); im.vid = A(im.vid); });
+BOOK.chapters.forEach(ch => { ch.audio = A(ch.audio); ch.blocks.forEach(b => { if (b.t === 'img') { b.src = A(b.src); b.vid = A(b.vid); } }); });
+const PREF = 'story-audiobook-';               // 主题、动图、显示模式：所有书共用
+const NUM = ['零','一','二','三','四','五','六','七','八','九','十','十一','十二','十三','十四','十五'];
+const ICON_PLAY = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>';
+const ICON_PAUSE = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 5h3.5v14H7zm6.5 0H17v14h-3.5z"/></svg>';
+const $ = s => document.querySelector(s);
+const fmt = t => { t = Math.max(0, t | 0); return String(t / 60 | 0).padStart(2, '0') + ':' + String(t % 60).padStart(2, '0'); };
+
+// ---------- 渲染 ----------
+const story = $('#story');
+let anim = true;   // 插图用动图还是静态图
+try { anim = localStorage.getItem(PREF + 'anim') !== 'off'; } catch (e) {}
+const lines = [];          // 全书按顺序：{id, ch, start, end, el, img}
+const imgs = BOOK.images;  // 全书插图（故事顺序）：{from, src, vid, cap, n}，from = 从哪一句开始显示；vid 是动图短片
+// 正文里的动图：进入视野附近才加载、播放，离开就暂停（几十段短片同时播手机吃不消）
+const vio = new IntersectionObserver(es => es.forEach(e => {
+  const v = e.target;
+  if (e.isIntersecting && anim) { if (!v.src) v.src = v.dataset.src; v.play().catch(() => {}); }
+  else v.pause();
+}), { rootMargin: '300px 0px' });
+const byId = {};
+document.title = BOOK.title + ' · 有声绘本';
+$('#bookTitle').textContent = BOOK.title;
+$('#kicker').textContent = BOOK.kicker + ' · 有声绘本';
+$('#intro').textContent = BOOK.intro;
+$('#coverImg').src = BOOK.cover;
+const total = BOOK.chapters.reduce((a, c) => a + c.duration, 0);
+const nImg = BOOK.chapters.reduce((a, c) => a + c.blocks.filter(b => b.t === 'img').length, 0);
+const nSong = BOOK.chapters.reduce((a, c) => a + c.blocks.filter(b => b.t === 'song').length, 0);
+// 同一个故事的其他版本（精简版 / 完整版）
+if (BOOK.versions) {
+  const box = $('#versions'); box.hidden = false;
+  BOOK.versions.forEach(v => {
+    const el = document.createElement(v.current ? 'span' : 'a');
+    el.textContent = v.current ? v.label : v.label + ' ›';
+    if (v.current) el.className = 'on'; else el.href = `../${v.dir}/index.html`;
+    box.append(el);
+  });
+}
+$('#meta').textContent = `${BOOK.chapters.length} 章 · ${nImg} 幅插画${nSong ? ` · ${nSong} 首插曲` : ''}${BOOK.music ? ` · ${BOOK.music} 首配乐` : ''} · 全长约 ${Math.round(total / 60)} 分钟 · 朗读：${BOOK.voice}`;
+
+BOOK.chapters.forEach((ch, ci) => {
+  const sec = document.createElement('section');
+  sec.className = 'chapter'; sec.id = 'ch' + (ci + 1);
+  const [no, ...rest] = ch.title.split('　');
+  const h = document.createElement('h2');
+  h.innerHTML = `<small>${no}</small>${rest.join(' ')}`;
+  h.dataset.id = ch.head;
+  sec.appendChild(h);
+  const add = (id, el) => { const [s, e] = ch.times[id]; const L = { id, ch: ci, start: s, end: e, el }; lines.push(L); byId[id] = L; };
+  add(ch.head, h);
+  for (const b of ch.blocks) {
+    if (b.t === 'p') {
+      const p = document.createElement('p');
+      for (const [id, text] of b.s) {
+        const sp = document.createElement('span');
+        sp.className = 's'; sp.dataset.id = id; sp.textContent = text;
+        p.appendChild(sp); add(id, sp);
+      }
+      sec.appendChild(p);
+    } else if (b.t === 'song') {
+      // 插曲：歌名（前奏时高亮）+ 一行一句歌词，跟着演唱逐行高亮
+      const d = document.createElement('div'); d.className = 'song';
+      const h3 = document.createElement('h3'); h3.dataset.id = b.head; h3.textContent = b.title;
+      d.appendChild(h3); add(b.head, h3);
+      for (const [id, text] of b.lines) {
+        const sp = document.createElement('span');
+        sp.className = 's'; sp.dataset.id = id; sp.textContent = text;
+        d.appendChild(sp); add(id, sp);
+      }
+      sec.appendChild(d);
+    } else if (b.t === 'img') {
+      const f = document.createElement('figure');
+      f.innerHTML = `<div class="pic"><img loading="lazy" src="${b.src}" alt="${b.cap}"></div><figcaption><b>插图 ${b.n}</b>${b.cap}</figcaption>`;
+      if (b.vid) {
+        const v = document.createElement('video');
+        v.muted = v.loop = v.playsInline = true; v.preload = 'none'; v.dataset.src = b.vid;
+        v.setAttribute('muted', ''); v.setAttribute('playsinline', '');   // iOS 自动播放认属性
+        v.onplaying = () => v.classList.toggle('on', anim);
+        f.firstChild.appendChild(v); vio.observe(v);
+      }
+      sec.appendChild(f);
+    } else {
+      const d = document.createElement('div'); d.className = 'note'; d.textContent = b.text; sec.appendChild(d);
+    }
+  }
+  story.appendChild(sec);
+  const li = document.createElement('li');
+  li.innerHTML = `<button data-ch="${ci}"><span>${ch.title.replace('　', ' ')}</span><span class="dur">${fmt(ch.duration)}</span></button>`;
+  $('#toc').appendChild(li);
+});
+// 每幅插图从它的 from 那句开始显示，一直到下一幅开始
+imgs.forEach(im => { im.ch = byId[im.from].ch; im.at = lines.indexOf(byId[im.from]); });
+lines.forEach((L, k) => {
+  let i = 0;
+  while (i + 1 < imgs.length && imgs[i + 1].at <= k) i++;
+  L.img = i;
+});
+const endMark = document.createElement('div'); endMark.className = 'end-mark'; endMark.textContent = '— 全书完 —';
+story.appendChild(endMark);
+
+// ---------- 欣赏插曲：全书插曲排成播放列表，每首只放章节音频里歌的那一段，放完接着下一首 ----------
+const songs = [];
+BOOK.chapters.forEach((ch, ci) => ch.blocks.forEach(b => {
+  if (b.t !== 'song') return;
+  const i = lines.indexOf(byId[b.lines[b.lines.length - 1][0]]), next = lines[i + 1];
+  songs.push({ title: b.title, ch: ci, start: byId[b.head].start, end: next && next.ch === ci ? next.start : ch.duration });
+}));
+let plIdx = -1;   // 正在放播放列表里的第几首，-1 是平常听书
+if (songs.length) {
+  const box = document.createElement('section'); box.className = 'songlist'; box.id = 'songlist';
+  const mins = Math.max(1, Math.round(songs.reduce((a, s) => a + s.end - s.start, 0) / 60));
+  box.innerHTML = `<h3>♪ 本书插曲</h3><div class="sub">${songs.length} 首 · 约 ${mins} 分钟</div>
+    <button class="btn btn-song" id="songAll">${ICON_PLAY}欣赏插曲</button><ol></ol>`;
+  songs.forEach((s, i) => {
+    const li = document.createElement('li');
+    li.innerHTML = `<button data-song="${i}"><span></span><span class="dur">${BOOK.chapters[s.ch].title.split('　')[0]} · ${fmt(s.end - s.start)}</span></button>`;
+    li.querySelector('span').textContent = s.title;
+    box.querySelector('ol').appendChild(li);
+  });
+  box.querySelector('#songAll').onclick = () => playSong(0);
+  box.querySelector('ol').onclick = e => { const b = e.target.closest('button'); if (b) playSong(+b.dataset.song); };
+  story.appendChild(box);
+}
+function renderSongs() {
+  document.querySelectorAll('.songlist li button').forEach((b, i) => b.classList.toggle('now', i === plIdx));
+}
+function playSong(i) {
+  if (i >= songs.length) { plIdx = -1; renderSongs(); audio.pause(); toast('插曲都放完啦'); return; }
+  plIdx = Math.max(0, i); renderSongs();
+  const s = songs[plIdx];
+  playFrom(s.ch, s.start + 0.001).then(updateMedia);
+  toast(`♪ 插曲 ${plIdx + 1}/${songs.length}：${s.title}`);
+}
+const stopSongs = () => { if (plIdx >= 0) { plIdx = -1; renderSongs(); } };
+
+// ---------- 播放 ----------
+const audio = new Audio();
+audio.preload = 'auto';
+let cur = -1, active = null, playing = false;
+let follow = true, userScrollAt = 0, speedIdx = 1;
+const SPEEDS = [0.8, 1, 1.2, 1.5];
+
+function loadChapter(ci) {
+  if (ci === cur) return Promise.resolve();
+  cur = ci;
+  audio.src = BOOK.chapters[ci].audio;
+  setBuffering(true);   // 到能播放之前转圈（canplay / playing 时停）
+  audio.playbackRate = SPEEDS[speedIdx];
+  document.querySelectorAll('.toc button').forEach((b, i) => b.classList.toggle('now', i === ci));
+  $('#seek').max = BOOK.chapters[ci].duration;
+  updateMedia();
+  return new Promise(res => audio.addEventListener('loadedmetadata', res, { once: true }));
+}
+
+async function playFrom(ci, t, autoplay = true) {
+  await loadChapter(ci);
+  audio.currentTime = t;
+  sync(true);
+  if (autoplay) { try { await audio.play(); } catch (e) { toast('点击播放按钮开始朗读'); } }
+}
+const playLine = (L, autoplay = true) => playFrom(L.ch, L.start + 0.001, autoplay);
+
+function lineAt(ci, t) {
+  // 找本章里开始时间 ≤ t 的最后一句
+  let best = null;
+  for (const L of lines) {
+    if (L.ch !== ci) { if (best) break; continue; }
+    if (L.start <= t + 0.03) best = L; else break;
+  }
+  return best;
+}
+
+function setActive(L, force) {
+  if (L === active && !force) return;
+  if (active) active.el.classList.remove('on');
+  active = L;
+  if (!L) return;
+  L.el.classList.add('on');
+  const idx = lines.indexOf(L);
+  lines.forEach((x, i) => x.el.classList.toggle('past', i < idx));
+  const ch = BOOK.chapters[L.ch];
+  $('#nowTitle').textContent = plIdx >= 0 ? `♪ ${plIdx + 1}/${songs.length} ${songs[plIdx].title}` : ch.title.replace('　', ' ');
+  if (mode !== 'read') showStage(L.img);   // 阅读模式不用舞台，免得在后台加载动图
+  setSubtitle(L);
+  if (follow && mode !== 'picture' && (force || Date.now() - userScrollAt > 5000)) {
+    const r = L.el.getBoundingClientRect();
+    const vh = window.innerHeight;
+    if (r.top < vh * 0.18 || r.bottom > vh * 0.62) {
+      programmatic = Date.now();
+      window.scrollBy({ top: r.top - vh * 0.32, behavior: 'smooth' });
+    }
+  }
+}
+
+function sync(force) {
+  if (cur < 0) return;
+  const t = audio.currentTime;
+  const s = songs[plIdx];
+  if (s && playing && cur === s.ch && t >= s.end - 0.05) return playSong(plIdx + 1);   // 这首唱完了，接下一首
+  setActive(lineAt(cur, t), force);
+  if (!seeking) $('#seek').value = t;
+  $('#nowTime').textContent = `${buffering ? '加载中… ' : ''}${fmt(t)} / ${fmt(BOOK.chapters[cur].duration)}`;
+  paintSeek();
+}
+
+// ---------- 弱网：显示下载进度、缓冲提示、预先加载下一章、出错重试 ----------
+const SEEK_PLAYED = 'var(--sea)', SEEK_BUF = 'color-mix(in srgb, var(--sea) 50%, var(--line))';
+let buffering = false, retry = null, prefetched = new Set();
+function paintSeek() {
+  const seek = $('#seek');
+  const d = cur < 0 ? 0 : (audio.duration || BOOK.chapters[cur].duration);
+  if (!d) { seek.style.setProperty('--seek-bg', 'var(--line)'); return; }
+  const pc = x => (Math.min(1, Math.max(0, x / d)) * 100).toFixed(2) + '%';
+  const p = pc(+seek.value), stops = [];
+  for (let i = 0; i < audio.buffered.length; i++) {
+    const a = pc(audio.buffered.start(i)), b = pc(audio.buffered.end(i));
+    stops.push(`transparent ${a}`, `${SEEK_BUF} ${a}`, `${SEEK_BUF} ${b}`, `transparent ${b}`);
+  }
+  const buf = stops.length ? `linear-gradient(to right, ${stops.join(', ')}), ` : '';
+  seek.style.setProperty('--seek-bg', `linear-gradient(to right, ${SEEK_PLAYED} ${p}, transparent ${p}), ${buf}var(--line)`);
+}
+function setBuffering(on) {
+  if (buffering === on) return;
+  buffering = on;
+  document.body.classList.toggle('buffering', on);
+  if (cur >= 0) sync(false);
+}
+audio.addEventListener('waiting', () => setBuffering(true));
+['playing', 'canplay', 'pause'].forEach(ev => audio.addEventListener(ev, () => setBuffering(false)));
+audio.addEventListener('progress', () => {
+  paintSeek();
+  // 这一章下载完了而且正在听：提前把下一章拉进浏览器缓存（地址带内容指纹、长期缓存），换章时不用再等
+  const next = BOOK.chapters[cur + 1], b = audio.buffered, d = audio.duration;
+  if (!playing || !next || prefetched.has(next.audio) || !b.length || !(b.end(b.length - 1) >= d - 0.5)) return;
+  if (navigator.connection && navigator.connection.saveData) return;
+  prefetched.add(next.audio);
+  fetch(next.audio, { priority: 'low' }).then(r => r.blob()).catch(() => {});   // 只试一次，失败了到时照常边下边放
+});
+audio.addEventListener('error', () => {
+  if (cur < 0) return;
+  setBuffering(false);
+  retry = { ch: cur, t: audio.currentTime };   // 再点播放时从断开的地方重新加载
+  cur = -1;
+  toast('网络不太好，音频没加载出来，点播放键重试');
+});
+
+let raf = 0;
+function loop() { sync(false); raf = requestAnimationFrame(loop); }
+audio.addEventListener('play', () => { playing = true; document.body.classList.add('playing'); story.classList.add('reading'); renderPlay(); cancelAnimationFrame(raf); loop(); });
+audio.addEventListener('pause', () => { playing = false; document.body.classList.remove('playing'); renderPlay(); cancelAnimationFrame(raf); sync(false); savePos(); });
+audio.addEventListener('ended', () => {
+  if (plIdx >= 0) playSong(plIdx + 1);   // 插曲在章末：这章放完就是这首唱完了
+  else if (cur < BOOK.chapters.length - 1) playFrom(cur + 1, 0);
+  else { toast('故事讲完啦，晚安 🌙'); setActive(null); localStorage.removeItem(POS_KEY); }
+});
+
+function renderPlay() {
+  $('#playBtn').innerHTML = playing ? ICON_PAUSE : ICON_PLAY;
+  $('#playBtn').setAttribute('aria-label', playing ? '暂停' : '播放');
+}
+renderPlay();
+
+function toggle() {
+  if (cur < 0) { const p = retry || readPos(); retry = null; return p ? playFrom(p.ch, p.t) : playFrom(0, 0); }
+  playing ? audio.pause() : audio.play();
+}
+function step(d) {
+  const i = active ? lines.indexOf(active) : -1;
+  // 上一句：如果当前句已读了 1.5 秒以上，先回到本句开头
+  if (d < 0 && active && audio.currentTime - active.start > 1.5) return playLine(active, playing || cur < 0);
+  const L = lines[Math.min(lines.length - 1, Math.max(0, i + d))];
+  if (L) playLine(L, true);
+}
+function chapterJump(d) {
+  if (plIdx >= 0) return playSong(Math.min(songs.length - 1, plIdx + d));   // 欣赏插曲时，上一章 / 下一章换成上一首 / 下一首
+  const ci = Math.min(BOOK.chapters.length - 1, Math.max(0, (cur < 0 ? 0 : cur) + d));
+  playFrom(ci, 0);
+}
+
+// ---------- 交互 ----------
+$('#playBtn').onclick = toggle;
+$('#prevS').onclick = () => step(-1);
+$('#nextS').onclick = () => step(1);
+$('#prevCh').onclick = () => chapterJump(-1);
+$('#nextCh').onclick = () => chapterJump(1);
+$('#startBtn').onclick = () => { stopSongs(); playFrom(0, 0); };
+$('#tocBtn').onclick = () => {
+  if (mode === 'picture') setMode('read', true);   // 纯图模式没有目录，先回到阅读模式
+  $('.toc').scrollIntoView({ behavior: 'smooth' });
+};
+story.addEventListener('click', e => {
+  const el = e.target.closest('[data-id]');
+  if (el) { stopSongs(); playLine(byId[el.dataset.id], true); userScrollAt = 0; return; }
+  const pic = e.target.closest('figure .pic'), img = pic && pic.querySelector('img');
+  if (img) { const lb = $('#lightbox'); lb.querySelector('img').src = img.src; lb.querySelector('p').textContent = img.alt; lb.classList.add('open'); }
+});
+$('#lightbox').onclick = () => $('#lightbox').classList.remove('open');
+$('#toc').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  const ci = +b.dataset.ch;
+  stopSongs(); playFrom(ci, 0);
+  document.getElementById('ch' + (ci + 1)).scrollIntoView({ behavior: 'smooth' });
+});
+$('#speedBtn').onclick = () => {
+  speedIdx = (speedIdx + 1) % SPEEDS.length;
+  audio.playbackRate = SPEEDS[speedIdx];
+  $('#speedBtn').textContent = SPEEDS[speedIdx].toFixed(1) + '×';
+};
+$('#followBtn').onclick = () => {
+  follow = !follow;
+  $('#followBtn').setAttribute('aria-pressed', follow);
+  toast(follow ? '跟读：自动翻到正在读的地方' : '跟读已关闭，可以自由翻看');
+  if (follow && active) setActive(active, true);
+};
+// ---------- 显示模式：阅读 / 左图右文（宽屏才有）/ 纯图 ----------
+const MODES = { read: '阅读', split: '左图右文', picture: '纯图' };
+const wide = matchMedia('(min-width: 900px)');
+let mode = 'read', stageIdx = -1, stageLayer = 0;
+$('#stageVid').onplaying = () => $('#stageVid').classList.add('show');
+function showStage(i, force) {
+  if (i === stageIdx && !force) return;
+  stageIdx = i;
+  const im = imgs[i];
+  const layers = document.querySelectorAll('#stage img');
+  const next = layers[stageLayer ^= 1], prev = layers[stageLayer ^ 1];
+  next.onload = () => { next.classList.add('show'); prev.classList.remove('show'); };
+  next.src = im.src;
+  if (imgs[i + 1]) new Image().src = imgs[i + 1].src;   // 顺手预载下一张，念到时直接换上
+  next.alt = im.cap;
+  // 动图短片盖在静态图上，开始播放再淡入；阅读模式看不见舞台，不播
+  const v = $('#stageVid');
+  v.classList.remove('show');
+  if (anim && im.vid && mode !== 'read') { v.src = im.vid; v.play().catch(() => {}); }
+  else if (v.getAttribute('src')) { v.pause(); v.removeAttribute('src'); v.load(); }
+  $('#stageBg').style.backgroundImage = `url("${im.src}")`;
+  $('#stageCap').textContent = `插图 ${im.n} · ${im.cap}`;
+  $('#stageTop').textContent = BOOK.chapters[(active || {}).ch ?? im.ch].title.replace('　', ' ');
+}
+// 字幕换句时先淡出再换字，免得两句文字跳动
+let subT = 0;
+function setSubtitle(L) {
+  const sub = $('#stageSub');
+  const text = !L ? '' : L.el.tagName === 'H2' ? BOOK.chapters[L.ch].title.replace('　', ' ')
+    : L.el.tagName === 'H3' ? '♪ ' + L.el.textContent : L.el.closest('.song') ? '♪ ' + L.el.textContent + ' ♪' : L.el.textContent;
+  if (sub.dataset.text === text) return;
+  sub.dataset.text = text;
+  sub.classList.add('fade');
+  clearTimeout(subT);
+  subT = setTimeout(() => { sub.textContent = text; sub.classList.remove('fade'); }, 180);
+}
+function setMode(m, quiet) {
+  if (m === 'split' && !wide.matches) m = 'read';
+  mode = m;
+  document.body.dataset.mode = m;
+  $('#modeBtn').textContent = MODES[m];
+  try { localStorage.setItem(PREF + 'mode', m); } catch (e) {}
+  showStage(active ? active.img : Math.max(0, stageIdx), true);
+  if (m !== 'picture' && active) setTimeout(() => setActive(active, true), 30);
+  if (!quiet) toast('显示模式：' + MODES[m] + (m === 'picture' ? '（点画面播放 / 暂停）' : ''));
+}
+$('#modeBtn').onclick = () => {
+  const order = wide.matches ? ['read', 'split', 'picture'] : ['read', 'picture'];
+  setMode(order[(order.indexOf(mode) + 1) % order.length]);
+};
+wide.addEventListener('change', () => { if (mode === 'split' && !wide.matches) setMode('read', true); });
+$('#stage').onclick = () => { if (mode === 'picture') toggle(); };
+$('#stagePlay').onclick = e => { e.stopPropagation(); toggle(); };
+// 舞台的底边贴着播放条
+new ResizeObserver(() => document.documentElement.style.setProperty('--ph', $('#player').offsetHeight + 'px')).observe($('#player'));
+try { setMode(localStorage.getItem(PREF + 'mode') || 'read', true); } catch (e) { setMode('read', true); }
+
+function renderAnim() {
+  $('#animBtn').setAttribute('aria-pressed', anim);
+  document.querySelectorAll('figure video').forEach(v => {
+    if (anim) { vio.unobserve(v); vio.observe(v); }   // 重新观察会立即回调一次，看得见的接着播
+    else { v.pause(); v.classList.remove('on'); }
+  });
+  if (stageIdx >= 0) showStage(stageIdx, true);
+}
+$('#animBtn').onclick = () => {
+  anim = !anim;
+  try { localStorage.setItem(PREF + 'anim', anim ? 'on' : 'off'); } catch (e) {}
+  renderAnim();
+  toast(anim ? '插图：动图' : '插图：静态图');
+};
+renderAnim();
+$('#themeBtn').onclick = () => {
+  const root = document.documentElement;
+  const dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  root.dataset.theme = dark ? 'light' : 'dark';
+  try { localStorage.setItem(PREF + 'theme', root.dataset.theme); } catch (e) {}
+};
+try { const th = localStorage.getItem(PREF + 'theme'); if (th) document.documentElement.dataset.theme = th; } catch (e) {}
+
+let seeking = false;
+$('#seek').addEventListener('input', () => { seeking = true; if (cur < 0) return; audio.currentTime = +$('#seek').value; sync(true); });
+$('#seek').addEventListener('change', () => { seeking = false; });
+if (cur < 0) $('#seek').addEventListener('pointerdown', () => { if (cur < 0) loadChapter(0); }, { once: true });
+
+// 用户自己滚动页面时，暂停自动跟读 5 秒
+let programmatic = 0;
+['wheel', 'touchmove'].forEach(ev => addEventListener(ev, () => { userScrollAt = Date.now(); }, { passive: true }));
+addEventListener('keydown', e => {
+  if (e.target.matches('input, textarea')) return;
+  if (e.code === 'Space') { e.preventDefault(); toggle(); }
+  else if (e.key === 'ArrowLeft') step(-1);
+  else if (e.key === 'ArrowRight') step(1);
+  else if (e.key === 'Escape') $('#lightbox').classList.remove('open');
+});
+
+// ---------- 记住上次听到哪里 ----------
+function savePos() { if (cur < 0) return; try { localStorage.setItem(POS_KEY, JSON.stringify({ ch: cur, t: audio.currentTime, id: active && active.id })); } catch (e) {} }
+function readPos() { try { const p = JSON.parse(localStorage.getItem(POS_KEY)); return p && p.ch >= 0 && p.ch < BOOK.chapters.length ? p : null; } catch (e) { return null; } }
+setInterval(() => { if (playing) savePos(); }, 3000);
+const last = readPos();
+if (last && (last.ch > 0 || last.t > 5)) {
+  const rb = $('#resumeBtn');
+  rb.hidden = false;
+  rb.textContent = `继续听 · ${BOOK.chapters[last.ch].title.split('　')[0]} ${fmt(last.t)}`;
+  rb.onclick = () => {
+    stopSongs();
+    const L = last.id && byId[last.id];
+    L ? playLine(L) : playFrom(last.ch, last.t);
+    if (L) setTimeout(() => setActive(L, true), 50);
+  };
+}
+$('#nowTitle').textContent = '点击任意一句，就从那里开始听';
+
+// ---------- 锁屏 / 耳机控制 ----------
+function updateMedia() {
+  if (!('mediaSession' in navigator) || cur < 0) return;
+  navigator.mediaSession.metadata = new MediaMetadata({
+    title: plIdx >= 0 ? songs[plIdx].title : BOOK.chapters[cur].title.replace('　', ' '), artist: BOOK.voice, album: BOOK.title,
+    artwork: [{ src: BOOK.cover, sizes: '1152x768', type: 'image/webp' }]
+  });
+  navigator.mediaSession.setActionHandler('previoustrack', () => chapterJump(-1));
+  navigator.mediaSession.setActionHandler('nexttrack', () => chapterJump(1));
+}
+
+let toastT = 0;
+function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2200); }
+</script>
+</body>
+</html>
